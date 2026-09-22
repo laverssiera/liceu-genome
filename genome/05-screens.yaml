@@ -57,7 +57,7 @@
     - {ref: P-004, used_as: design_reference}
     - {ref: S-C06, used_as: design_reference}
   owner_monolith: liceu.cefeida
-  reads: [liceu.cefeida.evidence@1.0.0]
+  reads: [liceu.cefeida.evidence@2.0.0]
   john_participation: []
   displays: {}
   shows_fields: [metric, value, method_version, source_refs, subject_ref]
