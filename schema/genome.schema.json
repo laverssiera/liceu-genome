@@ -608,6 +608,43 @@
           "items": {
             "type": "string"
           }
+        },
+        "prediction": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "registered_at",
+            "method",
+            "method_version",
+            "settled_by"
+          ],
+          "description": "Pre-registro: esta afirmacao foi feita ANTES de o mundo real responder. Quem a resolve e observacao externa, nunca teste, e a prova tem de ser POSTERIOR ao registro — previsao registrada depois do fato nao e previsao (FIT-016).",
+          "properties": {
+            "registered_at": {
+              "type": "string",
+              "description": "Data do pre-registro. E a data a partir da qual a previsao vale; prova anterior a ela nao a confirma."
+            },
+            "method": {
+              "type": "string",
+              "description": "Metodo que a produziu, sem a versao."
+            },
+            "method_version": {
+              "type": "string",
+              "description": "Versao do metodo."
+            },
+            "basis": {
+              "type": "string",
+              "description": "A base de que saiu (perfil normativo, grafo)."
+            },
+            "derived_from": {
+              "type": "string",
+              "description": "O que na base a sustenta."
+            },
+            "settled_by": {
+              "type": "string",
+              "description": "O ato real que a confirma ou refuta. Sem oraculo declarado, a previsao nao se refuta — e nao vale."
+            }
+          }
         }
       }
     },

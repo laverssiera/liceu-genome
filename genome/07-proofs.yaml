@@ -235,7 +235,7 @@
     paths:
     - backend/juridicotech/dados/vgp_lc030_2007_zm.json
     content_hash: 4d92c0cea14e467f424a9a8b8458ff7ded65fc3344cf969d7a395cd82864884d
-    commit: 3ac3639
+    commit: 40d7fce
   date: "2026-09-22"
 
 - id: PRF-0017
@@ -253,7 +253,7 @@
     repo: JURIDICO-TECH
     path: backend/juridicotech/modules/conformidade_urbanistica.py
     note: "Zero assumido no lugar da permeabilidade ausente daria NAO_ATENDE (abaixo do minimo de 10%) — o erro que o teste impede. Tambem sob teste: perfil sem sha256/URL/data nao e construido; zona ou municipio errados sao recusa e nao resultado; violacao vence lacuna; e limite de LOTE (area minima, frente) nao e aplicado calado a projeto em CONDOMINIO."
-  commit: 3ac3639
+  commit: 40d7fce
   date: "2026-09-22"
   mechanism:
     repo: JURIDICO-TECH
@@ -262,8 +262,8 @@
     - backend/juridicotech/dados/vgp_lc030_2007_zm.json
     - backend/juridicotech/dados/projeto_p001.json
     - backend/tests/test_conformidade_urbanistica.py
-    content_hash: 3dc20897d95cd6f574070cc1aad5a0a5f130163955caada72ca6acb68fb828a3
-    commit: 3ac3639
+    content_hash: 2bb30737bc6ae2bbee210461518c31f3538c06948fe8ae42383b12274d07b828
+    commit: 40d7fce
 
 - id: PRF-0018
   kind: proof
@@ -276,15 +276,15 @@
     name: test_evidencia_de_etapa_adiantada_nao_cria_as_anteriores
     pr: 10
   environment: ci
-  commit: 3ac3639
+  commit: 40d7fce
   date: "2026-09-22"
   mechanism:
     repo: JURIDICO-TECH
     paths:
     - backend/juridicotech/modules/condominio_l0.py
     - backend/tests/test_condominio_l0.py
-    content_hash: 2962837694646957de52eda98eac728a5c8ac50853290720a0fbbd7fc0bbaa62
-    commit: 3ac3639
+    content_hash: e470074df88d3a222bf057db7ffd8acb3cccf57ede0f64f5b77712946ba48165
+    commit: 40d7fce
 
 # U3 (ciclo 10) — a regra roda contra o TEXTO da declaracao como ele esta na
 # planta aprovada. O fixture guarda so o texto: nenhum dado pessoal.
@@ -303,7 +303,7 @@
     repo: JURIDICO-TECH
     path: backend/juridicotech/modules/contradicao_declaracoes.py
     note: "A regra nao infere regime do texto (o regime vem declarado pelo projeto) e nao acusa por uma palavra so: 'loteamento' sozinho nao contradiz — um condominio pode estar dentro de um loteamento. O que contradiz e afirmar loteamento E negar a obrigacao condominial na MESMA oracao. Sete formas equivalentes da declaracao sao pegas; quatro casos que a regra nao pode acusar tem teste proprio."
-  commit: bfb61c5
+  commit: 40d7fce
   date: "2026-09-22"
   mechanism:
     repo: JURIDICO-TECH
@@ -311,5 +311,31 @@
     - backend/juridicotech/modules/contradicao_declaracoes.py
     - backend/juridicotech/dados/declaracoes_p001.json
     - backend/tests/test_contradicao_declaracoes.py
-    content_hash: 495178d4dc753da1a8bf33e13de02e61ce7158994993dc87958e8fc610fe0962
-    commit: bfb61c5
+    content_hash: 314d6f72e170d1a67885e35287009364dd165189cd5edee183d5f1abf4e0dc4a
+    commit: 40d7fce
+
+# U4 (ciclo 10) — o motor de previsao: do que a base NAO concluiu nao sai previsao.
+- id: PRF-0020
+  kind: proof
+  title: "Previsao so sai do que a base concluiu: item indeterminado nao vira palpite"
+  proves: [CLM-0027]
+  basis: test
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_previsoes_processo.py
+    name: test_so_o_que_a_base_concluiu_vira_previsao
+    pr: 12
+  environment: ci
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/previsoes_processo.py
+    note: "Os tres indices que ATENDEM viram previsao; os quatro INDETERMINADOS nao. Tambem sob teste: indice que NAO ATENDE nao vira previsao de aprovacao; processo concluido nao gera previsao de proximo ato; toda previsao declara metodo, versao, base e o ATO REAL que a resolve; e o texto das quatro previsoes da P-001 esta congelado, porque e o texto pre-registrado aqui no genoma."
+  commit: 40d7fce
+  date: "2026-09-22"
+  mechanism:
+    repo: JURIDICO-TECH
+    paths:
+    - backend/juridicotech/modules/previsoes_processo.py
+    - backend/tests/test_previsoes_processo.py
+    content_hash: 4d246a22fb52e22652be874055dcc99a81b7d50eaaec2bfca6c8c5b327bd28be
+    commit: 40d7fce
