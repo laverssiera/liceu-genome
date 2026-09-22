@@ -71,6 +71,17 @@ valor não existe no schema.
 (`used_as`); o juiz junta com a validade do nó. Se a validade estivesse no link, cada mudança
 de `PROPOSTA` para `VIGENTE` deixaria dezenas de cópias desatualizadas.
 
+## Provas têm tempo
+
+Uma prova refuta ou prova o código de **um commit**. Quando o código muda, a refutação não
+pode continuar valendo sobre um código que não existe mais — e apagá-la destruiria a
+história. Por isso a prova tem `supersedes: [PRF-…]`: a prova nova encerra a validade da
+antiga sem apagá-la. O juiz deriva **só das provas vigentes** (as que nenhuma outra
+supersede) e mostra a história: `REFUTED por PRF-0007 até 2026-09-22; TESTED por PRF-0012
+desde então`. Supersedes para prova inexistente é aresta quebrada; ciclo de supersessão é
+recusado; apagar a prova refutada em vez de superseder deixa a dívida no código obsoleta, e
+a catraca acusa. **Nenhuma prova é apagada, nunca.**
+
 ## A catraca
 
 ```

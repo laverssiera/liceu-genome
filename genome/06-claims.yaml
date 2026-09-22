@@ -72,3 +72,15 @@
   kind: claim
   statement: Autoridade juridica nunca e derivada de comparacao de texto livre.
   asserted_by: plano do Ciclo 6 (FIT-009)
+
+# G4 (ciclo 7) — resolucao de evidencia e amarracao de versao. Ficam TESTED
+# ate a sessao do G6: teste prova o codigo, nao o ambiente.
+- id: CLM-0012
+  kind: claim
+  statement: "O boundary do CORE resolve toda referencia de payload declarada em resolvable_refs: existe no Event Store e e do event_type E produtor exigidos; lineage nao passa por ALERT/BLOCK."
+  asserted_by: "CORE #57 (ADR-004 passo 2), 2026-09-22"
+
+- id: CLM-0013
+  kind: claim
+  statement: "O ARCHIMEDES so promove com evidencia cujo causation_id e o event_id da proposta DA VERSAO promovida; evidencia da v1 nao promove a v2."
+  asserted_by: "ARCHIMEDES #31 (ADR-004 passo 3), 2026-09-22"

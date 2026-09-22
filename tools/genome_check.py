@@ -5,7 +5,11 @@ genome_check — o juiz do Genoma LICEU 6.0.
 Um grafo, uma lei, um juiz:
   1. valida cada nó contra o schema, pelo seu 'kind'
   2. resolve cada aresta (referência a outro nó)
-  3. DERIVA o status de cada afirmação a partir das provas — nunca o lê
+  3. DERIVA o status de cada afirmação a partir das provas VIGENTES — nunca o lê.
+     Uma prova refuta ou prova o código de um commit; quando o código muda,
+     uma prova nova a SUPERSEDE. Só as vigentes (as que nenhuma outra
+     supersede) derivam; as superseded ficam como história. Prova nunca é
+     apagada — apagar é reescrever a história.
   4. avalia as fitness functions de genoma
   5. aplica a catraca do livro de dívida
   6. responde às perguntas do Self-Model
@@ -179,6 +183,30 @@ class Judge:
         for p in self.kind["proof"]:
             for c in p.get("proves", []) + p.get("refutes", []):
                 self.ref(p["id"], c, ("claim",))
+            for s in p.get("supersedes", []):
+                if s == p["id"]:
+                    self.errors.append(f"{p['id']}: supersede a si mesma")
+                else:
+                    self.ref(p["id"], s, ("proof",))
+        # ciclo de supersessão: A supersede B, B supersede A (ou mais longo) —
+        # nenhuma das duas seria vigente e nenhuma seria história. Recusado.
+        succ = {p["id"]: [s for s in p.get("supersedes", []) if s in self.by_id] for p in self.kind["proof"]}
+        state: dict[str, int] = {}
+
+        def visit(n, trail):
+            if state.get(n) == 2:
+                return
+            if state.get(n) == 1:
+                cyc = trail[trail.index(n):] + [n]
+                self.errors.append(f"ciclo de supersessão: {' -> '.join(cyc)}")
+                return
+            state[n] = 1
+            for m in succ.get(n, []):
+                visit(m, trail + [n])
+            state[n] = 2
+
+        for pid in succ:
+            visit(pid, [])
         for f in self.kind["fitness"]:
             if f["evaluated_by"] == "runtime":
                 self.ref(f["id"], f["claim"], ("claim",))
@@ -199,12 +227,23 @@ class Judge:
 
     # ─────────────────────────────────────────── 3. derivação
     def derive(self):
-        proving, refuting = defaultdict(list), defaultdict(list)
+        # Vigente = nenhuma outra prova a supersede. Só vigentes derivam.
+        self.superseded_by: dict[str, str] = {}
         for p in self.kind["proof"]:
+            for s in p.get("supersedes", []):
+                self.superseded_by[s] = p["id"]
+        proving, refuting = defaultdict(list), defaultdict(list)
+        self.history: dict[str, list[dict]] = defaultdict(list)   # claim -> provas, vigentes ou não
+        for p in self.kind["proof"]:
+            current = p["id"] not in self.superseded_by
             for c in p.get("proves", []):
-                proving[c].append(p)
+                self.history[c].append(p)
+                if current:
+                    proving[c].append(p)
             for c in p.get("refutes", []):
-                refuting[c].append(p)
+                self.history[c].append(p)
+                if current:
+                    refuting[c].append(p)
         for c in self.kind["claim"]:
             cid = c["id"]
             if refuting[cid]:
@@ -218,6 +257,23 @@ class Judge:
                 self.status[cid] = "TESTED"
             else:
                 self.status[cid] = "UNPROVEN"
+
+    def verdict_of(self, p: dict) -> str:
+        if p.get("refutes"):
+            return "REFUTED"
+        return "PROVEN" if p["basis"] == "external_observation" else "TESTED"
+
+    def claim_history(self, cid: str) -> list[str]:
+        """A história de uma afirmação: 'REFUTED por PRF-0007 até 22/09; TESTED por PRF-0012 desde então'."""
+        out = []
+        for p in sorted(self.history.get(cid, []), key=lambda x: (str(x.get("date")), x["id"])):
+            nxt = self.superseded_by.get(p["id"])
+            if nxt:
+                until = self.by_id[nxt].get("date")
+                out.append(f"{self.verdict_of(p)} por {p['id']} até {until} (superseded por {nxt})")
+            else:
+                out.append(f"{self.verdict_of(p)} por {p['id']} desde {p.get('date')}")
+        return out
 
     # ─────────────────────────────────────────── 4. fitness de genoma
     def find(self, fit: str, subject: str, msg: str):
@@ -354,6 +410,20 @@ class Judge:
             self.errors.append(f"VIOLAÇÃO NOVA {f}: {m}  [{s}]")
         for v in self.stale:
             self.errors.append(f"DÍVIDA OBSOLETA {v['id']}: não é mais detectada — remova do livro")
+        # Dívida detectada NO CÓDIGO liga-se a uma fitness de runtime, cuja
+        # afirmação tem de estar REFUTED por prova vigente. Se a refutação foi
+        # superseded (correção provada) ou apagada, a dívida está obsoleta —
+        # e apagar a prova em vez de superseder não escapa da catraca.
+        fitness = {f["id"]: f for f in self.kind["fitness"]}
+        for v in self.kind["violation"]:
+            if v["detection"] != "code":
+                continue
+            f = fitness.get(v["fitness"])
+            claim = f.get("claim") if f else None
+            if claim and self.status.get(claim) != "REFUTED":
+                self.errors.append(
+                    f"DÍVIDA OBSOLETA {v['id']}: {claim} está {self.status.get(claim)}, não REFUTED — "
+                    f"a refutação que sustentava a dívida não vige; remova do livro (ou registre a prova)")
 
     # ─────────────────────────────────────────── 6. Self-Model
     def self_model(self) -> dict:
@@ -400,7 +470,9 @@ class Judge:
                       "entry": {"claim": entry, "status": self.status.get(entry),
                                 "ephemeral": entry in self.ephemeral}},
             "claims": {c: {"status": self.status[c], "statement": claims[c]["statement"],
-                           "ephemeral": c in self.ephemeral} for c in claims},
+                           "ephemeral": c in self.ephemeral,
+                           "history": self.claim_history(c)} for c in claims},
+            "proofs_superseded": sorted(self.superseded_by.items()),
             "q_multi_emitter": emitters,
             "q_screens_on_proposta": proposta_screens,
             "q_blocks_regional": regional,
@@ -464,6 +536,8 @@ def text_report(m: dict, j: Judge) -> str:
     for cid, v in m["claims"].items():
         flag = "  (efêmero)" if v["ephemeral"] else ""
         L.append(f"  {v['status']:9} {cid:9} {v['statement']}{flag}")
+        if len(v["history"]) > 1 or any("superseded" in h for h in v["history"]):
+            L.append(f"  {'':9} {'':9} história: " + "; ".join(v["history"]))
     L.append("")
     L.append("PERGUNTAS DO SELF-MODEL")
     L.append(f"  eventos com mais de um emissor ........ {len(m['q_multi_emitter'])}")
