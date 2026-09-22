@@ -40,10 +40,7 @@
   required_evidence: "Decisao do titular: recusar candidato unico na proposta (e nomear o bloqueio la), admitir alternativa unica no elo 3 com o dissenso dizendo isso, ou manter como esta e registrar 2/5 como resultado legitimo."
   owner: titular
   blocks: [CLM-L3]
-- id: UNK-0007
-  kind: unknown
-  question: "Quais sao os candidatos REAIS para a Casa LICEU P-001 — onde, e por que?"
-  why_unknown: "Nao ha candidato real declarado pelo mandatario. A proposta do elo 1 e DECLARADA (study_basis DECLARED): nao existe estudo territorial, e o lugar so pode vir de quem tem o mandato. Inventar um candidato faria o fato dizer que foi declarado pelo mandatario quando quem declarou foi outro — e faria a contagem subir mentindo."
-  required_evidence: "Lista do mandatario: territorial_scope, crs quando houver geometria, e candidatos com candidate_id, where (objeto), why e rank. Um candidato real basta para os elos 1 e 2; o elo 3 exige dois (UNK-0006)."
-  owner: titular
-  blocks: [CLM-L1, CLM-L2, CLM-L3, CLM-L4, CLM-L5]
+# UNK-0007 ENCERRADA em 2026-09-22: a Casa P-001 e real (residencia unifamiliar,
+# 97,20 m2 em terreno de 175 m2, condominio em Vargem Grande Paulista, zona ZM,
+# LC 030/2007), com o proprietario autorizando o uso como piloto e o titular do
+# LICEU como RT. A historia fica no git. Nao ha incognita: ha caso.

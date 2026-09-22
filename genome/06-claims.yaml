@@ -97,3 +97,15 @@
   kind: claim
   statement: Um estudo declarado com um unico candidato real atravessa a cadeia ate o elo 3.
   asserted_by: "sessao do G6, 2026-09-22 — suposicao ao preparar a proposta declarada"
+
+# Ciclo 10 — a Casa P-001 entra como caso REAL, em MODO SOMBRA: o LICEU modela,
+# confere e aponta; quem decide e o RT, e o processo real segue o caminho normal.
+- id: CLM-0016
+  kind: claim
+  statement: "Nenhuma decisao do processo real da P-001 depende de saida do LICEU: as saidas sao consultivas e o LICEU nunca esta no caminho critico."
+  asserted_by: "titular (RT), 2026-09-22 — regime declarado ao entrar com o caso real"
+
+- id: CLM-0017
+  kind: claim
+  statement: "O genoma e os repositorios publicos do LICEU nao contem dado pessoal do caso real: so parametros (municipio, zona, areas, indices)."
+  asserted_by: "titular, 2026-09-22 — minimizacao de dados ao entrar com a P-001"

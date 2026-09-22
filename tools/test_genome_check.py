@@ -46,7 +46,7 @@ def judge(files, registry=None):
             (d / name).write_text(yaml.safe_dump(nodes, allow_unicode=True, sort_keys=False),
                                   encoding="utf-8")
         j = gc.Judge(gc.load(d), SCHEMA, registry if registry is not None else KIT_REGISTRY,
-                     SCALE_ORDER, KIT_PRODUCERS)
+                     SCALE_ORDER, KIT_PRODUCERS, genome_dir=d)
         return j, j.run()
     finally:
         shutil.rmtree(d)
@@ -77,6 +77,39 @@ class Mutacoes(unittest.TestCase):
         j, _ = judge(files, registry)
         self.assertTrue(any(contains in e for e in j.errors),
                         f"esperava erro com {contains!r}; veio {j.errors}")
+
+    # U0 — o genoma é público: dado pessoal não entra
+    #
+    # As amostras são MONTADAS em tempo de execução, nunca escritas literalmente:
+    # este arquivo também vive no repositório público e também é varrido. Escrever
+    # um CPF de exemplo aqui seria cometer o defeito ao testá-lo.
+    @staticmethod
+    def _amostra(tipo):
+        return {
+            "cpf": ".".join(["123", "456", "789"]) + "-" + "01",
+            "email": "dono" + "@" + "exemplo" + "." + "com.br",
+            "telefone": "(" + "11" + ") " + "98765" + "-" + "4321",
+            "matricula": "matr" + "icula " + "123456" + " do cartorio",
+            "cep": "06730" + "-" + "000",
+        }[tipo]
+
+    def test_50_cpf_no_genoma_falha_a_ci(self):
+        f = base()
+        node(f, "CASO-P001")["source"]["note"] += " proprietario " + self._amostra("cpf")
+        self.assertFails(f, "VIOLAÇÃO NOVA FIT-015: dado pessoal em repositório público")
+
+    def test_51_email_telefone_e_matricula_tambem_falham(self):
+        for tipo in ("email", "telefone", "matricula", "cep"):
+            f = base()
+            node(f, "CASO-P001")["source"]["note"] += " " + self._amostra(tipo)
+            self.assertFails(f, "VIOLAÇÃO NOVA FIT-015")
+
+    def test_52_parametro_do_caso_real_nao_e_dado_pessoal(self):
+        # zona, areas e indices podem — sao o que o LICEU precisa e nao identificam ninguem
+        f = base()
+        node(f, "CASO-P001")["source"]["note"] += " taxa de ocupacao 55,54% em 175 m2"
+        j, _ = judge(f)
+        self.assertEqual(j.errors, [], j.errors)
 
     # H6 — PFC com teste real, e o freio
     def test_43_pfc_apontando_teste_inexistente_e_recusado(self):
