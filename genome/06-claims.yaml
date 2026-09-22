@@ -212,3 +212,9 @@
   kind: claim
   statement: "Prontidao nao e conformidade: item INDETERMINADO nao impede protocolar, e impedimento conhecido impede, com a base e o metodo de cada um."
   asserted_by: "sessao da U5, 2026-09-22 — regime declarado para o motor de prontidao"
+
+# U5 (ciclo 10) — study_basis METHOD no elo 1.
+- id: CLM-0030
+  kind: claim
+  statement: "A base do estudo e decidida na entrada dos candidates e o ato de propor nao pode contradiza-la; e METHOD exige fonte por candidate quando o estudo foi entregue, nao so a versao do metodo."
+  asserted_by: "sessao da U5, 2026-09-22 — regime declarado ao abrir METHOD no passo manual do elo 1"
