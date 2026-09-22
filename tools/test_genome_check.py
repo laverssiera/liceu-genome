@@ -46,7 +46,7 @@ def judge(files, registry=None):
             (d / name).write_text(yaml.safe_dump(nodes, allow_unicode=True, sort_keys=False),
                                   encoding="utf-8")
         j = gc.Judge(gc.load(d), SCHEMA, registry if registry is not None else KIT_REGISTRY,
-                     SCALE_ORDER, KIT_PRODUCERS)
+                     SCALE_ORDER, KIT_PRODUCERS, genome_dir=d)
         return j, j.run()
     finally:
         shutil.rmtree(d)
@@ -77,6 +77,26 @@ class Mutacoes(unittest.TestCase):
         j, _ = judge(files, registry)
         self.assertTrue(any(contains in e for e in j.errors),
                         f"esperava erro com {contains!r}; veio {j.errors}")
+
+    # U0 — o genoma é público: dado pessoal não entra
+    def test_50_cpf_no_genoma_falha_a_ci(self):
+        f = base()
+        node(f, "CASO-P001")["source"]["note"] += " proprietario 123.456.789-01"
+        self.assertFails(f, "VIOLAÇÃO NOVA FIT-015: dado pessoal em repositório público")
+
+    def test_51_email_telefone_e_matricula_tambem_falham(self):
+        for sujo in ("contato dono@exemplo.com.br", "telefone (11) 98765-4321",
+                     "matricula 123456 do cartorio", "CEP 06730-000"):
+            f = base()
+            node(f, "CASO-P001")["source"]["note"] += " " + sujo
+            self.assertFails(f, "VIOLAÇÃO NOVA FIT-015", )
+
+    def test_52_parametro_do_caso_real_nao_e_dado_pessoal(self):
+        # zona, areas e indices podem — sao o que o LICEU precisa e nao identificam ninguem
+        f = base()
+        node(f, "CASO-P001")["source"]["note"] += " taxa de ocupacao 55,54% em 175 m2"
+        j, _ = judge(f)
+        self.assertEqual(j.errors, [], j.errors)
 
     # H6 — PFC com teste real, e o freio
     def test_43_pfc_apontando_teste_inexistente_e_recusado(self):

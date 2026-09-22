@@ -59,6 +59,20 @@ Ler código ou registro pode **refutar**, mas nunca **provar** comportamento. A 
 cadeia é a soma dos elos `PROVEN`. É isso que impede outro "1/5" contado pelo que o processo
 afirmou.
 
+## O caso real, em modo sombra — e a privacidade como regra do juiz
+
+A **Casa P-001** é real: residência unifamiliar em condomínio, zona ZM, Vargem Grande
+Paulista (LC 030/2007). O LICEU entra em **modo sombra** — modela, confere e aponta; quem
+decide é o RT, e o processo real segue o caminho normal. As saídas são consultivas, e o
+LICEU nunca está no caminho crítico (CLM-0016).
+
+Como o genoma e o kit são **públicos**, a **FIT-015** varre os dois e recusa CPF, CNPJ,
+e-mail, telefone, matrícula/inscrição imobiliária e CEP. Entram **parâmetros** — município,
+zona, área do terreno, área construída, taxa de ocupação, coeficiente de aproveitamento,
+permeabilidade. Não entram nome, documento, endereço nem contato: o projeto é "P-001", e só.
+O documento-fonte fica privado; **o genoma aponta, não copia**. Quando a varredura acha algo,
+diz o arquivo, a linha e o **tipo** — nunca o valor, porque o log da CI também é público.
+
 ## O que o genoma deve a si mesmo (H6)
 
 **Numerador**: elos provados, por escala. **Denominador**: a **maquinaria** — fitness functions +

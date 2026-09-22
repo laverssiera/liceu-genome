@@ -44,3 +44,15 @@
   title: Cartorio e registrador
   knowledge_type: stakeholder
   source: {repo: drive/PERSONAS_LICEU6.0, path: Stakeholders_Casa_LICEU_Onda0_v1_0.xlsx}
+
+# Ciclo 10 — o caso real, SO EM PARAMETRO. Nome, CPF, matricula, endereco,
+# telefone e e-mail do proprietario NAO entram aqui nem em lugar nenhum publico
+# (FIT-015). O projeto e "P-001", e so.
+- id: CASO-P001
+  kind: knowledge
+  title: "Casa P-001 — parametros do caso real (residencia unifamiliar em condominio)"
+  knowledge_type: norm
+  validity: PROPOSTA
+  permitted_uses: [exploration, design_reference, research, comparison_as_proposal]
+  prohibited_uses: [authoritative_decision, authoritative_budget, procurement_commitment, physical_execution_authorization]
+  source: {repo: privado, note: "municipio Vargem Grande Paulista; zona ZM; LC 030/2007; terreno 175 m2; area construida 97,20 m2; taxa de ocupacao 55,54%; coeficiente de aproveitamento 0,56; permeabilidade 10,90%. Regime: condominio, com convencao e regimento. Documento fonte e privado: o genoma aponta, nao copia."}

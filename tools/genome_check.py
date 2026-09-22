@@ -54,6 +54,8 @@ import datetime
 import subprocess
 from pathlib import Path
 
+import genome_privacy_check
+
 import yaml
 from jsonschema import Draft202012Validator
 
@@ -238,8 +240,11 @@ def load(genome_dir: Path) -> list[dict]:
 
 class Judge:
     def __init__(self, nodes: list[dict], schema: dict, registry: dict | None = None,
-                 scale_order: dict[str, int] | None = None, producer_registry: dict | None = None):
+                 scale_order: dict[str, int] | None = None, producer_registry: dict | None = None,
+                 genome_dir: Path | None = None):
         self.nodes = nodes
+        # O que o juiz VARRE e o que ele julga, nunca "o diretorio de sempre".
+        self.genome_dir = Path(genome_dir) if genome_dir else ROOT / "genome"
         self.schema = schema
         # Contract Registry do kit: a fonte de produtor/versão/lifecycle (FIT-010).
         self.registry = registry if registry is not None else load_kit_registry()
@@ -557,6 +562,13 @@ class Judge:
                 self.find("FIT-010", f"{c['id']}/in_registry",
                           f"{c['id']} diz in_registry: false, mas o kit {kit_meta.get('registry_version')} "
                           f"já o tem ({kit.get('status')}) — o genoma ficou atrás do kit")
+
+        # FIT-015 — o genoma é PÚBLICO. Dado pessoal que entrar fica na internet,
+        # e a P-001 é a casa de uma pessoa real. Parâmetro pode; identificação, não.
+        for achado in genome_privacy_check.scan(self.genome_dir):
+            arquivo = achado.split(":", 1)[0]
+            self.find("FIT-015", f"privacidade/{arquivo}",
+                      f"dado pessoal em repositório público: {achado}")
 
         # FIT-014 — PFC só conta com teste de regressão que EXISTE.
         # "Erro evitado" sem prova é o defeito que o genoma combate.
@@ -1078,7 +1090,7 @@ def main(argv=None) -> int:
         for p in problems:
             print("  ✗", p)
         return 1
-    j = Judge(load(Path(a.genome)), schema, registry)
+    j = Judge(load(Path(a.genome)), schema, registry, genome_dir=Path(a.genome))
     m = j.run()
     if m is None:
         print("GENOMA INVÁLIDO — schema ou arestas; o Self-Model não é calculado sobre grafo partido")

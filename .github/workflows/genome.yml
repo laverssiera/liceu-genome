@@ -28,6 +28,10 @@ jobs:
       - name: Testes de mutação (detector de superfície)
         run: python tools/test_genome_surface_check.py
 
+      # O genoma e o kit sao PUBLICOS: dado pessoal que entrar fica na internet.
+      - name: Privacidade — nenhum dado pessoal no repositório público
+        run: python tools/genome_privacy_check.py --root .
+
       - name: Genoma — schema, arestas, derivação, fitness (inclui FIT-010 contra o kit), catraca
         run: python tools/genome_check.py --history --json self-model.json --html self-model.html
 
