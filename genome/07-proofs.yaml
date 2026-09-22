@@ -19,6 +19,7 @@
     observed: CORE conectado (cid 9, nats-py 2.16); o subscriber recebeu o assunto; linha em events
   evidence_artifact: {repo: LICEU_6.0_CONSTRUTORA_VIRTUAL, path: docs/evidence/2026-09-20-primeiro-fato-1of5.md, pr: 50}
   environment: ephemeral
+  scale: LOCAL
   date: "2026-09-20"
 
 - id: PRF-0003

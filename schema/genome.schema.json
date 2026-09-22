@@ -701,6 +701,10 @@
             "pattern": "^PRF-[0-9]{4}$"
           },
           "description": "Provas cuja validade ESTA prova encerra. A prova superseded fica no grafo (historia); so as vigentes — as que nenhuma outra supersede — entram na derivacao."
+        },
+        "scale": {
+          "type": "string",
+          "description": "Escala do FATO observado (enum federativo da Constituicao, lido do kit). Obrigatoria quando a prova sustenta um elo da cadeia: a contagem e POR ESCALA e um elo provado numa escala bloqueada nao conta naquela escala (FIT-011)."
         }
       },
       "allOf": [

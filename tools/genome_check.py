@@ -6,6 +6,10 @@ Um grafo, uma lei, um juiz:
   1. valida cada nó contra o schema, pelo seu 'kind'
   2. resolve cada aresta (referência a outro nó)
   3. DERIVA o status de cada afirmação a partir das provas VIGENTES — nunca o lê.
+     A contagem da cadeia é POR ESCALA (FIT-011): cada prova de elo declara a
+     escala do fato observado, e um elo provado numa escala BLOQUEADA não conta
+     naquela escala. Sem isso, uma cadeia poderia "atravessar" em REGIONAL
+     enquanto o próprio genoma declara REGIONAL bloqueada.
      Uma prova refuta ou prova o código de um commit; quando o código muda,
      uma prova nova a SUPERSEDE. Só as vigentes (as que nenhuma outra
      supersede) derivam; as superseded ficam como história. Prova nunca é
@@ -43,6 +47,8 @@ from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parent.parent
 KIT_REGISTRY_FILE = "liceu_contract_registry.yaml"
+KIT_CONSTITUTION_FILE = "liceu_constitution.yaml"
+SCALE_BLOCK = re.compile(r"^scale:([A-Z]+)$")
 AUTHORITATIVE_USES = {"authoritative_decision", "authoritative_budget",
                       "procurement_commitment", "physical_execution_authorization"}
 EVIDENCE_FIELD = re.compile(r"(_refs|content_hash)$")
@@ -66,6 +72,28 @@ def lint(genome_dir: Path) -> list[str]:
                 problems.append(f"{f.name}:{i}: valor sem aspas contém ' #' — o YAML trunca em "
                                 f"silêncio. Ponha o valor entre aspas: {line.strip()[:70]}")
     return problems
+
+
+def load_scale_order(path: Path | None = None) -> dict[str, int]:
+    """Enum federativo da escala, lido da CONSTITUIÇÃO do kit instalado.
+
+    Uma definição: o genoma não reescreve o enum (mesma regra da FIT-010).
+    Sem o kit não há veredito.
+    """
+    if path is None:
+        try:
+            from liceu_protocol import KIT_DIR
+        except ImportError as exc:
+            raise SystemExit(
+                "kit ausente: instale liceu-protocol na tag vigente (requirements.txt). "
+                "O enum de escala vive na Constituição do kit.") from exc
+        path = Path(KIT_DIR) / KIT_CONSTITUTION_FILE
+    data = yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
+    niveis = (((data.get("global") or {}).get("federation_scale") or {}).get("niveis")) or []
+    order = {str(n["valor"]).upper(): int(n["ordem"]) for n in niveis if "valor" in n and "ordem" in n}
+    if not order:
+        raise SystemExit(f"{path}: Constituição sem global.federation_scale.niveis")
+    return order
 
 
 def load_kit_registry(path: Path | None = None) -> dict:
@@ -101,11 +129,14 @@ def load(genome_dir: Path) -> list[dict]:
 
 
 class Judge:
-    def __init__(self, nodes: list[dict], schema: dict, registry: dict | None = None):
+    def __init__(self, nodes: list[dict], schema: dict, registry: dict | None = None,
+                 scale_order: dict[str, int] | None = None):
         self.nodes = nodes
         self.schema = schema
         # Contract Registry do kit: a fonte de produtor/versão/lifecycle (FIT-010).
         self.registry = registry if registry is not None else load_kit_registry()
+        # Enum de escala: da Constituição do kit (FIT-011).
+        self.scale_order = scale_order if scale_order is not None else load_scale_order()
         self.errors: list[str] = []      # falham a CI
         self.warnings: list[str] = []    # informam, não falham
         self.findings: list[tuple[str, str, str]] = []   # (fitness, subject, message)
@@ -381,6 +412,23 @@ class Judge:
                           f"{c['id']} diz in_registry: false, mas o kit {kit_meta.get('registry_version')} "
                           f"já o tem ({kit.get('status')}) — o genoma ficou atrás do kit")
 
+        # FIT-011 — a contagem é por escala, e a escala do fato é declarada.
+        # Prova que sustenta um elo (claim com chain_link) sem `scale`, ou com
+        # escala fora do enum da Constituição, não pode entrar em contagem
+        # alguma: a cadeia não sabe em que escala atravessou.
+        chain_claims = {c["id"] for c in self.kind["claim"] if c.get("chain_link")}
+        for p in self.kind["proof"]:
+            if not (set(p.get("proves", [])) & chain_claims):
+                continue
+            scale = p.get("scale")
+            if scale is None:
+                self.find("FIT-011", f"{p['id']}/scale",
+                          f"{p['id']} prova elo da cadeia sem declarar a escala do fato observado")
+            elif scale not in self.scale_order:
+                self.find("FIT-011", f"{p['id']}/scale",
+                          f"{p['id']} declara scale {scale!r}, fora do enum federativo "
+                          f"{sorted(self.scale_order, key=self.scale_order.get)}")
+
         # FIT-008 — contratos lidos existem e estão vigentes
         for s in self.kind["screen"]:
             for cid in s["reads"]:
@@ -426,6 +474,58 @@ class Judge:
                     f"a refutação que sustentava a dívida não vige; remova do livro (ou registre a prova)")
 
     # ─────────────────────────────────────────── 6. Self-Model
+    def blocked_scales(self) -> dict[str, list]:
+        """Escalas bloqueadas e por quem: afirmação não PROVEN ou incógnita que
+        declara `blocks: [scale:X]`. Mesma fonte que já respondia "o que impede
+        REGIONAL" — agora ela também decide a contagem (FIT-011)."""
+        out: dict[str, list] = {}
+        for c in self.kind["claim"]:
+            for b in c.get("blocks", []):
+                m = SCALE_BLOCK.match(b)
+                if m and self.status[c["id"]] != "PROVEN":
+                    out.setdefault(m.group(1), []).append((c["id"], self.status[c["id"]]))
+        for u in self.kind["unknown"]:
+            for b in u["blocks"]:
+                m = SCALE_BLOCK.match(b)
+                if m:
+                    out.setdefault(m.group(1), []).append((u["id"], "UNKNOWN"))
+        return out
+
+    def chain_by_scale(self, n: int, claims: dict) -> dict:
+        """Contagem POR ESCALA. Um elo conta numa escala quando há prova VIGENTE
+        de observação externa daquele elo COM aquela escala; escala bloqueada
+        conta zero, e o relatório diz por quê."""
+        proving = defaultdict(list)
+        for p in self.kind["proof"]:
+            if p["id"] in self.superseded_by or p["basis"] != "external_observation":
+                continue
+            for c in p.get("proves", []):
+                proving[c].append(p)
+        blocked = self.blocked_scales()
+        scales = sorted({p.get("scale") for ps in proving.values() for p in ps
+                         if p.get("scale") in self.scale_order} | set(blocked),
+                        key=lambda s: self.scale_order.get(s, 99))
+        out = {}
+        for scale in scales:
+            def counted(measure):
+                total = 0
+                for c in claims.values():
+                    cl = c.get("chain_link")
+                    if not cl or cl["measure"] != measure or not (1 <= cl["position"] <= n):
+                        continue
+                    if any(p.get("scale") == scale for p in proving.get(c["id"], [])):
+                        total += 1
+                return total
+            b = blocked.get(scale, [])
+            out[scale] = {
+                "blocked_by": b,
+                "structural": 0 if b else counted("structural"),
+                "substantive": 0 if b else counted("substantive"),
+                # o que HAVERIA se a escala não estivesse bloqueada — nunca é a contagem
+                "structural_if_unblocked": counted("structural"),
+            }
+        return out
+
     def self_model(self) -> dict:
         meta = self.kind["meta"][0]
         claims = {c["id"]: c for c in self.kind["claim"]}
@@ -435,6 +535,9 @@ class Judge:
             cl = c.get("chain_link")
             if cl and cl["measure"] == "structural":
                 links[cl["position"]] = c["id"]
+        by_scale = self.chain_by_scale(n, claims)
+        # A contagem AGREGADA continua existindo (um elo PROVEN em qualquer
+        # escala não bloqueada), mas o número que se anuncia é o por escala.
         structural = sum(1 for p in range(1, n + 1)
                          if self.status.get(links.get(p)) == "PROVEN")
         substantive = sum(1 for c in claims.values()
@@ -466,6 +569,7 @@ class Judge:
         return {
             "graph_version": meta["graph_version"],
             "kit_registry_version": (self.registry.get("meta") or {}).get("registry_version"),
+            "chain_by_scale": by_scale,
             "chain": {"structural": structural, "substantive": substantive, "positions": n,
                       "entry": {"claim": entry, "status": self.status.get(entry),
                                 "ephemeral": entry in self.ephemeral}},
@@ -526,9 +630,21 @@ def text_report(m: dict, j: Judge) -> str:
     L.append(f"grafo: {m['graph_version']}")
     L.append(f"kit:   contract registry {m['kit_registry_version']}")
     L.append("")
-    L.append("CADEIA — derivada das provas, nunca declarada")
-    L.append(f"  estrutural   {c['structural']}/{c['positions']}")
-    L.append(f"  substantiva  {c['substantive']}/{c['positions']}")
+    L.append("CADEIA — derivada das provas, nunca declarada; POR ESCALA (FIT-011)")
+    if not m["chain_by_scale"]:
+        L.append("  nenhuma escala com prova de elo nem bloqueio declarado")
+    for scale, v in m["chain_by_scale"].items():
+        if v["blocked_by"]:
+            quem = ", ".join(f"{i} {st}" for i, st in v["blocked_by"])
+            extra = (f"; haveria {v['structural_if_unblocked']}/{c['positions']} se nao estivesse"
+                     if v["structural_if_unblocked"] else "")
+            L.append(f"  {scale:12} bloqueada por {len(v['blocked_by'])} item(ns) — 0 elos contam  "
+                     f"[{quem}]{extra}")
+        else:
+            L.append(f"  {scale:12} estrutural {v['structural']}/{c['positions']}   "
+                     f"substantiva {v['substantive']}/{c['positions']}")
+    L.append(f"  (agregado, sem escala: estrutural {c['structural']}/{c['positions']}, "
+             f"substantiva {c['substantive']}/{c['positions']})")
     e = c["entry"]
     L.append(f"  entrada      {e['claim']} {e['status']}" + ("  (ambiente efêmero)" if e["ephemeral"] else ""))
     L.append("")

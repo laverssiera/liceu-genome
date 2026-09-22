@@ -59,6 +59,16 @@ Ler código ou registro pode **refutar**, mas nunca **provar** comportamento. A 
 cadeia é a soma dos elos `PROVEN`. É isso que impede outro "1/5" contado pelo que o processo
 afirmou.
 
+## A contagem é por escala (FIT-011)
+
+Um elo provado em REGIONAL não conta enquanto o próprio genoma declara REGIONAL
+bloqueada — senão a cadeia "atravessaria" numa escala que o grafo diz não estar
+disponível. Cada prova de elo declara a `scale` do fato observado (enum federativo da
+**Constituição do kit**, não reescrito aqui); escala sem prova de elo mas com bloqueio
+aparece com o bloqueio; escala bloqueada imprime `0 elos contam` e, entre colchetes, quem
+a bloqueia — e quanto **haveria** se não estivesse. Prova de elo sem `scale`, ou com escala
+fora do enum, é violação nova.
+
 **2. Uma dimensão, uma definição.** Cada valor de estado pertence a um nó `dimension` só,
 como decidiu o C6-SM-01. Valor produzido pelo código fora da dimensão é violação.
 
