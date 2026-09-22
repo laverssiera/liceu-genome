@@ -1,3 +1,10 @@
+# Contratos — SO o que o kit nao tem.
+# Produtor, versao e lifecycle sao do Contract Registry do kit liceu-protocol
+# (tag em requirements.txt); a FIT-010 confere o que esta aqui contra o kit
+# instalado e divergencia e violacao. Aqui vive o que o kit nao sabe:
+# emitters_observed, implementation_observed, chain_position, carries.
+# Alinhado ao kit v0.14.0 (registry 2.7.0, ADR-004).
+
 - id: liceu.hub.planning-request@1.0.0
   kind: contract
   title: Pedido de planejamento sob mandato
@@ -12,31 +19,53 @@
   kind: contract
   title: Proposta territorial nao autoritativa (ADR-004)
   producer: liceu.archimedes
-  in_registry: false
+  in_registry: true
+  lifecycle: ACTIVE
   chain_position: null
   carries: [study_basis, planning_state_status]
-  source: {repo: liceu-protocol, pr: 14, note: ADR-004; entra no kit v0.14.0}
+  emitters_observed: [liceu.archimedes]
+  source: {repo: liceu-protocol, pr: 15, note: "kit v0.14.0; etapa interna do elo 1, sem posicao na cadeia"}
 
 - id: liceu.archimedes.planning-state@1.0.0
   kind: contract
-  title: Estado de planejamento autoritativo
+  title: Estado de planejamento autoritativo (sem causation_id obrigatorio)
+  producer: liceu.archimedes
+  in_registry: true
+  lifecycle: RETIRED
+  chain_position: 1
+  superseded_by: liceu.archimedes.planning-state@2.0.0
+  source: {repo: liceu-protocol, pr: 15, note: "RETIRED sem migracao: nenhum fato existia"}
+
+- id: liceu.archimedes.planning-state@2.0.0
+  kind: contract
+  title: Estado de planejamento autoritativo causado pela proposta, com evidencia resolvivel
   producer: liceu.archimedes
   in_registry: true
   lifecycle: ACTIVE
   chain_position: 1
   carries: [planning_state_status]
   emitters_observed: [liceu.archimedes]
-  source: {repo: liceu-protocol, note: 2.0.0 pendente com causation_id obrigatorio}
+  source: {repo: liceu-protocol, pr: 15, note: "kit v0.14.0; causation_id = proposta; candidates[].evidence_refs >= 1 com resolvable_refs"}
 
 - id: liceu.cefeida.evidence@1.0.0
   kind: contract
-  title: Evidencia
+  title: Evidencia (sem causation_id nem subject_ref obrigatorios)
+  producer: liceu.cefeida
+  in_registry: true
+  lifecycle: RETIRED
+  chain_position: 2
+  superseded_by: liceu.cefeida.evidence@2.0.0
+  source: {repo: liceu-protocol, pr: 15, note: "RETIRED sem migracao: nenhum fato existia"}
+
+- id: liceu.cefeida.evidence@2.0.0
+  kind: contract
+  title: Evidencia amarrada a versao da proposta
   producer: liceu.cefeida
   in_registry: true
   lifecycle: ACTIVE
   chain_position: 2
   emitters_observed: [liceu.cefeida]
-  source: {repo: liceu-protocol, note: 2.0.0 pendente com causation_id e subject_ref}
+  source: {repo: liceu-protocol, pr: 15, note: "kit v0.14.0; causation_id = event_id da versao da proposta; subject_ref = artifact da proposta"}
 
 - id: liceu.john.recommendation@1.0.0
   kind: contract
@@ -56,7 +85,7 @@
   lifecycle: ACTIVE
   chain_position: 3
   emitters_observed: [liceu.john]
-  source: {repo: liceu-protocol, pr: 13, note: tag v0.13.0; OPERA deixou de emitir em construction.py}
+  source: {repo: liceu-protocol, pr: 13, note: "tag v0.13.0; resolvable_refs no v0.14.0; OPERA deixou de emitir em construction.py"}
 
 - id: liceu.anchor.authorization@1.1.0
   kind: contract
@@ -69,7 +98,7 @@
   emitters_observed: [liceu.anchor]
   implementation_observed:
     legal_coverage: [REFERENCED]
-  source: {repo: ANCHOR.OS, pr: 11, note: "o #11 devolve legal_coverage REFERENCED"}
+  source: {repo: ANCHOR.OS, pr: 11, note: "o #11 devolve legal_coverage REFERENCED; legal_basis_refs em resolvable_refs desde o kit v0.14.0"}
 
 - id: liceu.legal.admissibility@1.0.0
   kind: contract

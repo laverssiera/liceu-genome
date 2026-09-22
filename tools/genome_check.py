@@ -15,6 +15,14 @@ Saída 1: erro de schema, aresta quebrada, violação nova ou dívida obsoleta.
 
 Uso:
   genome_check.py [--genome DIR] [--schema FILE] [--json FILE] [--html FILE]
+                  [--kit-registry FILE]
+
+O Contract Registry do kit (pacote liceu-protocol, instalado na tag vigente)
+é a fonte de produtor, versão e lifecycle de cada contrato. O genoma NÃO os
+copia como verdade própria: a FIT-010 confere o que o genoma diz contra o
+que o kit instalado diz, e divergência é violação. Sem o kit instalado o
+juiz não julga (fail-closed) — um genoma julgado sem o kit não pode dizer
+que está alinhado a ele.
 """
 from __future__ import annotations
 
@@ -30,6 +38,7 @@ import yaml
 from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parent.parent
+KIT_REGISTRY_FILE = "liceu_contract_registry.yaml"
 AUTHORITATIVE_USES = {"authoritative_decision", "authoritative_budget",
                       "procurement_commitment", "physical_execution_authorization"}
 EVIDENCE_FIELD = re.compile(r"(_refs|content_hash)$")
@@ -55,6 +64,27 @@ def lint(genome_dir: Path) -> list[str]:
     return problems
 
 
+def load_kit_registry(path: Path | None = None) -> dict:
+    """Contract Registry do kit instalado (ou de `path`, nos testes).
+
+    Fail-closed: sem o pacote liceu-protocol não há registry e não há
+    veredito. Vendorizar uma cópia aqui seria a segunda fonte da verdade
+    que a FIT-010 existe para impedir.
+    """
+    if path is None:
+        try:
+            from liceu_protocol import KIT_DIR
+        except ImportError as exc:
+            raise SystemExit(
+                "kit ausente: instale liceu-protocol na tag vigente (requirements.txt). "
+                "O genoma não é julgado sem o Contract Registry do kit.") from exc
+        path = Path(KIT_DIR) / KIT_REGISTRY_FILE
+    data = yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
+    if "contracts" not in data:
+        raise SystemExit(f"{path}: não é um Contract Registry do kit (sem `contracts`)")
+    return data
+
+
 def load(genome_dir: Path) -> list[dict]:
     nodes = []
     for f in sorted(genome_dir.glob("*.yaml")):
@@ -67,9 +97,11 @@ def load(genome_dir: Path) -> list[dict]:
 
 
 class Judge:
-    def __init__(self, nodes: list[dict], schema: dict):
+    def __init__(self, nodes: list[dict], schema: dict, registry: dict | None = None):
         self.nodes = nodes
         self.schema = schema
+        # Contract Registry do kit: a fonte de produtor/versão/lifecycle (FIT-010).
+        self.registry = registry if registry is not None else load_kit_registry()
         self.errors: list[str] = []      # falham a CI
         self.warnings: list[str] = []    # informam, não falham
         self.findings: list[tuple[str, str, str]] = []   # (fitness, subject, message)
@@ -266,6 +298,33 @@ class Judge:
                 self.find("FIT-007", f"{sid}/owner",
                           f"{sid} é de {s['owner_monolith']} e não lê contrato dele")
 
+        # FIT-010 — o genoma não é a segunda fonte da verdade sobre contratos.
+        # Para cada contrato com in_registry: true, produtor e lifecycle têm de
+        # bater com o Contract Registry do kit instalado; contrato que o kit
+        # tem e o genoma diz que não tem também diverge (o genoma ficou atrás).
+        kit_contracts = self.registry.get("contracts") or {}
+        kit_meta = self.registry.get("meta") or {}
+        for c in self.kind["contract"]:
+            cid, _, version = c["id"].partition("@")
+            kit_versions = kit_contracts.get(cid) or {}
+            kit = kit_versions.get(version)
+            if c["in_registry"]:
+                if kit is None:
+                    self.find("FIT-010", f"{c['id']}/in_registry",
+                              f"{c['id']} diz in_registry mas o kit {kit_meta.get('registry_version')} "
+                              f"não tem essa versão (tem {sorted(kit_versions) or 'nenhuma'})")
+                    continue
+                if c["producer"] != kit.get("owner"):
+                    self.find("FIT-010", f"{c['id']}/producer",
+                              f"{c['id']} produtor {c['producer']} no genoma, {kit.get('owner')} no kit")
+                if c.get("lifecycle") != kit.get("status"):
+                    self.find("FIT-010", f"{c['id']}/lifecycle",
+                              f"{c['id']} lifecycle {c.get('lifecycle')} no genoma, {kit.get('status')} no kit")
+            elif kit is not None:
+                self.find("FIT-010", f"{c['id']}/in_registry",
+                          f"{c['id']} diz in_registry: false, mas o kit {kit_meta.get('registry_version')} "
+                          f"já o tem ({kit.get('status')}) — o genoma ficou atrás do kit")
+
         # FIT-008 — contratos lidos existem e estão vigentes
         for s in self.kind["screen"]:
             for cid in s["reads"]:
@@ -336,6 +395,7 @@ class Judge:
                             and self.status.get(f["claim"]) != "PROVEN"]
         return {
             "graph_version": meta["graph_version"],
+            "kit_registry_version": (self.registry.get("meta") or {}).get("registry_version"),
             "chain": {"structural": structural, "substantive": substantive, "positions": n,
                       "entry": {"claim": entry, "status": self.status.get(entry),
                                 "ephemeral": entry in self.ephemeral}},
@@ -392,6 +452,7 @@ def text_report(m: dict, j: Judge) -> str:
     c = m["chain"]
     L.append("GENOMA LICEU 6.0 — Self-Model")
     L.append(f"grafo: {m['graph_version']}")
+    L.append(f"kit:   contract registry {m['kit_registry_version']}")
     L.append("")
     L.append("CADEIA — derivada das provas, nunca declarada")
     L.append(f"  estrutural   {c['structural']}/{c['positions']}")
@@ -556,15 +617,17 @@ def main(argv=None) -> int:
     ap.add_argument("--schema", default=str(ROOT / "schema" / "genome.schema.json"))
     ap.add_argument("--json")
     ap.add_argument("--html")
+    ap.add_argument("--kit-registry", help="Contract Registry do kit; default: o do pacote liceu-protocol instalado")
     a = ap.parse_args(argv)
     schema = json.loads(Path(a.schema).read_text(encoding="utf-8"))
+    registry = load_kit_registry(Path(a.kit_registry) if a.kit_registry else None)
     problems = lint(Path(a.genome))
     if problems:
         print("TRUNCAMENTO SILENCIOSO")
         for p in problems:
             print("  ✗", p)
         return 1
-    j = Judge(load(Path(a.genome)), schema)
+    j = Judge(load(Path(a.genome)), schema, registry)
     m = j.run()
     if m is None:
         print("GENOMA INVÁLIDO — schema ou arestas; o Self-Model não é calculado sobre grafo partido")
