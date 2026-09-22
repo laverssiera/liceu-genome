@@ -97,8 +97,8 @@
   carries: [decision_result, legal_coverage]
   emitters_observed: [liceu.anchor]
   implementation_observed:
-    legal_coverage: [REFERENCED]
-  source: {repo: ANCHOR.OS, pr: 11, note: "o #11 devolve legal_coverage REFERENCED; legal_basis_refs em resolvable_refs desde o kit v0.14.0"}
+    legal_coverage: [UNCOVERED]
+  source: {repo: ANCHOR.OS, pr: 15, note: "UNCOVERED asserted ate o CORE derivar (#33); REFERENCED saiu no #15; legal_basis_refs em resolvable_refs desde o kit v0.14.0"}
 
 - id: liceu.legal.admissibility@1.0.0
   kind: contract

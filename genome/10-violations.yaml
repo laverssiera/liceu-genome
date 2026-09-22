@@ -1,17 +1,7 @@
 # Livro de divida. Catraca: violacao detectada que nao esta aqui FALHA a CI;
 # divida registrada que o genoma deixou de detectar tambem FALHA (remova-a).
-- id: VIO-0001
-  kind: violation
-  fitness: FIT-006
-  detection: genome
-  subject: liceu.anchor.authorization@1.1.0/legal_coverage/REFERENCED
-  observed: O ANCHOR devolve legal_coverage REFERENCED, valor que nao existe na dimensao.
-  location: {repo: ANCHOR.OS, pr: 11}
-  tracked_in: {repo: liceu-protocol, pr: 12, note: C6-SM-01 secao 3.7}
-- id: VIO-0002
-  kind: violation
-  fitness: FIT-009
-  detection: code
-  observed: _JURIDICOTECH_ALLOWED aceita "ok" e "true" como autorizacao juridica.
-  location: {repo: ANCHOR.OS, path: anchors/runtime/earth_governance_runtime.py}
-  tracked_in: {repo: ANCHOR.OS, issue: 12}
+# 2026-09-22 (G5, ANCHOR #15): VIO-0001 (legal_coverage REFERENCED) e VIO-0002
+# (_JURIDICOTECH_ALLOWED) sairam do livro — corrigidas e provadas por teste
+# (PRF-0012 e PRF-0013, que supersedem a PRF-0007). Os ids nao sao reutilizados.
+# O livro esta vazio; a catraca continua armada.
+[]
