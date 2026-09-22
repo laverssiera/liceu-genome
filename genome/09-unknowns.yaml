@@ -2,7 +2,7 @@
   kind: unknown
   question: Como replicar o estado de autoridade para que a Testemunha observe a Ativa por um caminho independente?
   why_unknown: As tres Maes sao linhas de uma tabela so; a replicacao da Sucessora nao existe em codigo.
-  required_evidence: ADR-003 decidido, implementado, e prova externa sob particao de rede.
+  required_evidence: "DECISAO PARCIAL TOMADA (titular, 2026-09-22): a SONDA vem primeiro — a Testemunha observa a Ativa pela rede, nunca pelo armazenamento, e attest() deixa de aceitar veredito no corpo. A topologia (A, B ou C) espera a leitura do ADR-003 §6; inclinacao do titular: C, com duas condicoes — na C a Testemunha NAO usa replay para julgar se a Ativa esta viva (replay reconstroi estado da Sucessora; sonda observa a Ativa) e o backup TESTADO do event store e pre-requisito. Falta: sonda implementada, topologia decidida, e prova externa sob particao de rede."
   owner: titular
   blocks: ["scale:REGIONAL", CLM-0006, CLM-0007]
 - id: UNK-0002

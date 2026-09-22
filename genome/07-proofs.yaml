@@ -198,3 +198,24 @@
     note: "planning-proposal@1.0.0 candidates.minItems 1; planning-state@2.0.0 sem minItems; john.recommendation@2.1.0 alternatives.minItems 2 — o relay recusa antes da rede (John backend/federation/single_domain_relay.py:133, alternatives_insufficient, owner liceu.archimedes)"
   commit: 4951b94
   date: "2026-09-22"
+
+# ADR-003 (ciclo 8): a segunda refutacao da CLM-0006, e a mais forte — a
+# primeira (PRF-0006) e sobre TOPOLOGIA (as tres Maes numa tabela so) e cai
+# quando a topologia mudar; esta e sobre o MECANISMO, e vale em qualquer
+# topologia. As duas vigem: uma nao supersede a outra.
+- id: PRF-0015
+  kind: proof
+  title: "attest() recebe o veredito pronto no corpo do POST — a Testemunha registra, nao observa"
+  refutes: [CLM-0006]
+  basis: code_reading
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/app/services/authority_control_plane.py
+    note: "attest(..., verdict: str, observed_active_instance_id) grava o que o chamador mandou; POST /authority/attest passa body.verdict direto (main.py:5744). O CORE valida QUEM atesta (papel WITNESS), sobre qual epoca e a coerencia do veredito — e nunca confere se a Ativa esta no estado declarado. Nao ha sonda: nenhuma leitura da Ativa pela rede, nenhum heartbeat. Pela FIT-013 isso e campo asserted sustentando promocao de autoridade."
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths:
+    - cv-backend-core/app/services/authority_control_plane.py
+    content_hash: d75cd5d2e9cb4930f935b23deeb664be056421b4569063684f99d29749f9a591
+    commit: 75eea6b
+  date: "2026-09-22"
