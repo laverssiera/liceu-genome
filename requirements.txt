@@ -1,4 +1,4 @@
 pyyaml==6.0.3
 jsonschema==4.26.0
 # O Contract Registry do kit e a fonte de produtor/versao/lifecycle (FIT-010). Fixe a tag vigente.
-liceu-protocol @ git+https://github.com/laverssiera/liceu-protocol@v0.14.0
+liceu-protocol @ git+https://github.com/laverssiera/liceu-protocol@v0.15.0
