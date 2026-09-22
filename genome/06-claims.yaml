@@ -89,3 +89,11 @@
   kind: claim
   statement: "O ARCHIMEDES so promove com evidencia cujo causation_id e o event_id da proposta DA VERSAO promovida; evidencia da v1 nao promove a v2."
   asserted_by: "ARCHIMEDES #31 (ADR-004 passo 3), 2026-09-22"
+
+# Achado do G6 (2026-09-22), antes de a sessao seguir: o contrato de recomendacao
+# exige >= 2 alternativas, entao um estudo DECLARADO com um unico candidato real
+# — legitimo na proposta (minItems 1) e no estado (sem minimo) — nao chega ao elo 3.
+- id: CLM-0015
+  kind: claim
+  statement: Um estudo declarado com um unico candidato real atravessa a cadeia ate o elo 3.
+  asserted_by: "sessao do G6, 2026-09-22 — suposicao ao preparar a proposta declarada"
