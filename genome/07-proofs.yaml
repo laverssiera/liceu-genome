@@ -113,8 +113,8 @@
     paths:
     - runtime/planning_state_call_site.py
     - tests/test_planning_state_call_site.py
-    content_hash: 43f0ff2b7a22e0795cabf3ae03f8f06e928e93bbe4938de34a99b6c4be3286f3
-    commit: 0d57718
+    content_hash: 7d7a6ca40e94c57e468adc55ff0cc02557567d221f4ffb685f9b9c42472806ce
+    commit: a082c1b
 - id: PRF-0010
   kind: proof
   title: Backend healthy sem tabela nenhuma; primeiro publish 500 (Codespace liceu-elos-0a3)
@@ -379,3 +379,30 @@
     - backend/tests/test_prontidao_protocolo.py
     content_hash: 23fe81a2052fda4397f7336f4e2dad0225aa4a148da512ccb47be371acb098ed
     commit: "7040950"
+
+# U5 (ciclo 10) — o elo 1 aprende METHOD, e METHOD deixa de ser rotulo.
+- id: PRF-0023
+  kind: proof
+  title: "Estudo DECLARED nao vira METHOD no ato de propor, e METHOD sem fonte por candidate nao publica"
+  proves: [CLM-0030]
+  basis: test
+  test:
+    repo: Archimedes-ImobTech-LICEU-6.0-
+    path: tests/test_elo1_act_cli.py
+    name: test_propor_nao_pode_contradizer_o_estudo_que_propoe
+    pr: 35
+  environment: ci
+  location:
+    repo: Archimedes-ImobTech-LICEU-6.0-
+    path: runtime/planning_state_call_site.py
+    note: "Antes, declare gravava study_basis na provenance e propose declarava o seu por conta propria: os dois eram independentes, e dava para declarar DECLARED e propor METHOD. Agora propose le a provenance do Root State, e o call site recusa ato que a contradiga. METHOD tambem passa a exigir derived_from por candidate — mas so quando o estudo DECLAROU a base na entrada: quando a provenance e silenciosa, o estudo veio do proprio runtime (o orquestrador W88 E o metodo) e a exigencia nao se aplica. Esse escopo foi corrigido depois que a CI do ARCHIMEDES pegou a primeira versao quebrando test_proposal_with_method_and_its_refusals."
+  commit: a082c1b
+  date: "2026-09-22"
+  mechanism:
+    repo: Archimedes-ImobTech-LICEU-6.0-
+    paths:
+    - runtime/planning_state_call_site.py
+    - scripts/elo1_act.py
+    - tests/test_elo1_act_cli.py
+    content_hash: 855370a329071b9a08231c70f9ab8f214b481ac6c7dbbdc930a4dc81d93d15b9
+    commit: a082c1b
