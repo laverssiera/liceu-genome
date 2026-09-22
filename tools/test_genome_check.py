@@ -22,6 +22,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import genome_check as gc  # noqa: E402
+import genome_surface_check as gsc  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 SCHEMA = json.loads((ROOT / "schema" / "genome.schema.json").read_text(encoding="utf-8"))
@@ -74,6 +75,52 @@ class Mutacoes(unittest.TestCase):
         j, _ = judge(files, registry)
         self.assertTrue(any(contains in e for e in j.errors),
                         f"esperava erro com {contains!r}; veio {j.errors}")
+
+    # H2 — o genoma aprende a esquecer: STALE, superfície, expiração
+    def test_32_evidencia_vencida_vira_STALE_nao_REFUTED(self):
+        f = base()
+        node(f, "PRF-0002")["expires_at"] = "2026-09-01"          # venceu antes de hoje
+        j, m = judge(f)
+        self.assertEqual(j.errors, [], j.errors)
+        self.assertEqual(m["claims"]["CLM-0002"]["status"], "STALE")
+        self.assertNotEqual(m["claims"]["CLM-0002"]["status"], "REFUTED")
+        self.assertIn("PRF-0002", m["proofs_expired"])
+        self.assertEqual(m["chain_by_scale"]["LOCAL"]["structural"], 0)   # STALE não conta
+
+    def test_33_prova_nova_com_o_hash_atual_volta_a_PROVEN(self):
+        f = base()
+        node(f, "PRF-0002")["expires_at"] = "2026-09-01"
+        add(f, "07-proofs.yaml", {"id": "PRF-0089", "kind": "proof", "title": "entrada reobservada",
+                                  "proves": ["CLM-0002"], "basis": "external_observation",
+                                  "external_observation": {"instrument": "psql + NATS", "observed": "fato gravado"},
+                                  "evidence_artifact": {"repo": "r", "path": "docs/evidence/x.md"},
+                                  "environment": "ephemeral", "scale": "LOCAL", "date": "2026-09-22"})
+        j, m = judge(f)
+        self.assertEqual(j.errors, [], j.errors)
+        self.assertEqual(m["claims"]["CLM-0002"]["status"], "PROVEN")
+
+    def test_34_remover_a_observacao_externa_derruba_o_PROVEN(self):
+        f = base()
+        f["07-proofs.yaml"] = [p for p in f["07-proofs.yaml"] if p["id"] != "PRF-0002"]
+        j, m = judge(f)
+        self.assertNotEqual(m["claims"]["CLM-0002"]["status"], "PROVEN")
+        self.assertEqual(m["chain_by_scale"].get("LOCAL", {}).get("structural", 0), 0)
+
+    def test_35_prova_por_teste_sem_superficie_e_violacao(self):
+        f = base()
+        del node(f, "PRF-0009")["mechanism"]
+        self.assertFails(f, "VIOLAÇÃO NOVA FIT-012: PRF-0009 prova por teste sem declarar a superfície")
+
+    def test_36_superficie_de_repositorio_inteiro_e_recusada(self):
+        # "." e "src" morrem antes, no schema (minLength); "tests/" e curinga,
+        # na FIT-012. O que importa e que NENHUMA delas passa.
+        for ruim, marca in ((".", "is too short"), ("src", "VIOLAÇÃO NOVA FIT-012: PRF-0009 declara superfície"),
+                            ("tests/", "VIOLAÇÃO NOVA FIT-012: PRF-0009 declara superfície"),
+                            ("runtime/*.py", "VIOLAÇÃO NOVA FIT-012: PRF-0009 declara superfície"),
+                            ("cv-backend-core/", "VIOLAÇÃO NOVA FIT-012: PRF-0009 declara superfície")):
+            f = base()
+            node(f, "PRF-0009")["mechanism"]["paths"] = [ruim]
+            self.assertFails(f, marca)
 
     # FIT-011 — a contagem é por escala; escala bloqueada não conta
     def test_28_elo_provado_em_escala_bloqueada_nao_conta_naquela_escala(self):
@@ -153,6 +200,8 @@ class Mutacoes(unittest.TestCase):
         add(f, "07-proofs.yaml", {"id": "PRF-0099", "kind": "proof",
                                   "title": "corrigido: comparação de texto removida", "proves": ["CLM-0011"],
                                   "basis": "test", "test": {"repo": "ANCHOR.OS", "path": "tests/test_x.py"},
+                                  "mechanism": {"repo": "ANCHOR.OS", "paths": ["tests/test_x.py"],
+                                                "content_hash": "b" * 64, "commit": "abc1234"},
                                   "supersedes": ["PRF-0007"], "date": "2026-09-22"})
         # a dívida no código (VIO-0002) sai junto: a refutação não vige mais
         f["10-violations.yaml"] = [v for v in f["10-violations.yaml"] if v["id"] != "VIO-0002"]
@@ -256,7 +305,8 @@ class Mutacoes(unittest.TestCase):
         f = base()
         add(f, "07-proofs.yaml", {"id": "PRF-0099", "kind": "proof", "title": "teste do elo 1",
             "proves": ["CLM-L1"], "basis": "test",
-            "test": {"repo": "x", "path": "t.py"}, "scale": "LOCAL", "date": "2026-09-22"})
+            "test": {"repo": "x", "path": "t.py"}, "scale": "LOCAL", "date": "2026-09-22",
+            "mechanism": {"repo": "x", "paths": ["app/t.py"], "content_hash": "a" * 64, "commit": "abc1234"}})
         j, m = judge(f)
         self.assertEqual(j.errors, [])
         self.assertEqual(m["claims"]["CLM-L1"]["status"], "TESTED")

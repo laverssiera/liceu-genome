@@ -59,6 +59,23 @@ Ler código ou registro pode **refutar**, mas nunca **provar** comportamento. A 
 cadeia é a soma dos elos `PROVEN`. É isso que impede outro "1/5" contado pelo que o processo
 afirmou.
 
+## O genoma esquece: STALE, superfície e expiração
+
+Uma prova cobre **o código de um commit**. Quando esse código muda, a prova precisa ser
+feita de novo — e quem sabe disso primeiro é o repositório que mudou.
+
+- **`mechanism: {repo, paths, content_hash, commit}`** — a superfície provada, com precisão
+  de arquivo. Repositório inteiro, diretório ou curinga é recusado (FIT-012): ficaria obsoleto
+  a cada commit, o genoma viraria ruído e as pessoas passariam a ignorá-lo.
+- **A invalidação acontece onde a mudança acontece.** `tools/genome_surface_check.py` roda na
+  CI de **cada monólito**: lê este genoma (que é público), filtra as provas que cobrem
+  arquivos daquele repo, recalcula o hash e falha ali — *"este PR altera uma superfície provada
+  por PRF-XXXX"*. Ninguém precisa de token, ninguém lê repositório privado alheio e ninguém
+  escreve no repositório de ninguém. Foi o genoma ser público que tornou isso possível.
+- **`expires_at`** — evidência com prazo. Vencida, a afirmação vira **STALE**.
+- **STALE não é REFUTED.** Uma refatoração pode mudar o arquivo e manter o comportamento.
+  STALE quer dizer "precisa ser provado de novo", não "é falso" — e **não conta na cadeia**.
+
 ## A contagem é por escala (FIT-011)
 
 Um elo provado em REGIONAL não conta enquanto o próprio genoma declara REGIONAL
