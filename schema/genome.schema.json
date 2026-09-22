@@ -127,6 +127,16 @@
             "CIVILIZACIONAL",
             "INTERPLANETARIA"
           ]
+        },
+        "field_provenance": {
+          "type": "object",
+          "description": "Origem de cada campo RELATADO: derived (extraido de fonte verificavel — kit, events, codigo — e conferivel pelo juiz) ou asserted (escrito por humano ou IA). Campo asserted nao sustenta PROVEN nem entra na contagem da cadeia; sustenta divida e alerta (FIT-013).",
+          "additionalProperties": {
+            "enum": [
+              "derived",
+              "asserted"
+            ]
+          }
         }
       }
     },
@@ -238,6 +248,16 @@
         },
         "source": {
           "$ref": "#/$defs/source"
+        },
+        "field_provenance": {
+          "type": "object",
+          "description": "Origem de cada campo RELATADO: derived (extraido de fonte verificavel — kit, events, codigo — e conferivel pelo juiz) ou asserted (escrito por humano ou IA). Campo asserted nao sustenta PROVEN nem entra na contagem da cadeia; sustenta divida e alerta (FIT-013).",
+          "additionalProperties": {
+            "enum": [
+              "derived",
+              "asserted"
+            ]
+          }
         }
       },
       "allOf": [
@@ -744,6 +764,16 @@
         "expires_at": {
           "type": "string",
           "description": "Data (YYYY-MM-DD) a partir da qual a evidencia deixa de sustentar a afirmacao. Vencida -> STALE, nunca REFUTED: 'precisa ser provado de novo', nao 'e falso'."
+        },
+        "derived_from": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9._@:-]+\\.[a-z_]+$"
+          },
+          "description": "Campos do genoma que esta prova usa como base, no formato <no>.<campo>. Prova que PROVA nao pode se apoiar em campo asserted (FIT-013); prova que REFUTA pode — relato basta para levantar suspeita, nunca para dar certeza."
         }
       },
       "allOf": [

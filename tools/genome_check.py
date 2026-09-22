@@ -18,7 +18,9 @@ Um grafo, uma lei, um juiz:
      uma prova nova a SUPERSEDE. Só as vigentes (as que nenhuma outra
      supersede) derivam; as superseded ficam como história. Prova nunca é
      apagada — apagar é reescrever a história.
-  4. avalia as fitness functions de genoma
+  4. avalia as fitness functions de genoma — inclusive a origem de cada campo
+     relatado (FIT-013): `derived` e conferido contra a fonte; `asserted` nao
+     sustenta certeza, so divida e alerta
   5. aplica a catraca do livro de dívida
   6. responde às perguntas do Self-Model
 
@@ -54,6 +56,12 @@ ROOT = Path(__file__).resolve().parent.parent
 KIT_REGISTRY_FILE = "liceu_contract_registry.yaml"
 KIT_CONSTITUTION_FILE = "liceu_constitution.yaml"
 SCALE_BLOCK = re.compile(r"^scale:([A-Z]+)$")
+# Campos RELATADOS: foram digitados a partir de relato, nao observados. Cada um
+# declara a origem (FIT-013). O nome "observed" era o primeiro erro.
+REPORTED_FIELDS = {
+    "contract": ("emitters_observed", "implementation_observed"),
+    "monolith": ("teto_interno", "may_authorize", "may_decide"),
+}
 # Superficie de repositorio inteiro, ou curinga: proibida (FIT-012).
 WHOLE_REPO = re.compile(r"^[./]*$|[*?]|^[^/]+/$|^(src|app|tests?|lib)$")
 AUTHORITATIVE_USES = {"authoritative_decision", "authoritative_budget",
@@ -103,6 +111,20 @@ def load_scale_order(path: Path | None = None) -> dict[str, int]:
     return order
 
 
+def load_kit_producers(path: Path | None = None) -> dict:
+    """Producer Registry do kit instalado — fonte de teto e capacidades (FIT-013)."""
+    if path is None:
+        try:
+            from liceu_protocol import KIT_DIR
+        except ImportError as exc:
+            raise SystemExit("kit ausente: instale liceu-protocol (requirements.txt).") from exc
+        path = Path(KIT_DIR) / "liceu_producer_registry.yaml"
+    data = yaml.safe_load(Path(path).read_text(encoding="utf-8")) or {}
+    if "producers" not in data:
+        raise SystemExit(f"{path}: nao e um Producer Registry do kit (sem `producers`)")
+    return data
+
+
 def load_kit_registry(path: Path | None = None) -> dict:
     """Contract Registry do kit instalado (ou de `path`, nos testes).
 
@@ -137,11 +159,13 @@ def load(genome_dir: Path) -> list[dict]:
 
 class Judge:
     def __init__(self, nodes: list[dict], schema: dict, registry: dict | None = None,
-                 scale_order: dict[str, int] | None = None):
+                 scale_order: dict[str, int] | None = None, producer_registry: dict | None = None):
         self.nodes = nodes
         self.schema = schema
         # Contract Registry do kit: a fonte de produtor/versão/lifecycle (FIT-010).
         self.registry = registry if registry is not None else load_kit_registry()
+        # Producer Registry: fonte de teto/capacidades para a FIT-013.
+        self.producer_registry = producer_registry if producer_registry is not None else load_kit_producers()
         # Enum de escala: da Constituição do kit (FIT-011).
         self.scale_order = scale_order if scale_order is not None else load_scale_order()
         self.errors: list[str] = []      # falham a CI
@@ -334,6 +358,25 @@ class Judge:
     def find(self, fit: str, subject: str, msg: str):
         self.findings.append((fit, subject, msg))
 
+    @property
+    def registry_producers(self) -> dict:
+        """Producer Registry do kit — a fonte de teto e capacidades."""
+        return (self.producer_registry or {}).get("producers") or {}
+
+    @staticmethod
+    def derived_value(kind: str, node: dict, campo: str, kit_producers: dict):
+        """O valor que a FONTE dá para este campo, ou None quando o juiz não
+        consegue conferir aqui (ex.: emitters, que dependem da tabela events)."""
+        if kind != "monolith":
+            return None
+        entry = kit_producers.get(node["id"]) or {}
+        if campo == "teto_interno":
+            return (entry.get("teto") or {}).get("teto_interno")
+        if campo in ("may_authorize", "may_decide"):
+            valor = (entry.get("capabilities") or {}).get(campo)
+            return valor if isinstance(valor, list) else None
+        return None
+
     def fitness(self):
         mono = {m["id"]: m for m in self.kind["monolith"]}
         contracts = {c["id"]: c for c in self.kind["contract"]}
@@ -435,6 +478,49 @@ class Judge:
                 self.find("FIT-010", f"{c['id']}/in_registry",
                           f"{c['id']} diz in_registry: false, mas o kit {kit_meta.get('registry_version')} "
                           f"já o tem ({kit.get('status')}) — o genoma ficou atrás do kit")
+
+        # FIT-013 — campo relatado declara a origem; derived é CONFERIDO.
+        # Parte do genoma foi digitada a partir de relatos e se chamava "observed".
+        # `derived` significa "extraído de fonte verificável e conferível aqui";
+        # `asserted` significa "alguém escreveu" — e não sustenta certeza.
+        kit_producers = (self.registry_producers or {})
+        for kind, campos in REPORTED_FIELDS.items():
+            for n in self.kind[kind]:
+                origem = n.get("field_provenance") or {}
+                for campo in campos:
+                    if campo not in n:
+                        continue
+                    if campo not in origem:
+                        self.find("FIT-013", f"{n['id']}/{campo}",
+                                  f"{n['id']}.{campo} não declara origem (derived ou asserted): "
+                                  f"um campo relatado sem origem é lido como observação")
+                    elif origem[campo] == "derived":
+                        esperado = self.derived_value(kind, n, campo, kit_producers)
+                        if esperado is not None and esperado != n[campo]:
+                            self.find("FIT-013", f"{n['id']}/{campo}/derived",
+                                      f"{n['id']}.{campo} diz derived mas não confere com a fonte: "
+                                      f"genoma {n[campo]!r}, fonte {esperado!r}")
+                for campo in origem:
+                    if campo not in campos:
+                        self.find("FIT-013", f"{n['id']}/{campo}/desconhecido",
+                                  f"{n['id']}.field_provenance declara {campo!r}, que não é campo "
+                                  f"relatado de {kind}")
+        # Prova que PROVA não se apoia em campo asserted. Relato levanta suspeita
+        # (refutação, dívida, alerta); nunca dá certeza.
+        for p in self.kind["proof"]:
+            for ref in p.get("derived_from", []):
+                node_id, _, campo = ref.rpartition(".")
+                n = self.by_id.get(node_id)
+                if n is None:
+                    self.errors.append(f"{p['id']}: derived_from -> {node_id!r} não existe")
+                    continue
+                origem = (n.get("field_provenance") or {}).get(campo)
+                if campo not in n:
+                    self.errors.append(f"{p['id']}: derived_from -> {node_id}.{campo} não existe no nó")
+                elif p.get("proves") and origem != "derived":
+                    self.find("FIT-013", f"{p['id']}/{ref}",
+                              f"{p['id']} PROVA apoiada em {ref} ({origem or 'sem origem'}): campo "
+                              f"asserted não sustenta certeza — só dívida e alerta")
 
         # FIT-012 — a prova declara a superfície que cobre, com precisão de arquivo.
         # Prova por TESTE sem `mechanism` não sabe dizer quando deixou de valer;
@@ -622,6 +708,11 @@ class Judge:
             "q_screens_on_proposta": proposta_screens,
             "q_blocks_regional": regional,
             "q_runtime_fitness_without_proof": runtime_no_proof,
+            "q_asserted_fields": sorted(
+                f"{n['id']}.{campo}"
+                for kind, campos in REPORTED_FIELDS.items() for n in self.kind[kind]
+                for campo in campos
+                if campo in n and (n.get("field_provenance") or {}).get(campo) == "asserted"),
             "unknowns": [(u["id"], u["question"], u["blocks"]) for u in self.kind["unknown"]],
             "debt_known": [(f, s, m) for f, s, m in self.known],
             "debt_code": [(v["id"], v["fitness"], v["observed"]) for v in self.kind["violation"]
@@ -707,6 +798,9 @@ def text_report(m: dict, j: Judge) -> str:
     L.append(f"  fitness de runtime sem prova ........... {len(m['q_runtime_fitness_without_proof'])}")
     for f, cl, st in m["q_runtime_fitness_without_proof"]:
         L.append(f"    {f} -> {cl} {st}")
+    L.append(f"  campos relatados (asserted) ............ {len(m['q_asserted_fields'])}")
+    for x in m["q_asserted_fields"]:
+        L.append(f"    {x}")
     L.append(f"  telas apoiadas só em PROPOSTA .......... {len(m['q_screens_on_proposta'])} de {len(m['screens'])}")
     L.append(f"  o que impede REGIONAL .................. {len(m['q_blocks_regional'])}")
     for x in m["q_blocks_regional"]:

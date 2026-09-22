@@ -30,6 +30,7 @@ SCHEMA = json.loads((ROOT / "schema" / "genome.schema.json").read_text(encoding=
 # As mutações da FIT-010 alteram uma cópia, nunca o kit.
 KIT_REGISTRY = gc.load_kit_registry()
 SCALE_ORDER = gc.load_scale_order()
+KIT_PRODUCERS = gc.load_kit_producers()
 
 
 def base():
@@ -44,7 +45,8 @@ def judge(files, registry=None):
         for name, nodes in files.items():
             (d / name).write_text(yaml.safe_dump(nodes, allow_unicode=True, sort_keys=False),
                                   encoding="utf-8")
-        j = gc.Judge(gc.load(d), SCHEMA, registry if registry is not None else KIT_REGISTRY, SCALE_ORDER)
+        j = gc.Judge(gc.load(d), SCHEMA, registry if registry is not None else KIT_REGISTRY,
+                     SCALE_ORDER, KIT_PRODUCERS)
         return j, j.run()
     finally:
         shutil.rmtree(d)
@@ -75,6 +77,45 @@ class Mutacoes(unittest.TestCase):
         j, _ = judge(files, registry)
         self.assertTrue(any(contains in e for e in j.errors),
                         f"esperava erro com {contains!r}; veio {j.errors}")
+
+    # H3 — campo relatado declara a origem; asserted não sustenta certeza
+    def test_37_campo_relatado_sem_origem_e_violacao(self):
+        f = base()
+        del node(f, "liceu.anchor")["field_provenance"]["teto_interno"]
+        self.assertFails(f, "VIOLAÇÃO NOVA FIT-013: liceu.anchor.teto_interno não declara origem")
+
+    def test_38_derived_que_nao_confere_com_a_fonte_e_violacao(self):
+        f = base()
+        node(f, "liceu.archimedes")["teto_interno"] = "LOCAL"     # o kit diz CONTINENTAL
+        self.assertFails(f, "VIOLAÇÃO NOVA FIT-013: liceu.archimedes.teto_interno diz derived mas não confere")
+
+    def test_39_prova_apoiada_em_campo_asserted_nao_prova(self):
+        f = base()
+        add(f, "07-proofs.yaml", {"id": "PRF-0088", "kind": "proof", "title": "elo 1 pelo campo relatado",
+                                  "proves": ["CLM-L1"], "basis": "external_observation",
+                                  "external_observation": {"instrument": "i", "observed": "o"},
+                                  "evidence_artifact": {"repo": "r", "path": "p"},
+                                  "environment": "ephemeral", "scale": "LOCAL", "date": "2026-09-22",
+                                  "derived_from": ["liceu.archimedes.planning-state@2.0.0.emitters_observed"]})
+        self.assertFails(f, "VIOLAÇÃO NOVA FIT-013: PRF-0088 PROVA apoiada em")
+
+    def test_40_refutacao_pode_se_apoiar_em_campo_asserted(self):
+        # relato levanta suspeita; e refutar e levantar suspeita com consequencia
+        f = base()
+        add(f, "07-proofs.yaml", {"id": "PRF-0087", "kind": "proof", "title": "relato refuta",
+                                  "refutes": ["CLM-L1"], "basis": "code_reading",
+                                  "location": {"repo": "r", "path": "p"}, "date": "2026-09-22",
+                                  "derived_from": ["liceu.archimedes.planning-state@2.0.0.emitters_observed"]})
+        j, m = judge(f)
+        self.assertEqual(j.errors, [], j.errors)
+        self.assertEqual(m["claims"]["CLM-L1"]["status"], "REFUTED")
+
+    def test_41_derived_from_para_campo_inexistente_e_aresta_quebrada(self):
+        f = base()
+        add(f, "07-proofs.yaml", {"id": "PRF-0086", "kind": "proof", "title": "x", "refutes": ["CLM-L1"],
+                                  "basis": "code_reading", "location": {"repo": "r", "path": "p"},
+                                  "date": "2026-09-22", "derived_from": ["liceu.opera.teto_interno"]})
+        self.assertFails(f, "derived_from -> liceu.opera.teto_interno não existe no nó")
 
     # H2 — o genoma aprende a esquecer: STALE, superfície, expiração
     def test_32_evidencia_vencida_vira_STALE_nao_REFUTED(self):
