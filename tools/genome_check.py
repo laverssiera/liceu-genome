@@ -845,6 +845,8 @@ class Judge:
             "kit_registry_version": (self.registry.get("meta") or {}).get("registry_version"),
             "chain_by_scale": by_scale,
             "chain": {"structural": structural, "substantive": substantive, "positions": n,
+                      "shadow_ceiling": meta.get("shadow_mode_ceiling"),
+                      "shadow_note": meta.get("shadow_mode_note"),
                       "entry": {"claim": entry, "status": self.status.get(entry),
                                 "ephemeral": entry in self.ephemeral}},
             "claims": {c: {"status": self.status[c], "statement": claims[c]["statement"],
@@ -941,6 +943,12 @@ def text_report(m: dict, j: Judge) -> str:
                      f"substantiva {v['substantive']}/{c['positions']}")
     L.append(f"  (agregado, sem escala: estrutural {c['structural']}/{c['positions']}, "
              f"substantiva {c['substantive']}/{c['positions']})")
+    if c.get("shadow_ceiling"):
+        L.append(f"  TETO EM MODO SOMBRA: {c['shadow_ceiling']}/{c['positions']} POR DESENHO — "
+                 f"os elos acima de {c['shadow_ceiling']} nao sao atos do LICEU.")
+        if c.get("shadow_note"):
+            for linha in str(c["shadow_note"]).strip().splitlines():
+                L.append(f"    {linha.strip()}")
     e = c["entry"]
     L.append(f"  entrada      {e['claim']} {e['status']}" + ("  (ambiente efêmero)" if e["ephemeral"] else ""))
     L.append("")

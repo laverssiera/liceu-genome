@@ -70,6 +70,14 @@
         },
         "note": {
           "type": "string"
+        },
+        "shadow_mode_ceiling": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Teto da cadeia em MODO SOMBRA: a ultima posicao que e ato do LICEU. Acima dele os atos sao do mundo real e entram como observacao, nunca como fato de autoridade. O juiz mostra o teto em vez de fingir que faltam elos."
+        },
+        "shadow_mode_note": {
+          "type": "string"
         }
       }
     },

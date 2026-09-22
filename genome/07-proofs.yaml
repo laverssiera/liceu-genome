@@ -339,3 +339,43 @@
     - backend/tests/test_previsoes_processo.py
     content_hash: 4d246a22fb52e22652be874055dcc99a81b7d50eaaec2bfca6c8c5b327bd28be
     commit: 40d7fce
+
+# U5 (ciclo 10) — o elo 3 lia a cadeia ao contrario, e o fixture do proprio
+# teste escondia isso. A refutacao e por leitura de codigo e de registro: as
+# duas exigencias sao mutuamente exclusivas, e da para conferir linha a linha.
+- id: PRF-0021
+  kind: proof
+  title: "O elo 3 exigia evidencia causada pelo ESTADO; o contrato e o ARCHIMEDES exigem evidencia causada pela PROPOSTA"
+  refutes: [CLM-0028]
+  basis: code_reading
+  location:
+    repo: John-Brasileiro-
+    path: backend/federation/single_domain_relay.py
+    note: "john.single-domain-relay/0.1 recusa com state_mismatch quando evidence.causation_id nao e archimedes.planning.state.authoritative, e com evidence_subject_mismatch quando evidence.subject_ref != artifact do estado. O contrato liceu.cefeida.evidence 2.0.0 (kit v0.15.0) diz o oposto: 'causation_id = event_id DA VERSAO da proposta evidenciada; subject_ref = artifact_id da proposta'. O ARCHIMEDES aplica o contrato em runtime/planning_state_call_site.py::_resolve_evidence, que bloqueia com evidence_for_other_version. Evidencia que um aceita, o outro recusa: nenhum fluxo conformante chegava ao elo 3. Passou despercebido porque o fixture de backend/tests/test_recommendation_publisher.py fabricava a evidencia com causation_id = STATE_EVENT_ID."
+  commit: 79710cd
+  date: "2026-09-22"
+
+- id: PRF-0022
+  kind: proof
+  title: "Duvida nao impede protocolar; impedimento conhecido impede"
+  proves: [CLM-0029]
+  basis: test
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_prontidao_protocolo.py
+    name: test_indeterminado_nao_impede_protocolar
+    pr: 13
+  environment: ci
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/prontidao_protocolo.py
+    note: "A conformidade da P-001 e INDETERMINADO e mesmo assim nao ha impedimento vindo dela: e o protocolo que resolve a UNK-0008 e a UNK-0009. O que impede sao os tres impedimentos nomeados — indice fora do limite, contradicao entre declaracoes, ato anterior ao protocolo ainda nao ocorrido. Hoje a P-001 e NAO_PRONTO por I-002 (a declaracao da FC-006) e I-003 (a assinatura das 4 vias)."
+  commit: "7040950"
+  date: "2026-09-22"
+  mechanism:
+    repo: JURIDICO-TECH
+    paths:
+    - backend/juridicotech/modules/prontidao_protocolo.py
+    - backend/tests/test_prontidao_protocolo.py
+    content_hash: 23fe81a2052fda4397f7336f4e2dad0225aa4a148da512ccb47be371acb098ed
+    commit: "7040950"
