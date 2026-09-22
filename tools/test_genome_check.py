@@ -227,7 +227,7 @@ class Mutacoes(unittest.TestCase):
 
     def test_07_dominio_nao_emite_evento_alheio(self):
         f = base()
-        node(f, "liceu.john.recommendation@2.0.0")["emitters_observed"].append("liceu.opera")
+        node(f, "liceu.john.recommendation@2.1.0")["emitters_observed"].append("liceu.opera")
         self.assertFails(f, "VIOLAÇÃO NOVA FIT-001")
 
     def test_08_divida_corrigida_mas_mantida_no_livro(self):

@@ -76,7 +76,7 @@
   used_by:
     - {ref: P-003, used_as: design_reference}
   owner_monolith: liceu.john
-  reads: [liceu.john.recommendation@2.0.0]
+  reads: [liceu.john.recommendation@2.1.0]
   john_participation:
     - {john: liceu.john, role: RECOMMENDS}
   displays: {}

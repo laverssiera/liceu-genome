@@ -3,7 +3,7 @@
 # (tag em requirements.txt); a FIT-010 confere o que esta aqui contra o kit
 # instalado e divergencia e violacao. Aqui vive o que o kit nao sabe:
 # emitters_observed, implementation_observed, chain_position, carries.
-# Alinhado ao kit v0.14.0 (registry 2.7.0, ADR-004).
+# Alinhado ao kit v0.15.0 (registry 2.8.0, ADR-004; john 2.1.0).
 
 - id: liceu.hub.planning-request@1.0.0
   kind: contract
@@ -79,13 +79,23 @@
 
 - id: liceu.john.recommendation@2.0.0
   kind: contract
-  title: Recomendacao federativa com metodo e dissenso obrigatorios
+  title: Recomendacao federativa com metodo e dissenso obrigatorios (confidence obrigatorio)
+  producer: liceu.john
+  in_registry: true
+  lifecycle: RETIRED
+  chain_position: 3
+  superseded_by: liceu.john.recommendation@2.1.0
+  source: {repo: liceu-protocol, pr: 16, note: "RETIRED no kit v0.15.0: confidence obrigatorio contradizia o P1"}
+
+- id: liceu.john.recommendation@2.1.0
+  kind: contract
+  title: Recomendacao federativa com metodo e dissenso obrigatorios; confidence calculado ou ausente
   producer: liceu.john
   in_registry: true
   lifecycle: ACTIVE
   chain_position: 3
   emitters_observed: [liceu.john]
-  source: {repo: liceu-protocol, pr: 13, note: "tag v0.13.0; resolvable_refs no v0.14.0; OPERA deixou de emitir em construction.py"}
+  source: {repo: liceu-protocol, pr: 16, note: "tag v0.15.0; metodo john.single-domain-relay/0.1 (John #55); OPERA deixou de emitir em construction.py"}
 
 - id: liceu.anchor.authorization@1.1.0
   kind: contract
