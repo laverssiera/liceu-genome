@@ -3,6 +3,15 @@
   title: LICEU 6.0 — Genoma
   graph_version: DAG-ADR-004
   chain_positions: 5
+  # MODO SOMBRA (ciclo 10): num caso real que o LICEU nao governa, os elos 4 e 5
+  # NAO sao atos dele. A autorizacao e da prefeitura e do condominio; a execucao
+  # e a obra. Registrar um alvara real como anchor.authorization seria autoridade
+  # fabricada. A cadeia vai ate 3/5 POR DESENHO, e o juiz mostra assim.
+  shadow_mode_ceiling: 3
+  shadow_mode_note: >
+    Elos 4 e 5 da P-001 nao sao atos do LICEU. Eles entram como OBSERVACOES do
+    mundo real (previsoes pre-registradas, FIT-016), nunca como fatos
+    anchor.authorization ou opera.execution.
   note: >
     Cadeia minima com retorno CEFEIDA -> ARCHIMEDES (ADR-004). Etapas internas
     (a proposta) nao contam como elo. A contagem e DERIVADA das provas: nenhum

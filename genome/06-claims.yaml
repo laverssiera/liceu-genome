@@ -200,3 +200,15 @@
   kind: claim
   statement: "Do que a base nao concluiu nao sai previsao: item INDETERMINADO continua lacuna nomeada, e previsao sem ato real que a resolva nao entra."
   asserted_by: "sessao da U4, 2026-09-22 — regime declarado para o motor de previsao"
+
+# U5 (ciclo 10) — a cadeia com a pergunta certa. A CLM-0028 era a premissa de
+# que bastava rodar; a U5 descobriu que nao bastava.
+- id: CLM-0028
+  kind: claim
+  statement: "A evidencia do elo 2 alimenta a recomendacao do elo 3: o JOHN le a evidencia do CEFEIDA e chega ao estado do ARCHIMEDES."
+  asserted_by: "john.single-domain-relay/0.1, 2026-09-22 — premissa embutida no proprio metodo do elo 3"
+
+- id: CLM-0029
+  kind: claim
+  statement: "Prontidao nao e conformidade: item INDETERMINADO nao impede protocolar, e impedimento conhecido impede, com a base e o metodo de cada um."
+  asserted_by: "sessao da U5, 2026-09-22 — regime declarado para o motor de prontidao"
