@@ -1061,6 +1061,10 @@
               },
               "name": {
                 "type": "string"
+              },
+              "repo": {
+                "type": "string",
+                "description": "Repositorio onde o teste mora, quando nao e o proprio genoma. O juiz nao abre arquivo de outro repositorio: a conferencia acontece na CI daquele repositorio (tools/genome_pfc_check.py), e o repo tem de ser um que o genoma ja prove superficie (FIT-014)."
               }
             }
           }

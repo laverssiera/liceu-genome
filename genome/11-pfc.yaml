@@ -57,3 +57,17 @@
   - {file: tools/test_genome_surface_check.py, name: test_content_hash_diferente_do_arquivo_falha_na_ci_do_monolito}
   - {file: tools/test_genome_check.py, name: test_32_evidencia_vencida_vira_STALE_nao_REFUTED}
   date: "2026-09-22"
+
+# U3 (ciclo 10) — o PRIMEIRO PFC vindo de um processo real, e nao do proprio
+# software. O teste que o sustenta mora no JURIDICO-TECH: o juiz nao abre
+# arquivo de outro repositorio, e quem confere que ele continua existindo e a
+# CI de la (tools/genome_pfc_check.py).
+- id: FC-006
+  kind: pfc
+  title: A declaracao da planta que negava o condominio, num projeto em condominio
+  false_claim: "o loteamento nao possui associacao condominial obrigatoria"
+  mechanism: "R-CONTRADICAO-001, no JURIDICO-TECH: cruza o regime declarado do projeto com o texto das declaracoes e recusa 'loteamento sem associacao obrigatoria' em projeto de regime CONDOMINIO."
+  observed: "Foi afirmado na planta APROVADA da P-001 e atravessou todo o processo sem ninguem ver. O titular confirmou o erro em 2026-09-22."
+  regression_tests:
+  - {repo: JURIDICO-TECH, file: backend/tests/test_contradicao_declaracoes.py, name: test_o_caso_real_da_p001_e_pego}
+  date: "2026-09-22"

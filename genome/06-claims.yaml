@@ -132,3 +132,9 @@
   kind: claim
   statement: "O estado do condominio da P-001 e derivado de evidencia: evidencia de etapa adiantada nao cria as anteriores, e exigencia que afete o projeto aprovado devolve o processo a analise condominial."
   asserted_by: "sessao da U2, 2026-09-22 — a camada L0 tirada dos dois procedimentos do titular"
+
+# U3 (ciclo 10) — a regra que teria pegado o erro real da planta da P-001.
+- id: CLM-0022
+  kind: claim
+  statement: "Uma declaracao que afirme LOTEAMENTO sem associacao obrigatoria, num projeto cujo regime declarado e CONDOMINIO, e apontada como contradicao antes de a peca seguir."
+  asserted_by: "sessao da U3, 2026-09-22 — a regra escrita a partir do erro que passou pela planta aprovada"

@@ -78,6 +78,29 @@ class Mutacoes(unittest.TestCase):
         self.assertTrue(any(contains in e for e in j.errors),
                         f"esperava erro com {contains!r}; veio {j.errors}")
 
+    # U3 — o PFC do mundo real: o teste mora em outro repositório
+    def test_53_pfc_com_teste_em_repo_sem_superficie_provada_e_violacao(self):
+        f = base()
+        node(f, "FC-001")["regression_tests"] = [
+            {"repo": "Repositorio-Que-Ninguem-Confere", "file": "tests/t.py", "name": "test_x"}]
+        self.assertFails(f, "VIOLAÇÃO NOVA FIT-014: FC-001 aponta teste em "
+                            "'Repositorio-Que-Ninguem-Confere', onde o genoma não prova superfície")
+
+    def test_54_pfc_com_teste_em_repo_com_superficie_provada_passa(self):
+        # o juiz não abre o arquivo de lá; quem confere é a CI daquele repositório
+        f = base()
+        repo = next(n["mechanism"]["repo"] for n in f["07-proofs.yaml"] if n.get("mechanism"))
+        node(f, "FC-001")["regression_tests"] = [
+            {"repo": repo, "file": "tests/t.py", "name": "test_que_o_juiz_nao_ve"}]
+        j, _ = judge(f)
+        self.assertEqual(j.errors, [], j.errors)
+
+    def test_55_teste_do_proprio_genoma_continua_conferido_arquivo_a_arquivo(self):
+        f = base()
+        node(f, "FC-001")["regression_tests"] = [
+            {"repo": "liceu-genome", "file": "tools/test_genome_check.py", "name": "test_que_nao_existe"}]
+        self.assertFails(f, "VIOLAÇÃO NOVA FIT-014: FC-001 aponta test_que_nao_existe")
+
     # U0 — o genoma é público: dado pessoal não entra
     #
     # As amostras são MONTADAS em tempo de execução, nunca escritas literalmente:

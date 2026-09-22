@@ -75,6 +75,9 @@ AUTHORITATIVE_USES = {"authoritative_decision", "authoritative_budget",
                       "procurement_commitment", "physical_execution_authorization"}
 EVIDENCE_FIELD = re.compile(r"(_refs|content_hash)$")
 SCALE_REF = re.compile(r"^scale:[A-Z]+$")
+# O repositório do próprio genoma. Teste de regressão daqui o juiz abre; de
+# outro repositório, quem confere é a CI de lá (tools/genome_pfc_check.py).
+GENOME_REPO = "liceu-genome"
 
 
 # ─────────────────────────────────────────────────────────── carga
@@ -572,8 +575,25 @@ class Judge:
 
         # FIT-014 — PFC só conta com teste de regressão que EXISTE.
         # "Erro evitado" sem prova é o defeito que o genoma combate.
+        #
+        # A partir do momento em que um PFC nasce de um PROCESSO REAL, o teste
+        # que o sustenta mora no monolito que implementa a regra, e o juiz não
+        # tem esse arquivo. A conferência então acontece ONDE O ARQUIVO ESTÁ —
+        # na CI daquele repositório, por tools/genome_pfc_check.py, do mesmo
+        # jeito que a invalidação de superfície. Para que `repo` não vire porta
+        # de fuga, ele só vale se for um repositório cuja superfície o genoma
+        # já prova: é lá que os detectores rodam.
+        repos_com_superficie = {(p.get("mechanism") or {}).get("repo")
+                                for p in self.kind["proof"]} - {None}
         for fc in self.kind["pfc"]:
             for t in fc["regression_tests"]:
+                repo = t.get("repo")
+                if repo is not None and repo != GENOME_REPO:
+                    if repo not in repos_com_superficie:
+                        self.find("FIT-014", f"{fc['id']}/{repo}",
+                                  f"{fc['id']} aponta teste em {repo!r}, onde o genoma não prova "
+                                  f"superfície alguma: ninguém confere se esse teste existe")
+                    continue
                 arquivo = ROOT / t["file"]
                 if not arquivo.is_file():
                     self.find("FIT-014", f"{fc['id']}/{t['file']}",
@@ -812,7 +832,10 @@ class Judge:
             "q_blocks_regional": regional,
             "q_runtime_fitness_without_proof": runtime_no_proof,
             "pfc": [{"id": f["id"], "title": f["title"], "false_claim": f["false_claim"],
-                      "tests": [f"{t['file']}::{t['name']}" for t in f["regression_tests"]]}
+                      "tests": [f"{t['file']}::{t['name']}"
+                                + ("" if t.get("repo") in (None, GENOME_REPO)
+                                   else f"  (em {t['repo']}, conferido na CI de lá)")
+                                for t in f["regression_tests"]]}
                      for f in self.kind["pfc"]],
             "machinery": {"fitness": len(self.kind["fitness"]),
                           "node_kinds": len([k for k, v in (self.schema.get("$defs") or {}).items()
