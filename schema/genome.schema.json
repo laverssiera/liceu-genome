@@ -691,6 +691,16 @@
         },
         "date": {
           "type": "string"
+        },
+        "supersedes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^PRF-[0-9]{4}$"
+          },
+          "description": "Provas cuja validade ESTA prova encerra. A prova superseded fica no grafo (historia); so as vigentes — as que nenhuma outra supersede — entram na derivacao."
         }
       },
       "allOf": [
@@ -772,7 +782,8 @@
             ]
           }
         }
-      ]
+      ],
+      "description": "Prova com tempo: refuta ou prova o codigo de um commit. Quando o codigo muda, uma prova nova SUPERSEDE a antiga em vez de apaga-la. Prova apagada e historia reescrita."
     },
     "fitness": {
       "type": "object",

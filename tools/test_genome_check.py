@@ -103,6 +103,62 @@ class Mutacoes(unittest.TestCase):
         c.pop("lifecycle", None)
         self.assertFails(f, f"VIOLAÇÃO NOVA FIT-010: {c['id']} diz in_registry: false, mas o kit")
 
+    # G2 — provas têm tempo: supersedes
+    def test_22_prova_que_supersede_a_refutacao_desfaz_o_REFUTED(self):
+        f = base()
+        add(f, "07-proofs.yaml", {"id": "PRF-0099", "kind": "proof",
+                                  "title": "corrigido: comparação de texto removida", "proves": ["CLM-0011"],
+                                  "basis": "test", "test": {"repo": "ANCHOR.OS", "path": "tests/test_x.py"},
+                                  "supersedes": ["PRF-0007"], "date": "2026-09-22"})
+        # a dívida no código (VIO-0002) sai junto: a refutação não vige mais
+        f["10-violations.yaml"] = [v for v in f["10-violations.yaml"] if v["id"] != "VIO-0002"]
+        j, m = judge(f)
+        self.assertEqual(j.errors, [], j.errors)
+        self.assertEqual(m["claims"]["CLM-0011"]["status"], "TESTED")
+        # a história fica: a PRF-0007 não foi apagada
+        self.assertIn("PRF-0007", [n.get("id") for n in f["07-proofs.yaml"]])
+        self.assertIn(("PRF-0007", "PRF-0099"), [tuple(x) for x in m["proofs_superseded"]])
+        self.assertTrue(any("REFUTED por PRF-0007 até 2026-09-22" in h for h in m["claims"]["CLM-0011"]["history"]))
+        self.assertTrue(any("TESTED por PRF-0099 desde 2026-09-22" in h for h in m["claims"]["CLM-0011"]["history"]))
+
+    def test_23_supersede_prova_que_nao_existe_e_aresta_quebrada(self):
+        f = base()
+        add(f, "07-proofs.yaml", {"id": "PRF-0098", "kind": "proof", "title": "x", "proves": ["CLM-0011"],
+                                  "basis": "test", "test": {"repo": "r", "path": "p"},
+                                  "supersedes": ["PRF-0777"], "date": "2026-09-22"})
+        self.assertFails(f, "PRF-0098: aresta quebrada -> 'PRF-0777' não existe")
+
+    def test_24_ciclo_de_supersessao_e_recusado(self):
+        f = base()
+        add(f, "07-proofs.yaml", {"id": "PRF-0097", "kind": "proof", "title": "a", "refutes": ["CLM-0011"],
+                                  "basis": "code_reading", "location": {"repo": "r", "path": "p"},
+                                  "supersedes": ["PRF-0096"], "date": "2026-09-22"})
+        add(f, "07-proofs.yaml", {"id": "PRF-0096", "kind": "proof", "title": "b", "refutes": ["CLM-0011"],
+                                  "basis": "code_reading", "location": {"repo": "r", "path": "p"},
+                                  "supersedes": ["PRF-0097"], "date": "2026-09-22"})
+        self.assertFails(f, "ciclo de supersessão")
+
+    def test_25_apagar_a_prova_refutada_em_vez_de_superseder(self):
+        # A PRF-0007 some; a VIO-0002 (dívida no código, FIT-009 -> CLM-0011) fica.
+        # CLM-0011 vira UNPROVEN e a catraca acusa a dívida obsoleta.
+        f = base()
+        f["07-proofs.yaml"] = [p for p in f["07-proofs.yaml"] if p["id"] != "PRF-0007"]
+        j, m = judge(f)
+        self.assertEqual(m["claims"]["CLM-0011"]["status"], "UNPROVEN")
+        self.assertFails(f, "DÍVIDA OBSOLETA VIO-0002")
+
+    def test_26_prova_superseded_nao_deriva_mesmo_sem_a_nova_provar(self):
+        # superseder com uma refutação nova mantém REFUTED; superseder e não
+        # afirmar nada sobre a mesma afirmação deixa a afirmação sem prova vigente
+        f = base()
+        add(f, "07-proofs.yaml", {"id": "PRF-0095", "kind": "proof", "title": "releitura", "refutes": ["CLM-0006"],
+                                  "basis": "code_reading", "location": {"repo": "r", "path": "p"},
+                                  "supersedes": ["PRF-0006"], "date": "2026-09-22"})
+        j, m = judge(f)
+        self.assertEqual(j.errors, [], j.errors)
+        self.assertEqual(m["claims"]["CLM-0006"]["status"], "REFUTED")
+        self.assertEqual(m["claims"]["CLM-0006"]["history"][0], "REFUTED por PRF-0006 até 2026-09-22 (superseded por PRF-0095)")
+
     def test_21_kit_que_muda_por_baixo_do_genoma(self):
         # O caso real do bump: o kit aposenta a versão, o genoma continua ACTIVE.
         reg = copy.deepcopy(KIT_REGISTRY)
