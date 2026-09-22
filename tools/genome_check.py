@@ -573,6 +573,31 @@ class Judge:
             self.find("FIT-015", f"privacidade/{arquivo}",
                       f"dado pessoal em repositório público: {achado}")
 
+        # FIT-016 — previsão registrada depois do fato não é previsão.
+        # É o coração do modo sombra: uma saída conferida DEPOIS não mede nada,
+        # porque sempre dá para explicar o que já aconteceu. Três regras, e
+        # nenhuma delas admite exceção:
+        #   1. o mundo real é o oráculo — só observação externa resolve
+        #   2. a prova tem de ser POSTERIOR ao registro
+        #   3. sem ato declarado que a resolva, a previsão não se refuta
+        for c in self.kind["claim"]:
+            pred = c.get("prediction")
+            if pred is None:
+                continue
+            for p in self.kind["proof"]:
+                if c["id"] not in (p.get("proves") or []) + (p.get("refutes") or []):
+                    continue
+                if p["basis"] != "external_observation":
+                    self.find("FIT-016", f"{c['id']}/{p['id']}/basis",
+                              f"{p['id']} resolve a previsão {c['id']} por {p['basis']}: "
+                              f"previsão sobre o mundo real só se resolve por observação "
+                              f"externa — teste não é oráculo")
+                if p["date"] < pred["registered_at"]:
+                    self.find("FIT-016", f"{c['id']}/{p['id']}/data",
+                              f"{p['id']} é de {p['date']} e a previsão {c['id']} foi registrada "
+                              f"em {pred['registered_at']}: o fato veio antes do registro, "
+                              f"então isto não é previsão — é explicação depois do ocorrido")
+
         # FIT-014 — PFC só conta com teste de regressão que EXISTE.
         # "Erro evitado" sem prova é o defeito que o genoma combate.
         #
@@ -840,6 +865,13 @@ class Judge:
             "machinery": {"fitness": len(self.kind["fitness"]),
                           "node_kinds": len([k for k, v in (self.schema.get("$defs") or {}).items()
                                              if "kind" in (v.get("properties") or {})])},
+            "predictions": [
+                {"id": c["id"], "statement": c["statement"],
+                 "registered_at": c["prediction"]["registered_at"],
+                 "method": f"{c['prediction']['method']}/{c['prediction']['method_version']}",
+                 "settled_by": c["prediction"]["settled_by"],
+                 "status": self.status[c["id"]]}
+                for c in self.kind["claim"] if c.get("prediction")],
             "q_asserted_fields": sorted(
                 f"{n['id']}.{campo}"
                 for kind, campos in REPORTED_FIELDS.items() for n in self.kind[kind]
@@ -966,6 +998,23 @@ def text_report(m: dict, j: Judge) -> str:
         L.append(f"          teria afirmado: {f['false_claim']}")
         for t in f["tests"]:
             L.append(f"          prova: {t}")
+    if m["predictions"]:
+        conf = [p for p in m["predictions"] if p["status"] == "PROVEN"]
+        refu = [p for p in m["predictions"] if p["status"] == "REFUTED"]
+        aberto = [p for p in m["predictions"] if p["status"] not in ("PROVEN", "REFUTED")]
+        L.append("")
+        L.append("MODO SOMBRA — previsões pré-registradas e o que o mundo respondeu")
+        L.append(f"  previsões pré-registradas .............. {len(m['predictions'])}")
+        L.append(f"  confirmadas pelo mundo real ............ {len(conf)}")
+        L.append(f"  refutadas pelo mundo real .............. {len(refu)}")
+        L.append(f"  ainda sem resposta ..................... {len(aberto)}")
+        for p in m["predictions"]:
+            L.append(f"    [{p['status']:<9}] {p['id']}  ({p['registered_at']}, {p['method']})")
+            L.append(f"                  {p['statement']}")
+            L.append(f"                  resolve: {p['settled_by']}")
+        if not conf and not refu:
+            L.append("  O mundo real ainda não respondeu nenhuma. Enquanto este histórico não")
+            L.append("  existir, o LICEU não deve conduzir processo algum.")
     if m.get("growth_warning"):
         g = m["growth_warning"]
         L.append(f"  AVISO: a maquinaria cresceu em três merges seguidos "

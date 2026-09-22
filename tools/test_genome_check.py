@@ -78,6 +78,45 @@ class Mutacoes(unittest.TestCase):
         self.assertTrue(any(contains in e for e in j.errors),
                         f"esperava erro com {contains!r}; veio {j.errors}")
 
+    # U4 — pré-registro: previsão registrada depois do fato não é previsão
+    def test_56_previsao_resolvida_por_teste_e_violacao(self):
+        f = base()
+        add(f, "07-proofs.yaml", {"id": "PRF-0080", "kind": "proof", "title": "teste como oráculo",
+                                  "proves": ["CLM-0023"], "basis": "test", "environment": "ci",
+                                  "test": {"repo": "r", "path": "p", "name": "n"},
+                                  "date": "2026-12-01",
+                                  "mechanism": {"repo": "r", "paths": ["a.py"],
+                                                "content_hash": "0" * 64, "commit": "abc1234"}})
+        self.assertFails(f, "VIOLAÇÃO NOVA FIT-016: PRF-0080 resolve a previsão CLM-0023 por test")
+
+    def test_57_prova_anterior_ao_registro_nao_confirma_previsao(self):
+        # o fato veio antes: isto é explicação depois do ocorrido, não previsão
+        f = base()
+        add(f, "07-proofs.yaml", {"id": "PRF-0081", "kind": "proof", "title": "o alvará saiu antes",
+                                  "proves": ["CLM-0023"], "basis": "external_observation",
+                                  "external_observation": {"instrument": "protocolo", "observed": "alvara"},
+                                  "evidence_artifact": {"repo": "r", "path": "p"},
+                                  "environment": "durable", "date": "2020-01-01"})
+        self.assertFails(f, "VIOLAÇÃO NOVA FIT-016: PRF-0081 é de 2020-01-01 e a previsão CLM-0023")
+
+    def test_58_observacao_externa_posterior_confirma_a_previsao(self):
+        f = base()
+        add(f, "07-proofs.yaml", {"id": "PRF-0082", "kind": "proof", "title": "alvará sem exigência",
+                                  "proves": ["CLM-0023"], "basis": "external_observation",
+                                  "external_observation": {"instrument": "protocolo na Prefeitura",
+                                                            "observed": "alvara emitido sem exigencia"},
+                                  "evidence_artifact": {"repo": "privado", "path": "alvara"},
+                                  "environment": "durable", "date": "2026-12-01"})
+        j, m = judge(f)
+        self.assertEqual(j.errors, [], j.errors)
+        self.assertEqual(m["claims"]["CLM-0023"]["status"], "PROVEN")
+        self.assertEqual([p["status"] for p in m["predictions"] if p["id"] == "CLM-0023"], ["PROVEN"])
+
+    def test_59_o_registro_de_comparacao_conta_as_quatro_previsoes(self):
+        j, m = judge(base())
+        self.assertEqual(len(m["predictions"]), 4, [p["id"] for p in m["predictions"]])
+        self.assertTrue(all(p["status"] not in ("PROVEN", "REFUTED") for p in m["predictions"]))
+
     # U3 — o PFC do mundo real: o teste mora em outro repositório
     def test_53_pfc_com_teste_em_repo_sem_superficie_provada_e_violacao(self):
         f = base()

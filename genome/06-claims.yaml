@@ -138,3 +138,65 @@
   kind: claim
   statement: "Uma declaracao que afirme LOTEAMENTO sem associacao obrigatoria, num projeto cujo regime declarado e CONDOMINIO, e apontada como contradicao antes de a peca seguir."
   asserted_by: "sessao da U3, 2026-09-22 — a regra escrita a partir do erro que passou pela planta aprovada"
+
+# U4 (ciclo 10) — PRE-REGISTRO. As quatro previsoes abaixo foram registradas
+# ANTES de o titular protocolar na Prefeitura, cada uma com o metodo e a versao
+# que a produziu e com o ato real que a resolve. Depois do protocolo, cada ato
+# real vira prova por observacao externa — e confirma ou refuta.
+#
+# Refutacao nao e fracasso: uma refutacao honesta ensina mais do que uma
+# confirmacao. O que nao vale nada e comentar o resultado depois.
+
+- id: CLM-0023
+  kind: claim
+  statement: "A Prefeitura nao fara exigencia sobre Coeficiente de Aproveitamento (C.A) no projeto P-001."
+  asserted_by: "juridicotech.previsao-do-processo/0.1, 2026-09-22 — pre-registro ANTES do protocolo na Prefeitura"
+  prediction:
+    registered_at: "2026-09-22"
+    method: juridicotech.conformidade-urbanistica
+    method_version: "0.1"
+    basis: "VGP-LC030-2007-ZM — Tabela I (LC 99/2021), coluna C.A, linha ZM"
+    derived_from: "C.A = 0,56, dentro do maximo de 2,0"
+    settled_by: "o parecer, a exigencia ou o alvara emitidos pela Prefeitura sobre o projeto P-001"
+
+- id: CLM-0024
+  kind: claim
+  statement: "A Prefeitura nao fara exigencia sobre Taxa de Ocupacao (T.O) no projeto P-001."
+  asserted_by: "juridicotech.previsao-do-processo/0.1, 2026-09-22 — pre-registro ANTES do protocolo na Prefeitura"
+  prediction:
+    registered_at: "2026-09-22"
+    method: juridicotech.conformidade-urbanistica
+    method_version: "0.1"
+    basis: "VGP-LC030-2007-ZM — Tabela I (LC 99/2021), coluna T.O %, linha ZM"
+    derived_from: "T.O = 55,54%, dentro do maximo de 60%"
+    settled_by: "o parecer, a exigencia ou o alvara emitidos pela Prefeitura sobre o projeto P-001"
+
+- id: CLM-0025
+  kind: claim
+  statement: "A Prefeitura nao fara exigencia sobre Taxa Permeavel (T.P) no projeto P-001."
+  asserted_by: "juridicotech.previsao-do-processo/0.1, 2026-09-22 — pre-registro ANTES do protocolo na Prefeitura"
+  prediction:
+    registered_at: "2026-09-22"
+    method: juridicotech.conformidade-urbanistica
+    method_version: "0.1"
+    basis: "VGP-LC030-2007-ZM — Tabela I (LC 99/2021), coluna T.P %, linha ZM"
+    derived_from: "T.P = 10,90%, acima do minimo de 10%"
+    settled_by: "o parecer, a exigencia ou o alvara emitidos pela Prefeitura sobre o projeto P-001"
+
+- id: CLM-0026
+  kind: claim
+  statement: "O proximo ato do processo sera assinatura_4_vias, praticado pelo CONDOMINIO; nenhuma etapa posterior ocorrera antes dela."
+  asserted_by: "juridicotech.previsao-do-processo/0.1, 2026-09-22 — pre-registro ANTES do protocolo na Prefeitura"
+  prediction:
+    registered_at: "2026-09-22"
+    method: juridicotech.condominio-l0
+    method_version: "0.1"
+    basis: "grafo L0 do condominio, dos dois procedimentos do titular"
+    derived_from: "concluido ate aprovacao_condominio; as etapas seguintes dependem de assinatura_4_vias"
+    settled_by: "a assinatura das 4 vias e o e-mail de liberacao do condominio, ou qualquer ato posterior que ocorra antes deles"
+
+# O motor que produziu as quatro acima — esta nao e previsao, e comportamento.
+- id: CLM-0027
+  kind: claim
+  statement: "Do que a base nao concluiu nao sai previsao: item INDETERMINADO continua lacuna nomeada, e previsao sem ato real que a resolva nao entra."
+  asserted_by: "sessao da U4, 2026-09-22 — regime declarado para o motor de previsao"
