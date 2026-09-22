@@ -218,3 +218,9 @@
   kind: claim
   statement: "A base do estudo e decidida na entrada dos candidates e o ato de propor nao pode contradiza-la; e METHOD exige fonte por candidate quando o estudo foi entregue, nao so a versao do metodo."
   asserted_by: "sessao da U5, 2026-09-22 — regime declarado ao abrir METHOD no passo manual do elo 1"
+
+# U5 (ciclo 10) — a premissa que o elo 2 derrubou ao travar.
+- id: CLM-0031
+  kind: claim
+  statement: "Um produtor implementa o que o proprio contrato admite: se o contrato aceita o valor, o produtor publica."
+  asserted_by: "sessao da U5, 2026-09-22 — premissa ao montar a evidencia do elo 2"

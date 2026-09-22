@@ -64,11 +64,29 @@ def add(files, fname, n):
     files[fname].append(n)
 
 
+def cadeia(m, escala="LOCAL"):
+    """(estrutural agregada, estrutural na escala) — para medir DIFERENCA."""
+    return m["chain"]["structural"], m["chain_by_scale"].get(escala, {}).get("structural", 0)
+
+
+def linha_de_base(escala="LOCAL"):
+    _, m = judge(base())
+    return cadeia(m, escala)
+
+
 class Integro(unittest.TestCase):
     def test_genoma_real_e_integro(self):
         j, m = judge(base())
         self.assertEqual(j.errors, [], j.errors)
-        self.assertEqual(m["chain"]["structural"], 0)
+        # A contagem e DERIVADA: tem de bater com os elos cujo claim esta PROVEN.
+        # Numero fixo aqui seria afirmar o estado do genoma, e apodreceria a
+        # cada elo novo — foi o que aconteceu quando a cadeia da P-001 andou.
+        elos = {c["id"]: c for c in base()["06-claims.yaml"] if c.get("chain_link")}
+        esperado = sum(1 for cid, c in elos.items()
+                       if c["chain_link"]["measure"] == "structural"
+                       and 1 <= c["chain_link"]["position"] <= m["chain"]["positions"]
+                       and m["claims"][cid]["status"] == "PROVEN")
+        self.assertEqual(m["chain"]["structural"], esperado)
         self.assertEqual(m["claims"]["CLM-0001"]["status"], "REFUTED")
 
 
@@ -233,7 +251,8 @@ class Mutacoes(unittest.TestCase):
         self.assertEqual(m["claims"]["CLM-0002"]["status"], "STALE")
         self.assertNotEqual(m["claims"]["CLM-0002"]["status"], "REFUTED")
         self.assertIn("PRF-0002", m["proofs_expired"])
-        self.assertEqual(m["chain_by_scale"]["LOCAL"]["structural"], 0)   # STALE não conta
+        # a ENTRADA e posicao 0: vencer nao muda a contagem dos elos 1..5
+        self.assertEqual(cadeia(m)[1], linha_de_base()[1])
 
     def test_33_prova_nova_com_o_hash_atual_volta_a_PROVEN(self):
         f = base()
@@ -252,7 +271,8 @@ class Mutacoes(unittest.TestCase):
         f["07-proofs.yaml"] = [p for p in f["07-proofs.yaml"] if p["id"] != "PRF-0002"]
         j, m = judge(f)
         self.assertNotEqual(m["claims"]["CLM-0002"]["status"], "PROVEN")
-        self.assertEqual(m["chain_by_scale"].get("LOCAL", {}).get("structural", 0), 0)
+        # de novo: a entrada e posicao 0, entao perder a prova dela nao mexe nos elos
+        self.assertEqual(cadeia(m)[1], linha_de_base()[1])
 
     def test_35_prova_por_teste_sem_superficie_e_violacao(self):
         f = base()
@@ -288,6 +308,9 @@ class Mutacoes(unittest.TestCase):
 
     def test_29_elo_provado_em_escala_livre_conta_naquela_escala(self):
         f = base()
+        f["07-proofs.yaml"] = [p for p in f["07-proofs.yaml"] if "CLM-L1" not in (p.get("proves") or [])]
+        antes_agregado, antes_local = cadeia(judge(f)[1])
+        antes_regional = judge(f)[1]["chain_by_scale"].get("REGIONAL", {}).get("structural", 0)
         add(f, "07-proofs.yaml", {"id": "PRF-0091", "kind": "proof", "title": "elo 1 em LOCAL",
                                   "proves": ["CLM-L1"], "basis": "external_observation",
                                   "external_observation": {"instrument": "psql + NATS", "observed": "fato gravado"},
@@ -295,9 +318,10 @@ class Mutacoes(unittest.TestCase):
                                   "environment": "ephemeral", "scale": "LOCAL", "date": "2026-09-22"})
         j, m = judge(f)
         self.assertEqual(j.errors, [], j.errors)
-        self.assertEqual(m["chain_by_scale"]["LOCAL"]["structural"], 1)       # só o elo 1: a entrada é posição 0
+        # o elo 1 volta a contar em LOCAL, e só lá: a entrada é posição 0
+        self.assertEqual(cadeia(m)[1], antes_local + 1)
         self.assertEqual(m["chain_by_scale"]["LOCAL"]["substantive"], 0)
-        self.assertEqual(m["chain_by_scale"]["REGIONAL"]["structural"], 0)
+        self.assertEqual(m["chain_by_scale"].get("REGIONAL", {}).get("structural", 0), antes_regional)
 
     def test_30_prova_de_elo_sem_escala_e_violacao(self):
         f = base()
@@ -451,6 +475,10 @@ class Mutacoes(unittest.TestCase):
 
     def test_05_teste_sozinho_nao_prova_elo(self):
         f = base()
+        # tira as provas que JA sustentam o elo 1: o que se mede aqui e o que um
+        # teste, SOZINHO, faz — e nao o que o genoma ja tem
+        f["07-proofs.yaml"] = [p for p in f["07-proofs.yaml"] if "CLM-L1" not in (p.get("proves") or [])]
+        antes, _ = cadeia(judge(f)[1])
         add(f, "07-proofs.yaml", {"id": "PRF-0099", "kind": "proof", "title": "teste do elo 1",
             "proves": ["CLM-L1"], "basis": "test",
             "test": {"repo": "x", "path": "t.py"}, "scale": "LOCAL", "date": "2026-09-22",
@@ -458,7 +486,7 @@ class Mutacoes(unittest.TestCase):
         j, m = judge(f)
         self.assertEqual(j.errors, [])
         self.assertEqual(m["claims"]["CLM-L1"]["status"], "TESTED")
-        self.assertEqual(m["chain"]["structural"], 0, "teste sem observação externa não conta elo")
+        self.assertEqual(cadeia(m)[0], antes, "teste sem observação externa não conta elo")
 
     def test_06_ler_codigo_nao_prova(self):
         f = base()
@@ -558,6 +586,8 @@ class Freio(unittest.TestCase):
 class ControlePositivo(unittest.TestCase):
     def test_15_prova_real_faz_a_contagem_subir(self):
         f = base()
+        f["07-proofs.yaml"] = [p for p in f["07-proofs.yaml"] if "CLM-L1" not in (p.get("proves") or [])]
+        antes_agregado, antes_local = cadeia(judge(f)[1])
         add(f, "07-proofs.yaml", {"id": "PRF-0097", "kind": "proof",
             "title": "elo 1 observado", "proves": ["CLM-L1"], "basis": "external_observation",
             "external_observation": {"instrument": "connz + subscriber",
@@ -567,9 +597,9 @@ class ControlePositivo(unittest.TestCase):
         j, m = judge(f)
         self.assertEqual(j.errors, [])
         self.assertEqual(m["claims"]["CLM-L1"]["status"], "PROVEN")
-        self.assertEqual(m["chain"]["structural"], 1,
-                         "com prova externa real, a cadeia tem de subir para 1/5")
-        self.assertEqual(m["chain_by_scale"]["LOCAL"]["structural"], 1,
+        self.assertEqual(cadeia(m)[0], antes_agregado + 1,
+                         "com prova externa real, a cadeia tem de SUBIR um elo")
+        self.assertEqual(cadeia(m)[1], antes_local + 1,
                          "e a contagem POR ESCALA tem de subir em LOCAL (FIT-011)")
 
 
