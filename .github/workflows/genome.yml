@@ -6,6 +6,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # o freio da H6 deriva a serie do git: precisa de historia
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
@@ -26,7 +29,7 @@ jobs:
         run: python tools/test_genome_surface_check.py
 
       - name: Genoma — schema, arestas, derivação, fitness (inclui FIT-010 contra o kit), catraca
-        run: python tools/genome_check.py --json self-model.json --html self-model.html
+        run: python tools/genome_check.py --history --json self-model.json --html self-model.html
 
       - uses: actions/upload-artifact@v4
         if: always()

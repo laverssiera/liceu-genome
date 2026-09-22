@@ -59,6 +59,21 @@ Ler código ou registro pode **refutar**, mas nunca **provar** comportamento. A 
 cadeia é a soma dos elos `PROVEN`. É isso que impede outro "1/5" contado pelo que o processo
 afirmou.
 
+## O que o genoma deve a si mesmo (H6)
+
+**Numerador**: elos provados, por escala. **Denominador**: a **maquinaria** — fitness functions +
+tipos de nó do schema. Claims, proofs, unknowns e violations **não contam**: contar registro puniria
+o pré-registro honesto (a CLM-0015 foi um; a UNK-0007 é outro), e o freio existe para pegar a
+arquitetura inventando trabalho, não a realidade sendo anotada.
+
+**Falsas afirmações evitadas (PFC)** só contam com **teste de regressão que existe** — o juiz confere
+arquivo e nome (FIT-014). "Erro evitado" sem prova executável é o defeito que o genoma combate.
+
+**O freio** deriva a série do **git** (`--first-parent main`, últimos merges): denominador por parse
+de YAML/JSON de cada commit, numerador pelo juiz atual aplicado aos nós daquele commit. Nada é
+gravado no repositório — o git já tem. Se a maquinaria crescer em três merges seguidos e a cadeia
+não andar, o juiz **avisa** e diz o que cresceu. Não falha a CI: a decisão de parar é humana.
+
 ## Campo relatado não sustenta certeza (FIT-013)
 
 Parte do genoma foi **digitada a partir de relatos** e se chamava `observed` — `emitters_observed`,

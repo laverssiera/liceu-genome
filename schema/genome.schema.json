@@ -1012,6 +1012,67 @@
           }
         }
       ]
+    },
+    "pfc": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "title",
+        "false_claim",
+        "mechanism",
+        "regression_tests",
+        "date"
+      ],
+      "description": "Falsa afirmacao evitada. So conta com TESTE DE REGRESSAO executavel, que falharia sem o mecanismo — e o juiz confere que o teste existe no arquivo. PFC sem teste real e asserted: nao entra na contagem (FIT-014).",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^FC-[0-9]{3}$"
+        },
+        "kind": {
+          "const": "pfc"
+        },
+        "title": {
+          "type": "string"
+        },
+        "false_claim": {
+          "type": "string",
+          "description": "O que teria sido afirmado, e nao foi."
+        },
+        "mechanism": {
+          "type": "string",
+          "description": "O que impede — fitness, regra do juiz, detector."
+        },
+        "regression_tests": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "file",
+              "name"
+            ],
+            "properties": {
+              "file": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "observed": {
+          "type": "string",
+          "description": "Onde a falsa afirmacao chegou a ser feita, se chegou."
+        },
+        "date": {
+          "type": "string"
+        }
+      }
     }
   },
   "oneOf": [
