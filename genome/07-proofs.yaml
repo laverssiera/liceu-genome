@@ -88,3 +88,59 @@
     pr: 31
   commit: 39852aa
   date: "2026-09-22"
+
+# --- 2026-09-22: o /health que mentia (#58). Refutado por leitura de registro;
+# superseded pela prova por teste quando a correcao entrou (G2 servindo).
+- id: PRF-0010
+  kind: proof
+  title: Backend healthy sem tabela nenhuma; primeiro publish 500 (Codespace liceu-elos-0a3)
+  refutes: [CLM-0014]
+  basis: record_reading
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: docs/evidence/2026-09-22-codespace-elos-0a3-achados.md
+    note: "bootstrap skipped (connection refused) -> startup complete -> /health healthy, database up -> psql sem relacoes -> 500 relation event_registry does not exist"
+  commit: a5d231d
+  date: "2026-09-22"
+
+- id: PRF-0011
+  kind: proof
+  title: /ready 503 sem schema ou sem bootstrap; /health degraded; bootstrap falho e ERRO
+  proves: [CLM-0014]
+  supersedes: [PRF-0010]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/tests/test_readiness.py
+    pr: 59
+  commit: c7dac46
+  date: "2026-09-22"
+
+# --- G5 (ANCHOR #15): as duas dividas desfeitas. A PRF-0007 fica no grafo;
+# a PRF-0012 a supersede. Primeira vez que uma correcao desfaz uma refutacao.
+- id: PRF-0012
+  kind: proof
+  title: "_JURIDICOTECH_ALLOWED nao existe; texto (ok/true/AUTHORIZED/approved/allow) nunca e cobertura juridica"
+  proves: [CLM-0011]
+  supersedes: [PRF-0007]
+  basis: test
+  test:
+    repo: ANCHOR.OS
+    path: tests/test_earth_governance_runtime.py
+    name: test_text_decision_is_never_legal_authority
+    pr: 15
+  commit: ca4a5c8
+  date: "2026-09-22"
+
+- id: PRF-0013
+  kind: proof
+  title: O publisher do elo 4 devolve legal_coverage UNCOVERED (asserted), com e sem referencias; REFERENCED e varrido pela CI
+  proves: [CLM-0011]
+  basis: test
+  test:
+    repo: ANCHOR.OS
+    path: tests/test_authorization_publisher.py
+    name: test_legal_basis_refs_enter_only_if_they_resolve_to_liceu_legal
+    pr: 15
+  commit: ca4a5c8
+  date: "2026-09-22"

@@ -139,13 +139,31 @@ class Mutacoes(unittest.TestCase):
         self.assertFails(f, "ciclo de supersessão")
 
     def test_25_apagar_a_prova_refutada_em_vez_de_superseder(self):
-        # A PRF-0007 some; a VIO-0002 (dívida no código, FIT-009 -> CLM-0011) fica.
-        # CLM-0011 vira UNPROVEN e a catraca acusa a dívida obsoleta.
+        # Dívida no código (FIT-009 -> CLM-0011) só se sustenta com refutação
+        # VIGENTE. Cenário: a dívida está no livro e alguém apaga a refutação
+        # (e as provas que a supersediam) em vez de superseder: CLM-0011 vira
+        # UNPROVEN e a catraca acusa a dívida obsoleta.
         f = base()
-        f["07-proofs.yaml"] = [p for p in f["07-proofs.yaml"] if p["id"] != "PRF-0007"]
+        add(f, "10-violations.yaml", {"id": "VIO-0098", "kind": "violation", "fitness": "FIT-009",
+                                      "detection": "code", "observed": "x", "tracked_in": {"repo": "r"}})
+        f["07-proofs.yaml"] = [p for p in f["07-proofs.yaml"] if p["id"] not in ("PRF-0007", "PRF-0012", "PRF-0013")]
         j, m = judge(f)
         self.assertEqual(m["claims"]["CLM-0011"]["status"], "UNPROVEN")
-        self.assertFails(f, "DÍVIDA OBSOLETA VIO-0002")
+        self.assertFails(f, "DÍVIDA OBSOLETA VIO-0098")
+        # e com a refutação superseded (o estado real pós-G5), a dívida também é obsoleta
+        g = base()
+        add(g, "10-violations.yaml", {"id": "VIO-0098", "kind": "violation", "fitness": "FIT-009",
+                                      "detection": "code", "observed": "x", "tracked_in": {"repo": "r"}})
+        self.assertFails(g, "DÍVIDA OBSOLETA VIO-0098")
+
+    def test_27_o_genoma_real_registra_a_primeira_refutacao_desfeita(self):
+        # G5: CLM-0011 foi REFUTED por PRF-0007 e é TESTED por PRF-0012, que a
+        # supersede. A PRF-0007 continua no grafo. Nenhuma dívida no livro.
+        j, m = judge(base())
+        self.assertEqual(j.errors, [])
+        self.assertEqual(m["claims"]["CLM-0011"]["status"], "TESTED")
+        self.assertIn(("PRF-0007", "PRF-0012"), [tuple(x) for x in m["proofs_superseded"]])
+        self.assertEqual(m["debt_known"], []) and self.assertEqual(m["debt_code"], [])
 
     def test_26_prova_superseded_nao_deriva_mesmo_sem_a_nova_provar(self):
         # superseder com uma refutação nova mantém REFUTED; superseder e não
@@ -179,9 +197,10 @@ class Mutacoes(unittest.TestCase):
         node(f, "CLM-L1")["status"] = "PROVEN"
         self.assertFails(f, "Additional properties")
 
-    def test_03_divida_apagada_do_livro_vira_violacao_nova(self):
+    # O genoma real não tem dívida desde o G5: as mutações da catraca CRIAM a dívida.
+    def test_03_valor_fora_da_dimensao_sem_divida_no_livro_e_violacao_nova(self):
         f = base()
-        f["10-violations.yaml"] = [v for v in f["10-violations.yaml"] if v["id"] != "VIO-0001"]
+        node(f, "liceu.anchor.authorization@1.1.0")["implementation_observed"] = {"legal_coverage": ["REFERENCED"]}
         self.assertFails(f, "VIOLAÇÃO NOVA FIT-006")
 
     def test_04_proposta_nao_e_usada_como_autoritativa(self):
@@ -213,8 +232,11 @@ class Mutacoes(unittest.TestCase):
 
     def test_08_divida_corrigida_mas_mantida_no_livro(self):
         f = base()
-        del node(f, "liceu.anchor.authorization@1.1.0")["implementation_observed"]
-        self.assertFails(f, "DÍVIDA OBSOLETA VIO-0001")
+        add(f, "10-violations.yaml", {"id": "VIO-0099", "kind": "violation", "fitness": "FIT-006",
+                                      "detection": "genome",
+                                      "subject": "liceu.anchor.authorization@1.1.0/legal_coverage/REFERENCED",
+                                      "observed": "x", "tracked_in": {"repo": "r"}})
+        self.assertFails(f, "DÍVIDA OBSOLETA VIO-0099")
 
     def test_09_tela_nao_exibe_e_proibe_ao_mesmo_tempo(self):
         f = base()
