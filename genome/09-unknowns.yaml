@@ -44,3 +44,23 @@
 # 97,20 m2 em terreno de 175 m2, condominio em Vargem Grande Paulista, zona ZM,
 # LC 030/2007), com o proprietario autorizando o uso como piloto e o titular do
 # LICEU como RT. A historia fica no git. Nao ha incognita: ha caso.
+
+# U2 (ciclo 10) — o resultado da conformidade da P-001 e INDETERMINADO, e um
+# INDETERMINADO sem a falta nomeada nao vale nada. Estas sao as duas faltas.
+# Enquanto elas viverem, a CLM-0019 nao e PROVEN nem REFUTED: e o que o titular
+# precisa saber antes de protocolar.
+- id: UNK-0008
+  kind: unknown
+  question: "Quais sao os indices urbanisticos vigentes da zona ZM em fonte que uma maquina consiga reconferir, ou certificada pela Prefeitura?"
+  why_unknown: "A LC 030/2007 oficial e digitalizacao sem camada de texto (0 objetos /Font em 261 paginas). A Tabela I vigente e a da LC 99/2021, que tem camada de OCR — mas na pagina da tabela o OCR desfaz linhas e colunas ('50so50s07060'), e amarrar um numero a linha ZM ali seria chute. Os valores em uso (C.A 2,0; T.O 60%; T.P 10%; area minima 360 m2; frente 5,00 m; recuos) vieram de LEITURA VISUAL da imagem oficial a 400 dpi. Nao existe texto consolidado oficial, e a lista de 13 alteracoes e a que a propria Camara publica. Alem disso a Tabela I tem uma coluna 'I.E' com valor 4,0 para ZM cujo significado nao aparece no texto da lei."
+  required_evidence: "Consulta previa ou certidao de diretrizes da Prefeitura com os indices da ZM para o imovel, ou texto consolidado oficial legivel por maquina. Qualquer um dos dois tira o confirmacao_pendente e fecha a coluna I.E."
+  owner: titular
+  blocks: [CLM-0019]
+
+- id: UNK-0009
+  kind: unknown
+  question: "Area minima do lote (360 m2) e frente minima (5,00 m) da Tabela I se aplicam a uma unidade dentro de condominio ja aprovado?"
+  why_unknown: "O terreno da P-001 tem 175 m2 e a area minima do lote na ZM e 360 m2. Aplicar o limite calado daria NAO ATENDE — e a tabela nao resolve a aplicabilidade: sao restricoes de parcelamento, e a unidade esta em regime de condominio. O motor recusa decidir isso sozinho e nomeia a falta."
+  required_evidence: "Posicao da Prefeitura no protocolo, ou dispositivo da LC 30/2007 (arts. 112 e seguintes, condominio) que diga expressamente o que se aplica a unidade em condominio."
+  owner: titular
+  blocks: [CLM-0019]
