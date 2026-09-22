@@ -1,0 +1,7 @@
+# C6-SM-01: cada valor pertence a UMA dimensao. Apenas dimensoes e valores verificados.
+- {id: decision_result, kind: dimension, title: Resultado do ato de autoridade, values: [GRANTED, DENIED], defined_by: liceu.anchor.authorization@1.1.0}
+- {id: legal_coverage, kind: dimension, title: Cobertura juridica, values: [COVERED, COVERED_WITH_CONDITIONS, UNCOVERED, NOT_APPLICABLE], defined_by: liceu.legal.admissibility@1.0.0}
+- {id: planning_state_status, kind: dimension, title: Estado do planejamento territorial, values: [DRAFT, ANALYSIS, VALIDATED, AUTHORITATIVE, SUPERSEDED], defined_by: liceu.archimedes.planning-state@1.0.0}
+- {id: study_basis, kind: dimension, title: Base do estudo territorial, values: [DECLARED, METHOD], defined_by: liceu.archimedes.planning-proposal@1.0.0}
+- {id: contract_lifecycle, kind: dimension, title: Ciclo de vida do contrato, values: [ACTIVE, DEPRECATED, RETIRED], defined_by: genome}
+- {id: knowledge_validity, kind: dimension, title: Validade do conhecimento, values: [PROPOSTA, VIGENTE], defined_by: genome}

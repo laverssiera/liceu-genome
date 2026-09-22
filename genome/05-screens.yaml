@@ -1,0 +1,113 @@
+# A genealogia das cinco telas da vertical Casa LICEU P-001.
+# Campos VERIFICAVEIS (a CI confere): owner_monolith, reads, john_participation,
+#   displays, must_not_display, required_display, evidence_required, confidence_display.
+# Campos DESCRITIVOS (documentados, nao verificaveis): journey, used_by, ips_supported.
+# Nenhuma das cinco existe em codigo: implementation NOT_IMPLEMENTED.
+
+- id: SCR-01
+  kind: screen
+  title: Entrada do mandato — o pedido de planejamento
+  journey: JRN-CASA-P001
+  used_by:
+    - {ref: P-003, used_as: design_reference}
+    - {ref: P-001, used_as: design_reference}
+  owner_monolith: liceu.hub
+  reads: [liceu.hub.planning-request@1.0.0]
+  john_participation: []
+  displays: {}
+  shows_fields: [planning_request_id, mandate_ref.mandate_id, mandate_ref.holder_id,
+                 mandate_ref.valid_from, mandate_ref.valid_until]
+  required_display: [mandate_ref.holder_id, mandate_ref.valid_until]
+  must_not_display: [decision_result, legal_coverage, planning_state_status]
+  evidence_required: false
+  confidence_display: never
+  ips_supported: []
+  ips_gap: UNK-0002
+  implementation: {status: NOT_IMPLEMENTED}
+
+- id: SCR-02
+  kind: screen
+  title: Proposta territorial — o que o ARCHIMEDES propoe
+  journey: JRN-CASA-P001
+  used_by:
+    - {ref: P-001, used_as: design_reference}
+    - {ref: P-003, used_as: design_reference}
+    - {ref: S-C01, used_as: design_reference}
+  owner_monolith: liceu.archimedes
+  reads: [liceu.archimedes.planning-proposal@1.0.0]
+  john_participation: []
+  displays:
+    study_basis: [DECLARED, METHOD]
+    planning_state_status: [ANALYSIS]
+  shows_fields: [candidates, territorial_scope, study_method_version]
+  required_display: [study_basis]
+  must_not_display: [planning_state_status:VALIDATED, planning_state_status:AUTHORITATIVE, decision_result]
+  evidence_required: false
+  confidence_display: never
+  ips_supported: []
+  ips_gap: UNK-0002
+  implementation: {status: NOT_IMPLEMENTED}
+
+- id: SCR-03
+  kind: screen
+  title: Evidencia — o que os dados comprovam
+  journey: JRN-CASA-P001
+  used_by:
+    - {ref: P-008, used_as: design_reference}
+    - {ref: P-004, used_as: design_reference}
+    - {ref: S-C06, used_as: design_reference}
+  owner_monolith: liceu.cefeida
+  reads: [liceu.cefeida.evidence@1.0.0]
+  john_participation: []
+  displays: {}
+  shows_fields: [metric, value, method_version, source_refs, subject_ref]
+  required_display: [method_version]
+  must_not_display: [decision_result, planning_state_status:AUTHORITATIVE]
+  evidence_required: false
+  confidence_display: only_with_method
+  ips_supported: []
+  ips_gap: UNK-0002
+  implementation: {status: NOT_IMPLEMENTED}
+
+- id: SCR-04
+  kind: screen
+  title: Recomendacao — o que o JOHN recomenda, com dissenso
+  journey: JRN-CASA-P001
+  used_by:
+    - {ref: P-003, used_as: design_reference}
+  owner_monolith: liceu.john
+  reads: [liceu.john.recommendation@2.0.0]
+  john_participation:
+    - {john: liceu.john, role: RECOMMENDS}
+  displays: {}
+  shows_fields: [alternatives, rationale, dissent, method_version, evidence_refs]
+  required_display: [dissent, method_version]
+  must_not_display: [decision_result, legal_coverage]
+  evidence_required: true
+  confidence_display: only_with_method
+  ips_supported: []
+  ips_gap: UNK-0002
+  implementation: {status: NOT_IMPLEMENTED}
+
+- id: SCR-05
+  kind: screen
+  title: Autorizacao — o ato da autoridade
+  journey: JRN-CASA-P001
+  used_by:
+    - {ref: P-003, used_as: design_reference}
+    - {ref: P-008, used_as: design_reference}
+    - {ref: S-C09, used_as: design_reference}
+  owner_monolith: liceu.anchor
+  reads: [liceu.anchor.authorization@1.1.0]
+  john_participation: []
+  displays:
+    decision_result: [GRANTED, DENIED]
+    legal_coverage: [COVERED, COVERED_WITH_CONDITIONS, UNCOVERED, NOT_APPLICABLE]
+  shows_fields: [denial_reason, subject_ref, subject_content_hash, authority_epoch, legal_basis_refs]
+  required_display: [legal_coverage, authority_epoch]
+  must_not_display: [planning_state_status]
+  evidence_required: true
+  confidence_display: never
+  ips_supported: []
+  ips_gap: UNK-0002
+  implementation: {status: NOT_IMPLEMENTED}

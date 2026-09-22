@@ -1,0 +1,9 @@
+- id: genome
+  kind: meta
+  title: LICEU 6.0 — Genoma
+  graph_version: DAG-ADR-004
+  chain_positions: 5
+  note: >
+    Cadeia minima com retorno CEFEIDA -> ARCHIMEDES (ADR-004). Etapas internas
+    (a proposta) nao contam como elo. A contagem e DERIVADA das provas: nenhum
+    arquivo deste genoma pode declarar o progresso da cadeia.

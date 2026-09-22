@@ -1,0 +1,15 @@
+- {id: liceu.core, kind: monolith, title: CORE — protocolo e boundary, plane: Protocolo, repo: LICEU_6.0_CONSTRUTORA_VIRTUAL}
+- {id: liceu.authority, kind: monolith, title: "Mae LICEU — Ativa, Sucessora e Testemunha", plane: Authority, repo: LICEU_6.0_CONSTRUTORA_VIRTUAL}
+- {id: liceu.hub, kind: monolith, title: HUB BACKOFFICE, plane: Feedback, repo: HUB-BACKOFICE-LICEU-6.0}
+- {id: liceu.archimedes, kind: monolith, title: ARCHIMEDES — territorio, plane: Perception, repo: Archimedes-ImobTech-LICEU-6.0-, teto_interno: LOCAL}
+- {id: liceu.cefeida, kind: monolith, title: CEFEIDA — evidencia, plane: Perception, may_decide: []}
+- {id: liceu.john, kind: monolith, title: JOHN — cognicao federativa, plane: Cognition, may_decide: [recomendacao, alternativas]}
+- id: liceu.anchor
+  kind: monolith
+  title: ANCHOR — ciclo de vida e autorizacao
+  plane: Authority
+  teto_interno: LOCAL
+  may_authorize: [promocao_a_estado_autorizado, revogacao, supersessao]
+  may_decide: []
+- {id: liceu.opera, kind: monolith, title: OPERA — execucao, plane: Reality}
+- {id: liceu.legal, kind: monolith, title: JURIDICOTECH — admissibilidade, plane: Feedback}

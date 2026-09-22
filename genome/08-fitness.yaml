@@ -1,0 +1,9 @@
+- {id: FIT-001, kind: fitness, statement: Nenhum dominio emite o evento autoritativo de outro., evaluated_by: genome, check: single_emitter}
+- {id: FIT-002, kind: fitness, statement: Nenhuma publicacao e dada como feita sem transporte., evaluated_by: runtime, claim: CLM-0003}
+- {id: FIT-003, kind: fitness, statement: Nenhuma execucao ocorre sem autoridade valida., evaluated_by: runtime, claim: CLM-0009}
+- {id: FIT-004, kind: fitness, statement: Nenhum conhecimento em PROPOSTA e consumido como autoritativo., evaluated_by: genome, check: knowledge_validity}
+- {id: FIT-005, kind: fitness, statement: Todo ato de autoridade tem lineage., evaluated_by: runtime, claim: CLM-0010}
+- {id: FIT-006, kind: fitness, statement: O codigo so produz valores que existem na dimensao canonica., evaluated_by: genome, check: observed_values}
+- {id: FIT-007, kind: fitness, statement: "Uma tela so exibe o que declara, e resultado de autoridade so a partir de contrato de quem pode autorizar.", evaluated_by: genome, check: screen_authority}
+- {id: FIT-008, kind: fitness, statement: Todo contrato lido por tela existe e nao esta aposentado., evaluated_by: genome, check: screen_contracts}
+- {id: FIT-009, kind: fitness, statement: Autoridade juridica nunca e derivada de comparacao de texto livre., evaluated_by: runtime, claim: CLM-0011}

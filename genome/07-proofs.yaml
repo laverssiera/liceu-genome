@@ -1,0 +1,64 @@
+- id: PRF-0001
+  kind: proof
+  title: A tabela events do primeiro fato so tem hub.planning.requested
+  refutes: [CLM-0001]
+  basis: record_reading
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: docs/evidence/2026-09-20-primeiro-fato-1of5.json
+    note: events_rows — duas linhas, tipo unico hub.planning.requested; archimedes.planning-state so no FakeCore
+  date: "2026-09-21"
+
+- id: PRF-0002
+  kind: proof
+  title: Primeiro fato real — Postgres, NATS, observador externo
+  proves: [CLM-0002]
+  basis: external_observation
+  external_observation:
+    instrument: NATS connz + subscriber externo
+    observed: CORE conectado (cid 9, nats-py 2.16); o subscriber recebeu o assunto; linha em events
+  evidence_artifact: {repo: LICEU_6.0_CONSTRUTORA_VIRTUAL, path: docs/evidence/2026-09-20-primeiro-fato-1of5.md, pr: 50}
+  environment: ephemeral
+  date: "2026-09-20"
+
+- id: PRF-0003
+  kind: proof
+  title: Barramento sem provider alcancavel derruba o boot; memory so por escolha explicita
+  proves: [CLM-0003]
+  basis: test
+  test: {repo: LICEU_6.0_CONSTRUTORA_VIRTUAL, path: test_event_bus_nats.py, pr: 44}
+  date: "2026-09-20"
+
+- id: PRF-0004
+  kind: proof
+  title: Fencing por epoca
+  proves: [CLM-0004]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: test_authority_control_plane.py
+    name: test_stale_epoch_is_rejected_even_with_instance_online
+    pr: 36
+  date: "2026-09-19"
+
+- id: PRF-0006
+  kind: proof
+  title: As tres Maes sao linhas da mesma tabela, no mesmo Postgres
+  refutes: [CLM-0006]
+  basis: code_reading
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: authority_control_plane.py
+    note: mother-a, mother-b e mother-witness em authority_instances; um so dominio de falha
+  date: "2026-09-21"
+
+- id: PRF-0007
+  kind: proof
+  title: O ANCHOR aceita "ok" e "true" como autorizacao juridica
+  refutes: [CLM-0011]
+  basis: code_reading
+  location:
+    repo: ANCHOR.OS
+    path: anchors/runtime/earth_governance_runtime.py
+    note: "_JURIDICOTECH_ALLOWED = {authorized, approved, allow, ok, true}"
+  date: "2026-09-21"

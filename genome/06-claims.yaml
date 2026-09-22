@@ -1,0 +1,74 @@
+# Nenhuma afirmacao declara status. O validador o deriva das provas (07-proofs.yaml).
+
+- id: CLM-0001
+  kind: claim
+  statement: A cadeia causal esta em 1/5.
+  asserted_by: Claude, 20/09/2026 — contou pelo que o processo afirmou, nao pelo tipo de evento gravado
+
+- id: CLM-0002
+  kind: claim
+  statement: A entrada (elo 0) atravessou o boundary real com identidade derivada do segredo.
+  asserted_by: "Claude Code, 20/09/2026 (CORE #50)"
+  chain_link: {position: 0, measure: structural}
+
+- id: CLM-L1
+  kind: claim
+  statement: O elo 1 (planning-state do ARCHIMEDES) atravessou o boundary real.
+  asserted_by: plano do Ciclo 6
+  chain_link: {position: 1, measure: structural}
+- id: CLM-L2
+  kind: claim
+  statement: O elo 2 (evidencia do CEFEIDA) atravessou o boundary real.
+  asserted_by: plano do Ciclo 6
+  chain_link: {position: 2, measure: structural}
+- id: CLM-L3
+  kind: claim
+  statement: O elo 3 (recomendacao do JOHN) atravessou o boundary real.
+  asserted_by: plano do Ciclo 6
+  chain_link: {position: 3, measure: structural}
+- id: CLM-L4
+  kind: claim
+  statement: O elo 4 (autorizacao do ANCHOR) atravessou o boundary real.
+  asserted_by: plano do Ciclo 6
+  chain_link: {position: 4, measure: structural}
+- id: CLM-L5
+  kind: claim
+  statement: O elo 5 (execucao do OPERA) atravessou o boundary real.
+  asserted_by: plano do Ciclo 6
+  chain_link: {position: 5, measure: structural}
+
+- id: CLM-0003
+  kind: claim
+  statement: O barramento do CORE falha fechado — sem transporte, nada e dado como publicado.
+  asserted_by: "Claude Code (CORE #44)"
+- id: CLM-0004
+  kind: claim
+  statement: Uma instancia com epoca antiga e rejeitada, mesmo online (fencing).
+  asserted_by: "Claude Code (CORE #36, F1)"
+- id: CLM-0005
+  kind: claim
+  statement: Mesmo fato duas vezes e replay; mesma identidade com conteudo divergente e 409.
+  asserted_by: Claude Code (truth check, fact_identity_guard)
+- id: CLM-0006
+  kind: claim
+  statement: A Testemunha observa a Ativa de forma independente.
+  asserted_by: Constituicao 1.15.0 (modelo das tres Maes)
+  blocks: ["scale:REGIONAL"]
+- id: CLM-0007
+  kind: claim
+  statement: A Sucessora mantem estado de autoridade replicado.
+  asserted_by: Constituicao 1.15.0
+  blocks: ["scale:REGIONAL"]
+- id: CLM-0009
+  kind: claim
+  statement: O OPERA nao executa sem autorizacao vigente.
+  asserted_by: plano do Ciclo 6 (FIT-003)
+- id: CLM-0010
+  kind: claim
+  statement: Todo ato de autoridade tem lineage resolvivel ate a causa.
+  asserted_by: plano do Ciclo 6 (FIT-005)
+
+- id: CLM-0011
+  kind: claim
+  statement: Autoridade juridica nunca e derivada de comparacao de texto livre.
+  asserted_by: plano do Ciclo 6 (FIT-009)

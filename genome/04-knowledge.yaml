@@ -1,0 +1,46 @@
+# Todo conhecimento abaixo esta em PROPOSTA. Pela regra de validade, PROPOSTA nao
+# tem dono e so admite usos exploratorios. A validade mora aqui; os links declaram o uso.
+- &proposta
+  id: JRN-CASA-P001
+  kind: knowledge
+  title: Jornada Casa LICEU P-001 — do mandato a autorizacao
+  knowledge_type: journey
+  validity: PROPOSTA
+  permitted_uses: [exploration, design_reference, research, comparison_as_proposal]
+  prohibited_uses: [authoritative_decision, authoritative_budget, procurement_commitment, physical_execution_authorization]
+  source: {repo: drive/PERSONAS_LICEU6.0, path: Personas_Casa_LICEU_Onda0_v1_0.xlsx, note: aba Fluxo_E2E_P001}
+- <<: *proposta
+  id: P-001
+  title: Comprador — quem vai morar
+  knowledge_type: persona
+  source: {repo: drive/PERSONAS_LICEU6.0, path: Personas_Casa_LICEU_Onda0_v1_0.xlsx}
+- <<: *proposta
+  id: P-003
+  title: Proprietario ou patrocinador — quem responde pelo ativo
+  knowledge_type: persona
+  source: {repo: drive/PERSONAS_LICEU6.0, path: Personas_Casa_LICEU_Onda0_v1_0.xlsx}
+- <<: *proposta
+  id: P-004
+  title: Responsavel tecnico — quem assina o projeto
+  knowledge_type: persona
+  source: {repo: drive/PERSONAS_LICEU6.0, path: Personas_Casa_LICEU_Onda0_v1_0.xlsx}
+- <<: *proposta
+  id: P-008
+  title: Autoridade ou auditor — quem verifica se pode
+  knowledge_type: persona
+  source: {repo: drive/PERSONAS_LICEU6.0, path: Personas_Casa_LICEU_Onda0_v1_0.xlsx}
+- <<: *proposta
+  id: S-C01
+  title: Proprietario do terreno
+  knowledge_type: stakeholder
+  source: {repo: drive/PERSONAS_LICEU6.0, path: Stakeholders_Casa_LICEU_Onda0_v1_0.xlsx}
+- <<: *proposta
+  id: S-C06
+  title: Laboratorio de controle
+  knowledge_type: stakeholder
+  source: {repo: drive/PERSONAS_LICEU6.0, path: Stakeholders_Casa_LICEU_Onda0_v1_0.xlsx}
+- <<: *proposta
+  id: S-C09
+  title: Cartorio e registrador
+  knowledge_type: stakeholder
+  source: {repo: drive/PERSONAS_LICEU6.0, path: Stakeholders_Casa_LICEU_Onda0_v1_0.xlsx}

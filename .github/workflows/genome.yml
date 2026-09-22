@@ -1,0 +1,25 @@
+name: Genome
+on: [push, pull_request]
+
+jobs:
+  genome:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pyyaml==6.0.3 jsonschema==4.26.0
+
+      # Primeiro o juiz é julgado: se ele não pega as mutações, o veredito dele não vale.
+      - name: Testes de mutação
+        run: python tools/test_genome_check.py
+
+      - name: Genoma — schema, arestas, derivação, fitness, catraca
+        run: python tools/genome_check.py --json self-model.json --html self-model.html
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: self-model
+          path: self-model.*

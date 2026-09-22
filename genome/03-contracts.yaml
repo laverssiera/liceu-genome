@@ -1,0 +1,83 @@
+- id: liceu.hub.planning-request@1.0.0
+  kind: contract
+  title: Pedido de planejamento sob mandato
+  producer: liceu.hub
+  in_registry: true
+  lifecycle: ACTIVE
+  chain_position: 0
+  emitters_observed: [liceu.hub]
+  source: {repo: liceu-protocol}
+
+- id: liceu.archimedes.planning-proposal@1.0.0
+  kind: contract
+  title: Proposta territorial nao autoritativa (ADR-004)
+  producer: liceu.archimedes
+  in_registry: false
+  chain_position: null
+  carries: [study_basis, planning_state_status]
+  source: {repo: liceu-protocol, pr: 14, note: ADR-004; entra no kit v0.14.0}
+
+- id: liceu.archimedes.planning-state@1.0.0
+  kind: contract
+  title: Estado de planejamento autoritativo
+  producer: liceu.archimedes
+  in_registry: true
+  lifecycle: ACTIVE
+  chain_position: 1
+  carries: [planning_state_status]
+  emitters_observed: [liceu.archimedes]
+  source: {repo: liceu-protocol, note: 2.0.0 pendente com causation_id obrigatorio}
+
+- id: liceu.cefeida.evidence@1.0.0
+  kind: contract
+  title: Evidencia
+  producer: liceu.cefeida
+  in_registry: true
+  lifecycle: ACTIVE
+  chain_position: 2
+  emitters_observed: [liceu.cefeida]
+  source: {repo: liceu-protocol, note: 2.0.0 pendente com causation_id e subject_ref}
+
+- id: liceu.john.recommendation@1.0.0
+  kind: contract
+  title: Recomendacao federativa (sem metodo nem dissenso)
+  producer: liceu.john
+  in_registry: true
+  lifecycle: RETIRED
+  chain_position: 3
+  superseded_by: liceu.john.recommendation@2.0.0
+  source: {repo: liceu-protocol, pr: 13}
+
+- id: liceu.john.recommendation@2.0.0
+  kind: contract
+  title: Recomendacao federativa com metodo e dissenso obrigatorios
+  producer: liceu.john
+  in_registry: true
+  lifecycle: ACTIVE
+  chain_position: 3
+  emitters_observed: [liceu.john]
+  source: {repo: liceu-protocol, pr: 13, note: tag v0.13.0; OPERA deixou de emitir em construction.py}
+
+- id: liceu.anchor.authorization@1.1.0
+  kind: contract
+  title: Autorizacao
+  producer: liceu.anchor
+  in_registry: true
+  lifecycle: ACTIVE
+  chain_position: 4
+  carries: [decision_result, legal_coverage]
+  emitters_observed: [liceu.anchor]
+  implementation_observed:
+    legal_coverage: [REFERENCED]
+  source: {repo: ANCHOR.OS, pr: 11, note: "o #11 devolve legal_coverage REFERENCED"}
+
+- id: liceu.legal.admissibility@1.0.0
+  kind: contract
+  title: Admissibilidade juridica
+  producer: liceu.legal
+  in_registry: true
+  lifecycle: ACTIVE
+  chain_position: null
+  carries: [legal_coverage]
+  emitters_observed: []
+  source: {repo: liceu-protocol, note: B1; o JURIDICOTECH nao publica nada}

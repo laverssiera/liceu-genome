@@ -1,0 +1,968 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/laverssiera/liceu-genome/schema/genome.schema.json",
+  "title": "LICEU 6.0 — Genoma",
+  "description": "Um único grafo tipado. Cada nó tem um 'kind'. As arestas são campos que referenciam ids de outros nós, e o validador as resolve. Regras de desenho: (1) o status de uma afirmação é DERIVADO das provas e não pode ser declarado; (2) cada dimensão de estado tem uma única definição (C6-SM-01); (3) a tela só exibe o que declara (whitelist, fail-closed); (4) a validade mora no nó de conhecimento, e não no link: o link declara o USO, e o validador faz a junção.",
+  "$defs": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "repo"
+      ],
+      "properties": {
+        "repo": {
+          "type": "string"
+        },
+        "path": {
+          "type": "string"
+        },
+        "pr": {
+          "type": "integer"
+        },
+        "issue": {
+          "type": "integer"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "use": {
+      "enum": [
+        "exploration",
+        "design_reference",
+        "research",
+        "comparison_as_proposal",
+        "authoritative_decision",
+        "authoritative_budget",
+        "procurement_commitment",
+        "physical_execution_authorization"
+      ]
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "title",
+        "graph_version",
+        "chain_positions"
+      ],
+      "properties": {
+        "id": {
+          "const": "genome"
+        },
+        "kind": {
+          "const": "meta"
+        },
+        "title": {
+          "type": "string"
+        },
+        "graph_version": {
+          "type": "string",
+          "description": "Versão do grafo causal em vigor. Toda contagem é relativa a ele."
+        },
+        "chain_positions": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "monolith": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "title",
+        "plane"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^liceu\\.[a-z]+$"
+        },
+        "kind": {
+          "const": "monolith"
+        },
+        "title": {
+          "type": "string"
+        },
+        "plane": {
+          "enum": [
+            "Protocolo",
+            "Perception",
+            "Cognition",
+            "Authority",
+            "Reality",
+            "Feedback"
+          ]
+        },
+        "repo": {
+          "type": "string"
+        },
+        "may_authorize": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "may_decide": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "teto_interno": {
+          "enum": [
+            "LOCAL",
+            "REGIONAL",
+            "CONTINENTAL",
+            "GLOBAL",
+            "CIVILIZACIONAL",
+            "INTERPLANETARIA"
+          ]
+        }
+      }
+    },
+    "dimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "title",
+        "values",
+        "defined_by"
+      ],
+      "description": "Uma dimensão de estado do C6-SM-01. Um valor pertence a UMA dimensão só.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z_]+$"
+        },
+        "kind": {
+          "const": "dimension"
+        },
+        "title": {
+          "type": "string"
+        },
+        "values": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z_]+$"
+          }
+        },
+        "defined_by": {
+          "type": "string",
+          "description": "Contrato, ou 'genome' para dimensões internas deste grafo."
+        }
+      }
+    },
+    "contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "title",
+        "producer",
+        "in_registry"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^liceu\\.[a-z]+\\.[a-z0-9-]+@[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "kind": {
+          "const": "contract"
+        },
+        "title": {
+          "type": "string"
+        },
+        "producer": {
+          "type": "string"
+        },
+        "in_registry": {
+          "type": "boolean",
+          "description": "Se o contrato existe no Contract Registry do kit, ou só num ADR."
+        },
+        "lifecycle": {
+          "enum": [
+            "ACTIVE",
+            "DEPRECATED",
+            "RETIRED"
+          ]
+        },
+        "chain_position": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "description": "0 = entrada; 1..N = elo posicionado da cadeia causal."
+        },
+        "carries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "emitters_observed": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Produtores observados emitindo este evento no código."
+        },
+        "implementation_observed": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "description": "Valores de dimensão que o código de fato produz."
+        },
+        "superseded_by": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "in_registry": {
+                "const": true
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "lifecycle"
+            ]
+          },
+          "else": {
+            "not": {
+              "required": [
+                "lifecycle"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "knowledge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "title",
+        "knowledge_type",
+        "validity",
+        "permitted_uses",
+        "prohibited_uses",
+        "source"
+      ],
+      "description": "Mesmo invariante da tabela de atribuições do BIM: VIGENTE exige dono e revisor; PROPOSTA não pode ter dono.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9-]+$"
+        },
+        "kind": {
+          "const": "knowledge"
+        },
+        "title": {
+          "type": "string"
+        },
+        "knowledge_type": {
+          "enum": [
+            "persona",
+            "stakeholder",
+            "journey",
+            "ips",
+            "cqp",
+            "cqm",
+            "price",
+            "norm",
+            "supplier",
+            "professional"
+          ]
+        },
+        "validity": {
+          "enum": [
+            "PROPOSTA",
+            "VIGENTE"
+          ]
+        },
+        "owner": {
+          "type": "string"
+        },
+        "reviewed_by": {
+          "type": "string"
+        },
+        "permitted_uses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/use"
+          }
+        },
+        "prohibited_uses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/use"
+          }
+        },
+        "source": {
+          "$ref": "#/$defs/source"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "validity": {
+                "const": "VIGENTE"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "owner",
+              "reviewed_by"
+            ]
+          },
+          "else": {
+            "not": {
+              "anyOf": [
+                {
+                  "required": [
+                    "owner"
+                  ]
+                },
+                {
+                  "required": [
+                    "reviewed_by"
+                  ]
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ref",
+        "used_as"
+      ],
+      "properties": {
+        "ref": {
+          "type": "string"
+        },
+        "used_as": {
+          "$ref": "#/$defs/use"
+        }
+      }
+    },
+    "screen": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "title",
+        "journey",
+        "used_by",
+        "owner_monolith",
+        "reads",
+        "john_participation",
+        "displays",
+        "must_not_display",
+        "evidence_required",
+        "confidence_display",
+        "ips_supported",
+        "implementation"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^SCR-[0-9]{2}$"
+        },
+        "kind": {
+          "const": "screen"
+        },
+        "title": {
+          "type": "string"
+        },
+        "journey": {
+          "type": "string"
+        },
+        "used_by": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/link"
+          }
+        },
+        "owner_monolith": {
+          "type": "string"
+        },
+        "reads": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "john_participation": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "john",
+              "role"
+            ],
+            "properties": {
+              "john": {
+                "type": "string"
+              },
+              "role": {
+                "enum": [
+                  "RECOMMENDS",
+                  "SYNTHESIZES",
+                  "OBSERVES"
+                ],
+                "description": "AUTHORIZES e EXECUTES não existem: impossível até de escrever."
+              }
+            }
+          }
+        },
+        "displays": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "description": "WHITELIST por dimensão. O que não está aqui a tela não exibe."
+        },
+        "shows_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "required_display": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "must_not_display": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z_]+(:[A-Z_]+)?$"
+          }
+        },
+        "evidence_required": {
+          "type": "boolean"
+        },
+        "confidence_display": {
+          "enum": [
+            "never",
+            "only_with_method"
+          ]
+        },
+        "ips_supported": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/link"
+          }
+        },
+        "ips_gap": {
+          "type": "string"
+        },
+        "implementation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status"
+          ],
+          "properties": {
+            "status": {
+              "enum": [
+                "NOT_IMPLEMENTED",
+                "PARTIAL",
+                "IMPLEMENTED"
+              ]
+            },
+            "path": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "ips_supported": {
+                "maxItems": 0
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "ips_gap"
+            ]
+          }
+        }
+      ]
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "statement",
+        "asserted_by"
+      ],
+      "description": "NÃO há campo de status. O status é derivado das provas: declarar é inválido.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^CLM-[A-Z0-9-]+$"
+        },
+        "kind": {
+          "const": "claim"
+        },
+        "statement": {
+          "type": "string"
+        },
+        "asserted_by": {
+          "type": "string"
+        },
+        "chain_link": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "position",
+            "measure"
+          ],
+          "properties": {
+            "position": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "measure": {
+              "enum": [
+                "structural",
+                "substantive"
+              ]
+            }
+          }
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "proof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "title",
+        "basis",
+        "date"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^PRF-[0-9]{4}$"
+        },
+        "kind": {
+          "const": "proof"
+        },
+        "title": {
+          "type": "string"
+        },
+        "proves": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "refutes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "basis": {
+          "enum": [
+            "test",
+            "external_observation",
+            "code_reading",
+            "record_reading"
+          ]
+        },
+        "test": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "repo",
+            "path"
+          ],
+          "properties": {
+            "repo": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "pr": {
+              "type": "integer"
+            }
+          }
+        },
+        "external_observation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "instrument",
+            "observed"
+          ],
+          "properties": {
+            "instrument": {
+              "type": "string"
+            },
+            "observed": {
+              "type": "string"
+            }
+          }
+        },
+        "evidence_artifact": {
+          "$ref": "#/$defs/source"
+        },
+        "location": {
+          "$ref": "#/$defs/source"
+        },
+        "environment": {
+          "enum": [
+            "local",
+            "ci",
+            "ephemeral",
+            "durable"
+          ]
+        },
+        "commit": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "oneOf": [
+            {
+              "required": [
+                "proves"
+              ]
+            },
+            {
+              "required": [
+                "refutes"
+              ]
+            }
+          ]
+        },
+        {
+          "if": {
+            "required": [
+              "proves"
+            ]
+          },
+          "then": {
+            "properties": {
+              "basis": {
+                "enum": [
+                  "test",
+                  "external_observation"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "basis": {
+                "const": "test"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "test"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "basis": {
+                "const": "external_observation"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "external_observation",
+              "evidence_artifact",
+              "environment"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "basis": {
+                "enum": [
+                  "code_reading",
+                  "record_reading"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "location"
+            ]
+          }
+        }
+      ]
+    },
+    "fitness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "statement",
+        "evaluated_by"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^FIT-[0-9]{3}$"
+        },
+        "kind": {
+          "const": "fitness"
+        },
+        "statement": {
+          "type": "string"
+        },
+        "evaluated_by": {
+          "enum": [
+            "genome",
+            "runtime"
+          ]
+        },
+        "check": {
+          "type": "string"
+        },
+        "claim": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "evaluated_by": {
+                "const": "genome"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "check"
+            ]
+          },
+          "else": {
+            "required": [
+              "claim"
+            ]
+          }
+        }
+      ]
+    },
+    "unknown": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "question",
+        "why_unknown",
+        "required_evidence",
+        "owner",
+        "blocks"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^UNK-[0-9]{4}$"
+        },
+        "kind": {
+          "const": "unknown"
+        },
+        "question": {
+          "type": "string"
+        },
+        "why_unknown": {
+          "type": "string"
+        },
+        "required_evidence": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "blocks": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "violation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "fitness",
+        "detection",
+        "observed",
+        "tracked_in"
+      ],
+      "description": "Dívida conhecida. Catraca: violação nova falha; dívida que sumiu também falha.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^VIO-[0-9]{4}$"
+        },
+        "kind": {
+          "const": "violation"
+        },
+        "fitness": {
+          "type": "string"
+        },
+        "detection": {
+          "enum": [
+            "genome",
+            "code"
+          ]
+        },
+        "subject": {
+          "type": "string"
+        },
+        "observed": {
+          "type": "string"
+        },
+        "location": {
+          "$ref": "#/$defs/source"
+        },
+        "tracked_in": {
+          "$ref": "#/$defs/source"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "detection": {
+                "const": "genome"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "subject"
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/meta"
+    },
+    {
+      "$ref": "#/$defs/monolith"
+    },
+    {
+      "$ref": "#/$defs/dimension"
+    },
+    {
+      "$ref": "#/$defs/contract"
+    },
+    {
+      "$ref": "#/$defs/knowledge"
+    },
+    {
+      "$ref": "#/$defs/screen"
+    },
+    {
+      "$ref": "#/$defs/claim"
+    },
+    {
+      "$ref": "#/$defs/proof"
+    },
+    {
+      "$ref": "#/$defs/fitness"
+    },
+    {
+      "$ref": "#/$defs/unknown"
+    },
+    {
+      "$ref": "#/$defs/violation"
+    }
+  ]
+}

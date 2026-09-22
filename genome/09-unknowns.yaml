@@ -1,0 +1,35 @@
+- id: UNK-0001
+  kind: unknown
+  question: Como replicar o estado de autoridade para que a Testemunha observe a Ativa por um caminho independente?
+  why_unknown: As tres Maes sao linhas de uma tabela so; a replicacao da Sucessora nao existe em codigo.
+  required_evidence: ADR-003 decidido, implementado, e prova externa sob particao de rede.
+  owner: titular
+  blocks: ["scale:REGIONAL", CLM-0006, CLM-0007]
+- id: UNK-0002
+  kind: unknown
+  question: Quais IPS, CQP e CQM cada tela da vertical suporta?
+  why_unknown: O mapeamento catalogo -> tela nunca foi feito; todos os catalogos estao em PROPOSTA.
+  required_evidence: Mapeamento revisado por dominio, com a validade de cada item.
+  owner: titular
+  blocks: [SCR-01, SCR-02, SCR-03, SCR-04, SCR-05]
+- id: UNK-0003
+  kind: unknown
+  question: A cadeia tem outros retornos alem de CEFEIDA -> ARCHIMEDES?
+  why_unknown: So foi descoberto executando o elo 1; o elo 4 pode ter ANCHOR <-> JURIDICO.
+  required_evidence: Execucao dos elos 3 a 5 contra CORE real.
+  owner: titular
+  blocks: [CLM-L4, CLM-L5]
+- id: UNK-0004
+  kind: unknown
+  question: Algum segredo foi rotacionado — JWT_SECRET_KEY, NEO4J_PASSWORD, FEDERATION_SECRET?
+  why_unknown: Nao ha registro de rotacao em nenhuma sessao.
+  required_evidence: Registro de rotacao por servico, com data.
+  owner: titular
+  blocks: ["scale:REGIONAL"]
+- id: UNK-0005
+  kind: unknown
+  question: Qual mecanismo de assinatura as autorizacoes terao?
+  why_unknown: Nao existe; identidade derivada de segredo nao e assinatura.
+  required_evidence: Decisao de mecanismo e implementacao com verificacao.
+  owner: titular
+  blocks: [SCR-05]
