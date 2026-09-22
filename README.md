@@ -59,6 +59,24 @@ Ler código ou registro pode **refutar**, mas nunca **provar** comportamento. A 
 cadeia é a soma dos elos `PROVEN`. É isso que impede outro "1/5" contado pelo que o processo
 afirmou.
 
+## Campo relatado não sustenta certeza (FIT-013)
+
+Parte do genoma foi **digitada a partir de relatos** e se chamava `observed` — `emitters_observed`,
+`implementation_observed`, os tetos dos monólitos. O nome estava errado: eram campos **relatados**.
+
+Cada um passa a declarar a origem:
+
+- **`derived`** — extraído de fonte verificável **e conferido pelo juiz contra ela** (hoje: `teto_interno`,
+  `may_authorize` e `may_decide` contra o Producer Registry do kit). Divergir da fonte é violação.
+- **`asserted`** — alguém escreveu. Não sustenta PROVEN nem entra na contagem da cadeia; sustenta
+  **dívida e alerta**, que é o que um relato pode sustentar. Uma prova que *prova* não pode se apoiar
+  num campo asserted (`derived_from`); uma que *refuta*, pode — relato basta para levantar suspeita,
+  nunca para dar certeza.
+
+O relatório lista os campos ainda `asserted`, para que a dívida epistêmica seja visível em vez de
+silenciosa. O primeiro alvo de derivação é `emitters_observed`, a partir da tabela `events` — quando
+houver fatos.
+
 ## O genoma esquece: STALE, superfície e expiração
 
 Uma prova cobre **o código de um commit**. Quando esse código muda, a prova precisa ser
