@@ -109,3 +109,26 @@
   kind: claim
   statement: "O genoma e os repositorios publicos do LICEU nao contem dado pessoal do caso real: so parametros (municipio, zona, areas, indices)."
   asserted_by: "titular, 2026-09-22 — minimizacao de dados ao entrar com a P-001"
+
+# U2 (ciclo 10) — a base regulatoria da P-001. A pergunta do titular e a
+# CLM-0019; as outras duas sao o que a busca pela lei oficial descobriu no
+# caminho, e o que o motor garante ao responder.
+- id: CLM-0018
+  kind: claim
+  statement: "Os indices urbanisticos da zona ZM estao na LC 030/2007, e basta le-la para conferi-los."
+  asserted_by: "plano do ciclo 10 (U2), 2026-09-22 — a premissa da propria pergunta do titular"
+
+- id: CLM-0019
+  kind: claim
+  statement: "Os indices urbanisticos da Casa P-001 atendem a LC 030/2007 na zona ZM."
+  asserted_by: "titular (RT), 2026-09-22 — a pergunta da U2 ao entrar com o caso real"
+
+- id: CLM-0020
+  kind: claim
+  statement: "A base regulatoria nunca devolve veredito de conformidade sem a falta nomeada: indice ausente vira INDETERMINADO, nunca zero, e limite de LOTE nao e aplicado calado a projeto em CONDOMINIO."
+  asserted_by: "sessao da U2, 2026-09-22 — regime declarado para o motor de conformidade"
+
+- id: CLM-0021
+  kind: claim
+  statement: "O estado do condominio da P-001 e derivado de evidencia: evidencia de etapa adiantada nao cria as anteriores, e exigencia que afete o projeto aprovado devolve o processo a analise condominial."
+  asserted_by: "sessao da U2, 2026-09-22 — a camada L0 tirada dos dois procedimentos do titular"

@@ -219,3 +219,69 @@
     content_hash: d75cd5d2e9cb4930f935b23deeb664be056421b4569063684f99d29749f9a591
     commit: 75eea6b
   date: "2026-09-22"
+
+# U2 (ciclo 10) — a base regulatoria da P-001, com a lei OFICIAL, a URL e o hash.
+- id: PRF-0016
+  kind: proof
+  title: "A Tabela I da LC 030/2007 nao vale mais: a LC 99/2021, art. 6º, a substituiu"
+  refutes: [CLM-0018]
+  basis: record_reading
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/dados/vgp_lc030_2007_zm.json
+    note: "LC 030/2007 oficial (siscam Documento/12890, arquivo Id=12870, sha256 53e09fd27c09d95c7111236995b97e672f413623ae9a65616b410de53b07fb4a): 261 paginas, 0 objetos /Font — digitalizacao sem camada de texto, e nenhum valor saiu dela. LC 99/2021 (Documento/28896, arquivo Id=31548, sha256 063be7d36616ebc74b8761a0c9d8e85657d86b7d630ed698698d7c8f12933c35), art. 6º: a Tabela I, a Tabela II, o Quadro I e o Anexo I da LC 30/2007 passam a ser os dos anexos desta Lei. LC 101/2021 (Documento/29100, arquivo Id=31844, sha256 01e62203215aa239104239b498ab2da360a3eb5fae6c3c007846300a2f283af2), posterior: altera so o inciso XI do art. 4º e acrescenta paragrafo unico — nao toca a Tabela I. A Camara lista 13 alteracoes a LC 30/2007."
+  mechanism:
+    repo: JURIDICO-TECH
+    paths:
+    - backend/juridicotech/dados/vgp_lc030_2007_zm.json
+    content_hash: 4d92c0cea14e467f424a9a8b8458ff7ded65fc3344cf969d7a395cd82864884d
+    commit: 3ac3639
+  date: "2026-09-22"
+
+- id: PRF-0017
+  kind: proof
+  title: "O motor de conformidade nomeia a falta em vez de chutar: ausente e INDETERMINADO, nunca zero"
+  proves: [CLM-0020]
+  basis: test
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_conformidade_urbanistica.py
+    name: test_indice_ausente_e_indeterminado_e_nunca_zero
+    pr: 10
+  environment: ci
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    note: "Zero assumido no lugar da permeabilidade ausente daria NAO_ATENDE (abaixo do minimo de 10%) — o erro que o teste impede. Tambem sob teste: perfil sem sha256/URL/data nao e construido; zona ou municipio errados sao recusa e nao resultado; violacao vence lacuna; e limite de LOTE (area minima, frente) nao e aplicado calado a projeto em CONDOMINIO."
+  commit: 3ac3639
+  date: "2026-09-22"
+  mechanism:
+    repo: JURIDICO-TECH
+    paths:
+    - backend/juridicotech/modules/conformidade_urbanistica.py
+    - backend/juridicotech/dados/vgp_lc030_2007_zm.json
+    - backend/juridicotech/dados/projeto_p001.json
+    - backend/tests/test_conformidade_urbanistica.py
+    content_hash: 3dc20897d95cd6f574070cc1aad5a0a5f130163955caada72ca6acb68fb828a3
+    commit: 3ac3639
+
+- id: PRF-0018
+  kind: proof
+  title: "A camada L0 deriva o estado do condominio; evidencia de etapa adiantada nao cria as anteriores"
+  proves: [CLM-0021]
+  basis: test
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_condominio_l0.py
+    name: test_evidencia_de_etapa_adiantada_nao_cria_as_anteriores
+    pr: 10
+  environment: ci
+  commit: 3ac3639
+  date: "2026-09-22"
+  mechanism:
+    repo: JURIDICO-TECH
+    paths:
+    - backend/juridicotech/modules/condominio_l0.py
+    - backend/tests/test_condominio_l0.py
+    content_hash: 2962837694646957de52eda98eac728a5c8ac50853290720a0fbbd7fc0bbaa62
+    commit: 3ac3639
