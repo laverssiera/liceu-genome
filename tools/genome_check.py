@@ -23,6 +23,10 @@ Um grafo, uma lei, um juiz:
      sustenta certeza, so divida e alerta
   5. aplica a catraca do livro de dívida
   6. responde às perguntas do Self-Model
+  7. imprime o que o genoma deve a si mesmo: numerador (elos provados) contra
+     denominador (MAQUINARIA — fitness + tipos de nó), e avisa quando a
+     maquinaria cresce três merges seguidos sem a cadeia andar. Avisa; não
+     falha. A decisão de parar é humana.
 
 Saída 0: genoma íntegro e nenhuma violação nova.
 Saída 1: erro de schema, aresta quebrada, violação nova ou dívida obsoleta.
@@ -47,6 +51,7 @@ import re
 import sys
 from collections import defaultdict
 import datetime
+import subprocess
 from pathlib import Path
 
 import yaml
@@ -109,6 +114,80 @@ def load_scale_order(path: Path | None = None) -> dict[str, int]:
     if not order:
         raise SystemExit(f"{path}: Constituição sem global.federation_scale.niveis")
     return order
+
+
+def growth_verdict(serie: list[tuple[str, int, int]]) -> dict | None:
+    """`serie` vai do mais ANTIGO ao mais recente: (commit, denominador, numerador).
+
+    Aviso quando a maquinaria cresceu em TRES passos seguidos e a cadeia nao
+    andou em nenhum. Nao falha a CI: a decisao de parar e humana.
+    """
+    if len(serie) < 4:
+        return None
+    ultimos = serie[-4:]
+    passos = list(zip(ultimos, ultimos[1:]))
+    cresceu = all(b[1] > a[1] for a, b in passos)
+    parado = all(b[2] <= a[2] for a, b in passos)
+    if not (cresceu and parado):
+        return None
+    return {"de": ultimos[0][0], "ate": ultimos[-1][0],
+            "denominador": [d for _, d, _ in ultimos], "numerador": [n for _, _, n in ultimos]}
+
+
+def _git(repo: Path, *args: str) -> str:
+    return subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True,
+                          encoding="utf-8", errors="replace").stdout
+
+
+def machinery_of(fitness_yaml: str, schema_json: str) -> tuple[int, int]:
+    """Denominador: fitness functions + tipos de no do schema. Maquinaria — regra
+    e mecanismo —, nunca registro da realidade (claim, proof, unknown, violation
+    ficam de fora: contar registro puniria o pre-registro honesto)."""
+    fit = yaml.safe_load(fitness_yaml) or []
+    defs = (json.loads(schema_json).get("$defs") or {})
+    kinds = [k for k, v in defs.items() if "kind" in (v.get("properties") or {})]
+    return len(fit), len(kinds)
+
+
+def history_series(repo: Path, schema: dict, registry: dict, scale_order: dict,
+                   producers: dict, n: int = 4) -> list[tuple[str, int, int]]:
+    """Serie derivada do GIT — nada e gravado no repositorio: o git ja tem.
+
+    Denominador de cada merge: parse de YAML/JSON via `git show`. Numerador: os
+    NOS daquele commit passam pelo juiz ATUAL (uma implementacao da contagem, a
+    daqui), sem validacao de schema — dado velho pode nao satisfazer a lei nova,
+    e a contagem de entao continua sendo a contagem de entao.
+    """
+    linha = _git(repo, "log", "--first-parent", "-n", str(n), "--format=%H", "main").split()
+    serie = []
+    for commit in reversed(linha):
+        try:
+            fit = _git(repo, "show", f"{commit}:genome/08-fitness.yaml")
+            sch = _git(repo, "show", f"{commit}:schema/genome.schema.json")
+            if not fit or not sch:
+                continue
+            n_fit, n_kinds = machinery_of(fit, sch)
+            nodes = []
+            for nome in _git(repo, "ls-tree", "--name-only", f"{commit}:genome").split():
+                if not nome.endswith(".yaml"):
+                    continue
+                for no in yaml.safe_load(_git(repo, "show", f"{commit}:genome/{nome}")) or []:
+                    no = dict(no)
+                    no["__file"] = nome
+                    nodes.append(no)
+            j = Judge(nodes, schema, registry, scale_order, producers)
+            for no in nodes:
+                j.by_id[no.get("id")] = no
+                j.kind[no.get("kind")].append(no)
+            j.derive()
+            claims = {c["id"]: c for c in j.kind["claim"]}
+            meta = j.kind["meta"][0] if j.kind["meta"] else {"chain_positions": 5}
+            por_escala = j.chain_by_scale(meta["chain_positions"], claims)
+            provados = max((v["structural"] for v in por_escala.values()), default=0)
+            serie.append((commit[:7], n_fit + n_kinds, provados))
+        except Exception:
+            continue
+    return serie
 
 
 def load_kit_producers(path: Path | None = None) -> dict:
@@ -479,6 +558,18 @@ class Judge:
                           f"{c['id']} diz in_registry: false, mas o kit {kit_meta.get('registry_version')} "
                           f"já o tem ({kit.get('status')}) — o genoma ficou atrás do kit")
 
+        # FIT-014 — PFC só conta com teste de regressão que EXISTE.
+        # "Erro evitado" sem prova é o defeito que o genoma combate.
+        for fc in self.kind["pfc"]:
+            for t in fc["regression_tests"]:
+                arquivo = ROOT / t["file"]
+                if not arquivo.is_file():
+                    self.find("FIT-014", f"{fc['id']}/{t['file']}",
+                              f"{fc['id']} aponta teste em {t['file']}, que não existe")
+                elif f"def {t['name']}" not in arquivo.read_text(encoding="utf-8", errors="replace"):
+                    self.find("FIT-014", f"{fc['id']}/{t['name']}",
+                              f"{fc['id']} aponta {t['name']} em {t['file']}, e esse teste não está lá")
+
         # FIT-013 — campo relatado declara a origem; derived é CONFERIDO.
         # Parte do genoma foi digitada a partir de relatos e se chamava "observed".
         # `derived` significa "extraído de fonte verificável e conferível aqui";
@@ -708,6 +799,12 @@ class Judge:
             "q_screens_on_proposta": proposta_screens,
             "q_blocks_regional": regional,
             "q_runtime_fitness_without_proof": runtime_no_proof,
+            "pfc": [{"id": f["id"], "title": f["title"], "false_claim": f["false_claim"],
+                      "tests": [f"{t['file']}::{t['name']}" for t in f["regression_tests"]]}
+                     for f in self.kind["pfc"]],
+            "machinery": {"fitness": len(self.kind["fitness"]),
+                          "node_kinds": len([k for k, v in (self.schema.get("$defs") or {}).items()
+                                             if "kind" in (v.get("properties") or {})])},
             "q_asserted_fields": sorted(
                 f"{n['id']}.{campo}"
                 for kind, campos in REPORTED_FIELDS.items() for n in self.kind[kind]
@@ -821,6 +918,28 @@ def text_report(m: dict, j: Judge) -> str:
         for w in j.warnings:
             L.append(f"  {w}")
         L.append("")
+    mach = m["machinery"]
+    den = mach["fitness"] + mach["node_kinds"]
+    num = max((v["structural"] for v in m["chain_by_scale"].values()), default=0)
+    L.append("O QUE O GENOMA DEVE A SI MESMO")
+    L.append(f"  elos provados (numerador) .............. {num}")
+    L.append(f"  maquinaria (denominador) ............... {den}  "
+             f"({mach['fitness']} fitness + {mach['node_kinds']} tipos de nó)")
+    L.append(f"  falsas afirmações evitadas (PFC) ....... {len(m['pfc'])}")
+    for f in m["pfc"]:
+        L.append(f"    {f['id']}  {f['title']}")
+        L.append(f"          teria afirmado: {f['false_claim']}")
+        for t in f["tests"]:
+            L.append(f"          prova: {t}")
+    if m.get("growth_warning"):
+        g = m["growth_warning"]
+        L.append(f"  AVISO: a maquinaria cresceu em três merges seguidos "
+                 f"({' -> '.join(str(d) for d in g['denominador'])}) e a cadeia não andou "
+                 f"({' -> '.join(str(x) for x in g['numerador'])}), de {g['de']} a {g['ate']}.")
+        for linha in g.get("o_que_cresceu", []):
+            L.append(f"         {linha}")
+        L.append("         Não falha a CI. A decisão de parar é humana.")
+    L.append("")
     L.append("RESULTADO: " + ("FALHOU" if j.errors else "ÍNTEGRO — nenhuma violação nova"))
     for e_ in j.errors:
         L.append(f"  ✗ {e_}")
@@ -947,6 +1066,9 @@ def main(argv=None) -> int:
     ap.add_argument("--json")
     ap.add_argument("--html")
     ap.add_argument("--kit-registry", help="Contract Registry do kit; default: o do pacote liceu-protocol instalado")
+    ap.add_argument("--history", action="store_true",
+                    help="deriva a série do git (--first-parent main) para o freio da H6; "
+                         "exige checkout com histórico (fetch-depth: 0)")
     a = ap.parse_args(argv)
     schema = json.loads(Path(a.schema).read_text(encoding="utf-8"))
     registry = load_kit_registry(Path(a.kit_registry) if a.kit_registry else None)
@@ -963,6 +1085,18 @@ def main(argv=None) -> int:
         for e in j.errors:
             print("  ✗", e)
         return 1
+    if a.history:
+        serie = history_series(ROOT, schema, registry, load_scale_order(), load_kit_producers())
+        aviso = growth_verdict(serie)
+        if aviso:
+            atual = serie[-1]
+            anterior = serie[-4]
+            mach = m["machinery"]
+            aviso["o_que_cresceu"] = [
+                f"denominador {anterior[1]} -> {atual[1]} "
+                f"(hoje: {mach['fitness']} fitness + {mach['node_kinds']} tipos de nó)"]
+            m["growth_warning"] = aviso
+        m["history"] = serie
     print(text_report(m, j))
     if a.json:
         Path(a.json).write_text(json.dumps({"self_model": m, "errors": j.errors,

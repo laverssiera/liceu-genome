@@ -1,0 +1,59 @@
+# Falsas afirmacoes evitadas. So conta com TESTE DE REGRESSAO que EXISTE — o
+# juiz confere o nome no arquivo (FIT-014). "Erro evitado" sem prova executavel
+# e exatamente o defeito que o genoma combate.
+- id: FC-001
+  kind: pfc
+  title: O "1/5" contado pelo processo, e nao pelo fato gravado
+  false_claim: "A cadeia causal esta em 1/5."
+  mechanism: "claim nao tem campo de status; o juiz deriva das provas, e leitura de codigo ou registro nunca prova comportamento — so refuta."
+  observed: "Foi afirmado por seis dias (CLM-0001, hoje REFUTED por PRF-0001)."
+  regression_tests:
+  - {file: tools/test_genome_check.py, name: test_02_afirmacao_nao_declara_status}
+  - {file: tools/test_genome_check.py, name: test_05_teste_sozinho_nao_prova_elo}
+  - {file: tools/test_genome_check.py, name: test_06_ler_codigo_nao_prova}
+  date: "2026-09-22"
+
+- id: FC-002
+  kind: pfc
+  title: O valor truncado em silencio pelo YAML
+  false_claim: "asserted_by: CORE #50 — o YAML guardaria 'CORE', e o schema aceitaria, porque string truncada continua string."
+  mechanism: "lint() recusa valor sem aspas contendo ' #' antes de qualquer validacao."
+  observed: "O juiz pegou no proprio genoma, na entrega."
+  regression_tests:
+  - {file: tools/test_genome_check.py, name: test_14_truncamento_silencioso_do_yaml}
+  date: "2026-09-22"
+
+- id: FC-003
+  kind: pfc
+  title: O teto digitado que virou premissa de plano
+  false_claim: "O teto interno do ARCHIMEDES e LOCAL — logo, um ato REGIONAL exigiria a Mae."
+  mechanism: "FIT-013: campo relatado declara origem, e `derived` e conferido contra o Producer Registry do kit."
+  observed: "A falsa afirmacao FOI feita: entrou no plano do ciclo 8 como premissa. O kit diz CONTINENTAL."
+  regression_tests:
+  - {file: tools/test_genome_check.py, name: test_38_derived_que_nao_confere_com_a_fonte_e_violacao}
+  date: "2026-09-22"
+
+- id: FC-004
+  kind: pfc
+  title: O genoma descrevendo um kit que nao e o instalado
+  false_claim: "planning-state@1.0.0 e cefeida.evidence@1.0.0 estao ACTIVE; planning-proposal nao existe no registry."
+  mechanism: "FIT-010: producer e lifecycle de todo contrato in_registry conferidos contra o Contract Registry do kit instalado."
+  observed: "A FIT-010 pegou duas vezes no mesmo dia — no v0.14.0 e no v0.15.0."
+  regression_tests:
+  - {file: tools/test_genome_check.py, name: test_17_lifecycle_mudado_no_genoma_sem_mudar_no_kit}
+  - {file: tools/test_genome_check.py, name: test_18_produtor_mudado_no_genoma_sem_mudar_no_kit}
+  - {file: tools/test_genome_check.py, name: test_19_in_registry_para_contrato_que_o_kit_nao_tem}
+  - {file: tools/test_genome_check.py, name: test_20_genoma_atras_do_kit}
+  - {file: tools/test_genome_check.py, name: test_21_kit_que_muda_por_baixo_do_genoma}
+  date: "2026-09-22"
+
+- id: FC-005
+  kind: pfc
+  title: A prova que nao morre quando o codigo que ela cobria muda
+  false_claim: "PRF-XXXX continua provando o comportamento, mesmo depois de o arquivo provado ser reescrito."
+  mechanism: "mechanism{paths, content_hash} + genome_surface_check.py na CI de cada monolito; e expires_at -> STALE no juiz."
+  observed: "Ligado em tres CIs (CORE, ARCHIMEDES, ANCHOR) cobrindo sete provas."
+  regression_tests:
+  - {file: tools/test_genome_surface_check.py, name: test_content_hash_diferente_do_arquivo_falha_na_ci_do_monolito}
+  - {file: tools/test_genome_check.py, name: test_32_evidencia_vencida_vira_STALE_nao_REFUTED}
+  date: "2026-09-22"

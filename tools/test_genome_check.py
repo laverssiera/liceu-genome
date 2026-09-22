@@ -78,6 +78,18 @@ class Mutacoes(unittest.TestCase):
         self.assertTrue(any(contains in e for e in j.errors),
                         f"esperava erro com {contains!r}; veio {j.errors}")
 
+    # H6 — PFC com teste real, e o freio
+    def test_43_pfc_apontando_teste_inexistente_e_recusado(self):
+        f = base()
+        node(f, "FC-001")["regression_tests"] = [{"file": "tools/test_genome_check.py",
+                                                  "name": "test_que_nao_existe"}]
+        self.assertFails(f, "VIOLAÇÃO NOVA FIT-014: FC-001 aponta test_que_nao_existe")
+
+    def test_44_pfc_apontando_arquivo_inexistente_e_recusado(self):
+        f = base()
+        node(f, "FC-001")["regression_tests"] = [{"file": "tools/nao_existe.py", "name": "test_x"}]
+        self.assertFails(f, "VIOLAÇÃO NOVA FIT-014: FC-001 aponta teste em tools/nao_existe.py")
+
     # H3 — campo relatado declara a origem; asserted não sustenta certeza
     def test_37_campo_relatado_sem_origem_e_violacao(self):
         f = base()
@@ -417,6 +429,35 @@ class Mutacoes(unittest.TestCase):
         self.assertIsNone(m, "sobre grafo partido não se calcula Self-Model")
         self.assertTrue(any("nó meta" in e for e in j.errors))
         self.assertTrue(any("aresta quebrada" in e for e in j.errors))
+
+
+class Freio(unittest.TestCase):
+    """O freio da H6: a maquinaria crescendo sem a cadeia andar."""
+
+    def test_45_tres_crescimentos_sem_numerador_disparam_o_aviso(self):
+        serie = [("c0", 20, 0), ("c1", 21, 0), ("c2", 23, 0), ("c3", 26, 0)]
+        aviso = gc.growth_verdict(serie)
+        self.assertIsNotNone(aviso)
+        self.assertEqual(aviso["denominador"], [20, 21, 23, 26])
+        self.assertEqual(aviso["de"], "c0")
+
+    def test_46_numerador_andando_nao_dispara(self):
+        self.assertIsNone(gc.growth_verdict([("c0", 20, 0), ("c1", 21, 0), ("c2", 23, 1), ("c3", 26, 1)]))
+
+    def test_47_denominador_parado_nao_dispara(self):
+        self.assertIsNone(gc.growth_verdict([("c0", 20, 0), ("c1", 21, 0), ("c2", 21, 0), ("c3", 26, 0)]))
+
+    def test_48_serie_curta_nao_dispara(self):
+        self.assertIsNone(gc.growth_verdict([("c0", 20, 0), ("c1", 21, 0), ("c2", 23, 0)]))
+
+    def test_49_denominador_e_maquinaria_nao_registro(self):
+        # fitness + tipos de no; claim/proof/unknown/violation NAO contam —
+        # contar registro puniria o pre-registro honesto (a CLM-0015 foi um)
+        fit = yaml.safe_dump([{"id": "FIT-001", "kind": "fitness"}, {"id": "FIT-002", "kind": "fitness"}])
+        sch = json.dumps({"$defs": {"claim": {"properties": {"kind": {}}},
+                                    "proof": {"properties": {"kind": {}}},
+                                    "source": {"properties": {"repo": {}}}}})
+        self.assertEqual(gc.machinery_of(fit, sch), (2, 2))
 
 
 class ControlePositivo(unittest.TestCase):
