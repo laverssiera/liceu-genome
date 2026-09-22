@@ -17,8 +17,13 @@ jobs:
         run: python -c "from liceu_protocol import KIT_DIR; print((KIT_DIR/'VERSION').read_text())"
 
       # Primeiro o juiz é julgado: se ele não pega as mutações, o veredito dele não vale.
-      - name: Testes de mutação
+      - name: Testes de mutação (juiz)
         run: python tools/test_genome_check.py
+
+      # O detector de superfície roda na CI dos monólitos; aqui prova-se que ELE
+      # pega a mudança — é onde vive o teste "content_hash diferente do arquivo".
+      - name: Testes de mutação (detector de superfície)
+        run: python tools/test_genome_surface_check.py
 
       - name: Genoma — schema, arestas, derivação, fitness (inclui FIT-010 contra o kit), catraca
         run: python tools/genome_check.py --json self-model.json --html self-model.html

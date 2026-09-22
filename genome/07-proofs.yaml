@@ -29,7 +29,12 @@
   basis: test
   test: {repo: LICEU_6.0_CONSTRUTORA_VIRTUAL, path: test_event_bus_nats.py, pr: 44}
   date: "2026-09-20"
-
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths:
+    - cv-backend-core/tests/test_event_bus_nats.py
+    content_hash: 5c672a09fed14ae2589dffa99a03a6812ba0255696850ed4d31aa7bbe22c1142
+    commit: 9037c74
 - id: PRF-0004
   kind: proof
   title: Fencing por epoca
@@ -37,11 +42,16 @@
   basis: test
   test:
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
-    path: test_authority_control_plane.py
+    path: cv-backend-core/tests/test_authority_control_plane.py
     name: test_stale_epoch_is_rejected_even_with_instance_online
     pr: 36
   date: "2026-09-19"
-
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths:
+    - cv-backend-core/tests/test_authority_control_plane.py
+    content_hash: d6596e4ee1815f0c0dd612d8cd415dccdc7f7385eed680ae9e32fb6801750261
+    commit: 9037c74
 - id: PRF-0006
   kind: proof
   title: As tres Maes sao linhas da mesma tabela, no mesmo Postgres
@@ -76,7 +86,13 @@
     pr: 57
   commit: a5d231d
   date: "2026-09-22"
-
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths:
+    - cv-backend-core/app/services/payload_refs.py
+    - cv-backend-core/tests/test_payload_refs.py
+    content_hash: 918c4a7676a1d37dce32050200b28636f117145065ce56bdf1462c115bf82ef2
+    commit: 9037c74
 - id: PRF-0009
   kind: proof
   title: Proposta v1 evidenciada, v2 publicada, promover v2 com a evidencia da v1 -> BLOCKED evidence_for_other_version
@@ -92,6 +108,13 @@
 
 # --- 2026-09-22: o /health que mentia (#58). Refutado por leitura de registro;
 # superseded pela prova por teste quando a correcao entrou (G2 servindo).
+  mechanism:
+    repo: Archimedes-ImobTech-LICEU-6.0-
+    paths:
+    - runtime/planning_state_call_site.py
+    - tests/test_planning_state_call_site.py
+    content_hash: 43f0ff2b7a22e0795cabf3ae03f8f06e928e93bbe4938de34a99b6c4be3286f3
+    commit: 0d57718
 - id: PRF-0010
   kind: proof
   title: Backend healthy sem tabela nenhuma; primeiro publish 500 (Codespace liceu-elos-0a3)
@@ -119,6 +142,12 @@
 
 # --- G5 (ANCHOR #15): as duas dividas desfeitas. A PRF-0007 fica no grafo;
 # a PRF-0012 a supersede. Primeira vez que uma correcao desfaz uma refutacao.
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths:
+    - cv-backend-core/tests/test_readiness.py
+    content_hash: 426b62f9ff1feb6cb8501ed7f97ae91496f52632cd4982c4ed3579f6f2c16aef
+    commit: 9037c74
 - id: PRF-0012
   kind: proof
   title: "_JURIDICOTECH_ALLOWED nao existe; texto (ok/true/AUTHORIZED/approved/allow) nunca e cobertura juridica"
@@ -132,7 +161,13 @@
     pr: 15
   commit: ca4a5c8
   date: "2026-09-22"
-
+  mechanism:
+    repo: ANCHOR.OS-LICEU6.0
+    paths:
+    - anchors/runtime/earth_governance_runtime.py
+    - tests/test_earth_governance_runtime.py
+    content_hash: 0ff76b55a11b53e5af0e162796b1832987f46f3c8afc66dd676a562514a06da6
+    commit: 31b8b36
 - id: PRF-0013
   kind: proof
   title: O publisher do elo 4 devolve legal_coverage UNCOVERED (asserted), com e sem referencias; REFERENCED e varrido pela CI
@@ -145,7 +180,13 @@
     pr: 15
   commit: ca4a5c8
   date: "2026-09-22"
-
+  mechanism:
+    repo: ANCHOR.OS-LICEU6.0
+    paths:
+    - backend/app/federation/authorization_publisher.py
+    - tests/test_authorization_publisher.py
+    content_hash: c397ec51204d24aa712b40043b16afa0048ff49f71d34debf85a950814ba9f91
+    commit: 31b8b36
 - id: PRF-0014
   kind: proof
   title: "john.recommendation 2.1.0 exige alternatives >= 2; a proposta aceita 1 e o estado nao poe minimo"

@@ -705,6 +705,45 @@
         "scale": {
           "type": "string",
           "description": "Escala do FATO observado (enum federativo da Constituicao, lido do kit). Obrigatoria quando a prova sustenta um elo da cadeia: a contagem e POR ESCALA e um elo provado numa escala bloqueada nao conta naquela escala (FIT-011)."
+        },
+        "mechanism": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "repo",
+            "paths",
+            "content_hash",
+            "commit"
+          ],
+          "description": "A SUPERFICIE que esta prova cobre, com precisao de arquivo. Quando ela muda, a prova precisa ser feita de novo — a CI do proprio monolito acusa (tools/genome_surface_check.py). Superficie de repositorio inteiro e proibida: ficaria obsoleta a cada commit, o genoma viraria ruido e as pessoas o ignorariam.",
+          "properties": {
+            "repo": {
+              "type": "string"
+            },
+            "paths": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 3
+              },
+              "description": "Arquivos, nunca diretorios nem curingas."
+            },
+            "content_hash": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$",
+              "description": "sha256 de (caminho + conteudo LF) de cada arquivo, em ordem."
+            },
+            "commit": {
+              "type": "string",
+              "minLength": 7
+            }
+          }
+        },
+        "expires_at": {
+          "type": "string",
+          "description": "Data (YYYY-MM-DD) a partir da qual a evidencia deixa de sustentar a afirmacao. Vencida -> STALE, nunca REFUTED: 'precisa ser provado de novo', nao 'e falso'."
         }
       },
       "allOf": [

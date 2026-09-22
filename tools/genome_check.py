@@ -6,6 +6,10 @@ Um grafo, uma lei, um juiz:
   1. valida cada nó contra o schema, pelo seu 'kind'
   2. resolve cada aresta (referência a outro nó)
   3. DERIVA o status de cada afirmação a partir das provas VIGENTES — nunca o lê.
+     Vigente = nenhuma outra a supersede E não venceu (`expires_at`). Quando a
+     única sustentação venceu, o status é STALE: "precisa ser provado de novo",
+     nunca "é falso" — uma refatoração pode mudar o arquivo e manter o
+     comportamento. STALE não conta na cadeia.
      A contagem da cadeia é POR ESCALA (FIT-011): cada prova de elo declara a
      escala do fato observado, e um elo provado numa escala BLOQUEADA não conta
      naquela escala. Sem isso, uma cadeia poderia "atravessar" em REGIONAL
@@ -40,6 +44,7 @@ import json
 import re
 import sys
 from collections import defaultdict
+import datetime
 from pathlib import Path
 
 import yaml
@@ -49,6 +54,8 @@ ROOT = Path(__file__).resolve().parent.parent
 KIT_REGISTRY_FILE = "liceu_contract_registry.yaml"
 KIT_CONSTITUTION_FILE = "liceu_constitution.yaml"
 SCALE_BLOCK = re.compile(r"^scale:([A-Z]+)$")
+# Superficie de repositorio inteiro, ou curinga: proibida (FIT-012).
+WHOLE_REPO = re.compile(r"^[./]*$|[*?]|^[^/]+/$|^(src|app|tests?|lib)$")
 AUTHORITATIVE_USES = {"authoritative_decision", "authoritative_budget",
                       "procurement_commitment", "physical_execution_authorization"}
 EVIDENCE_FIELD = re.compile(r"(_refs|content_hash)$")
@@ -257,16 +264,27 @@ class Judge:
                     self.errors.append(f"{c['id']}: posição {pos} além de {meta['chain_positions']}")
 
     # ─────────────────────────────────────────── 3. derivação
-    def derive(self):
-        # Vigente = nenhuma outra prova a supersede. Só vigentes derivam.
+    @staticmethod
+    def _expired(p: dict, today: str) -> bool:
+        exp = p.get("expires_at")
+        return bool(exp) and str(exp) < today
+
+    def derive(self, today: str | None = None):
+        today = today or datetime.date.today().isoformat()
+        self.today = today
+        # Vigente = nenhuma outra prova a supersede E não venceu.
         self.superseded_by: dict[str, str] = {}
+        self.expired = {p["id"] for p in self.kind["proof"] if self._expired(p, today)}
         for p in self.kind["proof"]:
             for s in p.get("supersedes", []):
                 self.superseded_by[s] = p["id"]
         proving, refuting = defaultdict(list), defaultdict(list)
         self.history: dict[str, list[dict]] = defaultdict(list)   # claim -> provas, vigentes ou não
+        had_any: dict[str, bool] = defaultdict(bool)
         for p in self.kind["proof"]:
-            current = p["id"] not in self.superseded_by
+            current = p["id"] not in self.superseded_by and p["id"] not in self.expired
+            for c in p.get("proves", []) + p.get("refutes", []):
+                had_any[c] = True
             for c in p.get("proves", []):
                 self.history[c].append(p)
                 if current:
@@ -286,6 +304,10 @@ class Judge:
                     self.ephemeral.add(cid)
             elif any(p["basis"] == "test" for p in proving[cid]):
                 self.status[cid] = "TESTED"
+            elif had_any[cid]:
+                # houve prova; nenhuma vige (vencida, ou superseded por uma que
+                # venceu). Nao e UNPROVEN — e "prove de novo".
+                self.status[cid] = "STALE"
             else:
                 self.status[cid] = "UNPROVEN"
 
@@ -302,6 +324,8 @@ class Judge:
             if nxt:
                 until = self.by_id[nxt].get("date")
                 out.append(f"{self.verdict_of(p)} por {p['id']} até {until} (superseded por {nxt})")
+            elif p["id"] in getattr(self, "expired", set()):
+                out.append(f"{self.verdict_of(p)} por {p['id']} até {p['expires_at']} (evidência vencida — STALE)")
             else:
                 out.append(f"{self.verdict_of(p)} por {p['id']} desde {p.get('date')}")
         return out
@@ -411,6 +435,22 @@ class Judge:
                 self.find("FIT-010", f"{c['id']}/in_registry",
                           f"{c['id']} diz in_registry: false, mas o kit {kit_meta.get('registry_version')} "
                           f"já o tem ({kit.get('status')}) — o genoma ficou atrás do kit")
+
+        # FIT-012 — a prova declara a superfície que cobre, com precisão de arquivo.
+        # Prova por TESTE sem `mechanism` não sabe dizer quando deixou de valer;
+        # superfície de repositório inteiro ficaria obsoleta a cada commit e o
+        # genoma viraria ruído.
+        for p in self.kind["proof"]:
+            m = p.get("mechanism")
+            if p["basis"] == "test" and m is None:
+                self.find("FIT-012", f"{p['id']}/mechanism",
+                          f"{p['id']} prova por teste sem declarar a superfície que cobre "
+                          f"(mechanism: repo, paths, content_hash, commit)")
+            for rel in (m or {}).get("paths", []):
+                if WHOLE_REPO.search(rel):
+                    self.find("FIT-012", f"{p['id']}/paths",
+                              f"{p['id']} declara superfície {rel!r}: repositório inteiro, diretório "
+                              f"ou curinga não é superfície — use arquivos")
 
         # FIT-011 — a contagem é por escala, e a escala do fato é declarada.
         # Prova que sustenta um elo (claim com chain_link) sem `scale`, ou com
@@ -577,6 +617,7 @@ class Judge:
                            "ephemeral": c in self.ephemeral,
                            "history": self.claim_history(c)} for c in claims},
             "proofs_superseded": sorted(self.superseded_by.items()),
+            "proofs_expired": sorted(self.expired),
             "q_multi_emitter": emitters,
             "q_screens_on_proposta": proposta_screens,
             "q_blocks_regional": regional,
@@ -648,6 +689,10 @@ def text_report(m: dict, j: Judge) -> str:
     e = c["entry"]
     L.append(f"  entrada      {e['claim']} {e['status']}" + ("  (ambiente efêmero)" if e["ephemeral"] else ""))
     L.append("")
+    if m["proofs_expired"]:
+        L.append(f"PROVAS VENCIDAS: {', '.join(m['proofs_expired'])}  "
+                 f"(a afirmação vira STALE — prove de novo, não é falsa)")
+        L.append("")
     L.append("AFIRMAÇÕES")
     for cid, v in m["claims"].items():
         flag = "  (efêmero)" if v["ephemeral"] else ""
@@ -691,7 +736,7 @@ def text_report(m: dict, j: Judge) -> str:
 def html_report(m: dict, j: Judge) -> str:
     esc = html.escape
     c = m["chain"]
-    tone = {"PROVEN": "ok", "TESTED": "at", "UNPROVEN": "no", "REFUTED": "bad"}
+    tone = {"PROVEN": "ok", "TESTED": "at", "UNPROVEN": "no", "REFUTED": "bad", "STALE": "at"}
 
     def pill(st):
         return f'<span class="pill {tone.get(st, "no")}">{esc(st)}</span>'
