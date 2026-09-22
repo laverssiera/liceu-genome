@@ -28,6 +28,12 @@ jobs:
       - name: Testes de mutação (detector de superfície)
         run: python tools/test_genome_surface_check.py
 
+      # O PFC nascido de um processo real tem o teste no monólito, não aqui. O
+      # detector que confere isso roda na CI de lá; é aqui que se prova que ELE
+      # pega o teste que sumiu ou mudou de nome.
+      - name: Testes de mutação (detector de PFC sem prova executável)
+        run: python tools/test_genome_pfc_check.py
+
       # O genoma e o kit sao PUBLICOS: dado pessoal que entrar fica na internet.
       - name: Privacidade — nenhum dado pessoal no repositório público
         run: python tools/genome_privacy_check.py --root .
