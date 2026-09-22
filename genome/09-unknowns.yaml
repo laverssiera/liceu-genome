@@ -33,3 +33,10 @@
   required_evidence: Decisao de mecanismo e implementacao com verificacao.
   owner: titular
   blocks: [SCR-05]
+- id: UNK-0006
+  kind: unknown
+  question: "Um estudo com UM unico candidato real deve ser recusado na origem, ou o elo 3 deve admitir recomendacao sobre alternativa unica?"
+  why_unknown: "O ecossistema nunca teve um estudo declarado. O contrato do elo 3 exige >= 2 alternativas (recomendar sem alternativa nao e decidir); a proposta e o estado aceitam 1. Nao ha decisao sobre o que fazer quando o mandatario so tem um lugar real: criar um segundo seria fabricacao, e parar no elo 2 e uma cadeia que termina sem recomendacao."
+  required_evidence: "Decisao do titular: recusar candidato unico na proposta (e nomear o bloqueio la), admitir alternativa unica no elo 3 com o dissenso dizendo isso, ou manter como esta e registrar 2/5 como resultado legitimo."
+  owner: titular
+  blocks: [CLM-L3]

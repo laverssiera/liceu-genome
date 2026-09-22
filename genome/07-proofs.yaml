@@ -144,3 +144,15 @@
     pr: 15
   commit: ca4a5c8
   date: "2026-09-22"
+
+- id: PRF-0014
+  kind: proof
+  title: "john.recommendation 2.1.0 exige alternatives >= 2; a proposta aceita 1 e o estado nao poe minimo"
+  refutes: [CLM-0015]
+  basis: record_reading
+  location:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "planning-proposal@1.0.0 candidates.minItems 1; planning-state@2.0.0 sem minItems; john.recommendation@2.1.0 alternatives.minItems 2 — o relay recusa antes da rede (John backend/federation/single_domain_relay.py:133, alternatives_insufficient, owner liceu.archimedes)"
+  commit: 4951b94
+  date: "2026-09-22"
