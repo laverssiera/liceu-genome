@@ -28,6 +28,7 @@ SCHEMA = json.loads((ROOT / "schema" / "genome.schema.json").read_text(encoding=
 # O Contract Registry do kit INSTALADO: a FIT-010 julga o genoma contra ele.
 # As mutações da FIT-010 alteram uma cópia, nunca o kit.
 KIT_REGISTRY = gc.load_kit_registry()
+SCALE_ORDER = gc.load_scale_order()
 
 
 def base():
@@ -42,7 +43,7 @@ def judge(files, registry=None):
         for name, nodes in files.items():
             (d / name).write_text(yaml.safe_dump(nodes, allow_unicode=True, sort_keys=False),
                                   encoding="utf-8")
-        j = gc.Judge(gc.load(d), SCHEMA, registry if registry is not None else KIT_REGISTRY)
+        j = gc.Judge(gc.load(d), SCHEMA, registry if registry is not None else KIT_REGISTRY, SCALE_ORDER)
         return j, j.run()
     finally:
         shutil.rmtree(d)
@@ -73,6 +74,49 @@ class Mutacoes(unittest.TestCase):
         j, _ = judge(files, registry)
         self.assertTrue(any(contains in e for e in j.errors),
                         f"esperava erro com {contains!r}; veio {j.errors}")
+
+    # FIT-011 — a contagem é por escala; escala bloqueada não conta
+    def test_28_elo_provado_em_escala_bloqueada_nao_conta_naquela_escala(self):
+        f = base()
+        add(f, "07-proofs.yaml", {"id": "PRF-0090", "kind": "proof", "title": "elo 1 em REGIONAL",
+                                  "proves": ["CLM-L1"], "basis": "external_observation",
+                                  "external_observation": {"instrument": "psql + NATS", "observed": "fato gravado"},
+                                  "evidence_artifact": {"repo": "r", "path": "docs/evidence/x.md"},
+                                  "environment": "ephemeral", "scale": "REGIONAL", "date": "2026-09-22"})
+        j, m = judge(f)
+        self.assertEqual(j.errors, [], j.errors)
+        self.assertEqual(m["claims"]["CLM-L1"]["status"], "PROVEN")          # a afirmação foi provada
+        reg = m["chain_by_scale"]["REGIONAL"]
+        self.assertTrue(reg["blocked_by"])                                    # mas REGIONAL está bloqueada
+        self.assertEqual(reg["structural"], 0)                                # e a contagem REGIONAL fica 0
+        self.assertEqual(reg["structural_if_unblocked"], 1)                   # o juiz diz o que HAVERIA
+
+    def test_29_elo_provado_em_escala_livre_conta_naquela_escala(self):
+        f = base()
+        add(f, "07-proofs.yaml", {"id": "PRF-0091", "kind": "proof", "title": "elo 1 em LOCAL",
+                                  "proves": ["CLM-L1"], "basis": "external_observation",
+                                  "external_observation": {"instrument": "psql + NATS", "observed": "fato gravado"},
+                                  "evidence_artifact": {"repo": "r", "path": "docs/evidence/x.md"},
+                                  "environment": "ephemeral", "scale": "LOCAL", "date": "2026-09-22"})
+        j, m = judge(f)
+        self.assertEqual(j.errors, [], j.errors)
+        self.assertEqual(m["chain_by_scale"]["LOCAL"]["structural"], 1)       # só o elo 1: a entrada é posição 0
+        self.assertEqual(m["chain_by_scale"]["LOCAL"]["substantive"], 0)
+        self.assertEqual(m["chain_by_scale"]["REGIONAL"]["structural"], 0)
+
+    def test_30_prova_de_elo_sem_escala_e_violacao(self):
+        f = base()
+        add(f, "07-proofs.yaml", {"id": "PRF-0092", "kind": "proof", "title": "elo 1 sem escala",
+                                  "proves": ["CLM-L1"], "basis": "external_observation",
+                                  "external_observation": {"instrument": "i", "observed": "o"},
+                                  "evidence_artifact": {"repo": "r", "path": "p"},
+                                  "environment": "ephemeral", "date": "2026-09-22"})
+        self.assertFails(f, "VIOLAÇÃO NOVA FIT-011: PRF-0092 prova elo da cadeia sem declarar a escala")
+
+    def test_31_escala_fora_do_enum_da_constituicao_e_violacao(self):
+        f = base()
+        node(f, "PRF-0002")["scale"] = "MUNICIPAL"
+        self.assertFails(f, "VIOLAÇÃO NOVA FIT-011: PRF-0002 declara scale 'MUNICIPAL', fora do enum federativo")
 
     # FIT-010 — o genoma não é a segunda fonte da verdade sobre contratos
     def test_17_lifecycle_mudado_no_genoma_sem_mudar_no_kit(self):
@@ -212,7 +256,7 @@ class Mutacoes(unittest.TestCase):
         f = base()
         add(f, "07-proofs.yaml", {"id": "PRF-0099", "kind": "proof", "title": "teste do elo 1",
             "proves": ["CLM-L1"], "basis": "test",
-            "test": {"repo": "x", "path": "t.py"}, "date": "2026-09-22"})
+            "test": {"repo": "x", "path": "t.py"}, "scale": "LOCAL", "date": "2026-09-22"})
         j, m = judge(f)
         self.assertEqual(j.errors, [])
         self.assertEqual(m["claims"]["CLM-L1"]["status"], "TESTED")
@@ -292,12 +336,14 @@ class ControlePositivo(unittest.TestCase):
             "external_observation": {"instrument": "connz + subscriber",
                                      "observed": "archimedes.planning-state na tabela events"},
             "evidence_artifact": {"repo": "x", "path": "docs/evidence/e.md"},
-            "environment": "durable", "date": "2026-09-22"})
+            "environment": "durable", "scale": "LOCAL", "date": "2026-09-22"})
         j, m = judge(f)
         self.assertEqual(j.errors, [])
         self.assertEqual(m["claims"]["CLM-L1"]["status"], "PROVEN")
         self.assertEqual(m["chain"]["structural"], 1,
                          "com prova externa real, a cadeia tem de subir para 1/5")
+        self.assertEqual(m["chain_by_scale"]["LOCAL"]["structural"], 1,
+                         "e a contagem POR ESCALA tem de subir em LOCAL (FIT-011)")
 
 
 if __name__ == "__main__":
