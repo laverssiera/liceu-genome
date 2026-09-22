@@ -9,13 +9,18 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install pyyaml==6.0.3 jsonschema==4.26.0
+      # Inclui o kit liceu-protocol na tag vigente: a FIT-010 julga o genoma
+      # contra o Contract Registry INSTALADO. Sem o kit, o juiz nao julga.
+      - run: pip install -r requirements.txt
+
+      - name: Kit instalado (tag vigente)
+        run: python -c "from liceu_protocol import KIT_DIR; print((KIT_DIR/'VERSION').read_text())"
 
       # Primeiro o juiz é julgado: se ele não pega as mutações, o veredito dele não vale.
       - name: Testes de mutação
         run: python tools/test_genome_check.py
 
-      - name: Genoma — schema, arestas, derivação, fitness, catraca
+      - name: Genoma — schema, arestas, derivação, fitness (inclui FIT-010 contra o kit), catraca
         run: python tools/genome_check.py --json self-model.json --html self-model.html
 
       - uses: actions/upload-artifact@v4

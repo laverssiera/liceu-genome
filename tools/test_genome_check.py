@@ -25,6 +25,9 @@ import genome_check as gc  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 SCHEMA = json.loads((ROOT / "schema" / "genome.schema.json").read_text(encoding="utf-8"))
+# O Contract Registry do kit INSTALADO: a FIT-010 julga o genoma contra ele.
+# As mutações da FIT-010 alteram uma cópia, nunca o kit.
+KIT_REGISTRY = gc.load_kit_registry()
 
 
 def base():
@@ -33,13 +36,13 @@ def base():
             for f in sorted((ROOT / "genome").glob("*.yaml"))}
 
 
-def judge(files):
+def judge(files, registry=None):
     d = Path(tempfile.mkdtemp())
     try:
         for name, nodes in files.items():
             (d / name).write_text(yaml.safe_dump(nodes, allow_unicode=True, sort_keys=False),
                                   encoding="utf-8")
-        j = gc.Judge(gc.load(d), SCHEMA)
+        j = gc.Judge(gc.load(d), SCHEMA, registry if registry is not None else KIT_REGISTRY)
         return j, j.run()
     finally:
         shutil.rmtree(d)
@@ -66,10 +69,48 @@ class Integro(unittest.TestCase):
 
 
 class Mutacoes(unittest.TestCase):
-    def assertFails(self, files, contains):
-        j, _ = judge(files)
+    def assertFails(self, files, contains, registry=None):
+        j, _ = judge(files, registry)
         self.assertTrue(any(contains in e for e in j.errors),
                         f"esperava erro com {contains!r}; veio {j.errors}")
+
+    # FIT-010 — o genoma não é a segunda fonte da verdade sobre contratos
+    def test_17_lifecycle_mudado_no_genoma_sem_mudar_no_kit(self):
+        f = base()
+        c = next(n for n in f["03-contracts.yaml"] if n["in_registry"] and n.get("lifecycle") == "ACTIVE")
+        c["lifecycle"] = "RETIRED"
+        self.assertFails(f, f"VIOLAÇÃO NOVA FIT-010: {c['id']} lifecycle RETIRED no genoma, ACTIVE no kit")
+
+    def test_18_produtor_mudado_no_genoma_sem_mudar_no_kit(self):
+        f = base()
+        c = next(n for n in f["03-contracts.yaml"] if n["in_registry"])
+        c["producer"] = "liceu.opera"
+        self.assertFails(f, f"VIOLAÇÃO NOVA FIT-010: {c['id']} produtor liceu.opera no genoma")
+
+    def test_19_in_registry_para_contrato_que_o_kit_nao_tem(self):
+        f = base()
+        add(f, "03-contracts.yaml", {"id": "liceu.hub.planning-request@9.9.9", "kind": "contract",
+                                     "title": "versão inventada", "producer": "liceu.hub",
+                                     "in_registry": True, "lifecycle": "ACTIVE"})
+        self.assertFails(f, "VIOLAÇÃO NOVA FIT-010: liceu.hub.planning-request@9.9.9 diz in_registry mas o kit")
+
+    def test_20_genoma_atras_do_kit(self):
+        # O kit ganha uma versão que o genoma ainda declara fora do registry:
+        # é a FIT-010 avisando que o genoma tem de acompanhar o bump.
+        f = base()
+        c = next(n for n in f["03-contracts.yaml"] if n["in_registry"])
+        c["in_registry"] = False
+        c.pop("lifecycle", None)
+        self.assertFails(f, f"VIOLAÇÃO NOVA FIT-010: {c['id']} diz in_registry: false, mas o kit")
+
+    def test_21_kit_que_muda_por_baixo_do_genoma(self):
+        # O caso real do bump: o kit aposenta a versão, o genoma continua ACTIVE.
+        reg = copy.deepcopy(KIT_REGISTRY)
+        f = base()
+        c = next(n for n in f["03-contracts.yaml"] if n["in_registry"] and n.get("lifecycle") == "ACTIVE")
+        cid, _, ver = c["id"].partition("@")
+        reg["contracts"][cid][ver]["status"] = "RETIRED"
+        self.assertFails(f, f"VIOLAÇÃO NOVA FIT-010: {c['id']} lifecycle ACTIVE no genoma, RETIRED no kit", reg)
 
     def test_01_john_nao_exibe_resultado_de_autoridade(self):
         f = base()

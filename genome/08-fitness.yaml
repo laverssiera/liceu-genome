@@ -7,3 +7,4 @@
 - {id: FIT-007, kind: fitness, statement: "Uma tela so exibe o que declara, e resultado de autoridade so a partir de contrato de quem pode autorizar.", evaluated_by: genome, check: screen_authority}
 - {id: FIT-008, kind: fitness, statement: Todo contrato lido por tela existe e nao esta aposentado., evaluated_by: genome, check: screen_contracts}
 - {id: FIT-009, kind: fitness, statement: Autoridade juridica nunca e derivada de comparacao de texto livre., evaluated_by: runtime, claim: CLM-0011}
+- {id: FIT-010, kind: fitness, statement: "O genoma nao e a segunda fonte da verdade sobre contratos: produtor e lifecycle de todo contrato in_registry batem com o Contract Registry do kit instalado; contrato que o kit tem e o genoma nega tambem diverge.", evaluated_by: genome, check: registry_alignment}

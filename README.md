@@ -6,8 +6,22 @@
 schema/genome.schema.json   a lei — 11 tipos de nó
 genome/*.yaml               o grafo — o estado do LICEU, só com fatos verificados
 tools/genome_check.py       o juiz — valida, deriva, avalia e responde
-tools/test_genome_check.py  o juiz sendo julgado — 14 mutações e 1 controle positivo
+tools/test_genome_check.py  o juiz sendo julgado — mutações e 1 controle positivo
+requirements.txt            o kit liceu-protocol, na tag vigente — a FIT-010 julga contra ele
 ```
+
+## O genoma não é a segunda fonte da verdade sobre contratos (FIT-010)
+
+Produtor, versão e lifecycle de cada contrato vivem no Contract Registry do kit
+(`liceu-protocol`), instalado na tag fixada em `requirements.txt`. O `03-contracts.yaml`
+guarda **só o que o kit não tem**: `emitters_observed`, `implementation_observed`,
+`chain_position`, `carries`. Para todo contrato com `in_registry: true`, o juiz confere
+`producer` e `lifecycle` contra o kit instalado — divergência é violação nova (FIT-010) e
+a CI falha. Contrato que o kit tem e o genoma declara `in_registry: false` também falha:
+é o genoma atrás do kit. No bump do kit, o genoma é obrigado a acompanhar.
+
+Sem o kit instalado o juiz não julga. Vendorizar uma cópia do registry aqui seria
+exatamente a duplicação que a FIT-010 existe para impedir.
 
 ## Por que um grafo, e não 50 motores
 
