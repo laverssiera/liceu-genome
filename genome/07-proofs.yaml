@@ -62,3 +62,29 @@
     path: anchors/runtime/earth_governance_runtime.py
     note: "_JURIDICOTECH_ALLOWED = {authorized, approved, allow, ok, true}"
   date: "2026-09-21"
+
+# G4 — provas por teste (TESTED, nao PROVEN: o ambiente real e o G6)
+- id: PRF-0008
+  kind: proof
+  title: O boundary resolve resolvable_refs — tipo E produtor; 422 lineage_reference_not_found / _mismatch
+  proves: [CLM-0012]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/tests/test_payload_refs.py
+    pr: 57
+  commit: a5d231d
+  date: "2026-09-22"
+
+- id: PRF-0009
+  kind: proof
+  title: Proposta v1 evidenciada, v2 publicada, promover v2 com a evidencia da v1 -> BLOCKED evidence_for_other_version
+  proves: [CLM-0013]
+  basis: test
+  test:
+    repo: Archimedes-ImobTech-LICEU-6.0-
+    path: tests/test_planning_state_call_site.py
+    name: test_evidence_must_bind_the_promoted_version
+    pr: 31
+  commit: 39852aa
+  date: "2026-09-22"
