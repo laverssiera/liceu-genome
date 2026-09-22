@@ -406,3 +406,61 @@
     - tests/test_elo1_act_cli.py
     content_hash: 855370a329071b9a08231c70f9ab8f214b481ac6c7dbbdc930a4dc81d93d15b9
     commit: a082c1b
+
+# U5 (ciclo 10) — a cadeia 0 a 3 da Casa P-001 contra o CORE real, no Codespace
+# ominous-space-robot (efemero), CORE 75eea6b, kit 0.15.0, boundary em BLOCK
+# para os quatro produtores, cada um com o segredo da PROPRIA instancia.
+#
+# A linhagem gravada e a corrigida pela U5: a evidencia e o estado tem a MESMA
+# causa (a proposta), e a recomendacao tem por causa o estado.
+- id: PRF-0024
+  kind: proof
+  title: "Elo 1 — archimedes.planning.state.authoritative gravado, e o primeiro fato por METODO do ecossistema"
+  proves: [CLM-L1]
+  basis: external_observation
+  external_observation:
+    instrument: "leitura da tabela events no Postgres do CORE, apos publicacao pelo scripts/elo1_act.py do ARCHIMEDES"
+    observed: "event_id a02be944-a112-5f28-ac1c-991ae8ae07a3, contrato liceu.archimedes.planning-state@2.0.0, producer_instance_id liceu.archimedes#earth-01, causation_id 6638f3c2 (a proposta). payload study_basis=METHOD, study_method_version=juridicotech.conformidade-urbanistica/0.1, 1 candidate com derived_from apontando a Tabela I oficial da ZM (sha256 063be7d3...). Promocao ANALYSIS -> VALIDATED -> AUTHORITATIVE registrada no kernel"
+  evidence_artifact: {repo: LICEU_6.0_CONSTRUTORA_VIRTUAL, path: docs/evidence/2026-09-22-cadeia-0a3-p001.md, pr: 64}
+  environment: ephemeral
+  scale: LOCAL
+  date: "2026-09-22"
+
+- id: PRF-0025
+  kind: proof
+  title: "Elo 2 — cefeida.evidence.published gravado, evidenciando a VERSAO da proposta"
+  proves: [CLM-L2]
+  basis: external_observation
+  external_observation:
+    instrument: "leitura da tabela events no Postgres do CORE, apos publicacao pelo CefeidaEvidencePublisher do 3C273"
+    observed: "event_id 96dac6e6-7a80-5b42-a9b7-4002ae1a9f69, contrato liceu.cefeida.evidence@2.0.0, producer_instance_id liceu.cefeida#earth-01, causation_id 6638f3c2 (a PROPOSTA, ADR-004) e subject_ref archimedes_root_states:rs-p001:1. metric prontidao_para_protocolo, value objeto com resultado NAO_PRONTO e os impedimentos I-002 e I-003 nomeados, method_version juridicotech.prontidao-protocolo/0.1"
+  evidence_artifact: {repo: LICEU_6.0_CONSTRUTORA_VIRTUAL, path: docs/evidence/2026-09-22-cadeia-0a3-p001.md, pr: 64}
+  environment: ephemeral
+  scale: LOCAL
+  date: "2026-09-22"
+
+- id: PRF-0026
+  kind: proof
+  title: "Elo 3 — john.recommendation.generated gravado: NO_GO com os impedimentos vindos da evidencia"
+  proves: [CLM-L3]
+  basis: external_observation
+  external_observation:
+    instrument: "leitura da tabela events no Postgres do CORE, apos publicacao pelo JohnRecommendationPublisher com o metodo john.go-no-go/0.1"
+    observed: "event_id 388c851b-70bd-5faa-a045-23ac2fd45bf2, contrato liceu.john.recommendation@2.1.0, producer_instance_id liceu.john#earth-01, causation_id a02be944 (o ESTADO do elo 1). alternatives [GO, NO_GO] sobre UM candidato, recommended_alternative_id NO_GO, confidence AUSENTE, contributing_domains [liceu.legal] com unanimous true. A rationale repassa o veredito da evidencia 96dac6e6 e nomeia I-002 e I-003 — o JOHN nao julgou"
+  evidence_artifact: {repo: LICEU_6.0_CONSTRUTORA_VIRTUAL, path: docs/evidence/2026-09-22-cadeia-0a3-p001.md, pr: 64}
+  environment: ephemeral
+  scale: LOCAL
+  date: "2026-09-22"
+
+# O achado que o elo 2 deu de presente ao travar.
+- id: PRF-0027
+  kind: proof
+  title: "O CefeidaEvidencePublisher exigia value numerico; o contrato admite number, string OU object"
+  refutes: [CLM-0031]
+  basis: code_reading
+  location:
+    repo: 3C273-Analytics-Data-Science
+    path: cefeida/backend/federation/evidence_publisher.py
+    note: "A validacao recusava com value_not_numeric qualquer value que nao fosse int/float, e o payload_schema de liceu.cefeida.evidence 2.0.0 (kit v0.15.0) declara value type [number, string, object]. O produtor era MAIS ESTREITO que o proprio contrato: nao fabrica nada, mas barra fato legitimo — e o fato que a cadeia da P-001 precisava carregar e justamente um veredito com os impedimentos nomeados, que nao e medida. Achado ao rodar o elo 2 contra o CORE real; corrigido no PR 43."
+  commit: 5cb4de0
+  date: "2026-09-22"
