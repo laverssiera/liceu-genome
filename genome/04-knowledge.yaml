@@ -76,3 +76,13 @@
   permitted_uses: [exploration, design_reference, research, comparison_as_proposal]
   prohibited_uses: [authoritative_decision, authoritative_budget, procurement_commitment, physical_execution_authorization]
   source: {repo: JURIDICO-TECH, path: backend/juridicotech/modules/condominio_l0.py, note: "aprovacao_condominio -> assinatura_4_vias -> protocolo_prefeitura -> aprovacao_prefeitura_alvara -> entrega_ao_condominio -> conferencia_condominio -> email_liberacao_obra -> inicio_obra, com a regra de retorno. A fonte sao os dois procedimentos que o titular guarda: documento PRIVADO, apontado e nao copiado. Estado hoje, DERIVADO da evidencia: aprovado pelo condominio, com a assinatura das 4 vias pendente. Nenhuma etapa e ato do LICEU."}
+
+# A1 (ciclo 11) — o procedimento do oraculo. PROPOSTA: VIGENTE exige dono e revisor.
+- id: CASO-P001-CERTIDAO
+  kind: knowledge
+  title: "Certidao de Diretrizes urbanistica no DHAP de Vargem Grande Paulista — o procedimento"
+  knowledge_type: journey
+  validity: PROPOSTA
+  permitted_uses: [exploration, design_reference, research, comparison_as_proposal]
+  prohibited_uses: [authoritative_decision, authoritative_budget, procurement_commitment, physical_execution_authorization]
+  source: {repo: JURIDICO-TECH, path: backend/juridicotech/dados/certidao_diretrizes_vgp.json, note: "Derivado de duas fontes oficiais com URL e sha256: a RELACAO DE DOCUMENTOS do DHAP e o REQUERIMENTO DHAP. Cinco documentos (1, 2, 6, 20, 26), um pedido por processo, e o requerimento com a caixa 'Urbanistica'. Prazo NAO declarado (UNK-0010). Tres dos cinco documentos carregam dado pessoal e por isso ficam com o titular: pedir e ato do RT, nao do LICEU."}

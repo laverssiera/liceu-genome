@@ -45,7 +45,7 @@
   kind: unknown
   question: "Area minima do lote (360 m2) e frente minima (5,00 m) da Tabela I se aplicam a uma unidade dentro de condominio ja aprovado?"
   why_unknown: "O terreno da P-001 tem 175 m2 e a area minima do lote na ZM e 360 m2. Aplicar o limite calado daria NAO ATENDE — e a tabela nao resolve a aplicabilidade: sao restricoes de parcelamento, e a unidade esta em regime de condominio. O motor recusa decidir isso sozinho e nomeia a falta."
-  required_evidence: "Posicao da Prefeitura no protocolo, ou dispositivo da LC 30/2007 (arts. 112 e seguintes, condominio) que diga expressamente o que se aplica a unidade em condominio."
+  required_evidence: "Certidao de Diretrizes com finalidade URBANISTICA, emitida pelo DHAP da prefeitura de Vargem Grande Paulista (A1, ciclo 11): cinco documentos, todos em maos. E o oraculo barato, e responde antes do protocolo. A LC 097/2020, que regulamenta condominio de lotes no municipio, foi lida e NAO fecha esta incognita — da argumento para os dois lados (PRF-0028)."
   owner: titular
   blocks: [CLM-0019]
 
@@ -55,3 +55,15 @@
 # alternativas reais nao sao dois lugares, sao duas decisoes sobre o mesmo lugar
 # — ADOTAR e NAO ADOTAR. O metodo john.go-no-go/0.1 faz isso, e nada foi
 # fabricado: GO e NO_GO sao duas alternativas de verdade.
+
+# A1 (ciclo 11) — a Lei 13.460/2017 obriga a Carta de Servicos a declarar prazos,
+# e a de Vargem Grande Paulista nao declara o desta certidao. Sem o prazo, nao da
+# para saber se o oraculo chega antes do protocolo — e e disso que depende a
+# janela de pre-registro ficar aberta.
+- id: UNK-0010
+  kind: unknown
+  question: "Qual o prazo de emissao da Certidao de Diretrizes no DHAP de Vargem Grande Paulista?"
+  why_unknown: "Nao consta em fonte oficial on-line. A RELACAO DE DOCUMENTOS do DHAP nao traz prazo, e a Carta de Servicos ao Usuario tambem nao — embora a Lei Federal 13.460/2017, que a institui, exija a divulgacao de prazos. Inventar um prazo plausivel seria fabricar numero, e o modulo devolve None de proposito, com teste que impede o contrario."
+  required_evidence: "Resposta do DHAP no balcao, por telefone ou por e-mail (canal declarado na Carta de Servicos), registrada com a data em que foi obtida."
+  owner: titular
+  blocks: [CLM-0032]

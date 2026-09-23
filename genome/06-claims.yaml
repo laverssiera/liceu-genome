@@ -224,3 +224,19 @@
   kind: claim
   statement: "Um produtor implementa o que o proprio contrato admite: se o contrato aceita o valor, o produtor publica."
   asserted_by: "sessao da U5, 2026-09-22 — premissa ao montar a evidencia do elo 2"
+
+# A1 (ciclo 11) — o oraculo barato das duas incognitas urbanisticas.
+- id: CLM-0032
+  kind: claim
+  statement: "A Certidao de Diretrizes com finalidade urbanistica responde a UNK-0008 e a UNK-0009 ANTES de o projeto ser protocolado na prefeitura."
+  asserted_by: "sessao da A1, 2026-09-23 — o plano do ciclo 11 poe o oraculo antes do protocolo"
+
+- id: CLM-0034
+  kind: claim
+  statement: "O procedimento do oraculo esta em fonte oficial legivel por maquina, e o que ele exige e derivado dela — inclusive o que ela NAO declara."
+  asserted_by: "sessao da A1, 2026-09-23 — regime declarado para o modulo do procedimento"
+
+- id: CLM-0033
+  kind: claim
+  statement: "A LC 097/2020 fecha a UNK-0009: como o condominio de lotes nao e parcelamento de solo, os limites de parcelamento da Tabela I nao alcancam a unidade."
+  asserted_by: "sessao da A1, 2026-09-23 — hipotese ao abrir a LC 097/2020 procurando fechar a incognita sem depender da prefeitura"
