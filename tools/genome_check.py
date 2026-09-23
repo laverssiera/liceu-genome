@@ -57,6 +57,9 @@ from pathlib import Path
 import genome_privacy_check
 import genome_producer_hosting
 
+# O leitor estrito de YAML mora no KIT, e nao aqui: uma fonte, um comportamento.
+from liceu_protocol.liceu_registry_check import ChaveDuplicada, carregar_estrito
+
 import yaml
 from jsonschema import Draft202012Validator
 
@@ -128,14 +131,34 @@ SILENT_TRUNCATION = re.compile(r"""^\s*(?:-\s+)?[A-Za-z_][\w.-]*:\s+[^\s"'#|>{\[
 
 
 def lint(genome_dir: Path) -> list[str]:
+    """Dois defeitos que o YAML comete CALADO, e que o schema nunca ve.
+
+    O truncamento por " #" ja estava aqui. A chave duplicada entra agora: o
+    YAML aceita a mesma chave duas vezes no mesmo mapa e fica com a ULTIMA, sem
+    erro. No kit isso apagou a regra de um contrato em 2026-09-23; aqui seria
+    pior, porque aqui o YAML E o grafo — um nó perdido em silêncio, e o juiz
+    julgaria um genoma que não é o que está escrito.
+
+    O loader vem do KIT (ADR-001: fonte unica; consumidor instala o pacote, nao
+    copia). Reimplementa-lo aqui criaria a segunda fonte da verdade sobre o que
+    conta como YAML valido — exatamente o que a FIT-010 existe para impedir.
+    """
     problems = []
     for f in sorted(genome_dir.glob("*.yaml")):
-        for i, line in enumerate(f.read_text(encoding="utf-8").splitlines(), 1):
+        texto = f.read_text(encoding="utf-8")
+        for i, line in enumerate(texto.splitlines(), 1):
             if line.lstrip().startswith("#"):
                 continue
             if SILENT_TRUNCATION.match(line):
                 problems.append(f"{f.name}:{i}: valor sem aspas contém ' #' — o YAML trunca em "
                                 f"silêncio. Ponha o valor entre aspas: {line.strip()[:70]}")
+        try:
+            carregar_estrito(texto)
+        except ChaveDuplicada as e:
+            problems.append(
+                f"{f.name}:{e.marca.line + 1}: chave duplicada {e.chave!r} — o YAML fica com a "
+                f"ÚLTIMA e descarta a primeira, SEM ERRO. O que estava na primeira deixou de "
+                f"existir e nada acusaria.")
     return problems
 
 
@@ -1560,7 +1583,7 @@ def main(argv=None) -> int:
     registry = load_kit_registry(Path(a.kit_registry) if a.kit_registry else None)
     problems = lint(Path(a.genome))
     if problems:
-        print("TRUNCAMENTO SILENCIOSO")
+        print("O YAML PERDEU ALGO EM SILÊNCIO")
         for p in problems:
             print("  ✗", p)
         return 1

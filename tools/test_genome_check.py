@@ -758,5 +758,48 @@ class CondicionalEmProsa(unittest.TestCase):
                          registry=reg)
 
 
+class YamlQuePerdeEmSilencio(unittest.TestCase):
+    """O `lint` guarda os dois defeitos que o YAML comete CALADO e que o schema
+    nunca ve. Aqui o grafo E o arquivo: um no perdido em silencio faria o juiz
+    julgar um genoma que nao e o que esta escrito.
+
+    O leitor estrito vem do KIT (ADR-001), e nao de uma copia local: duas
+    implementacoes do que conta como YAML valido seriam duas verdades.
+    """
+
+    def escrever(self, texto):
+        d = Path(tempfile.mkdtemp())
+        (d / "00-meta.yaml").write_text(texto, encoding="utf-8")
+        return d
+
+    def test_chave_duplicada_e_recusada_antes_de_qualquer_regra(self):
+        d = self.escrever("- id: X\n  kind: claim\n  statement: primeiro\n  statement: segundo\n")
+        try:
+            problemas = gc.lint(d)
+            self.assertTrue(any("chave duplicada 'statement'" in p for p in problemas), problemas)
+            self.assertTrue(any(":4:" in p for p in problemas),
+                            f"tem de apontar a LINHA da segunda ocorrencia; veio {problemas}")
+        finally:
+            shutil.rmtree(d)
+
+    def test_o_safe_load_perderia_o_primeiro_em_silencio(self):
+        """Sem este caso, o de cima provaria que o lint novo funciona — mas nao
+        que havia o que consertar."""
+        frouxo = yaml.safe_load("- id: X\n  statement: primeiro\n  statement: segundo\n")
+        self.assertEqual(frouxo[0]["statement"], "segundo")
+
+    def test_ancora_de_fusao_nao_e_duplicata(self):
+        """O grafo usa `<<: *ancora`. Um lint que a recusasse pararia o juiz —
+        foi o que a v0.22.0 do kit fazia."""
+        d = self.escrever("- &b\n  id: A\n  kind: claim\n- <<: *b\n  id: B\n")
+        try:
+            self.assertEqual([p for p in gc.lint(d) if "duplicada" in p], [])
+        finally:
+            shutil.rmtree(d)
+
+    def test_o_genoma_real_carrega_limpo(self):
+        self.assertEqual([p for p in gc.lint(ROOT / "genome") if "duplicada" in p], [])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
