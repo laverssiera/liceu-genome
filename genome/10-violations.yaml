@@ -105,20 +105,12 @@
     path: liceu_protocol/liceu_contract_registry.yaml
     note: "Fecha-se pondo a condicional no payload_schema deste contrato (if/then ou dependentRequired), num PR do liceu-protocol; a divida sai deste livro no mesmo PR, ou a catraca acusa DIVIDA OBSOLETA."
 
-- id: VIO-0009
-  kind: violation
-  fitness: FIT-018
-  detection: genome
-  subject: "liceu.cefeida.evidence@2.0.0/confidence"
-  observed: "`confidence` e exigido condicionalmente so na prosa de domain_invariants ('confidence obrigatorio quando kind = FORECAST'); nenhum `if`/`then`/`dependentRequired` do payload_schema o alcanca. Quem le so o esquema nao conhece o contrato: o gerador de vetores produz payload que o contrato proibe, e o boundary valida e deixa passar o que o contrato proibe."
-  location:
-    repo: liceu-protocol
-    path: liceu_protocol/liceu_contract_registry.yaml
-    note: "liceu.cefeida.evidence@2.0.0, domain_invariants"
-  tracked_in:
-    repo: liceu-protocol
-    path: liceu_protocol/liceu_contract_registry.yaml
-    note: "Fecha-se pondo a condicional no payload_schema deste contrato (if/then ou dependentRequired), num PR do liceu-protocol; a divida sai deste livro no mesmo PR, ou a catraca acusa DIVIDA OBSOLETA."
+# VIO-0009 (liceu.cefeida.evidence@2.0.0/confidence) SAIU em 2026-09-23, paga:
+# o contrato passou a carregar a condicional no payload_schema (allOf/if/then,
+# kit v0.18.0), e o gerador de vetores passou a le-la. Os ids nao sao
+# reutilizados. A VIO-0008, da 1.0.0, CONTINUA: aquela versao esta RETIRED, e
+# reescrever o esquema de uma versao aposentada seria mudar o que ja foi
+# publicado. Restam 8.
 
 - id: VIO-0010
   kind: violation

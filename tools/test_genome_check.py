@@ -684,14 +684,26 @@ class CondicionalEmProsa(unittest.TestCase):
             [e for e in j.errors if "FIT-018" in e and "admissibility" in e], [], j.errors)
 
     def test_70_divida_paga_e_nao_removida_do_livro_falha(self):
-        """A catraca nos dois sentidos. Pondo a condicional do CEFEIDA no
-        esquema sem tirar a VIO do livro, o juiz acusa DIVIDA OBSOLETA — e nao
-        deixa o livro virar ficcao de um defeito ja corrigido."""
+        """A catraca no outro sentido: pagar a divida no contrato e deixar a
+        linha no livro faz o juiz acusar DIVIDA OBSOLETA — o livro nao vira
+        ficcao de um defeito ja corrigido.
+
+        A divida usada e a PRIMEIRA do livro, e nao uma escolhida a dedo: a
+        versao anterior citava a VIO-0009 e apodreceu no dia em que ela foi
+        paga. Enquanto houver divida de FIT-018, este teste mede; quando nao
+        houver, ele deve sair junto com a fitness.
+        """
+        livro = [v for v in base()["10-violations.yaml"] if v.get("fitness") == "FIT-018"]
+        self.assertTrue(livro, "sem divida de FIT-018 no livro, este teste nao tem o que medir")
+        vio = livro[0]
+        contrato, _, campo = vio["subject"].partition("/")
+        cid, _, versao = contrato.partition("@")
+
         reg = copy.deepcopy(KIT_REGISTRY)
-        ev = reg["contracts"]["liceu.cefeida.evidence"]["2.0.0"]["payload_schema"]
-        ev["allOf"] = [{"if": {"properties": {"evidence_kind": {"const": "FORECAST"}}},
-                        "then": {"required": ["confidence"]}}]
-        self.assertFails(base(), "DÍVIDA OBSOLETA VIO-0009", registry=reg)
+        esquema = reg["contracts"][cid][versao]["payload_schema"]
+        # o minimo que faz o campo ficar SOB construto condicional
+        esquema["allOf"] = [{"if": {}, "then": {"required": [campo]}}]
+        self.assertFails(base(), f"DÍVIDA OBSOLETA {vio['id']}", registry=reg)
 
 
 if __name__ == "__main__":
