@@ -271,3 +271,28 @@
   kind: claim
   statement: "A guarda de borda do CORE acusa porta de servico de estado reaberta, em QUALQUER arquivo de compose do repositorio — e nao acusa porta de aplicacao nem de proxy."
   asserted_by: "sessao da B1, 2026-09-23 — regime declarado para a guarda depois de estende-la a todos os arquivos"
+
+# B3 (ciclo 11) — o Contract Reality Check. A pergunta nao e "o produtor publica
+# o que eu mando": e "o produtor aceita TUDO que o contrato admite". Um teste
+# escrito com o payload que o autor ja sabe gerar so exercita o caminho que ele
+# tinha na cabeca, e foi assim que o value_not_numeric sobreviveu ate travar a
+# cadeia da P-001 no elo 2 (PRF-0029).
+- id: CLM-0040
+  kind: claim
+  statement: "Todo payload que o contrato proibe e recusado pelo produtor com motivo nomeado — nunca com excecao."
+  asserted_by: "premissa do fail-closed do CEFEIDA, 2026-09-23 — o `_blocked` com reason/owner/missing era lido como o unico caminho de recusa"
+
+- id: CLM-0041
+  kind: claim
+  statement: "Quem le o payload_schema de um contrato conhece o contrato: o esquema carrega as exigencias que o contrato declara."
+  asserted_by: "premissa do gerador de vetores, 2026-09-23 — derivar os vetores do esquema so mede o contrato se o esquema for o contrato"
+
+- id: CLM-0042
+  kind: claim
+  statement: "Vetores derivados do payload_schema pegam o produtor mais estreito que o contrato, e a valvula das condicionais nao silencia vetor nenhum sem citacao da linha que autoriza."
+  asserted_by: "sessao da B3, 2026-09-23 — regime declarado para o gerador de vetores do kit 0.17.0"
+
+- id: CLM-0043
+  kind: claim
+  statement: "Todo produtor publicador do ecossistema aceita toda a faixa que seu contrato admite."
+  asserted_by: "generalizacao do resultado da B3, 2026-09-23 — um produtor conferido nao e cinco"
