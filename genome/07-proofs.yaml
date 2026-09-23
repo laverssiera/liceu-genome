@@ -464,3 +464,44 @@
     note: "A validacao recusava com value_not_numeric qualquer value que nao fosse int/float, e o payload_schema de liceu.cefeida.evidence 2.0.0 (kit v0.15.0) declara value type [number, string, object]. O produtor era MAIS ESTREITO que o proprio contrato: nao fabrica nada, mas barra fato legitimo — e o fato que a cadeia da P-001 precisava carregar e justamente um veredito com os impedimentos nomeados, que nao e medida. Achado ao rodar o elo 2 contra o CORE real; corrigido no PR 43."
   commit: 5cb4de0
   date: "2026-09-22"
+
+# A1 (ciclo 11) — a lei do condominio de lotes da argumento para os DOIS lados.
+# Achar isso custou duas paginas de leitura visual e evitou uma conclusao
+# confortavel: seria comodo declarar a UNK-0009 fechada e seguir.
+- id: PRF-0028
+  kind: proof
+  title: "A LC 097/2020 diz que condominio de lotes nao e parcelamento E que se submete a LC 30/2007 e suas alteracoes"
+  refutes: [CLM-0033]
+  basis: record_reading
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/dados/certidao_diretrizes_vgp.json
+    note: "LC 097/2020 de Vargem Grande Paulista (Camara Municipal, Documento/27500, arquivo Id=29211, sha256 3e33b94903a0df5043e14f6a7eda51126b9f866dd509052774e3b5c997ff946b, 9 paginas, 0 objetos /Font — digitalizacao, lida visualmente a 200 dpi). Art. 3o, I: o condominio de lotes 'nao se caracteriza como parcelamento de solo'. Art. 4o, VI: o CL esta submetido, cumulativamente, 'a legislacao estadual e municipal aplicavel, em especial a Lei Complementar no 30 (...) e suas alteracoes' — que e onde vive a Tabela I, com a area minima do lote. Os dois dispositivos convivem, e a lei nao diz qual prevalece para a unidade. Alem disso nao esta estabelecido que o regime da P-001 seja condominio de LOTES e nao condominio edilicio. A incognita continua aberta, e o oraculo e a Certidao de Diretrizes."
+  commit: "0455378"
+  date: "2026-09-23"
+
+- id: PRF-0029
+  kind: proof
+  title: "O procedimento do oraculo existe, e barato e esta em fonte oficial legivel: cinco documentos"
+  proves: [CLM-0034]
+  basis: test
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_certidao_diretrizes.py
+    name: test_sao_cinco_documentos_e_sao_os_da_relacao_oficial
+    pr: 14
+  environment: ci
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/certidao_diretrizes.py
+    note: "RELACAO DE DOCUMENTOS do DHAP (sha256 48269f22968e242e2077737352f695cd37c210bf90111a867a343305137de579) e REQUERIMENTO DHAP (sha256 c8fd94db08e2f03af0b1075bae68af70aca12f55213f62db8567aee04db71285), ambos no dominio da prefeitura e ambos legiveis por maquina. Certidao de Diretrizes: itens 1, 2, 6, 20 e 26. A Certidao Urbanistica exige treze, com EIV e diretrizes da SABESP — instrumento errado para duas perguntas de zoneamento. O modulo devolve prazo None e um teste impede que alguem ponha ali um numero plausivel."
+  commit: "0455378"
+  date: "2026-09-23"
+  mechanism:
+    repo: JURIDICO-TECH
+    paths:
+    - backend/juridicotech/modules/certidao_diretrizes.py
+    - backend/juridicotech/dados/certidao_diretrizes_vgp.json
+    - backend/tests/test_certidao_diretrizes.py
+    content_hash: f2d7ba0a7f707d0c6641ec423f59cb7a16beff0387098adf6772175567708122
+    commit: "0455378"
