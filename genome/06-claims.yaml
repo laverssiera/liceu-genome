@@ -252,3 +252,10 @@
   kind: claim
   statement: "Produtor sem repositorio proprio declara, em campo legivel por maquina, onde esta hospedado e por que nao tem repositorio."
   asserted_by: "sessao da B4, 2026-09-23 — regime declarado depois de eu relatar como inconsistencia o que era declaracao deliberada"
+
+# B2 (ciclo 11) — a tentacao mais cara do ADR-003: achar que escolher a
+# topologia resolve o problema da Testemunha.
+- id: CLM-0037
+  kind: claim
+  statement: "Escolher a topologia de replicacao (A, B ou C) faz a Testemunha passar a observar a Ativa."
+  asserted_by: "premissa do proprio enquadramento do ADR-003, 2026-09-23 — tres opcoes apresentadas como se a escolha resolvesse a pergunta que decide"
