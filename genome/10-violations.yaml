@@ -60,20 +60,13 @@
     path: liceu_protocol/liceu_contract_registry.yaml
     note: "Fecha-se pondo a condicional no payload_schema deste contrato (if/then ou dependentRequired), num PR do liceu-protocol; a divida sai deste livro no mesmo PR, ou a catraca acusa DIVIDA OBSOLETA."
 
-- id: VIO-0006
-  kind: violation
-  fitness: FIT-018
-  detection: genome
-  subject: "liceu.archimedes.planning-state@2.0.0/candidates"
-  observed: "`candidates` e exigido condicionalmente so na prosa de domain_invariants ('candidates nao vazio quando state_status = AUTHORITATIVE_OUTPUT'); nenhum `if`/`then`/`dependentRequired` do payload_schema o alcanca. Quem le so o esquema nao conhece o contrato: o gerador de vetores produz payload que o contrato proibe, e o boundary valida e deixa passar o que o contrato proibe."
-  location:
-    repo: liceu-protocol
-    path: liceu_protocol/liceu_contract_registry.yaml
-    note: "liceu.archimedes.planning-state@2.0.0, domain_invariants"
-  tracked_in:
-    repo: liceu-protocol
-    path: liceu_protocol/liceu_contract_registry.yaml
-    note: "Fecha-se pondo a condicional no payload_schema deste contrato (if/then ou dependentRequired), num PR do liceu-protocol; a divida sai deste livro no mesmo PR, ou a catraca acusa DIVIDA OBSOLETA."
+# VIO-0006 (liceu.archimedes.planning-state@2.0.0/candidates) SAIU em
+# 2026-09-23, paga: o contrato passou a carregar a condicional no
+# payload_schema (allOf/if/then com minItems, kit v0.19.0). Os ids nao sao
+# reutilizados. A VIO-0007, do `crs` do MESMO contrato, continua — e nao por
+# falta de trabalho: `where` e declarado so como objeto e no uso real aparece
+# em tres formas incompativeis, entao dizer QUANDO ha geometria e decisao de
+# contrato. Restam 7.
 
 - id: VIO-0007
   kind: violation
