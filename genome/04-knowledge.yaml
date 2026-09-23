@@ -86,3 +86,15 @@
   permitted_uses: [exploration, design_reference, research, comparison_as_proposal]
   prohibited_uses: [authoritative_decision, authoritative_budget, procurement_commitment, physical_execution_authorization]
   source: {repo: JURIDICO-TECH, path: backend/juridicotech/dados/certidao_diretrizes_vgp.json, note: "Derivado de duas fontes oficiais com URL e sha256: a RELACAO DE DOCUMENTOS do DHAP e o REQUERIMENTO DHAP. Cinco documentos (1, 2, 6, 20, 26), um pedido por processo, e o requerimento com a caixa 'Urbanistica'. Prazo NAO declarado (UNK-0010). Tres dos cinco documentos carregam dado pessoal e por isso ficam com o titular: pedir e ato do RT, nao do LICEU."}
+
+# B1 (ciclo 11) — o inventario de segredos. NOME e ALCANCE, nunca valor: o
+# genoma e publico, e fingerprint de segredo tambem e segredo quando o segredo
+# e curto. Aqui nao ha nem fingerprint — ha contagem.
+- id: F0A-INVENTARIO-SEGREDOS
+  kind: knowledge
+  title: "F0-A — segredos compartilhados entre repositorios, por alcance"
+  knowledge_type: norm
+  validity: PROPOSTA
+  permitted_uses: [exploration, design_reference, research, comparison_as_proposal]
+  prohibited_uses: [authoritative_decision, authoritative_budget, procurement_commitment, physical_execution_authorization]
+  source: {repo: LICEU_6.0_CONSTRUTORA_VIRTUAL, path: infra/security/inventario_segredos.py, note: "101 nomes de segredo distintos nos 19 repositorios; 17 aparecem em mais de um. Por alcance: POSTGRES_PASSWORD 14, NEO4J_PASSWORD 12, CANONICAL_EVENT_STORE_API_SECRET 11 (o legado), GF_SECURITY_ADMIN_PASSWORD 7, FEDERATION_SECRET 5, JWT_SECRET 5. GH_TOKEN aparece em 18 e NAO e segredo compartilhado: e o token por repositorio da CI, e esta listado para nao ser confundido com um. Tres arquivos .env morreram com Codespaces apagados em 2026-09-22 e nao foram salvos — apagar ambiente nao revoga credencial. O scanner e reproduzivel e nunca imprime valor."}

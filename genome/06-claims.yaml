@@ -259,3 +259,15 @@
   kind: claim
   statement: "Escolher a topologia de replicacao (A, B ou C) faz a Testemunha passar a observar a Ativa."
   asserted_by: "premissa do proprio enquadramento do ADR-003, 2026-09-23 — tres opcoes apresentadas como se a escolha resolvesse a pergunta que decide"
+
+# B1 (ciclo 11) — a borda antes da rotacao. A CLM-0038 era a premissa de que
+# uma guarda verde significava borda fechada.
+- id: CLM-0038
+  kind: claim
+  statement: "A borda de rede do ecossistema esta fechada: nenhum servico de estado publica porta fora do loopback."
+  asserted_by: "premissa da guarda de borda do CORE, 2026-09-23 — a CI passava verde e era lida como cobertura do ecossistema"
+
+- id: CLM-0039
+  kind: claim
+  statement: "A guarda de borda do CORE acusa porta de servico de estado reaberta, em QUALQUER arquivo de compose do repositorio — e nao acusa porta de aplicacao nem de proxy."
+  asserted_by: "sessao da B1, 2026-09-23 — regime declarado para a guarda depois de estende-la a todos os arquivos"

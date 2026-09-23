@@ -556,3 +556,42 @@
     note: "sha256 5386d26633c2a71b54129d65831319908420686a0b746f2f6766b852acfab21f, no commit 9cb4fe7. O §4 poe a pergunta que decide — 'A Testemunha pode observar a Ativa por um caminho que nao passe pelo mesmo armazenamento? Se nao puder, ela nao e testemunha — e replica' — e responde: 'Hoje: nao pode, porque nao observa. attest() recebe um veredito e o grava'. Exige duas coisas INDEPENDENTEMENTE DA OPCAO: (1) sonda propria, e (2) lugar proprio para gravar. O §6 fecha: 'Nenhuma das tres dispensa o item (1) do §4 — a sonda propria da Testemunha. Ela e trabalho seu em qualquer topologia, e sem ela a CLM-0006 continua REFUTED mesmo com a replicacao pronta. Seria falso dizer o contrario.' A topologia decide se o item (2) vem de graca (B) ou tem de ser construido (A, C); nao decide o item (1)."
   commit: "9cb4fe7"
   date: "2026-09-23"
+
+# B1 (ciclo 11) — o inventario e a borda. Nenhum valor de segredo entra aqui:
+# so nome, alcance e contagem.
+- id: PRF-0033
+  kind: proof
+  title: "128 portas de servico de estado publicadas em todas as interfaces, em 15 repositorios"
+  refutes: [CLM-0038]
+  basis: record_reading
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: docs/security/2026-09-23-F0A-inventario-e-F0B-borda.md
+    note: "Varredura estatica dos arquivos *compose*.y*ml nos 19 repositorios (infra/security/borda_compose.py). Porta de destino em {5432, 7687, 7474, 4222, 8222, 6379, 9000, ...} publicada sem 127.0.0.1: 128 ocorrencias em 15 repositorios. A guarda que ja existia na CI do CORE era boa e olhava UM arquivo — o docker-compose.yml —, e os outros quatro do proprio CORE somavam 18 exposicoes. Essas 18 foram fechadas; 110 continuam, em 14 repositorios (BIM 14, HUB 12, P-D 12, ANCHOR 11, CEA 9, John 9, Archimedes 8, OPERA 7, ECONO 6, ACADEMIA 6, 3C273 4, FORNECEDORES 4, GAME-MKT 4, JURIDICO-TECH 4). Guarda verde nao significava borda fechada: significava um arquivo conferido."
+  commit: "e9fa53e"
+  date: "2026-09-23"
+
+- id: PRF-0034
+  kind: proof
+  title: "A guarda acusa a porta reaberta em qualquer compose, e nao acusa porta de aplicacao"
+  proves: [CLM-0039]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/tests/test_borda_compose.py
+    name: test_varre_todo_arquivo_de_compose_e_nao_so_o_principal
+    pr: 66
+  environment: ci
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/borda_compose.py
+    note: "Oito testes: quatro que exigem acusacao (porta em todas as interfaces, 0.0.0.0 explicito, os sete servicos de estado, e o arquivo de compose que NAO e o principal — o buraco que a F0-B encontrou) e tres que exigem silencio (127.0.0.1 e [::1], porta de aplicacao e de proxy, node_modules), mais o controle contra o repositorio real. Uma verificacao que passa e nunca falhou pode estar passando porque nao olha."
+  commit: "bec455d"
+  date: "2026-09-23"
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths:
+    - infra/security/borda_compose.py
+    - cv-backend-core/tests/test_borda_compose.py
+    content_hash: 14f6c3bdc5cc3955edd1af35eb3b0787f9dfcc41ab4f4ec4661d6c72190b6e26
+    commit: "bec455d"
