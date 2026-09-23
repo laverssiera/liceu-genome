@@ -637,6 +637,25 @@ class Judge:
             for versao, entrada in (versoes or {}).items():
                 if not isinstance(entrada, dict):
                     continue
+                # Versao RETIRED nao alcanca produtor nenhum: ninguem pode
+                # publicar nela, e reescrever o payload_schema de uma versao
+                # aposentada seria mudar o que ja foi publicado. Cobrar dela e
+                # divida que nao tem conserto — e divida sem conserto ensina a
+                # ignorar o livro.
+                #
+                # DEPRECATED NAO entra nesta excecao: contrato depreciado ainda
+                # pode ser usado, e prosa que ninguem executa continua sendo o
+                # defeito. A excecao e so para o que ja morreu.
+                #
+                # E nao e pular calado: o que se deixa de cobrar vira AVISO, com
+                # a linha inteira. Parar de contar nao pode virar parar de olhar.
+                if str(entrada.get("status") or "").upper() == "RETIRED":
+                    for inv in (entrada.get("domain_invariants") or []):
+                        if COND_PROSA.search(str(inv)):
+                            self.warnings.append(
+                                f"FIT-018 nao cobra {cid}@{versao} (RETIRED), e a condicional "
+                                f"continua so na prosa: {str(inv)!r}")
+                    continue
                 esquema = entrada.get("payload_schema") or {}
                 campos = set(esquema.get("properties") or {})
                 cobertos = campos_sob_condicional(esquema)

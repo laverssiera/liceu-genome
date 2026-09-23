@@ -683,6 +683,46 @@ class CondicionalEmProsa(unittest.TestCase):
         self.assertEqual(
             [e for e in j.errors if "FIT-018" in e and "admissibility" in e], [], j.errors)
 
+    # A excecao do RETIRED (decisao do titular, 2026-09-23). Ela e uma FRESTA
+    # na fitness, e fresta sem teste vira buraco: estes quatro fixam o tamanho
+    # exato dela.
+    def test_71_versao_RETIRED_com_condicional_so_na_prosa_nao_e_divida(self):
+        reg = self._contrato(["confidence obrigatorio quando kind = FORECAST"],
+                             self.ESQUEMA_SEM)
+        reg["contracts"]["liceu.teste.condicional"]["1.0.0"]["status"] = "RETIRED"
+        j, _ = judge(base(), reg)
+        self.assertEqual([e for e in j.errors if "FIT-018" in e and "teste.condicional" in e],
+                         [], j.errors)
+
+    def test_72_o_que_a_fitness_deixa_de_cobrar_vira_AVISO(self):
+        """Parar de contar nao pode virar parar de olhar."""
+        reg = self._contrato(["confidence obrigatorio quando kind = FORECAST"],
+                             self.ESQUEMA_SEM)
+        reg["contracts"]["liceu.teste.condicional"]["1.0.0"]["status"] = "RETIRED"
+        j, _ = judge(base(), reg)
+        self.assertTrue(
+            any("FIT-018 nao cobra liceu.teste.condicional@1.0.0 (RETIRED)" in w
+                for w in j.warnings),
+            f"a condicional de uma versao RETIRED tem de aparecer nos avisos; veio {j.warnings}")
+
+    def test_73_DEPRECATED_nao_entra_na_excecao(self):
+        """Contrato depreciado ainda pode ser usado: prosa que ninguem executa
+        continua sendo o defeito. A excecao e so para o que ja morreu."""
+        reg = self._contrato(["confidence obrigatorio quando kind = FORECAST"],
+                             self.ESQUEMA_SEM)
+        reg["contracts"]["liceu.teste.condicional"]["1.0.0"]["status"] = "DEPRECATED"
+        self.assertFails(base(), "VIOLAÇÃO NOVA FIT-018: liceu.teste.condicional@1.0.0",
+                         registry=reg)
+
+    def test_74_versao_que_volta_de_RETIRED_volta_a_ser_cobrada(self):
+        """A excecao e do ESTADO, e nao do contrato: se a versao reviver, a
+        divida revive com ela."""
+        reg = self._contrato(["confidence obrigatorio quando kind = FORECAST"],
+                             self.ESQUEMA_SEM)
+        reg["contracts"]["liceu.teste.condicional"]["1.0.0"]["status"] = "ACTIVE"
+        self.assertFails(base(), "VIOLAÇÃO NOVA FIT-018: liceu.teste.condicional@1.0.0",
+                         registry=reg)
+
     def test_70_divida_paga_e_nao_removida_do_livro_falha(self):
         """A catraca no outro sentido: pagar a divida no contrato e deixar a
         linha no livro faz o juiz acusar DIVIDA OBSOLETA — o livro nao vira
