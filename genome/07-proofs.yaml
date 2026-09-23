@@ -533,7 +533,7 @@
   location:
     repo: liceu-genome
     path: tools/genome_check.py
-    note: "Quatro recusas e um controle positivo: sem repository e sem hosted_in; hosted_in para produtor que nao existe; hosted_in para produtor que TAMBEM nao tem repositorio (a cadeia de hospedagem tem de chegar a codigo); hosted_in sem razao; e o kit real passando. O liceu.authority continua com repository null, que e a verdade — o control plane nao e monolito soberano e nao tem dominio proprio —, e agora diz hosted_in: liceu.core, com a razao apontando cv-backend-core/app/services/authority_control_plane.py."
+    note: "Quatro recusas e um controle positivo: sem repository e sem hosted_in; hosted_in para produtor que nao existe; hosted_in para produtor que TAMBEM nao tem repositorio (a cadeia de hospedagem tem de chegar a codigo); hosted_in sem razao; e o kit real passando. O liceu.authority continua com repository null, que e a verdade — o control plane nao e monolito soberano e nao tem dominio proprio —, e agora diz hosted_in: liceu.core, com a razao apontando cv-backend-core/app/services/authority_control_plane.py. SUPERFICIE REFEITA em 2026-09-23 (commit 10352d4): a FIT-018 entrou no mesmo genome_check.py, entao o hash mudou sem que o comportamento provado mudasse. A prova nao foi transcrita — foi RODADA de novo: test_60 a test_63 passam sobre a superficie nova, e o campo hosted_in do kit continua o que a nota descreve. A colisao vai se repetir: o mechanism desta prova cobre o arquivo inteiro do juiz, e toda fitness nova o altera."
   commit: "d02234c"
   date: "2026-09-23"
   mechanism:
@@ -541,8 +541,8 @@
     paths:
     - tools/genome_check.py
     - tools/test_genome_check.py
-    content_hash: bf16489927df2127f704f1798c8e66926d8d98782d9c48fefd5cf017e00ef0af
-    commit: "d02234c"
+    content_hash: d883d6aa7863c00bc10d144dd60ca3472ef2c86186b82115f1d36f3f0ec7aae3
+    commit: "10352d4"
 
 # B2 (ciclo 11) — o proprio ADR diz que nenhuma das tres dispensa a sonda.
 - id: PRF-0032
