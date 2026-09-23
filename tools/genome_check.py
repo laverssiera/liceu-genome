@@ -55,6 +55,7 @@ import subprocess
 from pathlib import Path
 
 import genome_privacy_check
+import genome_producer_hosting
 
 import yaml
 from jsonschema import Draft202012Validator
@@ -613,33 +614,13 @@ class Judge:
                       f"dado pessoal em repositório público: {achado}")
 
         # FIT-017 — produtor sem repositório declara ONDE está, para o juiz.
-        # Nenhuma fitness confere o kit contra o mundo, e o buraco aparece assim:
-        # `repository: null` pode ser a verdade (o control plane não é monólito
-        # soberano e não tem domínio próprio), e mesmo assim não dizer onde o
-        # código está. A razão vinha escrita em campo de nome maiúsculo — prosa,
-        # que explica para humano e que nenhuma verificação consegue seguir.
-        for pid, entry in (self.registry_producers or {}).items():
-            entry = entry or {}
-            if entry.get("repository"):
-                continue
-            hospedeiro = entry.get("hosted_in")
-            if not hospedeiro:
-                self.find("FIT-017", f"{pid}/hosted_in",
-                          f"{pid} não declara repository nem hosted_in: nada no kit diz onde "
-                          f"procurar o código deste produtor")
-                continue
-            anfitriao = (self.registry_producers or {}).get(hospedeiro)
-            if anfitriao is None:
-                self.find("FIT-017", f"{pid}/hosted_in/inexistente",
-                          f"{pid} declara hosted_in {hospedeiro!r}, que não é produtor do registry")
-            elif not (anfitriao or {}).get("repository"):
-                self.find("FIT-017", f"{pid}/hosted_in/sem_repo",
-                          f"{pid} declara hosted_in {hospedeiro!r}, que também não tem "
-                          f"repositório: a cadeia de hospedagem não chega a código nenhum")
-            elif not str(entry.get("hosted_in_reason") or "").strip():
-                self.find("FIT-017", f"{pid}/hosted_in_reason",
-                          f"{pid} diz onde está mas não diz por que não tem repositório próprio: "
-                          f"hosted_in sem razão é um ponteiro sem motivo")
+        # A regra e os testes dela vivem em tools/genome_producer_hosting.py, e
+        # não aqui: o `mechanism` da PRF-0031 cobria este arquivo inteiro, então
+        # toda fitness nova invalidava uma prova que não tinha mudado. A FIT-012
+        # proíbe superfície de repositório inteiro pelo mesmo motivo; 1500 linhas
+        # que crescem a cada ciclo são o mesmo defeito em escala menor.
+        for subject, msg in genome_producer_hosting.achados(self.registry_producers):
+            self.find("FIT-017", subject, msg)
 
         # FIT-018 — prosa não é executável. Um invariante CONDICIONAL escrito
         # em `domain_invariants` e ausente do `payload_schema` não alcança
