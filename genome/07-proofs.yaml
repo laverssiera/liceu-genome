@@ -543,3 +543,16 @@
     - tools/test_genome_check.py
     content_hash: bf16489927df2127f704f1798c8e66926d8d98782d9c48fefd5cf017e00ef0af
     commit: "d02234c"
+
+# B2 (ciclo 11) — o proprio ADR diz que nenhuma das tres dispensa a sonda.
+- id: PRF-0032
+  kind: proof
+  title: "Nenhuma das tres topologias dispensa a sonda: sem ela a CLM-0006 continua REFUTED mesmo com a replicacao pronta"
+  refutes: [CLM-0037]
+  basis: record_reading
+  location:
+    repo: liceu-protocol
+    path: docs/ADR-003-replicacao-do-estado-de-autoridade.md
+    note: "sha256 5386d26633c2a71b54129d65831319908420686a0b746f2f6766b852acfab21f, no commit 9cb4fe7. O §4 poe a pergunta que decide — 'A Testemunha pode observar a Ativa por um caminho que nao passe pelo mesmo armazenamento? Se nao puder, ela nao e testemunha — e replica' — e responde: 'Hoje: nao pode, porque nao observa. attest() recebe um veredito e o grava'. Exige duas coisas INDEPENDENTEMENTE DA OPCAO: (1) sonda propria, e (2) lugar proprio para gravar. O §6 fecha: 'Nenhuma das tres dispensa o item (1) do §4 — a sonda propria da Testemunha. Ela e trabalho seu em qualquer topologia, e sem ela a CLM-0006 continua REFUTED mesmo com a replicacao pronta. Seria falso dizer o contrario.' A topologia decide se o item (2) vem de graca (B) ou tem de ser construido (A, C); nao decide o item (1)."
+  commit: "9cb4fe7"
+  date: "2026-09-23"
