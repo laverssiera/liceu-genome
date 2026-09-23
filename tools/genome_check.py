@@ -874,6 +874,23 @@ class Judge:
                  "settled_by": c["prediction"]["settled_by"],
                  "status": self.status[c["id"]]}
                 for c in self.kind["claim"] if c.get("prediction")],
+            "proofs": [
+                {"id": p["id"], "title": p["title"], "basis": p["basis"],
+                 "date": p["date"], "scale": p.get("scale"),
+                 "environment": p.get("environment"),
+                 "proves": p.get("proves") or [], "refutes": p.get("refutes") or [],
+                 "superseded": p["id"] in self.superseded_by,
+                 "expired": p["id"] in self.expired,
+                 "repo": ((p.get("mechanism") or p.get("location") or
+                           p.get("evidence_artifact") or p.get("test") or {}).get("repo"))}
+                for p in sorted(self.kind["proof"], key=lambda x: x["id"])],
+            "producers": sorted(
+                ({"id": pid,
+                  "repo": (entry or {}).get("repository"),
+                  "teto": ((entry or {}).get("teto") or {}).get("teto_interno"),
+                  "instancias": len((entry or {}).get("instances") or [])}
+                 for pid, entry in (self.registry_producers or {}).items()),
+                key=lambda x: x["id"]),
             "q_asserted_fields": sorted(
                 f"{n['id']}.{campo}"
                 for kind, campos in REPORTED_FIELDS.items() for n in self.kind[kind]
@@ -1038,117 +1055,375 @@ def text_report(m: dict, j: Judge) -> str:
     return "\n".join(L)
 
 
-def html_report(m: dict, j: Judge) -> str:
+def proveniencia(genome_dir: Path) -> dict:
+    """De onde esta pagina saiu. Sem isto, ela envelhece em silencio.
+
+    O commit e o do repositorio do genoma; a data e a da geracao; o kit e o
+    INSTALADO, o mesmo que a FIT-010 usa para julgar. Uma pagina que nao diz
+    isso e indistinguivel de uma copia escrita a mao.
+    """
+    def git(*args):
+        try:
+            out = subprocess.run(["git", *args], cwd=str(ROOT), capture_output=True,
+                                 text=True, timeout=10)
+            return out.stdout.strip() if out.returncode == 0 else ""
+        except Exception:                                    # noqa: BLE001
+            return ""
+
+    try:
+        from liceu_protocol import KIT_DIR
+        kit = dict(l.split("=", 1) for l in
+                   (Path(KIT_DIR) / "VERSION").read_text(encoding="utf-8").splitlines()
+                   if "=" in l)
+    except Exception:                                        # noqa: BLE001
+        kit = {}
+    return {
+        "commit": git("rev-parse", "--short", "HEAD"),
+        "commit_date": git("log", "-1", "--format=%cI"),
+        "branch": git("rev-parse", "--abbrev-ref", "HEAD"),
+        "sujo": bool(git("status", "--porcelain")),
+        "gerado_em": datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC"),
+        "genome_dir": str(genome_dir),
+        "kit": kit.get("conformance_kit", "?"),
+        "constitution": kit.get("constitution", "?"),
+    }
+
+
+FONTES = ('<link rel="preconnect" href="https://fonts.googleapis.com">'
+          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
+          '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?'
+          'family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">')
+
+
+def html_report(m: dict, j: Judge, *, fragment: bool = False) -> str:
+    """O Self-Model, em pagina. Nada aqui e escrito a mao.
+
+    Toda secao sai de `m`, que o juiz deriva do genoma e do kit instalado. Um
+    relatorio escrito a mao seria copia declarada do que o juiz ja deriva, e
+    ficaria desatualizado em silencio — o defeito que a FIT-010 existe para
+    impedir. Por isso a pagina carrega PROCEDENCIA: commit do genoma, data da
+    geracao e versao do kit. Uma pagina velha diz que esta velha.
+
+    fragment=True omite doctype/html/head/body — e o formato que um Artifact
+    espera, porque a plataforma poe o proprio esqueleto em volta.
+    """
     esc = html.escape
     c = m["chain"]
+    prov = proveniencia(Path(getattr(j, "genome_dir", ROOT / "genome")))
     tone = {"PROVEN": "ok", "TESTED": "at", "UNPROVEN": "no", "REFUTED": "bad", "STALE": "at"}
 
-    def pill(st):
-        return f'<span class="pill {tone.get(st, "no")}">{esc(st)}</span>'
+    def pill(st, extra=""):
+        return f'<span class="pill {tone.get(st, "no")}{extra}">{esc(str(st))}</span>'
 
+    def secao(titulo, corpo, nota=""):
+        n = f'<p class="nota">{nota}</p>' if nota else ""
+        return f"<section><h2>{esc(titulo)}</h2>{n}{corpo}</section>"
+
+    # ---------------------------------------------------------------- cadeia
+    escalas = ""
+    for nome, v in m["chain_by_scale"].items():
+        if v["blocked_by"]:
+            quem = ", ".join(f"{i} {st}" for i, st in v["blocked_by"])
+            haveria = (f' <span class="dim">· haveria {v["structural_if_unblocked"]}/{c["positions"]}'
+                       f" se nao estivesse</span>" if v["structural_if_unblocked"] else "")
+            escalas += (f'<tr><td class="m">{esc(nome)}</td>'
+                        f'<td colspan="2">{pill("REFUTED")} bloqueada por {len(v["blocked_by"])}'
+                        f' item(ns){haveria}<div class="dim m">{esc(quem)}</div></td></tr>')
+        else:
+            escalas += (f'<tr><td class="m">{esc(nome)}</td>'
+                        f'<td><b class="num">{v["structural"]}</b><span class="dim">/{c["positions"]}'
+                        f' estrutural</span></td>'
+                        f'<td><b class="num">{v["substantive"]}</b><span class="dim">/{c["positions"]}'
+                        f' substantiva</span></td></tr>')
+    teto = ""
+    if c.get("shadow_ceiling"):
+        teto = (f'<p class="teto"><b>Teto em modo sombra: {c["shadow_ceiling"]}/{c["positions"]}'
+                f' por desenho.</b> {esc(str(c.get("shadow_note") or "").strip())}</p>')
+
+    # ---------------------------------------------------------------- previsoes
+    prev = ""
+    if m.get("predictions"):
+        conf = sum(1 for x in m["predictions"] if x["status"] == "PROVEN")
+        refu = sum(1 for x in m["predictions"] if x["status"] == "REFUTED")
+        linhas = "".join(
+            f'<tr><td>{pill(x["status"])}</td><td><div>{esc(x["statement"])}</div>'
+            f'<div class="dim m">registrada {esc(x["registered_at"])} · {esc(x["method"])}</div>'
+            f'<div class="dim">resolve: {esc(x["settled_by"])}</div></td></tr>'
+            for x in m["predictions"])
+        aviso = ("" if conf or refu else
+                 '<p class="aviso">O mundo real ainda nao respondeu nenhuma. Enquanto este '
+                 'historico nao existir, o LICEU nao deve conduzir processo algum.</p>')
+        prev = secao(
+            "Modo sombra — o que foi previsto antes de o mundo responder",
+            f'<div class="chain"><div class="stat"><b>{len(m["predictions"])}</b>'
+            f'<span>pre-registradas</span></div>'
+            f'<div class="stat"><b>{conf}</b><span>confirmadas</span></div>'
+            f'<div class="stat"><b>{refu}</b><span>refutadas</span></div></div>'
+            f'{aviso}<div class="tbl"><table>{linhas}</table></div>',
+            "Previsao registrada depois do fato nao e previsao. A FIT-016 compara a data da "
+            "prova com a do registro, e so observacao externa resolve — teste nao e oraculo.")
+
+    # ---------------------------------------------------------------- PFC
+    pfc = ""
+    if m.get("pfc"):
+        itens = "".join(
+            f'<article class="card"><header><span class="m">{esc(f["id"])}</span>'
+            f'<h3>{esc(f["title"])}</h3></header>'
+            f'<p class="falsa">teria afirmado: <q>{esc(f["false_claim"])}</q></p>'
+            + "".join(f'<div class="m dim">{esc(t)}</div>' for t in f["tests"])
+            + "</article>" for f in m["pfc"])
+        pfc = secao("Falsas afirmacoes evitadas", f'<div class="grid">{itens}</div>',
+                    "So conta com teste de regressao que EXISTE — o juiz confere arquivo e nome. "
+                    "Sem teste executavel, <q>erro evitado</q> e so mais uma afirmacao.")
+
+    # ---------------------------------------------------------------- provas
+    provas = "".join(
+        f'<tr><td class="m">{esc(pr["id"])}</td>'
+        f'<td>{pill("PROVEN" if pr["proves"] else "REFUTED")}'
+        f'{" " + pill("STALE") if pr["expired"] else ""}'
+        f'{chr(32) + chr(60)}span class="dim m"{chr(62)}{esc(pr["basis"])}'
+        f'{" · " + esc(pr["scale"]) if pr["scale"] else ""}'
+        f'{" · " + esc(pr["environment"]) if pr["environment"] else ""}</span></td>'
+        f'<td>{esc(pr["title"])}'
+        f'<div class="dim m">{esc(", ".join(pr["proves"] + pr["refutes"]))}'
+        f'{" · " + esc(pr["repo"]) if pr["repo"] else ""} · {esc(pr["date"])}</div></td></tr>'
+        for pr in m.get("proofs", []) if not pr["superseded"])
+    n_sup = sum(1 for pr in m.get("proofs", []) if pr["superseded"])
+
+    # ---------------------------------------------------------------- produtores
+    prods = "".join(
+        f'<tr><td class="m">{esc(x["id"])}</td>'
+        f'<td class="m">{esc(x["repo"]) if x["repo"] else pill("REFUTED") + " sem repositorio declarado"}</td>'
+        f'<td class="m dim">{esc(str(x["teto"] or "—"))}</td>'
+        f'<td class="m dim">{x["instancias"]}</td></tr>' for x in m.get("producers", []))
+    sem_repo = [x["id"] for x in m.get("producers", []) if not x["repo"]]
+
+    # ---------------------------------------------------------------- resto
     claims = "".join(
         f'<tr><td class="m">{esc(cid)}</td><td>{pill(v["status"])}'
-        f'{"<span class=eph>efêmero</span>" if v["ephemeral"] else ""}</td>'
+        f'{"<span class=eph>efemero</span>" if v["ephemeral"] else ""}</td>'
         f'<td>{esc(v["statement"])}</td></tr>' for cid, v in m["claims"].items())
-    screens = ""
-    for s in m["screens"]:
-        disp = "".join(f'<div><span class="m">{esc(d)}</span> '
-                       + " ".join(f'<span class="chip">{esc(x)}</span>' for x in v) + "</div>"
-                       for d, v in s["displays"].items()) or '<span class="dim">nenhuma dimensão</span>'
-        users = "".join(f'<div><span class="m">{esc(r)}</span> {esc(t or "")} '
-                        f'<span class="pill no">{esc(v or "")}</span> '
-                        f'<span class="dim">· {esc(u)}</span></div>' for r, t, v, u in s["used_by"])
-        john = ", ".join(f"{a} · {b}" for a, b in s["john"]) or "nenhum"
-        screens += f"""
-<article class="scr">
-  <header><span class="m">{esc(s['id'])}</span><h3>{esc(s['title'])}</h3>
-    <span class="pill no">{esc(s['implementation'])}</span></header>
-  <dl>
-    <dt>dono</dt><dd class="m">{esc(s['owner'])}</dd>
-    <dt>lê</dt><dd class="m">{esc(', '.join(s['reads']))}</dd>
-    <dt>jornada</dt><dd><span class="m">{esc(s['journey'][0])}</span> <span class="pill no">{esc(s['journey'][1] or '')}</span></dd>
-    <dt>usada por</dt><dd>{users}</dd>
-    <dt>JOHN</dt><dd>{esc(john)}</dd>
-    <dt>exibe</dt><dd>{disp}</dd>
-    <dt>nunca exibe</dt><dd>{' '.join(f'<span class="chip bad">{esc(x)}</span>' for x in s['must_not'])}</dd>
-    <dt>obrigatório</dt><dd class="m">{esc(', '.join(s['required']) or '—')}</dd>
-    <dt>evidência</dt><dd>{'exigida' if s['evidence_required'] else 'não se aplica'} · confidence {esc(s['confidence'])}</dd>
-    <dt>autoridade</dt><dd>{'pode exibir resultado — lê contrato de quem autoriza' if s['authority'] else 'não pode exibir resultado de autoridade'}</dd>
-    <dt>IPS/CQP/CQM</dt><dd>{esc(', '.join(f'{r} ({v})' for r, v in s['ips'])) or f'sem mapeamento · <span class="m">{esc(s["ips_gap"] or "")}</span>'}</dd>
-  </dl>
-</article>"""
     unknowns = "".join(f'<li><span class="m">{esc(u[0])}</span> {esc(u[1])}</li>' for u in m["unknowns"])
     regional = "".join(f'<li><span class="m">{esc(x[0])}</span> {pill(x[1])} {esc(x[2])}</li>'
                        for x in m["q_blocks_regional"])
     debt = "".join(f'<li>{pill("REFUTED")} <span class="m">{esc(f)}</span> {esc(msg)}</li>'
-                   for f, s, msg in m["debt_known"])
+                   for f, st, msg in m["debt_known"])
     debt += "".join(f'<li>{pill("REFUTED")} <span class="m">{esc(f)}</span> {esc(o)} '
                     f'<span class="dim">[{esc(v)}]</span></li>' for v, f, o in m["debt_code"])
-    verdict = "FALHOU" if j.errors else "ÍNTEGRO"
-    return f"""<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Genoma LICEU 6.0 — Self-Model</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root{{--bg:#0B0F14;--sf:#151B23;--ln:#263241;--mu:#64748B;--tx:#F8FAFC;
---ok:#16A34A;--at:#F59E0B;--bad:#DC2626;--ev:#7C3AED;
---sans:'Inter',system-ui,sans-serif;--mono:'IBM Plex Mono',ui-monospace,monospace;
-box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}}
-@media (prefers-color-scheme:light){{:root:not([data-theme="dark"]){{--bg:#F8FAFC;--sf:#FFFFFF;--ln:#E2E8F0;--mu:#64748B;--tx:#0B0F14}}}}
-:root[data-theme="light"]{{--bg:#F8FAFC;--sf:#FFFFFF;--ln:#E2E8F0;--mu:#64748B;--tx:#0B0F14}}
-*{{box-sizing:border-box;margin:0}} body{{background:var(--bg);color:var(--tx);font:14px/1.55 var(--sans)}}
-main{{max-width:1080px;margin:0 auto;padding:34px 22px 64px}}
-.eyebrow{{font:11px var(--mono);color:var(--mu);letter-spacing:.04em}}
-h1{{font-size:26px;letter-spacing:-.02em;margin:6px 0 4px}} h2{{font-size:15px;margin:36px 0 12px}}
-h3{{font-size:14px;font-weight:600}} .lede{{color:var(--mu);max-width:64ch}}
-.m{{font-family:var(--mono);font-size:12px}} .dim{{color:var(--mu)}}
-.chain{{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-top:20px}}
-.stat{{background:var(--sf);border:1px solid var(--ln);border-radius:4px;padding:14px}}
-.stat b{{display:block;font:600 34px/1 var(--mono);letter-spacing:-.03em}}
-.stat span{{color:var(--mu);font-size:12px}}
-.stat.zero b{{color:var(--bad)}}
-table{{width:100%;border-collapse:collapse}} td{{padding:7px 8px;border-bottom:1px solid var(--ln);vertical-align:top}}
-.tbl{{overflow-x:auto;background:var(--sf);border:1px solid var(--ln);border-radius:4px}}
-.pill{{font:10px var(--mono);padding:2px 7px;border-radius:2px;border:1px solid;white-space:nowrap}}
-.pill.ok{{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 40%,transparent)}}
-.pill.at{{color:var(--at);border-color:color-mix(in srgb,var(--at) 40%,transparent)}}
-.pill.no{{color:var(--mu);border-color:var(--ln)}}
-.pill.bad{{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 40%,transparent)}}
-.eph{{font:10px var(--mono);color:var(--at);margin-left:6px}}
-.chip{{font:10.5px var(--mono);padding:1px 6px;border:1px solid var(--ln);border-radius:2px;display:inline-block;margin:1px}}
-.chip.bad{{color:var(--bad)}}
-.grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}}
-.scr{{background:var(--sf);border:1px solid var(--ln);border-top:2px solid var(--ev);border-radius:4px;padding:14px}}
-.scr header{{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:10px}}
-.scr header h3{{flex:1;min-width:160px}}
-dl{{display:grid;grid-template-columns:92px 1fr;gap:6px 10px;font-size:12.5px}} dt{{color:var(--mu)}}
-ul{{padding-left:18px}} li{{margin:5px 0}}
-.verdict{{font:600 12px var(--mono);padding:4px 10px;border-radius:2px;display:inline-block;margin-top:14px;
-border:1px solid;color:{'var(--bad)' if j.errors else 'var(--ok)'}}}
-footer{{margin-top:44px;padding-top:16px;border-top:1px solid var(--ln);color:var(--mu);font-size:12px;max-width:70ch}}
-</style></head><body><main>
-<p class="eyebrow">GENOMA LICEU 6.0 · SELF-MODEL · grafo {esc(m['graph_version'])}</p>
-<h1>O que o LICEU consegue provar sobre si mesmo.</h1>
-<p class="lede">Gerado pelo validador a partir do genoma. Nada aqui é escrito à mão: o status de cada
-afirmação é derivado das provas, e a contagem da cadeia não pode ser declarada.</p>
-<span class="verdict">{verdict} · {len(j.errors)} erro(s) · {len(m['debt_known']) + len(m['debt_code'])} dívida(s) conhecida(s)</span>
-<div class="chain">
-  <div class="stat {'zero' if c['structural']==0 else ''}"><b>{c['structural']}/{c['positions']}</b><span>cadeia estrutural</span></div>
-  <div class="stat {'zero' if c['substantive']==0 else ''}"><b>{c['substantive']}/{c['positions']}</b><span>cadeia substantiva</span></div>
-  <div class="stat"><b>{sum(1 for v in m['claims'].values() if v['status']=='PROVEN')}</b><span>afirmações provadas</span></div>
-  <div class="stat"><b>{len(m['unknowns'])}</b><span>incógnitas declaradas</span></div>
+    debt = debt or '<li class="dim">nenhuma divida registrada</li>'
+
+    mach = m["machinery"]
+    den = mach["fitness"] + mach["node_kinds"]
+    freio = ""
+    if m.get("growth_warning"):
+        g = m["growth_warning"]
+        freio = (f'<p class="aviso">A maquinaria cresceu em tres merges seguidos '
+                 f'({" → ".join(str(d) for d in g["denominador"])}) e a cadeia nao andou '
+                 f'({" → ".join(str(x) for x in g["numerador"])}), de {esc(g["de"])} a {esc(g["ate"])}.</p>')
+
+    verdict = "FALHOU" if j.errors else "INTEGRO"
+    sujo = ' <span class="pill bad">arvore suja</span>' if prov["sujo"] else ""
+
+    ESTILO = """<style>
+:root{
+  color-scheme:dark;
+  --bg:#0B0F14; --sf:#151B23; --sf2:#1B232E; --ln:#263241; --mu:#7A8899; --tx:#F8FAFC;
+  --ok:#16A34A; --at:#F59E0B; --bad:#DC2626; --ev:#7C3AED;
+  --sans:'Inter',system-ui,-apple-system,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){
+  color-scheme:light;
+  --bg:#F7F8FA; --sf:#FFFFFF; --sf2:#F1F4F8; --ln:#DDE3EA; --mu:#5B6876; --tx:#0B0F14;
+}}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#F7F8FA; --sf:#FFFFFF; --sf2:#F1F4F8; --ln:#DDE3EA; --mu:#5B6876; --tx:#0B0F14;
+}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--tx);font:14px/1.6 var(--sans);
+  -webkit-font-smoothing:antialiased}
+main{max-width:1060px;margin:0 auto;padding-block:34px 72px;padding-left:20px;padding-right:20px;
+  display:flex;flex-direction:column;gap:38px}
+section{display:flex;flex-direction:column;gap:12px}
+.eyebrow{font:11px/1.4 var(--mono);color:var(--mu);letter-spacing:.06em;text-transform:uppercase}
+h1{font-size:clamp(22px,4.4vw,30px);line-height:1.18;letter-spacing:-.022em;text-wrap:balance;
+  margin-top:8px}
+h2{font-size:13px;font-weight:600;letter-spacing:.02em;color:var(--tx);
+  padding-bottom:9px;border-bottom:1px solid var(--ln)}
+h3{font-size:13.5px;font-weight:600;text-wrap:balance}
+.lede{color:var(--mu);max-width:66ch}
+.nota{color:var(--mu);font-size:12.5px;max-width:78ch;margin-top:-4px}
+.m{font-family:var(--mono);font-size:12px}
+.dim{color:var(--mu)}
+.num{font:600 15px/1 var(--mono);font-variant-numeric:tabular-nums}
+q{quotes:'\201C' '\201D'}
+.prov{display:flex;flex-wrap:wrap;gap:6px 18px;font:11.5px/1.5 var(--mono);color:var(--mu);
+  background:var(--sf2);border:1px solid var(--ln);border-radius:3px;padding:10px 13px}
+.prov b{color:var(--tx);font-weight:500}
+.verdict{font:600 12px var(--mono);padding:4px 11px;border-radius:2px;display:inline-block;
+  border:1px solid;align-self:flex-start}
+.chain{display:grid;grid-template-columns:repeat(auto-fit,minmax(138px,1fr));gap:10px}
+.stat{background:var(--sf);border:1px solid var(--ln);border-radius:4px;padding:15px 14px}
+.stat b{display:block;font:600 32px/1 var(--mono);letter-spacing:-.035em;
+  font-variant-numeric:tabular-nums}
+.stat span{color:var(--mu);font-size:11.5px}
+.stat.zero b{color:var(--bad)}
+.stat.hero{border-left:2px solid var(--ev)}
+.tbl{overflow-x:auto;background:var(--sf);border:1px solid var(--ln);border-radius:4px}
+table{width:100%;border-collapse:collapse;min-width:min(100%,520px)}
+td{padding:8px 10px;border-bottom:1px solid var(--ln);vertical-align:top}
+tr:last-child td{border-bottom:0}
+.pill{font:10px var(--mono);padding:2px 7px;border-radius:2px;border:1px solid;white-space:nowrap;
+  display:inline-block}
+.pill.ok{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 45%,transparent)}
+.pill.at{color:var(--at);border-color:color-mix(in srgb,var(--at) 45%,transparent)}
+.pill.no{color:var(--mu);border-color:var(--ln)}
+.pill.bad{color:var(--bad);border-color:color-mix(in srgb,var(--bad) 45%,transparent)}
+.eph{font:10px var(--mono);color:var(--at);margin-left:6px}
+.chip{font:10.5px var(--mono);padding:1px 6px;border:1px solid var(--ln);border-radius:2px;
+  display:inline-block;margin:1px}
+.chip.bad{color:var(--bad)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:4px;padding:14px;
+  display:flex;flex-direction:column;gap:7px}
+.card header{display:flex;gap:9px;align-items:baseline;flex-wrap:wrap}
+.falsa{font-size:12.5px;color:var(--mu)}
+.falsa q{color:var(--bad)}
+.teto{background:var(--sf2);border-left:2px solid var(--ev);border-radius:0 3px 3px 0;
+  padding:11px 14px;font-size:12.5px;color:var(--mu);max-width:82ch}
+.teto b{color:var(--tx)}
+.aviso{background:var(--sf2);border-left:2px solid var(--at);border-radius:0 3px 3px 0;
+  padding:11px 14px;font-size:12.5px;max-width:82ch}
+.scr{background:var(--sf);border:1px solid var(--ln);border-top:2px solid var(--ev);
+  border-radius:4px;padding:14px}
+.scr header{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;margin-bottom:10px}
+.scr header h3{flex:1;min-width:150px}
+dl{display:grid;grid-template-columns:88px 1fr;gap:6px 10px;font-size:12.5px}
+dt{color:var(--mu)}
+ul{padding-left:19px;display:flex;flex-direction:column;gap:5px}
+footer{padding-top:18px;border-top:1px solid var(--ln);color:var(--mu);font-size:12.5px;
+  max-width:74ch}
+@media (max-width:520px){dl{grid-template-columns:1fr;gap:2px 0}dt{margin-top:6px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>"""
+
+    screens = ""
+    for sc in m["screens"]:
+        disp = "".join(f'<div><span class="m">{esc(d)}</span> '
+                       + " ".join(f'<span class="chip">{esc(x)}</span>' for x in v) + "</div>"
+                       for d, v in sc["displays"].items()) or '<span class="dim">nenhuma dimensao</span>'
+        users = "".join(f'<div><span class="m">{esc(r)}</span> {esc(t or "")} '
+                        f'{pill(v or "")} <span class="dim">· {esc(u)}</span></div>'
+                        for r, t, v, u in sc["used_by"])
+        john = ", ".join(f"{a} · {b}" for a, b in sc["john"]) or "nenhum"
+        screens += f"""
+<article class="scr">
+  <header><span class="m">{esc(sc['id'])}</span><h3>{esc(sc['title'])}</h3>
+    {pill(sc['implementation'])}</header>
+  <dl>
+    <dt>dono</dt><dd class="m">{esc(sc['owner'])}</dd>
+    <dt>le</dt><dd class="m">{esc(', '.join(sc['reads']))}</dd>
+    <dt>jornada</dt><dd><span class="m">{esc(sc['journey'][0])}</span> {pill(sc['journey'][1] or '')}</dd>
+    <dt>usada por</dt><dd>{users}</dd>
+    <dt>JOHN</dt><dd>{esc(john)}</dd>
+    <dt>exibe</dt><dd>{disp}</dd>
+    <dt>nunca exibe</dt><dd>{' '.join(f'<span class="chip bad">{esc(x)}</span>' for x in sc['must_not'])}</dd>
+    <dt>obrigatorio</dt><dd class="m">{esc(', '.join(sc['required']) or '—')}</dd>
+    <dt>evidencia</dt><dd>{'exigida' if sc['evidence_required'] else 'nao se aplica'} · confidence {esc(sc['confidence'])}</dd>
+    <dt>autoridade</dt><dd>{'pode exibir resultado' if sc['authority'] else 'nao pode exibir resultado de autoridade'}</dd>
+    <dt>IPS/CQP/CQM</dt><dd>{esc(', '.join(f'{r} ({v})' for r, v in sc['ips'])) or 'sem mapeamento'}</dd>
+  </dl>
+</article>"""
+
+    CORPO = f"""<main>
+<header>
+  <p class="eyebrow">Genoma LICEU 6.0 · Self-Model · grafo {esc(m['graph_version'])}</p>
+  <h1>O que o LICEU consegue provar sobre si mesmo.</h1>
+  <p class="lede">Gerado pelo juiz a partir do genoma e do kit instalado. Nada aqui e escrito
+  a mao: o status de cada afirmacao e derivado das provas, e a contagem da cadeia nao pode
+  ser declarada por arquivo nenhum.</p>
+</header>
+
+<div class="prov">
+  <span>genoma <b>{esc(prov['commit'] or '?')}</b>{sujo}</span>
+  <span>branch <b>{esc(prov['branch'] or '?')}</b></span>
+  <span>ultimo commit <b>{esc((prov['commit_date'] or '?')[:10])}</b></span>
+  <span>kit <b>{esc(prov['kit'])}</b> · constituicao <b>{esc(prov['constitution'])}</b></span>
+  <span>gerado em <b>{esc(prov['gerado_em'])}</b></span>
 </div>
-<h2>Afirmações e o status que as provas permitem</h2>
-<div class="tbl"><table>{claims}</table></div>
-<h2>O que impede a escala REGIONAL</h2><ul>{regional}</ul>
-<h2>Genealogia das cinco telas da vertical</h2><div class="grid">{screens}</div>
-<h2>O que o LICEU sabe que não sabe</h2><ul>{unknowns}</ul>
-<h2>Dívida registrada</h2><ul>{debt}</ul>
-<footer>Uma lei (schema), um grafo (genoma), um juiz (genome_check). Violação nova falha a CI;
-dívida registrada que deixou de ser detectada também falha. Para mudar este relatório, é preciso
-mudar o genoma, e para promover uma afirmação é preciso registrar uma prova.</footer>
-</main></body></html>"""
+
+<span class="verdict" style="color:{'var(--bad)' if j.errors else 'var(--ok)'}">{verdict} ·
+  {len(j.errors)} erro(s) · {len(m['debt_known']) + len(m['debt_code'])} divida(s) conhecida(s)</span>
+
+<section>
+  <div class="chain">
+    <div class="stat hero {'zero' if c['structural'] == 0 else ''}">
+      <b>{c['structural']}/{c['positions']}</b><span>cadeia estrutural</span></div>
+    <div class="stat {'zero' if c['substantive'] == 0 else ''}">
+      <b>{c['substantive']}/{c['positions']}</b><span>cadeia substantiva</span></div>
+    <div class="stat"><b>{sum(1 for v in m['claims'].values() if v['status'] == 'PROVEN')}</b>
+      <span>afirmacoes provadas</span></div>
+    <div class="stat"><b>{len(m['pfc'])}</b><span>falsas afirmacoes evitadas</span></div>
+    <div class="stat"><b>{len(m['unknowns'])}</b><span>incognitas declaradas</span></div>
+  </div>
+</section>
+
+{secao("A cadeia, por escala",
+       f'<div class="tbl"><table>{escalas}</table></div>{teto}',
+       "Estrutural: o fato atravessou o boundary real com o contrato real. Substantiva: o "
+       "conteudo vale. Sao dois numeros porque sao duas perguntas, e a segunda e a dificil.")}
+
+{prev}
+
+{secao("Afirmacoes, e o status que as provas permitem",
+       f'<div class="tbl"><table>{claims}</table></div>')}
+
+{secao("As provas vigentes",
+       f'<div class="tbl"><table>{provas}</table></div>',
+       f"{n_sup} prova(s) supersedida(s) nao aparecem aqui, e continuam no genoma: uma prova "
+       "substituida nao e apagada, e a historia de cada afirmacao fica legivel.")}
+
+{secao("O que impede a escala REGIONAL", f"<ul>{regional}</ul>")}
+
+{secao("O que o LICEU sabe que nao sabe", f"<ul>{unknowns}</ul>")}
+
+{secao("Divida registrada", f"<ul>{debt}</ul>",
+       "Violacao nova falha a CI; divida registrada que deixou de ser detectada tambem falha.")}
+
+{pfc}
+
+{secao("Produtores declarados no kit",
+       f'<div class="tbl"><table>{prods}</table></div>',
+       (f'<span class="pill bad">{len(sem_repo)}</span> produtor(es) sem repositorio declarado: '
+        f'<span class="m">{esc(", ".join(sem_repo))}</span>. Nenhuma fitness pega isso — elas '
+        'conferem o genoma contra o kit, nunca o kit contra o mundo.') if sem_repo else
+       "Lido do Producer Registry instalado, a mesma fonte que a FIT-010 usa para julgar.")}
+
+{secao("O que o genoma deve a si mesmo",
+       f'<div class="chain">'
+       f'<div class="stat"><b>{c["structural"]}</b><span>elos provados (numerador)</span></div>'
+       f'<div class="stat"><b>{den}</b><span>maquinaria (denominador)</span></div>'
+       f'<div class="stat"><b>{mach["fitness"]}</b><span>fitness functions</span></div>'
+       f'<div class="stat"><b>{mach["node_kinds"]}</b><span>tipos de no</span></div>'
+       f'</div>{freio}',
+       "Maquinaria nova so se justifica quando a cadeia se move. O freio compara as duas "
+       "series ao longo dos merges e avisa — nunca falha — quando uma cresce e a outra nao.")}
+
+{secao("Genealogia das cinco telas da vertical", f'<div class="grid">{screens}</div>')}
+
+<footer>Uma lei (schema), um grafo (genoma), um juiz (genome_check). Para mudar esta pagina e
+preciso mudar o genoma, e para promover uma afirmacao e preciso registrar uma prova. Esta
+pagina foi gerada do commit <span class="m">{esc(prov['commit'] or '?')}</span> — se o genoma
+andou depois disso, ela esta velha, e e por isso que a data esta no topo.</footer>
+</main>"""
+
+    if fragment:
+        return f"<title>Genoma LICEU 6.0</title>\n{FONTES}\n{ESTILO}\n{CORPO}"
+    return (f'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">'
+            f'<meta name="viewport" content="width=device-width, initial-scale=1, '
+            f'viewport-fit=cover"><title>Genoma LICEU 6.0</title>{FONTES}{ESTILO}'
+            f"</head><body>{CORPO}</body></html>")
 
 
 def main(argv=None) -> int:
@@ -1157,6 +1432,7 @@ def main(argv=None) -> int:
     ap.add_argument("--schema", default=str(ROOT / "schema" / "genome.schema.json"))
     ap.add_argument("--json")
     ap.add_argument("--html")
+    ap.add_argument("--html-fragment")
     ap.add_argument("--kit-registry", help="Contract Registry do kit; default: o do pacote liceu-protocol instalado")
     ap.add_argument("--history", action="store_true",
                     help="deriva a série do git (--first-parent main) para o freio da H6; "
@@ -1195,6 +1471,8 @@ def main(argv=None) -> int:
                                             "warnings": j.warnings}, ensure_ascii=False, indent=2))
     if a.html:
         Path(a.html).write_text(html_report(m, j), encoding="utf-8")
+    if a.html_fragment:
+        Path(a.html_fragment).write_text(html_report(m, j, fragment=True), encoding="utf-8")
     return 1 if j.errors else 0
 
 
