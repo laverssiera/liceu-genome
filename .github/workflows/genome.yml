@@ -38,6 +38,12 @@ jobs:
       - name: Privacidade — nenhum dado pessoal no repositório público
         run: python tools/genome_privacy_check.py --root .
 
+      # O genoma exigia de todo monólito uma conferência que não fazia em si
+      # mesmo. Prova sobre o próprio juiz também tem superfície, e também
+      # envelhece quando o arquivo muda.
+      - name: A superfície provada DO PRÓPRIO GENOMA mudou?
+        run: python tools/genome_surface_check.py --repo liceu-genome --root . --proofs genome/07-proofs.yaml
+
       - name: Genoma — schema, arestas, derivação, fitness (inclui FIT-010 contra o kit), catraca
         run: python tools/genome_check.py --history --json self-model.json --html self-model.html
 

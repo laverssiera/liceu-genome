@@ -573,6 +573,35 @@ class Judge:
             self.find("FIT-015", f"privacidade/{arquivo}",
                       f"dado pessoal em repositório público: {achado}")
 
+        # FIT-017 — produtor sem repositório declara ONDE está, para o juiz.
+        # Nenhuma fitness confere o kit contra o mundo, e o buraco aparece assim:
+        # `repository: null` pode ser a verdade (o control plane não é monólito
+        # soberano e não tem domínio próprio), e mesmo assim não dizer onde o
+        # código está. A razão vinha escrita em campo de nome maiúsculo — prosa,
+        # que explica para humano e que nenhuma verificação consegue seguir.
+        for pid, entry in (self.registry_producers or {}).items():
+            entry = entry or {}
+            if entry.get("repository"):
+                continue
+            hospedeiro = entry.get("hosted_in")
+            if not hospedeiro:
+                self.find("FIT-017", f"{pid}/hosted_in",
+                          f"{pid} não declara repository nem hosted_in: nada no kit diz onde "
+                          f"procurar o código deste produtor")
+                continue
+            anfitriao = (self.registry_producers or {}).get(hospedeiro)
+            if anfitriao is None:
+                self.find("FIT-017", f"{pid}/hosted_in/inexistente",
+                          f"{pid} declara hosted_in {hospedeiro!r}, que não é produtor do registry")
+            elif not (anfitriao or {}).get("repository"):
+                self.find("FIT-017", f"{pid}/hosted_in/sem_repo",
+                          f"{pid} declara hosted_in {hospedeiro!r}, que também não tem "
+                          f"repositório: a cadeia de hospedagem não chega a código nenhum")
+            elif not str(entry.get("hosted_in_reason") or "").strip():
+                self.find("FIT-017", f"{pid}/hosted_in_reason",
+                          f"{pid} diz onde está mas não diz por que não tem repositório próprio: "
+                          f"hosted_in sem razão é um ponteiro sem motivo")
+
         # FIT-016 — previsão registrada depois do fato não é previsão.
         # É o coração do modo sombra: uma saída conferida DEPOIS não mede nada,
         # porque sempre dá para explicar o que já aconteceu. Três regras, e
@@ -887,6 +916,8 @@ class Judge:
             "producers": sorted(
                 ({"id": pid,
                   "repo": (entry or {}).get("repository"),
+                  "hosted_in": (entry or {}).get("hosted_in"),
+                  "hosted_in_reason": (entry or {}).get("hosted_in_reason"),
                   "teto": ((entry or {}).get("teto") or {}).get("teto_interno"),
                   "instancias": len((entry or {}).get("instances") or [])}
                  for pid, entry in (self.registry_producers or {}).items()),
@@ -1191,12 +1222,21 @@ def html_report(m: dict, j: Judge, *, fragment: bool = False) -> str:
     n_sup = sum(1 for pr in m.get("proofs", []) if pr["superseded"])
 
     # ---------------------------------------------------------------- produtores
+    def onde(x):
+        if x["repo"]:
+            return esc(x["repo"])
+        if x["hosted_in"]:
+            return (f'{pill("TESTED")} hospedado em <b>{esc(x["hosted_in"])}</b>'
+                    f'<div class="dim">{esc((x["hosted_in_reason"] or "")[:160])}</div>')
+        return pill("REFUTED") + " sem repositorio e sem hosted_in"
+
     prods = "".join(
-        f'<tr><td class="m">{esc(x["id"])}</td>'
-        f'<td class="m">{esc(x["repo"]) if x["repo"] else pill("REFUTED") + " sem repositorio declarado"}</td>'
+        f'<tr><td class="m">{esc(x["id"])}</td><td class="m">{onde(x)}</td>'
         f'<td class="m dim">{esc(str(x["teto"] or "—"))}</td>'
         f'<td class="m dim">{x["instancias"]}</td></tr>' for x in m.get("producers", []))
-    sem_repo = [x["id"] for x in m.get("producers", []) if not x["repo"]]
+    sem_repo = [x["id"] for x in m.get("producers", [])
+                if not x["repo"] and not x["hosted_in"]]
+    hospedados = [x for x in m.get("producers", []) if not x["repo"] and x["hosted_in"]]
 
     # ---------------------------------------------------------------- resto
     claims = "".join(
@@ -1395,10 +1435,13 @@ footer{padding-top:18px;border-top:1px solid var(--ln);color:var(--mu);font-size
 
 {secao("Produtores declarados no kit",
        f'<div class="tbl"><table>{prods}</table></div>',
-       (f'<span class="pill bad">{len(sem_repo)}</span> produtor(es) sem repositorio declarado: '
-        f'<span class="m">{esc(", ".join(sem_repo))}</span>. Nenhuma fitness pega isso — elas '
-        'conferem o genoma contra o kit, nunca o kit contra o mundo.') if sem_repo else
-       "Lido do Producer Registry instalado, a mesma fonte que a FIT-010 usa para julgar.")}
+       ((f'<span class="pill bad">{len(sem_repo)}</span> produtor(es) sem repositorio e sem '
+         f'hosted_in: <span class="m">{esc(", ".join(sem_repo))}</span>. A FIT-017 recusa isso.')
+        if sem_repo else
+        (f"Lido do Producer Registry instalado, a mesma fonte que a FIT-010 usa para julgar. "
+         f"{len(hospedados)} produtor(es) sem repositorio proprio declaram onde estao "
+         f"(hosted_in), e a FIT-017 confere que o anfitriao existe, tem repositorio e que a "
+         f"razao esta escrita.")))}
 
 {secao("O que o genoma deve a si mesmo",
        f'<div class="chain">'

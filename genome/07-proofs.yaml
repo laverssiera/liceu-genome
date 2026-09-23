@@ -505,3 +505,41 @@
     - backend/tests/test_certidao_diretrizes.py
     content_hash: f2d7ba0a7f707d0c6641ec423f59cb7a16beff0387098adf6772175567708122
     commit: "0455378"
+
+# B4 (ciclo 11) — o contrato que ninguem emite, e a fitness que faltava.
+- id: PRF-0030
+  kind: proof
+  title: "liceu.authority.human-decision existe em duas versoes e nenhum repositorio o emite"
+  refutes: [CLM-0035]
+  basis: record_reading
+  location:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "liceu.authority.human-decision 1.0.0 (event_type authority.human.decision.recorded, posicao_na_cadeia 6) e 2.0.0 (sem posicao), as duas com allowed_producers [liceu.authority]. Busca por authority.human.decision.recorded em .py, .ts e .js nos 19 repositorios do ecossistema (fora node_modules) encontra o literal em DOIS arquivos, e os dois sao o proprio kit: liceu_protocol/liceu_conformance.py e sua copia em build/. Ou seja: existe onde o evento e VALIDADO, e em lugar nenhum onde ele seria PUBLICADO. Contrato declarado nao implica produtor existente, e nenhuma fitness pega isso — e a mesma classe do JOHN lendo a cadeia ao contrario e do CEFEIDA mais estreito que o contrato, que so apareceram ao tentar rodar."
+  commit: "d02234c"
+  date: "2026-09-23"
+
+- id: PRF-0031
+  kind: proof
+  title: "A FIT-017 recusa produtor que nao diz onde esta — e recusa hosted_in que nao chega a codigo"
+  proves: [CLM-0036]
+  basis: test
+  test:
+    repo: liceu-genome
+    path: tools/test_genome_check.py
+    name: test_60_produtor_sem_repositorio_e_sem_hosted_in_e_violacao
+    pr: 21
+  environment: ci
+  location:
+    repo: liceu-genome
+    path: tools/genome_check.py
+    note: "Quatro recusas e um controle positivo: sem repository e sem hosted_in; hosted_in para produtor que nao existe; hosted_in para produtor que TAMBEM nao tem repositorio (a cadeia de hospedagem tem de chegar a codigo); hosted_in sem razao; e o kit real passando. O liceu.authority continua com repository null, que e a verdade — o control plane nao e monolito soberano e nao tem dominio proprio —, e agora diz hosted_in: liceu.core, com a razao apontando cv-backend-core/app/services/authority_control_plane.py."
+  commit: "d02234c"
+  date: "2026-09-23"
+  mechanism:
+    repo: liceu-genome
+    paths:
+    - tools/genome_check.py
+    - tools/test_genome_check.py
+    content_hash: bf16489927df2127f704f1798c8e66926d8d98782d9c48fefd5cf017e00ef0af
+    commit: "d02234c"
