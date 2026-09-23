@@ -595,3 +595,52 @@
     - cv-backend-core/tests/test_borda_compose.py
     content_hash: 14f6c3bdc5cc3955edd1af35eb3b0787f9dfcc41ab4f4ec4661d6c72190b6e26
     commit: "bec455d"
+
+# B3 (ciclo 11) — o que os vetores acharam na primeira execucao.
+- id: PRF-0035
+  kind: proof
+  title: "O CEFEIDA explode com TypeError no vetor `source_refs: tipo errado`, em vez de recusar com motivo nomeado"
+  refutes: [CLM-0040]
+  basis: code_reading
+  location:
+    repo: 3C273-Analytics-Data-Science
+    path: cefeida/backend/federation/evidence_publisher.py
+    note: "Linha 271 da main: `if not ev.source_refs or any(not str(s).strip() for s in ev.source_refs)`. O `not ev.source_refs` pega None e vazio; o que nao e iteravel passa direto para o `any` e levanta. O vetor que o gerador produz para `source_refs` (type array) e o inteiro 12345, e a linha devolve `TypeError: 'int' object is not iterable`. Excecao nao e recusa: nao nomeia reason, owner nem missing, e o chamador nao distingue 'payload invalido' de 'produtor quebrado'. O defeito estava na primeira execucao dos vetores contra o CEFEIDA — nenhum teste escrito a mao o tinha alcancado, porque ninguem escreve de proposito um source_refs inteiro. Correcao no PR 44 (`isinstance` antes de iterar), ainda nao mergeado."
+  commit: "8a56b92"
+  date: "2026-09-23"
+
+- id: PRF-0036
+  kind: proof
+  title: "8 invariantes condicionais existem so na prosa do contrato: o payload_schema nao as carrega"
+  refutes: [CLM-0041]
+  basis: record_reading
+  location:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "Varredura das 17 versoes de contrato do registry no kit v0.17.0. 8 invariantes de `domain_invariants` sao CONDICIONAIS em prosa, em 6 versoes de 4 contratos distintos, cujo payload_schema nao tem `if`/`then`/`dependentRequired`/`allOf`: liceu.archimedes.planning-state 1.0.0 e 2.0.0 ('candidates nao vazio quando state_status = AUTHORITATIVE_OUTPUT', 'crs obrigatorio quando ha geometria'), liceu.cefeida.evidence 1.0.0 e 2.0.0 ('confidence obrigatorio quando kind = FORECAST'), liceu.cea.financial-exposure 1.0.0 ('npv presente quando financial_viability != inviavel') e liceu.authority.human-decision 2.0.0 ('maes_indisponiveis obrigatorio SOMENTE se escalation_reason == MOTHERS_UNAVAILABLE'). Apenas 2 versoes de contrato tem condicional no proprio esquema. Consequencia medida: das 3 invariantes de liceu.cefeida.evidence 2.0.0, o esquema carrega duas (source_refs com minItems 1, method_version em required) e NAO carrega a terceira — entao o gerador produz um FORECAST sem confidence, que o contrato proibe, e acusaria o produtor que corretamente o recusa. A prosa nao e executavel: quem le o esquema nao conhece o contrato."
+  commit: "ed66247"
+  date: "2026-09-23"
+
+- id: PRF-0037
+  kind: proof
+  title: "O gerador pega o produtor mais estreito que o contrato, e a valvula das condicionais volta a acusar quando a citacao nao e declarada"
+  proves: [CLM-0042]
+  basis: test
+  test:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_vectors.py
+    name: _self_test
+    pr: 20
+  environment: ci
+  location:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_vectors.py
+    note: "Onze casos, rodados pela CI do kit em todo push e PR. Os dois que sustentam esta prova: um produtor que exige value numerico — o defeito exato do CEFEIDA que travou o elo 2 — e PEGO pelos vetores de uniao de tipos ('RECUSA O QUE O CONTRATO ADMITE', tipo string e tipo object); e a valvula condicional tem os dois lados testados, o que a declara com citacao tira o falso positivo do FORECAST, e o que NAO a declara volta a acusar a mesma recusa. A valvula nao e silenciosa por construcao, e nao por intencao. Os demais casos cobrem o gerador: uniao de tipos, enum, opcional, o limite exato de minItems, obrigatorio ausente, campo a mais e array vazio."
+  commit: "ed66247"
+  date: "2026-09-23"
+  mechanism:
+    repo: liceu-protocol
+    paths:
+    - liceu_protocol/liceu_contract_vectors.py
+    content_hash: 6bc77b9b7a6aaf5a60a76a08de81539ad4c048f6bee90fdb189c2d9dce0d5579
+    commit: "ed66247"

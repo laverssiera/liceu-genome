@@ -67,3 +67,11 @@
   required_evidence: "Resposta do DHAP no balcao, por telefone ou por e-mail (canal declarado na Carta de Servicos), registrada com a data em que foi obtida."
   owner: titular
   blocks: [CLM-0032]
+
+- id: UNK-0011
+  kind: unknown
+  question: "Os outros quatro produtores publicadores — hub, archimedes, john e anchor — aceitam toda a faixa que seus contratos admitem?"
+  why_unknown: "So o CEFEIDA tem adaptador do Contract Reality Check. Os outros quatro nunca foram medidos contra os vetores derivados do proprio payload_schema, e a unica medicao feita achou um defeito na primeira execucao (PRF-0035). Ler 'Contract Reality Check pronto' como cobertura do ecossistema repetiria o erro da CLM-0038, onde guarda verde foi lida como borda fechada."
+  required_evidence: "Um adaptador `aceita(payload) -> (bool, motivo)` por produtor, rodando `liceu_contract_vectors.conferir` na CI do proprio monolito, com o conjunto do que ele deixa para o boundary FIXADO em lista — nunca limitado por numero."
+  owner: titular
+  blocks: [CLM-0043]
