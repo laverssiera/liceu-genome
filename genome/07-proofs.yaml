@@ -585,7 +585,7 @@
   location:
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
     path: infra/security/borda_compose.py
-    note: "Oito testes: quatro que exigem acusacao (porta em todas as interfaces, 0.0.0.0 explicito, os sete servicos de estado, e o arquivo de compose que NAO e o principal — o buraco que a F0-B encontrou) e tres que exigem silencio (127.0.0.1 e [::1], porta de aplicacao e de proxy, node_modules), mais o controle contra o repositorio real. Uma verificacao que passa e nunca falhou pode estar passando porque nao olha."
+    note: "Oito testes: quatro que exigem acusacao (porta em todas as interfaces, 0.0.0.0 explicito, os sete servicos de estado, e o arquivo de compose que NAO e o principal — o buraco que a F0-B encontrou) e tres que exigem silencio (127.0.0.1 e [::1], porta de aplicacao e de proxy, node_modules), mais o controle contra o repositorio real. Uma verificacao que passa e nunca falhou pode estar passando porque nao olha. SUPERFICIE REFEITA em 2026-09-23 (commit 9e8a19f): a propria guarda tinha o defeito que esta frase descreve — `varrer()` num caminho inexistente devolvia lista vazia e o programa anunciava borda fechada com saida 0. Quatro testes novos, e a prova rodada de novo: 12 passam. Este repositorio NAO roda o detector de superficie, entao esta invalidacao nao foi acusada por ninguem — foi percebida a mao."
   commit: "bec455d"
   date: "2026-09-23"
   mechanism:
@@ -593,8 +593,8 @@
     paths:
     - infra/security/borda_compose.py
     - cv-backend-core/tests/test_borda_compose.py
-    content_hash: 14f6c3bdc5cc3955edd1af35eb3b0787f9dfcc41ab4f4ec4661d6c72190b6e26
-    commit: "bec455d"
+    content_hash: 8cc7d49d9b1185f0ae19b96ca84555de9e4e79189f1b5934b9910ba6899e2dd3
+    commit: "9e8a19f"
 
 # B3 (ciclo 11) — o que os vetores acharam na primeira execucao.
 - id: PRF-0035
@@ -695,3 +695,17 @@
     - liceu_protocol/liceu_contract_vectors.py
     content_hash: 95753bb4d3bcebec59430941b528e9f10cba3d57dafafbb67c2b3262bdaa8ff3
     commit: "3380112"
+
+# A contagem da borda, refeita: a PRF-0033 subcontou 9.
+- id: PRF-0040
+  kind: proof
+  title: "Sao 137 portas de servico de estado publicadas fora do loopback, e 119 continuam abertas — a PRF-0033 subcontou 9"
+  refutes: [CLM-0038]
+  supersedes: [PRF-0033]
+  basis: record_reading
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: docs/security/2026-09-23-F0A-inventario-e-F0B-borda.md
+    note: "A PRF-0033 registrou 128 no ecossistema e 110 restantes. Os dois numeros estavam errados, por 9; os corretos sao 137 e 119. O que estava CERTO era o CORE: 18 exposicoes, distribuidas 6/6/4/2, reproduzidas a partir dos quatro arquivos que o commit 8144588 alterou — entao o fechamento da borda do CORE, que a PRF-0033 tambem afirma, continua valendo. Os 119 foram medidos por TRES metodos independentes: varrer() por repositorio, varrer() na arvore inteira de uma vez, e um grep cru que nao usa o scanner. Os tres deram 119, em 14 repositorios (BIM 16, P-D 16, HUB 12, ANCHOR 11, Archimedes 10, John 10, CEA 9, OPERA 7, ECONO 6, ACADEMIA 6, 3C273 4, FORNECEDORES 4, GAME-MKT 4, JURIDICO-TECH 4). Os quatro repositorios que divergiam tem todos os arquivos rastreados pelo git, estao em origin/main sem alteracao pendente, e seus ultimos commits sao de 20 e 22 de setembro: o codigo NAO mudou entre as duas medicoes, e o scanner tem um unico commit. A causa exata da subcontagem nao e reconstruivel, porque o JSON da varredura original nunca foi commitado — so o markdown; inventar uma causa seria pior que registrar a lacuna. O que a investigacao encontrou no mesmo verificador foi um defeito da mesma familia, e esse foi fechado: varrer() num caminho inexistente devolvia lista vazia e o programa anunciava borda fechada com saida 0. Ele nao explica a subcontagem — raiz inexistente zeraria um repositorio inteiro, nao tiraria 2 de um e 4 de outro. A CLM-0038 continua REFUTED, e por mais do que se acreditava."
+  commit: "9e8a19f"
+  date: "2026-09-23"
