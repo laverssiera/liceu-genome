@@ -23,6 +23,12 @@ jobs:
       - name: Testes de mutação (juiz)
         run: python tools/test_genome_check.py
 
+      # A FIT-017 vive em módulo próprio para que a superfície da PRF-0031 não
+      # seja o juiz inteiro. Módulo que a CI não roda é módulo que ninguém
+      # confere, então o passo entra junto com a separação, e não depois.
+      - name: Testes de mutação (FIT-017 — onde mora o código de cada produtor)
+        run: python tools/test_genome_producer_hosting.py
+
       # O detector de superfície roda na CI dos monólitos; aqui prova-se que ELE
       # pega a mudança — é onde vive o teste "content_hash diferente do arquivo".
       - name: Testes de mutação (detector de superfície)

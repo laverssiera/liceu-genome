@@ -97,41 +97,12 @@ class Mutacoes(unittest.TestCase):
         self.assertTrue(any(contains in e for e in j.errors),
                         f"esperava erro com {contains!r}; veio {j.errors}")
 
-    # B4 — o kit contra o mundo: produtor sem repositório diz onde está
-    def test_60_produtor_sem_repositorio_e_sem_hosted_in_e_violacao(self):
-        reg = copy.deepcopy(KIT_PRODUCERS)
-        reg["producers"]["liceu.authority"].pop("hosted_in", None)
-        self.assertFails(base(), "VIOLAÇÃO NOVA FIT-017: liceu.authority não declara repository "
-                                 "nem hosted_in", producers=reg)
-
-    def test_61_hosted_in_para_produtor_que_nao_existe_e_violacao(self):
-        reg = copy.deepcopy(KIT_PRODUCERS)
-        reg["producers"]["liceu.authority"]["hosted_in"] = "liceu.fantasma"
-        self.assertFails(base(), "VIOLAÇÃO NOVA FIT-017: liceu.authority declara hosted_in "
-                                 "'liceu.fantasma', que não é produtor do registry", producers=reg)
-
-    def test_62_hosted_in_para_quem_tambem_nao_tem_repositorio_e_violacao(self):
-        # a cadeia de hospedagem tem de CHEGAR a código
-        reg = copy.deepcopy(KIT_PRODUCERS)
-        reg["producers"]["liceu.core"]["repository"] = None
-        reg["producers"]["liceu.core"]["hosted_in"] = "liceu.authority"
-        reg["producers"]["liceu.core"]["hosted_in_reason"] = "circular de proposito"
-        self.assertFails(base(), "VIOLAÇÃO NOVA FIT-017: liceu.authority declara hosted_in "
-                                 "'liceu.core', que também não tem repositório", producers=reg)
-
-    def test_63_hosted_in_sem_razao_e_violacao(self):
-        reg = copy.deepcopy(KIT_PRODUCERS)
-        reg["producers"]["liceu.authority"]["hosted_in_reason"] = "   "
-        self.assertFails(base(), "VIOLAÇÃO NOVA FIT-017: liceu.authority diz onde está mas não "
-                                 "diz por que não tem repositório próprio", producers=reg)
-
-    def test_64_o_kit_real_passa_na_FIT_017(self):
-        j, m = judge(base())
-        self.assertEqual([e for e in j.errors if "FIT-017" in e], [])
-        authority = [p for p in m["producers"] if p["id"] == "liceu.authority"][0]
-        self.assertIsNone(authority["repo"])
-        self.assertEqual(authority["hosted_in"], "liceu.core")
-        self.assertIn("authority_control_plane", authority["hosted_in_reason"])
+    # B4 — o kit contra o mundo: produtor sem repositório diz onde está.
+    # As mutações da FIT-017 saíram daqui para tools/test_genome_producer_hosting.py,
+    # junto com a regra: a PRF-0031 cobria este arquivo e o genome_check.py, e
+    # toda fitness nova invalidava uma prova que continuava verdadeira. O teste
+    # de LIGAÇÃO — o juiz realmente chama a regra? — foi junto, para a superfície
+    # da prova ser inteira num lugar só.
 
     # U4 — pré-registro: previsão registrada depois do fato não é previsão
     def test_56_previsao_resolvida_por_teste_e_violacao(self):

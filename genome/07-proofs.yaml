@@ -526,23 +526,23 @@
   basis: test
   test:
     repo: liceu-genome
-    path: tools/test_genome_check.py
-    name: test_60_produtor_sem_repositorio_e_sem_hosted_in_e_violacao
-    pr: 21
+    path: tools/test_genome_producer_hosting.py
+    name: test_o_juiz_reporta_o_achado_como_violacao_nova
+    pr: 27
   environment: ci
   location:
     repo: liceu-genome
-    path: tools/genome_check.py
-    note: "Quatro recusas e um controle positivo: sem repository e sem hosted_in; hosted_in para produtor que nao existe; hosted_in para produtor que TAMBEM nao tem repositorio (a cadeia de hospedagem tem de chegar a codigo); hosted_in sem razao; e o kit real passando. O liceu.authority continua com repository null, que e a verdade — o control plane nao e monolito soberano e nao tem dominio proprio —, e agora diz hosted_in: liceu.core, com a razao apontando cv-backend-core/app/services/authority_control_plane.py. SUPERFICIE REFEITA em 2026-09-23 (commit 10352d4): a FIT-018 entrou no mesmo genome_check.py, entao o hash mudou sem que o comportamento provado mudasse. A prova nao foi transcrita — foi RODADA de novo: test_60 a test_63 passam sobre a superficie nova, e o campo hosted_in do kit continua o que a nota descreve. A colisao vai se repetir: o mechanism desta prova cobre o arquivo inteiro do juiz, e toda fitness nova o altera."
+    path: tools/genome_producer_hosting.py
+    note: "Quatro recusas e um controle positivo: sem repository e sem hosted_in; hosted_in para produtor que nao existe; hosted_in para produtor que TAMBEM nao tem repositorio (a cadeia de hospedagem tem de chegar a codigo); hosted_in sem razao; e o kit real passando. O liceu.authority continua com repository null, que e a verdade — o control plane nao e monolito soberano e nao tem dominio proprio —, e agora diz hosted_in: liceu.core, com a razao apontando cv-backend-core/app/services/authority_control_plane.py. SUPERFICIE REFEITA em 2026-09-23 (commit 10352d4): a FIT-018 entrou no mesmo genome_check.py, entao o hash mudou sem que o comportamento provado mudasse. A prova nao foi transcrita — foi RODADA de novo: test_60 a test_63 passam sobre a superficie nova, e o campo hosted_in do kit continua o que a nota descreve. SUPERFICIE DIVIDIDA em 2026-09-23 (commit 68d4dbd), e e por isso que a colisao NAO vai se repetir: a regra virou funcao pura em tools/genome_producer_hosting.py e as mutacoes dela em tools/test_genome_producer_hosting.py, 174 linhas, contra as 2277 do juiz e do teste dele. Mexer no juiz por outro motivo nao pede mais que a FIT-017 seja provada de novo. A separacao traz o risco de uma regra perfeita que ninguem invoca, entao o teste de LIGACAO esta DENTRO da superficie: com a chamada removida de proposito, ele cai com 'o juiz nao reportou a FIT-017'."
   commit: "d02234c"
   date: "2026-09-23"
   mechanism:
     repo: liceu-genome
     paths:
-    - tools/genome_check.py
-    - tools/test_genome_check.py
-    content_hash: d883d6aa7863c00bc10d144dd60ca3472ef2c86186b82115f1d36f3f0ec7aae3
-    commit: "10352d4"
+    - tools/genome_producer_hosting.py
+    - tools/test_genome_producer_hosting.py
+    content_hash: 20c1f82f56380a3d2640580994564c04c5d09a2061fec9cad144fa15ad3ebe6d
+    commit: "68d4dbd"
 
 # B2 (ciclo 11) — o proprio ADR diz que nenhuma das tres dispensa a sonda.
 - id: PRF-0032
