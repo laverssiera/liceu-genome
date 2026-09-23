@@ -23,7 +23,7 @@
   kind: unknown
   question: Algum segredo foi rotacionado — JWT_SECRET_KEY, NEO4J_PASSWORD, FEDERATION_SECRET?
   why_unknown: Nao ha registro de rotacao em nenhuma sessao.
-  required_evidence: Registro de rotacao por servico, com data.
+  required_evidence: "PROVA DE REVOGACAO por servico, com data: demonstrar que a credencial ANTIGA deixou de funcionar. Trocar o valor e ver o servico subir prova que o novo funciona, nao que o velho morreu. O inventario F0-A (2026-09-23) ja diz quais segredos sao compartilhados e por quantos repositorios — POSTGRES_PASSWORD 14, NEO4J_PASSWORD 12, CANONICAL_EVENT_STORE_API_SECRET 11, FEDERATION_SECRET 5, JWT_SECRET 5 —, e esses a rotacao trata dando credencial PROPRIA a cada produtor, nunca trocando um valor comum. A ordem e dura: a borda (F0-B) vem antes, e hoje esta fechada em 1 de 15 repositorios."
   owner: titular
   blocks: ["scale:REGIONAL"]
 - id: UNK-0005
