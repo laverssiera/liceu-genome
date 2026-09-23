@@ -105,32 +105,21 @@
 # reescrever o esquema de uma versao aposentada seria mudar o que ja foi
 # publicado. Restam 8.
 
-- id: VIO-0010
-  kind: violation
-  fitness: FIT-018
-  detection: genome
-  subject: "liceu.cea.financial-exposure@1.0.0/npv"
-  observed: "`npv` e exigido condicionalmente so na prosa de domain_invariants ('npv presente quando financial_viability != inviavel'); nenhum `if`/`then`/`dependentRequired` do payload_schema o alcanca. Quem le so o esquema nao conhece o contrato: o gerador de vetores produz payload que o contrato proibe, e o boundary valida e deixa passar o que o contrato proibe."
-  location:
-    repo: liceu-protocol
-    path: liceu_protocol/liceu_contract_registry.yaml
-    note: "liceu.cea.financial-exposure@1.0.0, domain_invariants"
-  tracked_in:
-    repo: liceu-protocol
-    path: liceu_protocol/liceu_contract_registry.yaml
-    note: "Fecha-se pondo a condicional no payload_schema deste contrato (if/then ou dependentRequired), num PR do liceu-protocol; a divida sai deste livro no mesmo PR, ou a catraca acusa DIVIDA OBSOLETA."
-
-- id: VIO-0011
-  kind: violation
-  fitness: FIT-018
-  detection: genome
-  subject: "liceu.authority.human-decision@2.0.0/maes_indisponiveis"
-  observed: "`maes_indisponiveis` e exigido condicionalmente so na prosa de domain_invariants ('maes_indisponiveis obrigatorio SOMENTE se escalation_reason == MOTHERS_UNAVAILABLE'); nenhum `if`/`then`/`dependentRequired` do payload_schema o alcanca. Quem le so o esquema nao conhece o contrato: o gerador de vetores produz payload que o contrato proibe, e o boundary valida e deixa passar o que o contrato proibe."
-  location:
-    repo: liceu-protocol
-    path: liceu_protocol/liceu_contract_registry.yaml
-    note: "liceu.authority.human-decision@2.0.0, domain_invariants"
-  tracked_in:
-    repo: liceu-protocol
-    path: liceu_protocol/liceu_contract_registry.yaml
-    note: "Fecha-se pondo a condicional no payload_schema deste contrato (if/then ou dependentRequired), num PR do liceu-protocol; a divida sai deste livro no mesmo PR, ou a catraca acusa DIVIDA OBSOLETA."
+# VIO-0010 e VIO-0011 SAIRAM em 2026-09-23, e por motivos DIFERENTES — vale
+# guardar a diferenca, porque so uma delas foi um fechamento.
+#
+# VIO-0011 (liceu.authority.human-decision@2.0.0/maes_indisponiveis) foi PAGA:
+# o contrato passou a carregar a condicional no payload_schema (allOf/if/then
+# com required e minItems 1, kit v0.20.0). A regra vivia em tres lugares — a
+# prosa, uma chave `condicional:` inventada dentro da propriedade, e Python a
+# mao em liceu_conformance.py:388, de onde veio o minItems que a prosa omitia.
+#
+# VIO-0010 (liceu.cea.financial-exposure@1.0.0/npv) nao foi paga: NUNCA HOUVE
+# CONDICIONAL. `npv` ja esta em `required` sempre desde a 1.0.0, e o CEA o
+# calcula em toda execucao, inclusive negativo. A prosa prometia uma excecao
+# para o caso inviavel que o esquema nunca admitiu e que produtor nenhum usou;
+# por if/then ali seria um no-op que calaria o detector sem mudar nada. O que
+# se corrigiu foi a prosa. Se a excecao for real, a correcao e a inversa —
+# tirar npv de required e por if/then — e a divida volta com ela.
+#
+# Os ids nao sao reutilizados. Restam 5.
