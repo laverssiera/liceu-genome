@@ -39,14 +39,15 @@ def base():
             for f in sorted((ROOT / "genome").glob("*.yaml"))}
 
 
-def judge(files, registry=None):
+def judge(files, registry=None, producers=None):
     d = Path(tempfile.mkdtemp())
     try:
         for name, nodes in files.items():
             (d / name).write_text(yaml.safe_dump(nodes, allow_unicode=True, sort_keys=False),
                                   encoding="utf-8")
         j = gc.Judge(gc.load(d), SCHEMA, registry if registry is not None else KIT_REGISTRY,
-                     SCALE_ORDER, KIT_PRODUCERS, genome_dir=d)
+                     SCALE_ORDER, producers if producers is not None else KIT_PRODUCERS,
+                     genome_dir=d)
         return j, j.run()
     finally:
         shutil.rmtree(d)
@@ -91,10 +92,46 @@ class Integro(unittest.TestCase):
 
 
 class Mutacoes(unittest.TestCase):
-    def assertFails(self, files, contains, registry=None):
-        j, _ = judge(files, registry)
+    def assertFails(self, files, contains, registry=None, producers=None):
+        j, _ = judge(files, registry, producers)
         self.assertTrue(any(contains in e for e in j.errors),
                         f"esperava erro com {contains!r}; veio {j.errors}")
+
+    # B4 — o kit contra o mundo: produtor sem repositório diz onde está
+    def test_60_produtor_sem_repositorio_e_sem_hosted_in_e_violacao(self):
+        reg = copy.deepcopy(KIT_PRODUCERS)
+        reg["producers"]["liceu.authority"].pop("hosted_in", None)
+        self.assertFails(base(), "VIOLAÇÃO NOVA FIT-017: liceu.authority não declara repository "
+                                 "nem hosted_in", producers=reg)
+
+    def test_61_hosted_in_para_produtor_que_nao_existe_e_violacao(self):
+        reg = copy.deepcopy(KIT_PRODUCERS)
+        reg["producers"]["liceu.authority"]["hosted_in"] = "liceu.fantasma"
+        self.assertFails(base(), "VIOLAÇÃO NOVA FIT-017: liceu.authority declara hosted_in "
+                                 "'liceu.fantasma', que não é produtor do registry", producers=reg)
+
+    def test_62_hosted_in_para_quem_tambem_nao_tem_repositorio_e_violacao(self):
+        # a cadeia de hospedagem tem de CHEGAR a código
+        reg = copy.deepcopy(KIT_PRODUCERS)
+        reg["producers"]["liceu.core"]["repository"] = None
+        reg["producers"]["liceu.core"]["hosted_in"] = "liceu.authority"
+        reg["producers"]["liceu.core"]["hosted_in_reason"] = "circular de proposito"
+        self.assertFails(base(), "VIOLAÇÃO NOVA FIT-017: liceu.authority declara hosted_in "
+                                 "'liceu.core', que também não tem repositório", producers=reg)
+
+    def test_63_hosted_in_sem_razao_e_violacao(self):
+        reg = copy.deepcopy(KIT_PRODUCERS)
+        reg["producers"]["liceu.authority"]["hosted_in_reason"] = "   "
+        self.assertFails(base(), "VIOLAÇÃO NOVA FIT-017: liceu.authority diz onde está mas não "
+                                 "diz por que não tem repositório próprio", producers=reg)
+
+    def test_64_o_kit_real_passa_na_FIT_017(self):
+        j, m = judge(base())
+        self.assertEqual([e for e in j.errors if "FIT-017" in e], [])
+        authority = [p for p in m["producers"] if p["id"] == "liceu.authority"][0]
+        self.assertIsNone(authority["repo"])
+        self.assertEqual(authority["hosted_in"], "liceu.core")
+        self.assertIn("authority_control_plane", authority["hosted_in_reason"])
 
     # U4 — pré-registro: previsão registrada depois do fato não é previsão
     def test_56_previsao_resolvida_por_teste_e_violacao(self):

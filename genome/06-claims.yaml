@@ -240,3 +240,15 @@
   kind: claim
   statement: "A LC 097/2020 fecha a UNK-0009: como o condominio de lotes nao e parcelamento de solo, os limites de parcelamento da Tabela I nao alcancam a unidade."
   asserted_by: "sessao da A1, 2026-09-23 — hipotese ao abrir a LC 097/2020 procurando fechar a incognita sem depender da prefeitura"
+
+# B4 (ciclo 11) — o kit contra o mundo. A CLM-0035 e a premissa mais confortavel
+# do ecossistema: que contrato declarado tem codigo que o emite.
+- id: CLM-0035
+  kind: claim
+  statement: "Todo contrato do kit tem, em algum repositorio do ecossistema, codigo que o emite."
+  asserted_by: "premissa do proprio Contract Registry, 2026-09-23 — todo contrato declara allowed_producers, e declarar produtor autorizado sugere produtor existente"
+
+- id: CLM-0036
+  kind: claim
+  statement: "Produtor sem repositorio proprio declara, em campo legivel por maquina, onde esta hospedado e por que nao tem repositorio."
+  asserted_by: "sessao da B4, 2026-09-23 — regime declarado depois de eu relatar como inconsistencia o que era declaracao deliberada"
