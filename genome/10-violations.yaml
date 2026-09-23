@@ -15,21 +15,6 @@
 # Fecha-se uma dividindo o if/then no payload_schema do contrato, no
 # liceu-protocol — nunca editando este arquivo sozinho.
 
-- id: VIO-0003
-  kind: violation
-  fitness: FIT-018
-  detection: genome
-  subject: "liceu.archimedes.planning-proposal@1.0.0/crs"
-  observed: "`crs` e exigido condicionalmente so na prosa de domain_invariants ('crs obrigatorio quando ha geometria'); nenhum `if`/`then`/`dependentRequired` do payload_schema o alcanca. Quem le so o esquema nao conhece o contrato: o gerador de vetores produz payload que o contrato proibe, e o boundary valida e deixa passar o que o contrato proibe."
-  location:
-    repo: liceu-protocol
-    path: liceu_protocol/liceu_contract_registry.yaml
-    note: "liceu.archimedes.planning-proposal@1.0.0, domain_invariants"
-  tracked_in:
-    repo: liceu-protocol
-    path: liceu_protocol/liceu_contract_registry.yaml
-    note: "Fecha-se pondo a condicional no payload_schema deste contrato (if/then ou dependentRequired), num PR do liceu-protocol; a divida sai deste livro no mesmo PR, ou a catraca acusa DIVIDA OBSOLETA."
-
 # VIO-0006 (liceu.archimedes.planning-state@2.0.0/candidates) SAIU em
 # 2026-09-23, paga: o contrato passou a carregar a condicional no
 # payload_schema (allOf/if/then com minItems, kit v0.19.0). Os ids nao sao
@@ -37,21 +22,6 @@
 # falta de trabalho: `where` e declarado so como objeto e no uso real aparece
 # em tres formas incompativeis, entao dizer QUANDO ha geometria e decisao de
 # contrato. Restam 7.
-
-- id: VIO-0007
-  kind: violation
-  fitness: FIT-018
-  detection: genome
-  subject: "liceu.archimedes.planning-state@2.0.0/crs"
-  observed: "`crs` e exigido condicionalmente so na prosa de domain_invariants ('crs obrigatorio quando ha geometria'); nenhum `if`/`then`/`dependentRequired` do payload_schema o alcanca. Quem le so o esquema nao conhece o contrato: o gerador de vetores produz payload que o contrato proibe, e o boundary valida e deixa passar o que o contrato proibe."
-  location:
-    repo: liceu-protocol
-    path: liceu_protocol/liceu_contract_registry.yaml
-    note: "liceu.archimedes.planning-state@2.0.0, domain_invariants"
-  tracked_in:
-    repo: liceu-protocol
-    path: liceu_protocol/liceu_contract_registry.yaml
-    note: "Fecha-se pondo a condicional no payload_schema deste contrato (if/then ou dependentRequired), num PR do liceu-protocol; a divida sai deste livro no mesmo PR, ou a catraca acusa DIVIDA OBSOLETA."
 
 # VIO-0009 (liceu.cefeida.evidence@2.0.0/confidence) SAIU em 2026-09-23, paga:
 # o contrato passou a carregar a condicional no payload_schema (allOf/if/then,
@@ -89,3 +59,18 @@
 # cada execucao. Sairam da contagem, nao da vista. Os ids nao sao reutilizados.
 # Restam 2, as duas de `crs`.
 
+# VIO-0003 e VIO-0007 SAIRAM em 2026-09-23, PAGAS: `crs obrigatorio quando ha
+# geometria` foi para o payload_schema de liceu.archimedes.planning-proposal@1.0.0
+# e planning-state@2.0.0, com if/then sobre `contains` (kit v0.21.0). A definicao
+# de "ha geometria" — coordenada no `where`, GeoJSON ou par lat/lon — esta
+# DECLARADA no proprio contrato, veio do uso real (os dois payloads com
+# coordenada do ecossistema ja declaravam crs), e e la que se contesta.
+#
+# O LIVRO DA FIT-018 ESTA VAZIO. Das nove que ela nasceu cobrando: quatro pagas
+# (cefeida confidence+horizon, planning-state candidates, human-decision
+# maes_indisponiveis, e as duas de crs), uma desmentida (o npv nunca foi
+# condicional) e tres fora de alcance (versoes RETIRED, decisao do titular, que
+# continuam visiveis como AVISO a cada execucao do juiz).
+#
+# A catraca continua armada: uma condicional nova escrita so em prosa, em versao
+# nao aposentada, FALHA a CI. Os ids nao sao reutilizados.
