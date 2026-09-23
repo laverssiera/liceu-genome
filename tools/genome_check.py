@@ -79,6 +79,45 @@ SCALE_REF = re.compile(r"^scale:[A-Z]+$")
 # outro repositório, quem confere é a CI de lá (tools/genome_pfc_check.py).
 GENOME_REPO = "liceu-genome"
 
+# FIT-018 — invariante CONDICIONAL que vive só na prosa do contrato.
+# O vocabulário é ESTREITO de propósito, e o limite é declarado: só "quando" e
+# "somente se", a forma que diz "o campo X é exigido SE tal coisa". Alargá-lo
+# para "exige"/"proíbe" acusaria a liceu.legal.admissibility, cujos invariantes
+# dizem eles mesmos "codificado no schema (if/then), nao em prosa" e cujo
+# payload_schema tem o `allOf` — um detector que acusa quem fez certo ensina a
+# ignorá-lo. Invariante escrito fora deste vocabulário escapa; isso é limite
+# nomeado, não cobertura silenciosa.
+COND_PROSA = re.compile(r"\bquando\b|\bsomente se\b", re.I)
+COND_ESQUEMA = ("if", "then", "else", "allOf", "anyOf", "oneOf", "not",
+                "dependentRequired")
+
+
+def campos_sob_condicional(no, dentro: bool = False) -> set:
+    """Nomes de campo que aparecem SOB construto condicional do payload_schema.
+
+    Não basta o esquema ter um `if`: a planning-proposal tem `allOf` para
+    study_basis e mesmo assim deixa `crs obrigatorio quando ha geometria` só na
+    prosa. A pergunta é por CAMPO, não por contrato.
+    """
+    achados: set = set()
+    if isinstance(no, dict):
+        for k, v in no.items():
+            if k in COND_ESQUEMA:
+                achados |= campos_sob_condicional(v, True)
+            elif dentro:
+                if k == "required" and isinstance(v, list):
+                    achados |= {str(x) for x in v}
+                elif k == "properties" and isinstance(v, dict):
+                    achados |= set(v)
+                    for sub in v.values():
+                        achados |= campos_sob_condicional(sub, True)
+                else:
+                    achados |= campos_sob_condicional(v, True)
+    elif isinstance(no, list):
+        for x in no:
+            achados |= campos_sob_condicional(x, dentro)
+    return achados
+
 
 # ─────────────────────────────────────────────────────────── carga
 # O YAML trata " #" como início de comentário mesmo no meio de um valor sem aspas:
@@ -601,6 +640,42 @@ class Judge:
                 self.find("FIT-017", f"{pid}/hosted_in_reason",
                           f"{pid} diz onde está mas não diz por que não tem repositório próprio: "
                           f"hosted_in sem razão é um ponteiro sem motivo")
+
+        # FIT-018 — prosa não é executável. Um invariante CONDICIONAL escrito
+        # em `domain_invariants` e ausente do `payload_schema` não alcança
+        # ninguém: o gerador de vetores lê o esquema e produz payload que o
+        # contrato proíbe; o boundary valida o esquema e deixa passar o que o
+        # contrato proíbe; o produtor implementa a prosa e fica sozinho. Foi
+        # exatamente isso na B3 — "confidence obrigatorio quando kind =
+        # FORECAST" acusava o CEFEIDA, que estava certo (PRF-0036).
+        #
+        # A pergunta é por CAMPO. Ter `allOf` no esquema não basta: a
+        # planning-proposal tem um, para study_basis, e mesmo assim deixa `crs`
+        # só na prosa.
+        for cid, versoes in (self.registry.get("contracts") or {}).items():
+            for versao, entrada in (versoes or {}).items():
+                if not isinstance(entrada, dict):
+                    continue
+                esquema = entrada.get("payload_schema") or {}
+                campos = set(esquema.get("properties") or {})
+                cobertos = campos_sob_condicional(esquema)
+                for inv in (entrada.get("domain_invariants") or []):
+                    texto = str(inv)
+                    if not COND_PROSA.search(texto):
+                        continue
+                    # O invariante nomeia o campo exigido primeiro: "confidence
+                    # obrigatorio quando ...", "crs obrigatorio quando ...".
+                    alvo = (texto.split() or [""])[0].strip(":,.")
+                    if alvo not in campos:
+                        self.find("FIT-018", f"{cid}@{versao}/{alvo}",
+                                  f"{cid}@{versao}: o invariante condicional começa por "
+                                  f"{alvo!r}, que não é campo do payload_schema — a prosa "
+                                  f"exige algo que o esquema não nomeia: {texto!r}")
+                    elif alvo not in cobertos:
+                        self.find("FIT-018", f"{cid}@{versao}/{alvo}",
+                                  f"{cid}@{versao}: {alvo!r} é exigido condicionalmente só "
+                                  f"na prosa ({texto!r}) — nenhum `if`/`then`/"
+                                  f"`dependentRequired` do payload_schema o alcança")
 
         # FIT-016 — previsão registrada depois do fato não é previsão.
         # É o coração do modo sombra: uma saída conferida DEPOIS não mede nada,

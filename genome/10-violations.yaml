@@ -4,4 +4,148 @@
 # (_JURIDICOTECH_ALLOWED) sairam do livro — corrigidas e provadas por teste
 # (PRF-0012 e PRF-0013, que supersedem a PRF-0007). Os ids nao sao reutilizados.
 # O livro esta vazio; a catraca continua armada.
-[]
+
+# FIT-018 (ciclo 11, B3): as nove invariantes condicionais que vivem so na prosa
+# do Contract Registry. Nao sao defeito de hoje — sao o estado em que o kit
+# v0.17.0 ja estava, e que a B3 mediu (PRF-0036) depois de uma delas acusar o
+# CEFEIDA por obedecer o contrato. Entram AQUI, e nao como falha, porque a
+# catraca e o que importa: uma decima condicional em prosa FALHA a CI, e uma
+# destas que for para o esquema tem de sair deste livro no mesmo PR.
+#
+# Fecha-se uma dividindo o if/then no payload_schema do contrato, no
+# liceu-protocol — nunca editando este arquivo sozinho.
+
+- id: VIO-0003
+  kind: violation
+  fitness: FIT-018
+  detection: genome
+  subject: "liceu.archimedes.planning-proposal@1.0.0/crs"
+  observed: "`crs` e exigido condicionalmente so na prosa de domain_invariants ('crs obrigatorio quando ha geometria'); nenhum `if`/`then`/`dependentRequired` do payload_schema o alcanca. Quem le so o esquema nao conhece o contrato: o gerador de vetores produz payload que o contrato proibe, e o boundary valida e deixa passar o que o contrato proibe."
+  location:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "liceu.archimedes.planning-proposal@1.0.0, domain_invariants"
+  tracked_in:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "Fecha-se pondo a condicional no payload_schema deste contrato (if/then ou dependentRequired), num PR do liceu-protocol; a divida sai deste livro no mesmo PR, ou a catraca acusa DIVIDA OBSOLETA."
+
+- id: VIO-0004
+  kind: violation
+  fitness: FIT-018
+  detection: genome
+  subject: "liceu.archimedes.planning-state@1.0.0/candidates"
+  observed: "`candidates` e exigido condicionalmente so na prosa de domain_invariants ('candidates nao vazio quando state_status = AUTHORITATIVE_OUTPUT'); nenhum `if`/`then`/`dependentRequired` do payload_schema o alcanca. Quem le so o esquema nao conhece o contrato: o gerador de vetores produz payload que o contrato proibe, e o boundary valida e deixa passar o que o contrato proibe."
+  location:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "liceu.archimedes.planning-state@1.0.0, domain_invariants"
+  tracked_in:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "Fecha-se pondo a condicional no payload_schema deste contrato (if/then ou dependentRequired), num PR do liceu-protocol; a divida sai deste livro no mesmo PR, ou a catraca acusa DIVIDA OBSOLETA."
+
+- id: VIO-0005
+  kind: violation
+  fitness: FIT-018
+  detection: genome
+  subject: "liceu.archimedes.planning-state@1.0.0/crs"
+  observed: "`crs` e exigido condicionalmente so na prosa de domain_invariants ('crs obrigatorio quando ha geometria'); nenhum `if`/`then`/`dependentRequired` do payload_schema o alcanca. Quem le so o esquema nao conhece o contrato: o gerador de vetores produz payload que o contrato proibe, e o boundary valida e deixa passar o que o contrato proibe."
+  location:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "liceu.archimedes.planning-state@1.0.0, domain_invariants"
+  tracked_in:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "Fecha-se pondo a condicional no payload_schema deste contrato (if/then ou dependentRequired), num PR do liceu-protocol; a divida sai deste livro no mesmo PR, ou a catraca acusa DIVIDA OBSOLETA."
+
+- id: VIO-0006
+  kind: violation
+  fitness: FIT-018
+  detection: genome
+  subject: "liceu.archimedes.planning-state@2.0.0/candidates"
+  observed: "`candidates` e exigido condicionalmente so na prosa de domain_invariants ('candidates nao vazio quando state_status = AUTHORITATIVE_OUTPUT'); nenhum `if`/`then`/`dependentRequired` do payload_schema o alcanca. Quem le so o esquema nao conhece o contrato: o gerador de vetores produz payload que o contrato proibe, e o boundary valida e deixa passar o que o contrato proibe."
+  location:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "liceu.archimedes.planning-state@2.0.0, domain_invariants"
+  tracked_in:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "Fecha-se pondo a condicional no payload_schema deste contrato (if/then ou dependentRequired), num PR do liceu-protocol; a divida sai deste livro no mesmo PR, ou a catraca acusa DIVIDA OBSOLETA."
+
+- id: VIO-0007
+  kind: violation
+  fitness: FIT-018
+  detection: genome
+  subject: "liceu.archimedes.planning-state@2.0.0/crs"
+  observed: "`crs` e exigido condicionalmente so na prosa de domain_invariants ('crs obrigatorio quando ha geometria'); nenhum `if`/`then`/`dependentRequired` do payload_schema o alcanca. Quem le so o esquema nao conhece o contrato: o gerador de vetores produz payload que o contrato proibe, e o boundary valida e deixa passar o que o contrato proibe."
+  location:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "liceu.archimedes.planning-state@2.0.0, domain_invariants"
+  tracked_in:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "Fecha-se pondo a condicional no payload_schema deste contrato (if/then ou dependentRequired), num PR do liceu-protocol; a divida sai deste livro no mesmo PR, ou a catraca acusa DIVIDA OBSOLETA."
+
+- id: VIO-0008
+  kind: violation
+  fitness: FIT-018
+  detection: genome
+  subject: "liceu.cefeida.evidence@1.0.0/confidence"
+  observed: "`confidence` e exigido condicionalmente so na prosa de domain_invariants ('confidence obrigatorio quando kind = FORECAST'); nenhum `if`/`then`/`dependentRequired` do payload_schema o alcanca. Quem le so o esquema nao conhece o contrato: o gerador de vetores produz payload que o contrato proibe, e o boundary valida e deixa passar o que o contrato proibe."
+  location:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "liceu.cefeida.evidence@1.0.0, domain_invariants"
+  tracked_in:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "Fecha-se pondo a condicional no payload_schema deste contrato (if/then ou dependentRequired), num PR do liceu-protocol; a divida sai deste livro no mesmo PR, ou a catraca acusa DIVIDA OBSOLETA."
+
+- id: VIO-0009
+  kind: violation
+  fitness: FIT-018
+  detection: genome
+  subject: "liceu.cefeida.evidence@2.0.0/confidence"
+  observed: "`confidence` e exigido condicionalmente so na prosa de domain_invariants ('confidence obrigatorio quando kind = FORECAST'); nenhum `if`/`then`/`dependentRequired` do payload_schema o alcanca. Quem le so o esquema nao conhece o contrato: o gerador de vetores produz payload que o contrato proibe, e o boundary valida e deixa passar o que o contrato proibe."
+  location:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "liceu.cefeida.evidence@2.0.0, domain_invariants"
+  tracked_in:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "Fecha-se pondo a condicional no payload_schema deste contrato (if/then ou dependentRequired), num PR do liceu-protocol; a divida sai deste livro no mesmo PR, ou a catraca acusa DIVIDA OBSOLETA."
+
+- id: VIO-0010
+  kind: violation
+  fitness: FIT-018
+  detection: genome
+  subject: "liceu.cea.financial-exposure@1.0.0/npv"
+  observed: "`npv` e exigido condicionalmente so na prosa de domain_invariants ('npv presente quando financial_viability != inviavel'); nenhum `if`/`then`/`dependentRequired` do payload_schema o alcanca. Quem le so o esquema nao conhece o contrato: o gerador de vetores produz payload que o contrato proibe, e o boundary valida e deixa passar o que o contrato proibe."
+  location:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "liceu.cea.financial-exposure@1.0.0, domain_invariants"
+  tracked_in:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "Fecha-se pondo a condicional no payload_schema deste contrato (if/then ou dependentRequired), num PR do liceu-protocol; a divida sai deste livro no mesmo PR, ou a catraca acusa DIVIDA OBSOLETA."
+
+- id: VIO-0011
+  kind: violation
+  fitness: FIT-018
+  detection: genome
+  subject: "liceu.authority.human-decision@2.0.0/maes_indisponiveis"
+  observed: "`maes_indisponiveis` e exigido condicionalmente so na prosa de domain_invariants ('maes_indisponiveis obrigatorio SOMENTE se escalation_reason == MOTHERS_UNAVAILABLE'); nenhum `if`/`then`/`dependentRequired` do payload_schema o alcanca. Quem le so o esquema nao conhece o contrato: o gerador de vetores produz payload que o contrato proibe, e o boundary valida e deixa passar o que o contrato proibe."
+  location:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "liceu.authority.human-decision@2.0.0, domain_invariants"
+  tracked_in:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "Fecha-se pondo a condicional no payload_schema deste contrato (if/then ou dependentRequired), num PR do liceu-protocol; a divida sai deste livro no mesmo PR, ou a catraca acusa DIVIDA OBSOLETA."

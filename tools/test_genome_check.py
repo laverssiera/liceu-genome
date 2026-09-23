@@ -465,7 +465,13 @@ class Mutacoes(unittest.TestCase):
         self.assertEqual(j.errors, [])
         self.assertEqual(m["claims"]["CLM-0011"]["status"], "TESTED")
         self.assertIn(("PRF-0007", "PRF-0012"), [tuple(x) for x in m["proofs_superseded"]])
-        self.assertEqual(m["debt_known"], []) and self.assertEqual(m["debt_code"], [])
+        # A divida do livro que importa AQUI e a ligada a FIT-009/CLM-0011 —
+        # nenhuma. Exigir o livro INTEIRO vazio afirmaria o estado do genoma, e
+        # apodreceu assim que a FIT-018 registrou a divida das condicionais em
+        # prosa. (O `and` entre os dois assertEqual era bug: assertEqual devolve
+        # None, entao o segundo nunca rodava.)
+        self.assertEqual([d for d in m["debt_known"] if d[0] == "FIT-009"], [])
+        self.assertEqual([d for d in m["debt_code"] if d[1] == "FIT-009"], [])
 
     def test_26_prova_superseded_nao_deriva_mesmo_sem_a_nova_provar(self):
         # superseder com uma refutação nova mantém REFUTED; superseder e não
@@ -638,6 +644,83 @@ class ControlePositivo(unittest.TestCase):
                          "com prova externa real, a cadeia tem de SUBIR um elo")
         self.assertEqual(cadeia(m)[1], antes_local + 1,
                          "e a contagem POR ESCALA tem de subir em LOCAL (FIT-011)")
+
+
+class CondicionalEmProsa(unittest.TestCase):
+    """FIT-018 — a prosa do contrato nao alcanca maquina nenhuma.
+
+    A B3 pagou para aprender isto: `confidence obrigatorio quando kind =
+    FORECAST` so existia em `domain_invariants`, e o gerador de vetores, que le
+    o payload_schema, acusava o CEFEIDA por obedecer o contrato.
+    """
+
+    def assertFails(self, files, contains, registry=None):
+        j, _ = judge(files, registry)
+        self.assertTrue(any(contains in e for e in j.errors),
+                        f"esperava erro com {contains!r}; veio {j.errors}")
+
+    @staticmethod
+    def _contrato(invariantes, esquema):
+        reg = copy.deepcopy(KIT_REGISTRY)
+        reg["contracts"]["liceu.teste.condicional"] = {"1.0.0": {
+            "owner": "liceu.cefeida", "status": "ACTIVE",
+            "domain_invariants": invariantes, "payload_schema": esquema}}
+        return reg
+
+    ESQUEMA_SEM = {"type": "object", "required": ["kind"],
+                   "properties": {"kind": {"type": "string"},
+                                  "confidence": {"type": "number"}}}
+
+    def test_65_condicional_so_na_prosa_e_violacao_nova(self):
+        reg = self._contrato(["confidence obrigatorio quando kind = FORECAST"],
+                             self.ESQUEMA_SEM)
+        self.assertFails(base(), "VIOLAÇÃO NOVA FIT-018: liceu.teste.condicional@1.0.0: "
+                                 "'confidence' é exigido condicionalmente só na prosa",
+                         registry=reg)
+
+    def test_66_condicional_no_esquema_nao_e_violacao(self):
+        """O outro lado: com `if`/`then` nomeando o campo, o juiz cala."""
+        esquema = dict(self.ESQUEMA_SEM)
+        esquema["allOf"] = [{"if": {"properties": {"kind": {"const": "FORECAST"}}},
+                             "then": {"required": ["confidence"]}}]
+        reg = self._contrato(["confidence obrigatorio quando kind = FORECAST"], esquema)
+        j, _ = judge(base(), reg)
+        self.assertEqual([e for e in j.errors if "FIT-018" in e], [], j.errors)
+
+    def test_67_condicional_de_OUTRO_campo_no_esquema_nao_cobre(self):
+        """O caso real da planning-proposal: ela TEM um `allOf`, para study_basis,
+        e mesmo assim deixa `crs` so na prosa. A pergunta e por CAMPO."""
+        esquema = dict(self.ESQUEMA_SEM)
+        esquema["properties"] = dict(esquema["properties"], crs={"type": "string"})
+        esquema["allOf"] = [{"if": {"properties": {"kind": {"const": "FORECAST"}}},
+                             "then": {"required": ["confidence"]}}]
+        reg = self._contrato(["confidence obrigatorio quando kind = FORECAST",
+                              "crs obrigatorio quando ha geometria"], esquema)
+        self.assertFails(base(), "VIOLAÇÃO NOVA FIT-018: liceu.teste.condicional@1.0.0: "
+                                 "'crs' é exigido condicionalmente só na prosa", registry=reg)
+
+    def test_68_prosa_que_nomeia_campo_inexistente_e_acusada(self):
+        reg = self._contrato(["certeza obrigatorio quando kind = FORECAST"], self.ESQUEMA_SEM)
+        self.assertFails(base(), "o invariante condicional começa por 'certeza', que não é "
+                                 "campo do payload_schema", registry=reg)
+
+    def test_69_vocabulario_estreito_nao_acusa_quem_fez_certo(self):
+        """A liceu.legal.admissibility diz, na propria prosa, "codificado no
+        schema (if/then), nao em prosa", e o esquema tem o `allOf`. Um detector
+        que acusasse quem fez certo ensinaria a ignora-lo."""
+        j, _ = judge(base())
+        self.assertEqual(
+            [e for e in j.errors if "FIT-018" in e and "admissibility" in e], [], j.errors)
+
+    def test_70_divida_paga_e_nao_removida_do_livro_falha(self):
+        """A catraca nos dois sentidos. Pondo a condicional do CEFEIDA no
+        esquema sem tirar a VIO do livro, o juiz acusa DIVIDA OBSOLETA — e nao
+        deixa o livro virar ficcao de um defeito ja corrigido."""
+        reg = copy.deepcopy(KIT_REGISTRY)
+        ev = reg["contracts"]["liceu.cefeida.evidence"]["2.0.0"]["payload_schema"]
+        ev["allOf"] = [{"if": {"properties": {"evidence_kind": {"const": "FORECAST"}}},
+                        "then": {"required": ["confidence"]}}]
+        self.assertFails(base(), "DÍVIDA OBSOLETA VIO-0009", registry=reg)
 
 
 if __name__ == "__main__":
