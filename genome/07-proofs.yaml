@@ -660,7 +660,7 @@
   location:
     repo: 3C273-Analytics-Data-Science
     path: cefeida/backend/federation/evidence_publisher.py
-    note: "A correcao e `isinstance` antes de iterar: `if (not isinstance(ev.source_refs, (list, tuple)) or not ev.source_refs or any(...))`, e o produtor devolve `_blocked('source_missing', owner, missing='source_refs')` em vez de levantar. A prova nao e o verde: e a mutacao. Desfazendo o `isinstance` na main e rodando os testes, dois caem com `TypeError: 'int' object is not iterable` em evidence_publisher.py:276 — test_o_cefeida_aceita_toda_a_faixa_que_o_contrato_admite e test_o_cefeida_recusa_o_que_o_contrato_proibe. Restaurado o arquivo, 4 passam. O teste nao lista o vetor a mao: ele deriva do payload_schema pelo kit v0.17.0, e o conjunto do que o produtor deixa para o boundary esta FIXADO em lista (DEIXA_PASSAR_HOJE, 7 casos) — se algo novo escapar, o diff mostra O QUE, e nao so quantos."
+    note: "A correcao e `isinstance` antes de iterar: `if (not isinstance(ev.source_refs, (list, tuple)) or not ev.source_refs or any(...))`, e o produtor devolve `_blocked('source_missing', owner, missing='source_refs')` em vez de levantar. A prova nao e o verde: e a mutacao. Desfazendo o `isinstance` na main e rodando os testes, dois caem com `TypeError: 'int' object is not iterable` em evidence_publisher.py:276 — test_o_cefeida_aceita_toda_a_faixa_que_o_contrato_admite e test_o_cefeida_recusa_o_que_o_contrato_proibe. Restaurado o arquivo, 4 passam. O teste nao lista o vetor a mao: ele deriva do payload_schema pelo kit v0.17.0, e o conjunto do que o produtor deixa para o boundary esta FIXADO em lista (DEIXA_PASSAR_HOJE, 7 casos) — se algo novo escapar, o diff mostra O QUE, e nao so quantos. SUPERFICIE REFEITA em 2026-09-23 (commit accbb11): o teste largou a valvula `condicionais` porque o contrato passou a carregar a regra (kit 0.18.0), e o arquivo do teste esta na superficie. A prova foi RODADA de novo com os vetores novos — desfazendo o `isinstance`, os mesmos dois testes caem com TypeError —, e DEIXA_PASSAR_HOJE continua com os mesmos 7 casos."
   commit: "7a2a381"
   date: "2026-09-23"
   mechanism:
@@ -668,5 +668,30 @@
     paths:
     - cefeida/backend/federation/evidence_publisher.py
     - cefeida/backend/tests/test_contract_reality_check.py
-    content_hash: a6b303df6ee93cd63d318d6d2a756f51b48cea428c5089d8b0cf0214734d3fa2
-    commit: "7a2a381"
+    content_hash: 86cdd6f14f5c4f4c55d3e9a592ebd1c1f0002084661147b188bf00412b3cd6f7
+    commit: "accbb11"
+
+# A primeira condicional em prosa paga: o contrato passou a carregar a regra.
+- id: PRF-0039
+  kind: proof
+  title: "Com a condicional no payload_schema, o produtor passa sem valvula nenhuma — e o vetor nasce completo"
+  proves: [CLM-0044]
+  basis: test
+  test:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_vectors.py
+    name: _self_test
+    pr: 22
+  environment: ci
+  location:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_registry.yaml
+    note: "liceu.cefeida.evidence@2.0.0 ganhou allOf/if/then — evidence_kind = FORECAST exige confidence E horizon — e `_ajustar` passou a validar cada vetor com jsonschema, usando os erros de `required` para acrescentar o que o esquema exige condicionalmente. Quem responde e a validacao, e nao uma leitura do esquema, entao vale para qualquer construto. Quatro casos novos no self-test do kit 0.18.0: o valido de FORECAST ja nasce com o campo exigido; a condicional vira vetor INVALIDO (a regra virou teste); nenhum valido do gerador e recusado pelo proprio esquema; e o produtor passa SEM a valvula. Medido contra o produtor real, sem `condicionais`: 0 recusas indevidas, e os mesmos 7 casos deixados para o boundary. Dois acertos de prosa junto: a prosa dizia `kind` e o campo se chama `evidence_kind`, e o `horizon` nao estava em domain_invariants — estava na `description` do campo, esconderijo que nenhuma fitness olha. A 1.0.0 esta RETIRED e nao foi tocada: reescrever versao aposentada seria mudar o que ja foi publicado, e a VIO-0008 dela continua no livro."
+  commit: "a7272a0"
+  date: "2026-09-23"
+  mechanism:
+    repo: liceu-protocol
+    paths:
+    - liceu_protocol/liceu_contract_vectors.py
+    content_hash: 7064820213f24736016f27f2df9feaadd822964168044b11db3f623402ca08b1
+    commit: "a7272a0"
