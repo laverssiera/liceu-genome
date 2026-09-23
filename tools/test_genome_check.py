@@ -728,22 +728,34 @@ class CondicionalEmProsa(unittest.TestCase):
         linha no livro faz o juiz acusar DIVIDA OBSOLETA — o livro nao vira
         ficcao de um defeito ja corrigido.
 
-        A divida usada e a PRIMEIRA do livro, e nao uma escolhida a dedo: a
-        versao anterior citava a VIO-0009 e apodreceu no dia em que ela foi
-        paga. Enquanto houver divida de FIT-018, este teste mede; quando nao
-        houver, ele deve sair junto com a fitness.
+        O teste monta a PROPRIA divida, e nao depende do livro real. Ja mudou
+        duas vezes por isso: citava a VIO-0009 e apodreceu quando ela foi paga;
+        passou a usar a primeira do livro e apodreceu quando o livro zerou.
+        Teste que depende do estado do genoma mede o estado, nao a regra.
         """
-        livro = [v for v in base()["10-violations.yaml"] if v.get("fitness") == "FIT-018"]
-        self.assertTrue(livro, "sem divida de FIT-018 no livro, este teste nao tem o que medir")
-        vio = livro[0]
-        contrato, _, campo = vio["subject"].partition("/")
-        cid, _, versao = contrato.partition("@")
+        esquema_pago = dict(self.ESQUEMA_SEM)
+        esquema_pago["allOf"] = [{"if": {"properties": {"kind": {"const": "FORECAST"}},
+                                         "required": ["kind"]},
+                                  "then": {"required": ["confidence"]}}]
+        # o contrato JA esta pago...
+        reg = self._contrato(["confidence obrigatorio quando kind = FORECAST"], esquema_pago)
+        # ...e a divida continua no livro
+        f = base()
+        add(f, "10-violations.yaml", {
+            "id": "VIO-0099", "kind": "violation", "fitness": "FIT-018",
+            "detection": "genome", "subject": "liceu.teste.condicional@1.0.0/confidence",
+            "observed": "condicional so na prosa", "tracked_in": {"repo": "liceu-protocol"}})
+        j, _ = judge(f, reg)
+        self.assertTrue(any("DÍVIDA OBSOLETA VIO-0099" in e for e in j.errors),
+                        f"esperava DIVIDA OBSOLETA; veio {j.errors}")
 
-        reg = copy.deepcopy(KIT_REGISTRY)
-        esquema = reg["contracts"][cid][versao]["payload_schema"]
-        # o minimo que faz o campo ficar SOB construto condicional
-        esquema["allOf"] = [{"if": {}, "then": {"required": [campo]}}]
-        self.assertFails(base(), f"DÍVIDA OBSOLETA {vio['id']}", registry=reg)
+    def test_75_o_livro_da_FIT_018_vazio_nao_desarma_a_catraca(self):
+        """O livro zerou em 2026-09-23. Livro vazio nao pode virar fitness
+        dormindo: uma condicional nova, so na prosa, tem de FALHAR."""
+        reg = self._contrato(["confidence obrigatorio quando kind = FORECAST"],
+                             self.ESQUEMA_SEM)
+        self.assertFails(base(), "VIOLAÇÃO NOVA FIT-018: liceu.teste.condicional@1.0.0",
+                         registry=reg)
 
 
 if __name__ == "__main__":
