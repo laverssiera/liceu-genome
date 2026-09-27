@@ -85,7 +85,18 @@
   validity: PROPOSTA
   permitted_uses: [exploration, design_reference, research, comparison_as_proposal]
   prohibited_uses: [authoritative_decision, authoritative_budget, procurement_commitment, physical_execution_authorization]
-  source: {repo: JURIDICO-TECH, path: backend/juridicotech/dados/certidao_diretrizes_vgp.json, note: "Derivado de duas fontes oficiais com URL e sha256: a RELACAO DE DOCUMENTOS do DHAP e o REQUERIMENTO DHAP. Cinco documentos (1, 2, 6, 20, 26), um pedido por processo, e o requerimento com a caixa 'Urbanistica'. Prazo NAO declarado (UNK-0010). Tres dos cinco documentos carregam dado pessoal e por isso ficam com o titular: pedir e ato do RT, nao do LICEU."}
+  source: {repo: JURIDICO-TECH, path: backend/juridicotech/dados/certidao_diretrizes_vgp.json, note: "Derivado de duas fontes oficiais com URL e sha256: a RELACAO DE DOCUMENTOS do DHAP e o REQUERIMENTO DHAP. Cinco documentos (1, 2, 6, 20, 26), um pedido por processo, e o requerimento com a caixa 'Urbanistica'. Prazo NAO declarado. Tres dos cinco documentos carregam dado pessoal e por isso ficam com o titular: pedir e ato do RT, nao do LICEU. CORRECAO DE PREMISSA em 2026-09-27: este procedimento NAO esta no caminho da Casa P-001. O que esta escrito aqui sobre a Certidao continua certo — ela existe, e servico do mesmo DHAP e exige estes cinco itens —, mas ela nao e etapa do processo da P-001 e nao e o oraculo dos indices. A mesma RELACAO de onde estes cinco itens saem tem outra linha, a de Construcao Residencial, com onze itens, e nenhum deles e certidao. O no fica: saber que um caminho existe e nao serve tem valor, e apagar apagaria tambem a licao. Ver CASO-P001-PROTOCOLO e a PRF-0045."}
+
+# A1 (ciclo 11, correcao de premissa) — o ato REAL do caminho da P-001, e o
+# relogio dele: a montagem do conjunto. PROPOSTA: VIGENTE exige dono e revisor.
+- id: CASO-P001-PROTOCOLO
+  kind: knowledge
+  title: "Protocolo do projeto simplificado no DHAP de Vargem Grande Paulista — os onze itens de Construcao Residencial"
+  knowledge_type: journey
+  validity: PROPOSTA
+  permitted_uses: [exploration, design_reference, research, comparison_as_proposal]
+  prohibited_uses: [authoritative_decision, authoritative_budget, procurement_commitment, physical_execution_authorization]
+  source: {repo: JURIDICO-TECH, path: backend/juridicotech/dados/protocolo_construcao_residencial_vgp.json, note: "O ato e a aprovacao do projeto E da execucao da obra, pelo projeto simplificado do Decreto municipal 054/2017. A fonte e a RELACAO DE DOCUMENTOS do DHAP (sha256 48269f22968e242e2077737352f695cd37c210bf90111a867a343305137de579, reconferido em 2026-09-27 baixando de novo: bate byte a byte), linha 'Construcao Residencial  1 2 4 5 6 7 8 13 14 17 20'. O relogio do processo esta no rodape da mesma fonte: 'Os Pedidos so serao protocolados se os documentos exigidos estiverem anexos ao processo' — falta um, nao ha protocolo. Outro rodape separa o que impede de protocolar do que impede de APROVAR: a renovacao do registro profissional para o ano corrente e 'condicao para a referida aprovacao', e por isso nao e impedimento de protocolo. Tres dos onze itens ficam com o titular por carregarem dado pessoal. Nenhum item e ato do LICEU: quem protocola e o RT."}
 
 # B1 (ciclo 11) — o inventario de segredos. NOME e ALCANCE, nunca valor: o
 # genoma e publico, e fingerprint de segredo tambem e segredo quando o segredo

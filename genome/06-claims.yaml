@@ -318,3 +318,22 @@
   statement: "Produtor que CONSTROI o payload so emite payload que o contrato admite: quem monta o payload conhece o contrato que vai obedecer."
   asserted_by: "premissa dos produtores-construtores, 2026-09-27 — build_payload projeta o estado no formato do contrato, e isso era lido como garantia de validade"
 
+# A1 (ciclo 11, correcao de premissa) — o conjunto do protocolo. A primeira
+# nasce para ser medida; a segunda nasce para NAO poder ser afirmada.
+- id: CLM-0047
+  kind: claim
+  statement: "O conjunto de documentos que o DHAP exige para protocolar a Casa P-001 esta completo."
+  asserted_by: "premissa implicita do prontidao_protocolo, 2026-09-22 — o modulo respondia 'o projeto esta pronto para o protocolo?' sem conferir documento nenhum, e um veredito PRONTO teria afirmado isto sem ter olhado"
+
+- id: CLM-0048
+  kind: claim
+  statement: "Os itens do conjunto do protocolo que nao aparecem no acervo varrido nao estao em maos."
+  asserted_by: "sessao da A1, 2026-09-27 — a leitura tentadora do estado SEM_EVIDENCIA, registrada aqui exatamente para ficar bloqueada"
+
+# A1 (ciclo 11) — a coluna que o perfil desistiu de avaliar. A afirmacao e do
+# proprio perfil VGP-LC030-2007-ZM, e a prancha-modelo oficial a desmente.
+- id: CLM-0049
+  kind: claim
+  statement: "O significado da coluna I.E da Tabela I nao esta em fonte oficial, e por isso o indice fica fora da conferencia."
+  asserted_by: "perfil VGP-LC030-2007-ZM, 2026-09-22 — 'O significado da sigla nao foi encontrado no texto extraido da LC 99/2021 e o LICEU nao a avalia'"
+

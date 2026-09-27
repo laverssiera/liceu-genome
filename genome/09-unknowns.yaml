@@ -37,7 +37,7 @@
   kind: unknown
   question: "Quais sao os indices urbanisticos vigentes da zona ZM em fonte que uma maquina consiga reconferir, ou certificada pela Prefeitura?"
   why_unknown: "A LC 030/2007 oficial e digitalizacao sem camada de texto (0 objetos /Font em 261 paginas). A Tabela I vigente e a da LC 99/2021, que tem camada de OCR — mas na pagina da tabela o OCR desfaz linhas e colunas ('50so50s07060'), e amarrar um numero a linha ZM ali seria chute. Os valores em uso (C.A 2,0; T.O 60%; T.P 10%; area minima 360 m2; frente 5,00 m; recuos) vieram de LEITURA VISUAL da imagem oficial a 400 dpi. Nao existe texto consolidado oficial, e a lista de 13 alteracoes e a que a propria Camara publica. Alem disso a Tabela I tem uma coluna 'I.E' com valor 4,0 para ZM cujo significado nao aparece no texto da lei."
-  required_evidence: "Consulta previa ou certidao de diretrizes da Prefeitura com os indices da ZM para o imovel, ou texto consolidado oficial legivel por maquina. Qualquer um dos dois tira o confirmacao_pendente e fecha a coluna I.E."
+  required_evidence: "O TEXTO CONSOLIDADO oficial da lei de uso e ocupacao, legivel por maquina — e so ele. A certidao de diretrizes saiu desta linha em 2026-09-27: a PRF-0045 mostra que ela nao esta no caminho da P-001, e pedir como evidencia um documento que nao sera tirado e manter a incognita aberta com uma porta falsa. A coluna I.E se estreitou e nao fecha por aqui: a PRF-0047 derivou o significado (Indice de elevacao) e a formula (area total / area do terreo) da prancha-modelo oficial do municipio, e a P-001 declara I.E. = 1; o que falta e saber se o 4,0 da linha ZM e maximo, minimo ou exigencia, e isso so o texto consolidado diz. Comparar 1,00 com 4,0 sem a direcao do limite seria inventar a regra a partir do numero. Esta e a conferencia que o LICEU precisa fechar ANTES do protocolo: sem ela as quatro previsoes pre-registradas perdem sentido, porque o LICEU passaria a comentar um resultado ja conhecido."
   owner: titular
   blocks: [CLM-0019]
 
@@ -45,7 +45,7 @@
   kind: unknown
   question: "Area minima do lote (360 m2) e frente minima (5,00 m) da Tabela I se aplicam a uma unidade dentro de condominio ja aprovado?"
   why_unknown: "O terreno da P-001 tem 175 m2 e a area minima do lote na ZM e 360 m2. Aplicar o limite calado daria NAO ATENDE — e a tabela nao resolve a aplicabilidade: sao restricoes de parcelamento, e a unidade esta em regime de condominio. O motor recusa decidir isso sozinho e nomeia a falta."
-  required_evidence: "Certidao de Diretrizes com finalidade URBANISTICA, emitida pelo DHAP da prefeitura de Vargem Grande Paulista (A1, ciclo 11): cinco documentos, todos em maos. E o oraculo barato, e responde antes do protocolo. A LC 097/2020, que regulamenta condominio de lotes no municipio, foi lida e NAO fecha esta incognita — da argumento para os dois lados (PRF-0028)."
+  required_evidence: "Duas coisas, e nenhuma delas e certidao — a Certidao de Diretrizes saiu desta linha em 2026-09-27 pela PRF-0045, que a mostra fora do caminho da P-001. Primeira: a matricula atualizada (item 20 do protocolo), que diz o REGIME — se loteamento ou condominio —, hoje em aberto e contraditorio na propria planta, que declara unidade autonoma em condominio e ao mesmo tempo loteamento sem associacao obrigatoria (a FC-006). Segunda: a APLICABILIDADE do limite de lote a unidade em condominio, que nao tem oraculo anterior ao protocolo — e o parecer, a exigencia ou o alvara da Prefeitura sobre o projeto que a resolve, exatamente o ato que resolve as quatro previsoes pre-registradas. A LC 097/2020, que regulamenta condominio de lotes no municipio, foi lida e NAO fecha esta incognita — da argumento para os dois lados (PRF-0028)."
   owner: titular
   blocks: [CLM-0019]
 
@@ -62,11 +62,11 @@
 # janela de pre-registro ficar aberta.
 - id: UNK-0010
   kind: unknown
-  question: "Qual o prazo de emissao da Certidao de Diretrizes no DHAP de Vargem Grande Paulista?"
-  why_unknown: "Nao consta em fonte oficial on-line. A RELACAO DE DOCUMENTOS do DHAP nao traz prazo, e a Carta de Servicos ao Usuario tambem nao — embora a Lei Federal 13.460/2017, que a institui, exija a divulgacao de prazos. Inventar um prazo plausivel seria fabricar numero, e o modulo devolve None de proposito, com teste que impede o contrario."
-  required_evidence: "Resposta do DHAP no balcao, por telefone ou por e-mail (canal declarado na Carta de Servicos), registrada com a data em que foi obtida."
+  question: "Dos onze itens que o DHAP exige para protocolar a Casa P-001, quais estao em maos? Seis nao aparecem no acervo varrido, e ausencia ali nao e ausencia no mundo."
+  why_unknown: "A pergunta que estava aqui era outra, e estava errada: 'qual o prazo de emissao da Certidao de Diretrizes'. Nao existe Certidao de Diretrizes no caminho da P-001 — a PRF-0045 mostra por tres fontes que o ato e o protocolo do projeto simplificado (Decreto 054/2017) e que a Certidao e servico irmao, que nenhuma linha de Construcao Residencial exige. O relogio do processo nao e prazo de orgao: e a montagem do conjunto, porque o rodape da RELACAO diz que o pedido so e protocolado se os documentos exigidos estiverem anexos. Medido o acervo em 2026-09-27, cinco itens tem estado derivado de documento e seis nao tem evidencia nenhuma: 1 (requerimento), 2 (identidade do requerente), 6 (carne de IPTU), 8 (declaracao de numero oficial), 13 (memorial de calculo de esgoto) e 20 (matricula atualizada). Nao se afirma que essas seis pecas nao existem: o acervo varrido e uma pasta, nao o mundo, e confundir as duas coisas seria a CLM-0048, que fica aqui bloqueada de proposito. Tres delas ficam com o titular por carregarem dado pessoal, e pedir e ato do RT."
+  required_evidence: "Para cada um dos seis: a peca, ou a confirmacao de que ja esta em maos do titular. A ordem de obtencao esta derivada pela validade no proprio modulo — primeiro o que demora e nao vence (8 e 13, junto com a renovacao do registro profissional, a caderneta e a declaracao de agua), por ultimo o que vence (6 e 20), porque puxar a matricula cedo demais obriga a puxar de novo e puxar de novo custa dinheiro."
   owner: titular
-  blocks: [CLM-0032]
+  blocks: [CLM-0048]
 
 # UNK-0011 ENCERRADA em 2026-09-27: os CINCO produtores publicadores foram
 # medidos pelo Contract Reality Check, e a resposta e NAO — nao todos aceitavam
@@ -96,3 +96,38 @@
   required_evidence: "Primeiro o produtor tem de existir: hoje a UNK-0012 nao pede medicao, pede CODIGO — nenhum dos quatro publica. Quando um deles ganhar produtor, entra o adaptador do Contract Reality Check na CI do proprio monolito, com a pergunta escolhida pela CLASSE (recebe payload ou constroi, conforme a PRF-0041). Para cada um, o vetor `<campo de lista>: tipo errado` tem de produzir recusa NOMEADA — nunca traceback. MEDIDO em 2026-09-27, e o resultado nao e 'zero defeitos': e NAO MENSURAVEL. Busca pelo event_type de cada um dos quatro nos 19 repositorios nao encontra produtor nenhum — opera.execution.created nao aparece em lugar algum; cea.financial.exposure.assessed e authority.human.decision.recorded aparecem so no kit, onde o evento e validado e nunca publicado; legal.admissibility.assessed aparece no ANCHOR como CONSUMIDOR (authorization_publisher.py:67), o que e pior que ausencia — o elo 4 depende de um fato que nada emite. Registrado na PRF-0044, que estende a refutacao da CLM-0035 ja achada pela PRF-0030. Nao se mede um produtor que nao existe, e confundir 'nao medido' com 'medido e limpo' seria o mesmo erro da CLM-0038, onde guarda verde foi lida como borda fechada. Entao a evidencia que esta incognita pede mudou de dono: ela espera o PRODUTOR existir, e nao um adaptador ser escrito."
   owner: titular
   blocks: [CLM-0040]
+
+# A1 (ciclo 11, correcao de premissa) — quatro perguntas que a medicao do acervo
+# levantou. Nenhuma delas e "falta o documento": as quatro sao sobre o que a
+# fonte NAO diz, e por isso nenhuma virou pendencia generica.
+- id: UNK-0013
+  kind: unknown
+  question: "A nota da planta 'A AGUA POTAVEL SERA ABASTECIDA PELA SABESP' satisfaz o item 7, ou o DHAP quer declaracao avulsa?"
+  why_unknown: "O item 7 aceita duas vias: 'Declaracao de abastecimento de agua ou copia de conta de agua (SABESP) de qualquer imovel da mesma rua'. A conta esta descartada — a unica do acervo e de energia, de outro municipio. Sobra a declaracao, e a fonte nao diz de que FORMA ela tem de vir. A planta ja declara o abastecimento pela SABESP no quadro de notas, e essa nota e assinada pelo RT junto com o resto da folha. Se ela conta, o item esta atendido; se o DHAP quer papel proprio, nao esta. Chamar de atendido seria decidir pela Prefeitura."
+  required_evidence: "Resposta do DHAP no balcao, por telefone ou por e-mail, registrada com a data — ou, mais barato, providenciar a declaracao avulsa e nao depender da resposta."
+  owner: titular
+  blocks: [CLM-0047]
+
+- id: UNK-0014
+  kind: unknown
+  question: "O item 13 se aplica quando o esgoto e recolhido e tratado pelo condominio, e nao por sistema individual no lote?"
+  why_unknown: "O item 13 pede 'Memorial de Calculo do Sistema de esgoto - NBR 7229/93 e NBR 13969/97', e as duas normas citadas governam tanque septico e pos-tratamento em sistema INDIVIDUAL. A planta da P-001 declara que o esgoto sera recolhido e tratado pelo condominio. A RELACAO exige o item para toda Construcao Residencial, sem excecao escrita. Ou o item se cumpre de outra forma, ou se dispensa com justificativa, ou se cumpre mesmo assim — e a fonte nao distingue. Deixar em SEM_EVIDENCIA e honesto quanto ao acervo e nao responde isto."
+  required_evidence: "Resposta do DHAP, ou um processo anterior do mesmo condominio em que o item tenha sido cumprido ou dispensado, com o registro de como foi."
+  owner: titular
+  blocks: [CLM-0047]
+
+- id: UNK-0015
+  kind: unknown
+  question: "O memorial descritivo embutido na prancha atende o item 14, ou o DHAP quer documento separado?"
+  why_unknown: "A folha da P-001 traz um bloco 'MEMORIAL DESCRITIVO' com terreno, obra, alvenaria, cobertura, pintura, pisos e o quadro de iluminacao e ventilacao — o conteudo esta la. Mas a RELACAO lista o item 14 ao lado do item 17 como pecas distintas, o que sugere documento proprio, e nao diz. A prancha-modelo oficial nao resolve: ela e modelo de DESENHO e nao traz memorial. E por isso que o estado deste item e INDETERMINADO e nao ATENDIDO nem ausente — as duas leituras erradas estao disponiveis e as duas sao tentadoras."
+  required_evidence: "Resposta do DHAP, ou um projeto simplificado ja aprovado no municipio em que se veja se o memorial foi peca separada."
+  owner: titular
+  blocks: [CLM-0047]
+
+- id: UNK-0016
+  kind: unknown
+  question: "Quem assina o requerimento do item 1 — o titular ou o RT? Se for o RT, o item exige procuracao."
+  why_unknown: "O item 1 diz: 'Se o requerente nao for o titular do imovel devera apresentar procuracao'. O requerente da P-001 nao esta definido em documento nenhum do acervo. A pergunta nao e burocratica: se o RT assina e a procuracao nao vai anexa, o pedido e recusado no balcao pela mesma regra que recusa qualquer falta — e a peca que faltaria nao e o requerimento, e a procuracao, que nem aparece na lista dos onze porque e condicional."
+  required_evidence: "A decisao do titular sobre quem requer, e a procuracao se a resposta for o RT."
+  owner: titular
+  blocks: [CLM-0047]
