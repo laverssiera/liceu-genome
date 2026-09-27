@@ -75,3 +75,17 @@
   required_evidence: "Um adaptador `aceita(payload) -> (bool, motivo)` por produtor, rodando `liceu_contract_vectors.conferir` na CI do proprio monolito, com o conjunto do que ele deixa para o boundary FIXADO em lista — nunca limitado por numero."
   owner: titular
   blocks: [CLM-0043]
+
+# UNK-0011 (medir os produtores) rendeu um padrao que nao era esperado, e o
+# padrao virou esta incognita. A FITNESS que o cobriria foi CONSIDERADA e
+# deliberadamente NAO criada — decisao do titular, 2026-09-27: a cadeia esta
+# parada em 3/5 e a maquinaria iria de 30 para 31, segundo crescimento seguido.
+# Os tres casos ficam registrados AQUI para que a ideia nao seja reinventada
+# como nova, e para que o custo de nao te-la seja visivel.
+- id: UNK-0012
+  kind: unknown
+  question: "O `isinstance` ausente antes de iterar e um padrao do ecossistema: quantos produtores mais levantam excecao onde deveriam recusar com motivo nomeado?"
+  why_unknown: "TRES produtores foram medidos pelo Contract Reality Check e os TRES tinham o mesmo defeito, em repositorios diferentes e por maos diferentes: CEFEIDA em `source_refs` (3C273-Analytics-Data-Science, evidence_publisher.py:275, corrigido em db25826), JOHN em `evidence_refs` (John-Brasileiro-, recommendation_publisher.py:319, corrigido em b4cd7b8) e ANCHOR em `policy_refs` (ANCHOR.OS-LICEU6.0, authorization_publisher.py:274, correcao ainda nao mergeada). O JOHN tinha AINDA um quarto ponto, `len(rec.alternatives)` sem guarda (linha 339). Em todos, o vetor de tipo errado num campo de lista produzia TypeError em vez de recusa nomeada: traceback nao diz reason, nem owner, nem missing, e quem chama nao distingue payload invalido de produtor quebrado. Nenhum teste escrito a mao tinha alcancado isso, porque ninguem escreve de proposito um source_refs inteiro. Tres de tres nao e coincidencia; e a probabilidade de os dois produtores nao medidos (hub e archimedes) terem o mesmo defeito que se desconhece. A CLM-0040 esta TESTED apoiada numa unica prova, a PRF-0038, que mediu SO o CEFEIDA — ler isso como cobertura do ecossistema repetiria a CLM-0038, onde guarda verde foi lida como borda fechada."
+  required_evidence: "Adaptador do Contract Reality Check em cada produtor publicador que ainda nao tem (hub e archimedes fecham a UNK-0011; opera, cea, legal e authority completam o conjunto), rodando na CI do proprio monolito. Para cada um, o vetor `<campo de lista>: tipo errado` tem de produzir recusa NOMEADA — nunca traceback. Se os dois que faltam tambem tiverem o defeito, cinco de cinco justifica a fitness que hoje esta suspensa."
+  owner: titular
+  blocks: [CLM-0040]
