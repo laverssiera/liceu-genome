@@ -185,8 +185,8 @@
     paths:
     - backend/app/federation/authorization_publisher.py
     - tests/test_authorization_publisher.py
-    content_hash: c397ec51204d24aa712b40043b16afa0048ff49f71d34debf85a950814ba9f91
-    commit: 31b8b36
+    content_hash: db7cd6b434d3c1e8a6db72f78723221a4409be38694e1cfe79a369f39d1826ab
+    commit: 502c19b
 - id: PRF-0014
   kind: proof
   title: "john.recommendation 2.1.0 exige alternatives >= 2; a proposta aceita 1 e o estado nao poe minimo"
