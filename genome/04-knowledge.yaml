@@ -109,3 +109,16 @@
   permitted_uses: [exploration, design_reference, research, comparison_as_proposal]
   prohibited_uses: [authoritative_decision, authoritative_budget, procurement_commitment, physical_execution_authorization]
   source: {repo: LICEU_6.0_CONSTRUTORA_VIRTUAL, path: infra/security/inventario_segredos.py, note: "101 nomes de segredo distintos nos 19 repositorios; 17 aparecem em mais de um. Por alcance: POSTGRES_PASSWORD 14, NEO4J_PASSWORD 12, CANONICAL_EVENT_STORE_API_SECRET 11 (o legado), GF_SECURITY_ADMIN_PASSWORD 7, FEDERATION_SECRET 5, JWT_SECRET 5. GH_TOKEN aparece em 18 e NAO e segredo compartilhado: e o token por repositorio da CI, e esta listado para nao ser confundido com um. Tres arquivos .env morreram com Codespaces apagados em 2026-09-22 e nao foram salvos — apagar ambiente nao revoga credencial. O scanner e reproduzivel e nunca imprime valor."}
+
+# Ciclo 13, DESENHO PENDENTE — nao e tipo de no, e nao vira tipo de no enquanto
+# o numerador nao mudar. Fica registrado com os tres casos reais ja levantados,
+# para que o dia em que entrar nao comece do zero. PROPOSTA: nao pode ter dono.
+- id: PADRAO-EXIGE-EMITE-COMPROVA
+  kind: knowledge
+  title: "Quem EXIGE nao e quem EMITE nem quem COMPROVA — o padrao que apareceu tres vezes na mesma semana"
+  knowledge_type: stakeholder
+  validity: PROPOSTA
+  permitted_uses: [exploration, design_reference, research, comparison_as_proposal]
+  prohibited_uses: [authoritative_decision, authoritative_budget, procurement_commitment, physical_execution_authorization]
+  source: {repo: liceu-genome, path: genome/04-knowledge.yaml, note: "Tres casos reais do protocolo da P-001, todos derivados de documento, todos com o mesmo formato: o papel de EXIGIR, o de EMITIR e o de COMPROVAR caem em atores diferentes, e o modelo atual so tem 'quem_tem'. (1) CADERNETA DE OBRAS — exige o municipio, emite a Associacao de Engenheiros e Arquitetos, comprova o RT. (2) ESGOTO, item 13 — exige o municipio, satisfaz o condominio com estacao propria aprovada pelo GRAPROHAB, e comprova a unidade, que nao tem sistema nenhum para calcular. (3) APROVACAO DO PROJETO — quem aprova ANTES da prefeitura e o condominio, e uma exigencia da prefeitura que afete o projeto devolve o processo a aprovacao condominial. O que o padrao explicaria e por que 'estado do item' nao basta: um item pode estar parado sem que o dono aparente possa fazer coisa alguma. NAO VIRA MAQUINARIA AGORA — o denominador esta congelado em 30 ate o numerador sair de 3. Entra no ciclo em que o numerador mudar, com o dado ja levantado, e nao com o padrao redescoberto."}
+

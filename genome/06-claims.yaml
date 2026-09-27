@@ -337,3 +337,22 @@
   statement: "O significado da coluna I.E da Tabela I nao esta em fonte oficial, e por isso o indice fica fora da conferencia."
   asserted_by: "perfil VGP-LC030-2007-ZM, 2026-09-22 — 'O significado da sigla nao foi encontrado no texto extraido da LC 99/2021 e o LICEU nao a avalia'"
 
+# Ciclo 13 — a quase-inversao. O fragmento que o OCR devolveu apontava para o
+# outro lado, e so a prancha inteira mostrou de quem era aquele nome.
+- id: CLM-0050
+  statement: "O 'LOTEAMENTO PARQUE DO AGRESTE' que aparece na prancha urbanistica descreve o regime deste empreendimento — logo a declaracao da planta (FC-006) pode estar certa."
+  kind: claim
+  asserted_by: "sessao do ciclo 13, 2026-09-27 — leitura do unico fragmento que o OCR automatico conseguiu extrair da prancha"
+
+# Ciclo 13 — o que o Decreto 095/2013 ensina sobre onde mora um requisito.
+- id: CLM-0051
+  kind: claim
+  statement: "A fonte de um requisito urbanistico e a lei, e acompanhar a lei basta para conhece-lo."
+  asserted_by: "premissa do perfil VGP-LC030-2007-ZM, 2026-09-22 — a procedencia cita a lei base e as leis que a alteram, e nenhum outro instrumento"
+
+# Ciclo 13 — atender e atender com sobra nao sao a mesma coisa.
+- id: CLM-0052
+  kind: claim
+  statement: "Indice que ATENDE esta resolvido: o que atende hoje continua atendendo na obra."
+  asserted_by: "premissa do motor de conformidade, 2026-09-22 — o veredito por indice e ATENDE, NAO ATENDE ou INDETERMINADO, e ATENDE nao carrega distancia nenhuma"
+
