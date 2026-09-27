@@ -262,7 +262,7 @@
     - backend/juridicotech/dados/vgp_lc030_2007_zm.json
     - backend/juridicotech/dados/projeto_p001.json
     - backend/tests/test_conformidade_urbanistica.py
-    content_hash: 2bb30737bc6ae2bbee210461518c31f3538c06948fe8ae42383b12274d07b828
+    content_hash: 5da2d2f87b09a6b534225d942f6c6204f4cf2a8c099901d6d3521cc1436d17f0
     commit: 40d7fce
 
 - id: PRF-0018
@@ -311,7 +311,7 @@
     - backend/juridicotech/modules/contradicao_declaracoes.py
     - backend/juridicotech/dados/declaracoes_p001.json
     - backend/tests/test_contradicao_declaracoes.py
-    content_hash: 314d6f72e170d1a67885e35287009364dd165189cd5edee183d5f1abf4e0dc4a
+    content_hash: cbbf2726d58b072de2b46a70d5501b41ceffbb3899093c473ca6ee5d8af3c6f7
     commit: 40d7fce
 
 # U4 (ciclo 10) — o motor de previsao: do que a base NAO concluiu nao sai previsao.
@@ -378,7 +378,7 @@
     - backend/juridicotech/modules/prontidao_protocolo.py
     - backend/tests/test_prontidao_protocolo.py
     content_hash: eeefa7a0c5f0cfbea7c941f850a7218f6bf6f9dfdffa5a76ebd0a6859c68d901
-    commit: "d2b5980"
+    commit: "73b24a7"
 
 # U5 (ciclo 10) — o elo 1 aprende METHOD, e METHOD deixa de ser rotulo.
 - id: PRF-0023
@@ -824,8 +824,8 @@
     - backend/juridicotech/dados/protocolo_construcao_residencial_vgp.json
     - backend/juridicotech/modules/documentos_protocolo.py
     - backend/tests/test_documentos_protocolo.py
-    content_hash: 5ea21b670ef00cb9525d5edada1330c01526bd4636ee47ea451ccb5aeb9a8fe9
-    commit: "d2b5980"
+    content_hash: f588f4e08cfadf8af80edd58345d165e169a04a8bde6fe7e77b0b26f175b984e
+    commit: "73b24a7"
 
 - id: PRF-0047
   kind: proof
@@ -838,3 +838,82 @@
     note: "A UNK-0008 registrava que a Tabela I tem uma coluna 'I.E' com valor 4,0 para ZM 'cujo significado nao aparece no texto da lei', e o perfil VGP-LC030-2007-ZM dizia que o LICEU nao a avalia. A prancha-modelo oficial do projeto simplificado do municipio responde as duas coisas que faltavam: o quadro de declaracoes escreve 'IE (Indice de elevacao)', e o quadro de areas traz a conta feita — 'I.E. 205,90 / 205,90 = 1,00' —, de onde a formula e area total construida dividida pela area do pavimento terreo. A planta da P-001 declara I.E. : 1, coerente com a formula e com o quadro de areas dela (97,20 m2 de total num unico pavimento). O que esta respondido e o SIGNIFICADO e a FORMULA. O que NAO esta respondido, e por isso a UNK-0008 se estreita em vez de fechar, e se o 4,0 da linha ZM e maximo, minimo ou exigencia: isso so o texto consolidado da lei diz, e ele continua inexistente. Comparar 1,00 com 4,0 sem saber a direcao do limite seria inventar a regra a partir do numero. O achado tem valor de metodo: a definicao estava fora da lei, no formulario que a propria Prefeitura publica para o ato — ninguem tinha procurado ali porque a pergunta havia sido endereçada so a lei."
   commit: "d2b5980"
   date: "2026-09-27"
+
+# Ciclo 13 — a prancha urbanistica aprovada, lida por renderizacao.
+- id: PRF-0048
+  kind: proof
+  title: "O loteamento do fragmento e o VIZINHO: a prancha aprovada declara condominio, e a declaracao da planta continua sendo a errada"
+  refutes: [CLM-0050]
+  basis: record_reading
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/dados/documentos_p001.json
+    note: "A prancha do projeto urbanistico do empreendimento nao tem camada de texto: uma pagina de 89x120 cm, uma imagem, ZERO caractere. O OCR automatico devolveu fragmentos sem sentido, inclusive caracteres gregos, e um deles era 'LOTEAMENTO PARQUE DO AGRESTE'. Lida por RENDERIZACAO da imagem oficial a 250-300 dpi por regiao — o mesmo metodo ja usado na Tabela I da lei, e registrado ali como transcricao visual — a prancha diz outra coisa. No carimbo: 'Condominio Residencial de Uso Misto', com certidao do Departamento de Habitacao e Aprovacao de Projetos da PROPRIA Prefeitura e certificado do GRAPROHAB, ambos de 2022. No quadro de areas: 'Area total dos lotes condominiais', com 523 unidades. Na legenda: U.A = Unidade Autonoma, A.U.C = Area Uso Comum, mais Espaco Livre Condominial, Canteiro Central Condominial e Sistema de Lazer Condominial. E o nome do fragmento esta FORA da linha de divisa, na faixa de confrontantes, ao lado dos tabulares e das matriculas dos vizinhos: e o loteamento AO LADO. A licao e sobre extracao parcial: o fragmento nao estava errado, estava SEM CONTEXTO, e fragmento sem contexto inverte conclusao com a mesma facilidade com que a confirma. Consequencia direta: o regime da P-001 deixa de valer pela confirmacao do titular e passa a valer por documento aprovado pela Prefeitura, e a FC-006 fica mais firme, nao menos."
+  commit: "73b24a7"
+  date: "2026-09-27"
+
+- id: PRF-0049
+  kind: proof
+  title: "O item 13 nao esta ausente: a peca que ele pede na forma escrita nao existe neste caso, porque o esgoto e coletivo e aprovado"
+  proves: [CLM-0020]
+  basis: test
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_documentos_protocolo.py
+    name: test_60_item_13_deixou_de_ser_sem_evidencia
+    pr: 17
+  environment: ci
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/dados/documentos_p001.json
+    note: "O item 13 pede memorial de calculo de sistema de esgoto pelas NBR 7229/93 e 13969/97, e as duas governam tanque septico e pos-tratamento em sistema INDIVIDUAL no lote. A prancha urbanistica aprovada mapeia, em legenda, Estacao Elevatoria de Esgoto e Estacao de Tratamento proprias do empreendimento, e o conjunto foi aprovado pelo GRAPROHAB — o orgao estadual que justamente aprova a solucao de esgoto de empreendimento habitacional. A planta da P-001 declara, na mesma linha, que o esgoto sera recolhido e tratado pelo condominio. O estado derivado sai de SEM_EVIDENCIA para INDETERMINADO, e a distincao e o ponto: ha evidencia, e ela mostra que a peca pedida na forma escrita nao existe aqui. NAO se conclui 'o item nao se aplica' — isso seria decidir pela Prefeitura, e a RELACAO exige o 13 para toda Construcao Residencial sem excecao escrita. E a mesma disciplina da CLM-0020: a falta se nomeia, nao se resolve por conta propria. Achado de economia: se o condominio entrega efluente tratado a concessionaria, ha relacao formal entre os dois, e quem tem a relacao e quem pode declarar — uma pergunta so a administracao pode render a declaracao de abastecimento (item 7) e a de ligacao ou licenca da ETE (item 13). Por isso os dois itens passam a compartilhar evidencia e os gaps se pedem juntos."
+  commit: "73b24a7"
+  date: "2026-09-27"
+  mechanism:
+    repo: JURIDICO-TECH
+    paths:
+    - backend/juridicotech/dados/documentos_p001.json
+    - backend/juridicotech/dados/protocolo_construcao_residencial_vgp.json
+    - backend/juridicotech/modules/documentos_protocolo.py
+    - backend/tests/test_documentos_protocolo.py
+    content_hash: f588f4e08cfadf8af80edd58345d165e169a04a8bde6fe7e77b0b26f175b984e
+    commit: "73b24a7"
+
+- id: PRF-0050
+  kind: proof
+  title: "A fonte de um requisito e o documento MAIS os instrumentos que o alteram — e o que o decreto pode alterar nao e a tabela dos indices"
+  refutes: [CLM-0051]
+  basis: record_reading
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/dados/vgp_lc030_2007_zm.json
+    note: "O Decreto municipal 095, de 18 de marco de 2013, altera a lei de uso e ocupacao do solo SEM passar por lei nova, e diz por que pode: 'CONSIDERANDO, que a Lei Complementar no 30, de 13 de dezembro de 2007, que dispoe sobre o Uso e Ocupacao de Solo, em seu artigo 8o § 2o, autoriza a reformulacao atraves de Decreto.' Refuta a CLM-0051: acompanhar a lei nao basta, porque um decreto pode mudar o que ela exige, e a lista de alteracoes que a Camara publica e de LEIS. Mas o achado tem um segundo lado, e ele e o que impede o erro simetrico: o que o art. 8o § 2o autoriza reformular e o 'ANEXO I — Enquadramento de Atividade Economica', a tabela de CNAE e categorias de uso (R1 unifamiliar, R2 multifamiliar, R3 misto, R4 conjunto residencial e condominios), e o Art. 1o do decreto altera exatamente esse anexo. A TABELA I — RESTRICOES URBANISTICAS DE USO, de onde saem T.O, C.A, T.P, area minima e a coluna I.E, e outra peca, e ela foi substituida pela LC 99/2021, que e LEI COMPLEMENTAR. Entao os indices da P-001 nao estao sujeitos a mudanca silenciosa por decreto, e o enquadramento de uso esta. Estender o achado da tabela de uso para a tabela de indices seria inventar exposicao que nao existe; ignora-lo seria manter uma fonte incompleta. A UNK-0008 passa a pedir a cadeia de instrumentos, e nao so a cadeia de leis."
+  commit: "73b24a7"
+  date: "2026-09-27"
+
+- id: PRF-0051
+  kind: proof
+  title: "Atender nao e atender com sobra: a taxa permeavel da P-001 atende por 1,58 m2"
+  refutes: [CLM-0052]
+  basis: test
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_documentos_protocolo.py
+    name: test_70_a_folga_da_taxa_permeavel_da_p001_em_metros_quadrados
+    pr: 17
+  environment: ci
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    note: "Limite.folga(valor) devolve a distancia ate violar, na unidade do proprio limite. Sobre os 175 m2 de terreno da P-001: C.A 0,56 contra maximo 2,0, folga +1,44; T.O 55,54% contra maximo 60%, folga +4,46% que sao +7,81 m2; T.P 10,90% contra minimo 10%, folga +0,90% que sao +1,58 m2. A permeavel e de longe a mais apertada, e o risco e de EXECUCAO, nao de projeto: um caminho ou uma area cimentada que ninguem desenhou consome a folga inteira, e o projeto que atendia deixa de atender sem que nenhum desenho mude. A folga e NUMERO, nao veredito — o codigo nao tem limiar de 'folga pequena', porque inventar limiar seria fabricar regra, e quem decide se 1,58 m2 e pouco e o responsavel tecnico. Refuta a CLM-0052, que era premissa silenciosa do motor: o veredito por indice era ATENDE, NAO ATENDE ou INDETERMINADO, e ATENDE nao carregava distancia nenhuma."
+  commit: "73b24a7"
+  date: "2026-09-27"
+  mechanism:
+    repo: JURIDICO-TECH
+    paths:
+    - backend/juridicotech/dados/projeto_p001.json
+    - backend/juridicotech/dados/vgp_lc030_2007_zm.json
+    - backend/juridicotech/modules/conformidade_urbanistica.py
+    - backend/tests/test_conformidade_urbanistica.py
+    content_hash: 5da2d2f87b09a6b534225d942f6c6204f4cf2a8c099901d6d3521cc1436d17f0
+    commit: "73b24a7"
