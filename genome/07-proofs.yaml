@@ -709,3 +709,67 @@
     note: "A PRF-0033 registrou 128 no ecossistema e 110 restantes. Os dois numeros estavam errados, por 9; os corretos sao 137 e 119. O que estava CERTO era o CORE: 18 exposicoes, distribuidas 6/6/4/2, reproduzidas a partir dos quatro arquivos que o commit 8144588 alterou — entao o fechamento da borda do CORE, que a PRF-0033 tambem afirma, continua valendo. Os 119 foram medidos por TRES metodos independentes: varrer() por repositorio, varrer() na arvore inteira de uma vez, e um grep cru que nao usa o scanner. Os tres deram 119, em 14 repositorios (BIM 16, P-D 16, HUB 12, ANCHOR 11, Archimedes 10, John 10, CEA 9, OPERA 7, ECONO 6, ACADEMIA 6, 3C273 4, FORNECEDORES 4, GAME-MKT 4, JURIDICO-TECH 4). Os quatro repositorios que divergiam tem todos os arquivos rastreados pelo git, estao em origin/main sem alteracao pendente, e seus ultimos commits sao de 20 e 22 de setembro: o codigo NAO mudou entre as duas medicoes, e o scanner tem um unico commit. A causa exata da subcontagem nao e reconstruivel, porque o JSON da varredura original nunca foi commitado — so o markdown; inventar uma causa seria pior que registrar a lacuna. O que a investigacao encontrou no mesmo verificador foi um defeito da mesma familia, e esse foi fechado: varrer() num caminho inexistente devolvia lista vazia e o programa anunciava borda fechada com saida 0. Ele nao explica a subcontagem — raiz inexistente zeraria um repositorio inteiro, nao tiraria 2 de um e 4 de outro. A CLM-0038 continua REFUTED, e por mais do que se acreditava."
   commit: "9e8a19f"
   date: "2026-09-23"
+
+# UNK-0011 encerrada: os cinco medidos, e o que a medicao desmentiu.
+- id: PRF-0041
+  kind: proof
+  title: "Produtor que CONSTROI o payload inverte a pergunta: o HUB e o ARCHIMEDES nunca recebem payload para aceitar"
+  refutes: [CLM-0045]
+  basis: code_reading
+  location:
+    repo: HUB-BACKOFICE-LICEU-6.0
+    path: app/federation/planning_request_publisher.py
+    note: "O HUB nao recebe payload: `publish(req: PlanningRequestInput)` e `build_payload(req, mandate)` CONSTROEM o payload, derivando planning_request_id, mandate_ref, requested_scope e requested_at. O ARCHIMEDES e igual (runtime/planning_state_publisher.py, build_payload e build_proposal_payload a partir de um Root State). Para esses dois, um adaptador `aceita(payload)` nao mede o produtor: o build sobrescreve os campos derivados e o teste passa a medir o ADAPTADOR — o erro exato que a primeira versao do adaptador do CEFEIDA cometeu. A pergunta correta se inverte: nos que RECEBEM, 'tudo que o contrato admite, o produtor aceita?'; nos que CONSTROEM, 'tudo que o produtor emite, o contrato admite?'. A premissa da CLM-0045 vinha de os quatro primeiros adaptadores terem sido escritos para produtores que recebem."
+  commit: "41ab5fd"
+  date: "2026-09-27"
+
+- id: PRF-0042
+  kind: proof
+  title: "Os cinco produtores publicadores aceitam a faixa dos seus contratos, cada um medido na CI do proprio monolito"
+  proves: [CLM-0043]
+  basis: test
+  test:
+    repo: HUB-BACKOFICE-LICEU-6.0
+    path: tests/test_contract_reality_check.py
+    name: test_o_vocabulario_do_produtor_nao_e_maior_que_o_do_contrato
+    pr: 13
+  environment: ci
+  location:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_contract_vectors.py
+    note: "Cinco adaptadores, um por produtor, rodando na CI de cada monolito. Dos que RECEBEM payload: CEFEIDA 0 recusas indevidas (3C273, PR 46), JOHN 0 (PR 57), ANCHOR 0 (PR 18) — as cinco recusas restantes do ANCHOR sao `scope_above_ceiling`, alcada declarada com citacao do Producer Registry, e nao forma. Dos que CONSTROEM: HUB, todo territorial_scope e toda escala do vocabulario geram payload valido, e os dois enums do produtor foram comparados com os do contrato (PR 13); ARCHIMEDES, nenhum payload proibido chega ao POST, com controle positivo de que o valido chega (PR 37). Cada um fixa em LISTA o que deixa para o boundary — nunca um numero: CEFEIDA 7, JOHN 0, ANCHOR 6. A afirmacao vale para os CINCO publicadores; nao alcanca opera, cea, legal e authority, que nao foram medidos e estao na UNK-0012."
+  commit: "87ed1c2"
+  date: "2026-09-27"
+  mechanism:
+    repo: HUB-BACKOFICE-LICEU-6.0
+    paths:
+    - app/federation/planning_request_publisher.py
+    - tests/test_contract_reality_check.py
+    content_hash: e2ee6b664f8102337c73502ed9d09d85b8c9c186bbee8871d354473276a4a0f2
+    commit: "41ab5fd"
+
+- id: PRF-0043
+  kind: proof
+  title: "O HUB emitia problem_statement com menos de 10 caracteres — o contrato proibia e o boundary pagava"
+  refutes: [CLM-0046]
+  basis: test
+  test:
+    repo: HUB-BACKOFICE-LICEU-6.0
+    path: tests/test_contract_reality_check.py
+    name: test_frase_curta_e_recusada_pelo_produtor_com_motivo_nomeado
+    pr: 13
+  environment: ci
+  location:
+    repo: HUB-BACKOFICE-LICEU-6.0
+    path: app/federation/planning_request_publisher.py
+    note: "O contrato liceu.hub.planning-request@1.0.0 exige problem_statement com minLength 10; o HUB conferia apenas se a frase era NAO VAZIA. Uma frase de 1 a 9 caracteres passava pelo produtor e era recusada pelo boundary: o pedido morria depois de gastar rede, com o motivo vindo do CORE em vez do HUB — e pedido que nao nasce e o elo 0 que nao existe. Achado pelo Contract Reality Check, porque ninguem escreve de proposito um problem_statement de nove letras. A guarda nova LE o limite do contrato em vez de repetir o numero: se ele mudar no kit, ela acompanha, e se o contrato deixar de exigir, ela some junto — foi um limite copiado a mao que criou o value_not_numeric do CEFEIDA. Prova por mutacao: removida a guarda, o teste cai em 'este teste nao toca a rede', porque sem ela o HUB vai mesmo. Esta prova e a PRF-0042 cobrem a MESMA superficie do HUB, entao se refazem juntas — e correto, porque as duas falam do comportamento dela."
+  commit: "41ab5fd"
+  date: "2026-09-27"
+  mechanism:
+    repo: HUB-BACKOFICE-LICEU-6.0
+    paths:
+    - app/federation/planning_request_publisher.py
+    - tests/test_contract_reality_check.py
+    content_hash: e2ee6b664f8102337c73502ed9d09d85b8c9c186bbee8871d354473276a4a0f2
+    commit: "41ab5fd"
+
