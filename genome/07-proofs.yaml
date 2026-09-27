@@ -773,3 +773,16 @@
     content_hash: e2ee6b664f8102337c73502ed9d09d85b8c9c186bbee8871d354473276a4a0f2
     commit: "41ab5fd"
 
+# UNK-0012: os quatro produtores que faltavam medir nao existem em codigo.
+- id: PRF-0044
+  kind: proof
+  title: "Os quatro produtores que faltavam medir nao tem codigo que publique — e o ANCHOR depende de um deles"
+  refutes: [CLM-0035]
+  basis: code_reading
+  location:
+    repo: ANCHOR.OS-LICEU6.0
+    path: backend/app/federation/authorization_publisher.py
+    note: "Busca pelo event_type de cada contrato ACTIVE nos 19 repositorios, em .py, fora de node_modules. opera.execution.created: ZERO ocorrencias, nem no kit. cea.financial.exposure.assessed e authority.human.decision.recorded: so no proprio kit (liceu_conformance.py e sua copia em build/), onde o evento e VALIDADO e nunca PUBLICADO. legal.admissibility.assessed: no kit e no ANCHOR — e no ANCHOR como CONSUMIDOR, nao como produtor (authorization_publisher.py:67, LEGAL_EVENT_TYPE, 'o que o contrato 1.1.0 exige em resolvable_refs'; legal_basis_refs sao event_ids desse fato). Isto e mais agudo que ausencia: o elo 4 DEPENDE de um fato que nada no ecossistema emite, e a dependencia esta escrita no codigo dele. A PRF-0030 ja havia achado isso para liceu.authority.human-decision; esta prova estende a mesma refutacao aos outros tres e nomeia o consumidor orfao. Medido em 2026-09-27, ao tentar responder a UNK-0012."
+  commit: "9ee993a"
+  date: "2026-09-27"
+
