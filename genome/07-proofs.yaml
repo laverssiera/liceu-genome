@@ -369,7 +369,7 @@
   location:
     repo: JURIDICO-TECH
     path: backend/juridicotech/modules/prontidao_protocolo.py
-    note: "A conformidade da P-001 e INDETERMINADO e mesmo assim nao ha impedimento vindo dela: e o protocolo que resolve a UNK-0008 e a UNK-0009. O que impede sao os tres impedimentos nomeados — indice fora do limite, contradicao entre declaracoes, ato anterior ao protocolo ainda nao ocorrido. Hoje a P-001 e NAO_PRONTO por I-002 (a declaracao da FC-006) e I-003 (a assinatura das 4 vias)."
+    note: "A conformidade da P-001 e INDETERMINADO e mesmo assim nao ha impedimento vindo dela: e o protocolo que resolve a UNK-0008 e a UNK-0009. Refeita em 2026-09-27, e o que mudou importa: os impedimentos nomeados eram TRES e agora sao QUATRO — indice fora do limite, contradicao entre declaracoes, ato anterior ao protocolo, e peca do conjunto exigido pelo DHAP nao atendida (I-004). Hoje a P-001 e NAO_PRONTO por I-002 (a declaracao da FC-006), I-003 (a assinatura das 4 vias) e onze I-004, um por item. A afirmacao que esta prova sustenta nao mudou, e a distincao dela ficou mais fina: duvida de INDICE nao impede, porque e a lei que esta em duvida e protocolar e o ato que resolve; duvida de DOCUMENTO impede, porque quem opera o checklist e o balcao e ele recusa na entrada. As duas convivem no mesmo modulo sem se contradizer."
   commit: "7040950"
   date: "2026-09-22"
   mechanism:
@@ -377,8 +377,8 @@
     paths:
     - backend/juridicotech/modules/prontidao_protocolo.py
     - backend/tests/test_prontidao_protocolo.py
-    content_hash: 23fe81a2052fda4397f7336f4e2dad0225aa4a148da512ccb47be371acb098ed
-    commit: "7040950"
+    content_hash: eeefa7a0c5f0cfbea7c941f850a7218f6bf6f9dfdffa5a76ebd0a6859c68d901
+    commit: "d2b5980"
 
 # U5 (ciclo 10) — o elo 1 aprende METHOD, e METHOD deixa de ser rotulo.
 - id: PRF-0023
@@ -786,3 +786,55 @@
   commit: "9ee993a"
   date: "2026-09-27"
 
+# A1 (ciclo 11, correcao de premissa) — a certidao sai do caminho, e o que entra
+# no lugar dela e a lista que o balcao confere.
+- id: PRF-0045
+  kind: proof
+  title: "A Certidao de Diretrizes nao esta no caminho da Casa P-001: o ato e o protocolo do projeto simplificado, e nenhuma linha de Construcao Residencial pede certidao"
+  refutes: [CLM-0032]
+  basis: record_reading
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/dados/protocolo_construcao_residencial_vgp.json
+    note: "Tres fontes, nenhuma delas a palavra de quem mediu. (1) A RELACAO DE DOCUMENTOS do DHAP, sha256 48269f22968e242e2077737352f695cd37c210bf90111a867a343305137de579, reconferido em 2026-09-27 baixando de novo do mesmo URL — bate byte a byte com o que o genoma ja declarava. Ela tem uma linha por servico: 'Construcao Residencial  1 2 4 5 6 7 8 13 14 17 20' e 'Certidao de Diretrizes  1 2 6 20 26'. Sao servicos IRMAOS, nao etapas um do outro: nenhum dos onze itens da Construcao Residencial e certidao, e a RELACAO nao poe a Certidao como pre-requisito de nada. (2) A ART do projeto declara a finalidade em texto: 'Processo para aprovacao de projeto e execucao de Obra'. (3) A prancha-modelo oficial do municipio se intitula 'PROJETO SIMPLIFICADO - CONFORME DECRETO 054/2017'. O que esta REFUTADO e a CLM-0032, que punha a Certidao como oraculo que responderia a UNK-0008 e a UNK-0009 antes do protocolo. O que NAO esta refutado e a CLM-0034: o procedimento da Certidao continua derivado de fonte oficial legivel por maquina, e continua certo sobre a Certidao — errado era o lugar dela no caminho. A licao e sobre o custo: um ciclo inteiro de trabalho foi gasto num oraculo barato que nao era etapa de nada, e nada no metodo pegou isso, porque ninguem tinha conferido a linha do servico que a P-001 de fato pratica. Medir a fonte certa e mais barato que provar bem a coisa errada."
+  commit: "d2b5980"
+  date: "2026-09-27"
+
+- id: PRF-0046
+  kind: proof
+  title: "O conjunto do protocolo da P-001 nao esta completo: onze de onze itens impedem, cada um com motivo derivado de documento"
+  refutes: [CLM-0047]
+  basis: test
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_documentos_protocolo.py
+    name: test_o_conjunto_incompleto_gera_um_I_004_por_item_que_falta
+    pr: 16
+  environment: ci
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/documentos_protocolo.py
+    note: "Estado derivado dos onze itens em 2026-09-27, contra um acervo de 13 pecas: seis SEM_EVIDENCIA (1, 2, 6, 8, 13, 20), tres INSUFICIENTE (4, 7, 17), um INDETERMINADO (14) e um EM_ESPERA (5). Zero ATENDIDO. Quatro achados que nao vieram de palavra nenhuma: o item 4 tem via assinada da ART ERRADA — a valida e a retificadora, registrada em 2026-09-15, com 97,20 m2 nos dois campos e citada pelo selo da planta, enquanto a assinada e a substituida, que ainda carrega divergencia interna de 94,50 m2 na atividade tecnica contra 87,18 m2 nas observacoes; o item 7 tem conta de ENERGIA de outro municipio onde o item pede AGUA da SABESP de imovel da MESMA RUA, falhando nos tres eixos; o item 14 tem o memorial DENTRO da prancha e a RELACAO o lista como peca propria, o que nao e atendimento nem ausencia; o item 17 tem o projeto do condominio aprovado e NAO assinado, e o selo da planta se intitula 'PROJETO COMPLETO' quando o item exigido e o 17, simplificado — o 18, completo, e o da linha comercial/industrial, e rotulo errado no selo e material de exigencia. O I-004 que isto gera no prontidao_protocolo se prova por mutacao: removido o bloco, tres testes caem. O argumento do conjunto e OBRIGATORIO em avaliar() de proposito — conjunto vazio por omissao daria PRONTO a quem esquecesse de passa-lo."
+  commit: "d2b5980"
+  date: "2026-09-27"
+  mechanism:
+    repo: JURIDICO-TECH
+    paths:
+    - backend/juridicotech/dados/documentos_p001.json
+    - backend/juridicotech/dados/protocolo_construcao_residencial_vgp.json
+    - backend/juridicotech/modules/documentos_protocolo.py
+    - backend/tests/test_documentos_protocolo.py
+    content_hash: 5ea21b670ef00cb9525d5edada1330c01526bd4636ee47ea451ccb5aeb9a8fe9
+    commit: "d2b5980"
+
+- id: PRF-0047
+  kind: proof
+  title: "A coluna I.E da Tabela I tem significado e formula em fonte oficial legivel por maquina — e nao e a lei que os declara"
+  refutes: [CLM-0049]
+  basis: record_reading
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/dados/protocolo_construcao_residencial_vgp.json
+    note: "A UNK-0008 registrava que a Tabela I tem uma coluna 'I.E' com valor 4,0 para ZM 'cujo significado nao aparece no texto da lei', e o perfil VGP-LC030-2007-ZM dizia que o LICEU nao a avalia. A prancha-modelo oficial do projeto simplificado do municipio responde as duas coisas que faltavam: o quadro de declaracoes escreve 'IE (Indice de elevacao)', e o quadro de areas traz a conta feita — 'I.E. 205,90 / 205,90 = 1,00' —, de onde a formula e area total construida dividida pela area do pavimento terreo. A planta da P-001 declara I.E. : 1, coerente com a formula e com o quadro de areas dela (97,20 m2 de total num unico pavimento). O que esta respondido e o SIGNIFICADO e a FORMULA. O que NAO esta respondido, e por isso a UNK-0008 se estreita em vez de fechar, e se o 4,0 da linha ZM e maximo, minimo ou exigencia: isso so o texto consolidado da lei diz, e ele continua inexistente. Comparar 1,00 com 4,0 sem saber a direcao do limite seria inventar a regra a partir do numero. O achado tem valor de metodo: a definicao estava fora da lei, no formulario que a propria Prefeitura publica para o ato — ninguem tinha procurado ali porque a pergunta havia sido endereçada so a lei."
+  commit: "d2b5980"
+  date: "2026-09-27"
