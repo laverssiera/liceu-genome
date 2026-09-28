@@ -356,3 +356,9 @@
   statement: "Indice que ATENDE esta resolvido: o que atende hoje continua atendendo na obra."
   asserted_by: "premissa do motor de conformidade, 2026-09-22 — o veredito por indice e ATENDE, NAO ATENDE ou INDETERMINADO, e ATENDE nao carrega distancia nenhuma"
 
+# U0 (ciclo 13) — a premissa que quase fez a varredura mentir.
+- id: CLM-0054
+  kind: claim
+  statement: "Varredura que devolve zero achados esta dizendo que nao ha nada."
+  asserted_by: "premissa da primeira versao da varredura_publica, 2026-09-28 — tres repositorios deram zero e o quarto deu um, e o zero foi lido como limpeza"
+

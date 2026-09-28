@@ -631,7 +631,20 @@ class Judge:
 
         # FIT-015 — o genoma é PÚBLICO. Dado pessoal que entrar fica na internet,
         # e a P-001 é a casa de uma pessoa real. Parâmetro pode; identificação, não.
-        for achado in genome_privacy_check.scan(self.genome_dir):
+        #
+        # Varre o REPOSITÓRIO, não só `genome/`. Até 2026-09-28 olhava apenas o
+        # diretório de dados, e `tools/`, `schema/` e `docs/` — que também vão
+        # para a internet — nunca foram conferidos. Quem publica não distingue
+        # subdiretório. A árvore inteira estava limpa quando isto mudou, então
+        # ampliar não criou dívida: só parou de haver ponto cego.
+        #
+        # O histórico é outra coisa, e esta fitness não o alcança: apagar não é
+        # remover, e o blob antigo segue público. Quem varre histórico é
+        # tools/varredura_publica.py, que roda sob demanda sobre os quatro
+        # repositórios públicos — a CI aqui só tem um checkout.
+        for achado in genome_privacy_check.scan(self.genome_dir.parent
+                                                if self.genome_dir.name == "genome"
+                                                else self.genome_dir):
             arquivo = achado.split(":", 1)[0]
             self.find("FIT-015", f"privacidade/{arquivo}",
                       f"dado pessoal em repositório público: {achado}")

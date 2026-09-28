@@ -917,3 +917,57 @@
     - backend/tests/test_conformidade_urbanistica.py
     content_hash: 5da2d2f87b09a6b534225d942f6c6204f4cf2a8c099901d6d3521cc1436d17f0
     commit: "73b24a7"
+
+# U0 (ciclo 13) — a varredura de verdade dos repositorios PUBLICOS.
+- id: PRF-0052
+  kind: proof
+  title: "Os quatro repositorios publicos nao contem dado pessoal do caso real, nem na arvore nem no historico"
+  proves: [CLM-0017]
+  basis: external_observation
+  external_observation:
+    instrument: "tools/varredura_publica.py sobre os quatro repositorios PUBLIC, arvore e historico, com os sete padroes do genome_privacy_check importados; visibilidade medida com `gh repo view --json visibility` nos 19 repositorios"
+    observed: "arvore de trabalho 0 nos quatro; historico 5, todos no blob c09ff07 de tools/test_genome_check.py, linhas 84 a 89 — iscas dos testes de mutacao da FIT-015. O CPF do blob tem digitos verificadores INVALIDOS e comeca em 123456789; os vizinhos sao exemplo.com.br, um telefone de cinco-mais-quatro digitos sequenciais descendentes, a palavra matricula seguida de seis digitos em sequencia, e um CEP do proprio municipio com tres zeros no sufixo, descritos e NAO reproduzidos: reproduzir a forma num repositorio publico e o que a FIT-015 recusa, e ela recusou esta propria prova na primeira escrita Nenhum dos tres identificadores do caso real (CPF do proprietario, matricula do imovel, inscricao cadastral) aparece em qualquer commit de qualquer um dos quatro"
+  evidence_artifact: {repo: liceu-genome, path: docs/evidence/2026-09-28-varredura-dos-publicos.md, pr: 45}
+  environment: ci
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/varredura_publica.py
+    note: "Varredura em 2026-09-28 sobre os QUATRO repositorios publicos — liceu-genome, liceu-protocol, liceu-design-tokens e liceu-shell —, com a visibilidade MEDIDA por `gh repo view --json visibility` nos 19 repositorios, e nao suposta: os outros 15 sao PRIVATE. Sete padroes (CPF pontuado, CPF junto da palavra, CNPJ, e-mail, telefone BR, matricula/inscricao imobiliaria, CEP), os mesmos do genome_privacy_check, importados e nao reescritos. RESULTADO: arvore de trabalho 0 em todos os quatro; historico 5, todos no MESMO blob antigo (c09ff07) de tools/test_genome_check.py, linhas 84 a 89 — as iscas dos testes de mutacao da propria FIT-015. Que sao iscas, e nao dado real, esta medido e nao suposto: o CPF tem digitos verificadores INVALIDOS e comeca em 123456789, o marcador canonico; os vizinhos sao exemplo.com.br, um telefone de cinco-mais-quatro digitos sequenciais descendentes, a palavra matricula seguida de seis digitos em sequencia, e um CEP do proprio municipio com tres zeros no sufixo, descritos e NAO reproduzidos: reproduzir a forma num repositorio publico e o que a FIT-015 recusa, e ela recusou esta propria prova na primeira escrita E o arquivo de hoje ja monta essas amostras por CONCATENACAO, justamente para nao casar com o proprio padrao — por isso a arvore esta limpa e so o blob antigo acusa. Nenhum dos tres identificadores que o caso real carrega (CPF do proprietario, matricula do imovel, inscricao cadastral) aparece em qualquer dos quatro, em qualquer commit. A afirmacao vale para os PUBLICOS: os 15 privados nao sao objeto da CLM-0017 e nao foram varridos por esta prova."
+  commit: "57c15ae"
+  date: "2026-09-28"
+  mechanism:
+    repo: liceu-genome
+    paths:
+    - tools/genome_privacy_check.py
+    - tools/test_varredura_publica.py
+    - tools/varredura_publica.py
+    content_hash: 63a36465813d2d47bb39e05deee9518d5eb34524320a9240e801c1d2ea53cc9c
+    commit: "57c15ae"
+
+- id: PRF-0053
+  kind: proof
+  title: "A varredura so vale porque a isca prova que ela enxerga — a primeira versao nao enxergava"
+  refutes: [CLM-0054]
+  basis: test
+  test:
+    repo: liceu-genome
+    path: tools/test_varredura_publica.py
+    name: test_os_padroes_com_classe_do_python_funcionam_no_historico
+    pr: 45
+  environment: ci
+  location:
+    repo: liceu-genome
+    path: tools/varredura_publica.py
+    note: "A primeira versao da varredura de historico usava `git grep -E`. O grep do git fala ERE POSIX, que NAO conhece as classes de digito e de fronteira de palavra do Python, e os padroes estao em sintaxe Python: CPF, CEP e telefone casavam NADA — em silencio, sem erro, sem aviso. So o padrao de e-mail, que usa classes literais, funcionava, e foi ele que deu o unico acerto da primeira rodada, escondendo que os outros seis estavam cegos. Trocada por ler cada blob e aplicar o MESMO `re` da arvore. Prova por mutacao, voltando ao git grep: caem tres testes, entre eles o da isca APAGADA e o dos padroes que usam classe do Python. A licao e a de sempre neste repositorio, na forma mais pura: zero achados nao se distingue de varredura quebrada sem uma isca que se saiba estar la."
+  commit: "57c15ae"
+  date: "2026-09-28"
+  mechanism:
+    repo: liceu-genome
+    paths:
+    - tools/genome_privacy_check.py
+    - tools/test_varredura_publica.py
+    - tools/varredura_publica.py
+    content_hash: 63a36465813d2d47bb39e05deee9518d5eb34524320a9240e801c1d2ea53cc9c
+    commit: "57c15ae"
+
