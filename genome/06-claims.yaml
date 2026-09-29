@@ -362,3 +362,10 @@
   statement: "Varredura que devolve zero achados esta dizendo que nao ha nada."
   asserted_by: "premissa da primeira versao da varredura_publica, 2026-09-28 — tres repositorios deram zero e o quarto deu um, e o zero foi lido como limpeza"
 
+# B1 (ciclo 13) — a afirmacao ESTREITA, que e verdadeira. A CLM-0038, sobre o
+# ecossistema, continua REFUTED: 65 exposicoes seguem abertas fora da cadeia.
+- id: CLM-0055
+  kind: claim
+  statement: "Os seis repositorios da cadeia — elos 0 a 5 — nao publicam servico de estado fora do loopback."
+  asserted_by: "sessao da B1, 2026-09-28 — apos prender 54 portas ao loopback nos seis"
+

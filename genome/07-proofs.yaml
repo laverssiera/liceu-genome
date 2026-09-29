@@ -971,3 +971,22 @@
     content_hash: 63a36465813d2d47bb39e05deee9518d5eb34524320a9240e801c1d2ea53cc9c
     commit: "57c15ae"
 
+# B1 (ciclo 13) — a cadeia fecha a borda. O ecossistema, nao.
+- id: PRF-0054
+  kind: proof
+  title: "Os seis repositorios da cadeia param de publicar estado fora do loopback: 54 portas presas, 119 -> 65 no ecossistema"
+  proves: [CLM-0055]
+  basis: external_observation
+  external_observation:
+    instrument: "infra/security/borda_compose.py (LICEU_6.0_CONSTRUTORA_VIRTUAL) rodado isoladamente sobre o main mergeado de cada um dos seis repositorios da cadeia, e uma vez sobre a raiz dos 19"
+    observed: "os seis dizem 'borda fechada'. HUB 12, ARCHIMEDES 10, JOHN 10, ANCHOR 11, OPERA 7, CEFEIDA 4 — 54 portas presas ao loopback, em 17 arquivos de compose, todos reconferidos como YAML valido por carregamento. No ecossistema o total cai de 119 para 65. Os 65 restantes estao TODOS fora da cadeia: P-D 16, BIM 16, CEA 9, ACADEMIA 6, ECONO 6, JURIDICO-TECH 4, GAME-MKT 4, FORNECEDORES 4"
+  evidence_artifact: {repo: liceu-genome, path: docs/evidence/2026-09-28-borda-da-cadeia.md, pr: 46}
+  environment: ci
+  scale: LOCAL
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/borda_compose.py
+    note: "A mudanca tem uma forma so, aplicada linha a linha e recusando o que nao casasse exatamente com o formato esperado — editar compose as cegas seria trocar um risco por outro. Prender ao loopback NAO tira acesso do proprio host: 127.0.0.1 continua alcancavel de quem roda o compose, e o que sai e o alcance de outras maquinas; conferido nos workflows ANTES de mexer, e no JOHN eles ja usavam 127.0.0.1:5432 e afins, que e exatamente o que o loopback permite. Portas de aplicacao nao foram tocadas. A medicao achou de quebra um teste de contrato no JOHN que exigia a string 8222:8222 — a forma que publica em TODAS as interfaces: ele falhou e estava CERTO em falhar, porque guardava um contrato e o contrato mudou; a exigencia foi invertida para assertIn 127.0.0.1:8222:8222 mais assertNotIn 8222:8222, e era o unico teste do ecossistema a asserir string entre as portas alteradas. ESTA PROVA NAO ALCANCA A CLM-0038, que segue REFUTED: 65 exposicoes continuam abertas, e fechar a cadeia reduz exposicao sem tornar verdadeira a afirmacao sobre o ecossistema. E fechar porta nao e revogar credencial — a F0-C segue bloqueada na prova de revogacao, que e outra coisa."
+  commit: "5309c90"
+  date: "2026-09-28"
+
