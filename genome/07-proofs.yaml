@@ -990,3 +990,23 @@
   commit: "5309c90"
   date: "2026-09-28"
 
+# B1 (ciclo 13) — a borda do ECOSSISTEMA fecha. A CLM-0038 deixa de ser refutada.
+- id: PRF-0055
+  kind: proof
+  title: "A borda do ecossistema fecha: 119 exposicoes viram ZERO, em 14 repositorios e 36 arquivos de compose"
+  proves: [CLM-0038]
+  supersedes: [PRF-0040]
+  basis: external_observation
+  external_observation:
+    instrument: "infra/security/borda_compose.py sobre a raiz dos 19 repositorios, com o main mergeado de cada um; e um CONTROLE POSITIVO logo apos, com um compose temporario publicando 5432 em todas as interfaces"
+    observed: "'borda fechada: 56 arquivo(s) de compose conferido(s), nenhum servico de estado publica porta fora do loopback', saida 0. O controle positivo acusou 1 exposicao — o scanner enxerga, entao o zero e do mundo e nao da ferramenta. As 119 sairam em duas levas: 54 nos seis repositorios da cadeia (HUB 12, ANCHOR 11, ARCHIMEDES 10, JOHN 10, OPERA 7, CEFEIDA 4) e 65 nos oito de fora (P-D 16, BIM 16, CEA 9, ACADEMIA 6, ECONO 6, JURIDICO-TECH 4, GAME-MKT 4, FORNECEDORES 4)"
+  evidence_artifact: {repo: liceu-genome, path: docs/evidence/2026-09-29-borda-fechada.md, pr: 47}
+  environment: ci
+  scale: LOCAL
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/borda_compose.py
+    note: "Supersede a PRF-0040, que media 119 abertas e refutava esta afirmacao; o que ela apurou continua valendo como historia — inclusive que a PRF-0033 subcontara 9 e que o fechamento do CORE estava certo. A mudanca tem uma forma so, aplicada linha a linha e recusando o que nao casasse exatamente: 36 arquivos de compose alterados, todos reconferidos como YAML valido por CARREGAMENTO. Prender ao loopback nao tira acesso do proprio host. Duas conferencias precederam cada leva: nenhum workflow alcanca porta de estado por endereco que nao seja loopback, e nenhum teste assere a STRING de uma porta alterada — esta segunda por licao, porque na leva da cadeia o JOHN tinha um teste exigindo 8222:8222, a forma que publica em todas as interfaces, e ele falhou estando CERTO em falhar; a exigencia foi invertida e ficou mais forte. O QUE ESTA PROVA NAO ALCANCA: fechar porta nao e revogar credencial, e a F0-C segue bloqueada na prova de revogacao — segredo que vazou continua valido ate ser trocado, e nenhuma mudanca de ports altera isso. E a medicao e ESTATICA, sobre compose versionado: nao alcanca o que um operador publique a mao nem infraestrutura fora do compose."
+  commit: "b57f192"
+  date: "2026-09-29"
+
