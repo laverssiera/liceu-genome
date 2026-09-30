@@ -70,8 +70,21 @@ def load_proofs(source: str) -> list[dict]:
 
 def check(proofs: list[dict], repo: str, root: Path) -> list[str]:
     problemas = []
+    # Prova SUPERSEDED nao e conferida. O esquema do genoma ja diz isso sobre o
+    # campo `supersedes`: "a prova superseded fica no grafo (historia); so as
+    # vigentes — as que nenhuma outra supersede — entram na derivacao". O juiz
+    # respeitava; esta guarda nao, e cobrava para sempre uma superficie que o
+    # grafo ja tinha aposentado.
+    #
+    # O estrago nao era so ruido. A unica forma de calar a guarda seria editar
+    # o content_hash da prova velha — ou seja, reescrever a historia, que e
+    # exatamente o que a supersessao existe para evitar. Duas ferramentas lendo
+    # o mesmo grafo com regras diferentes sao duas verdades, e a segunda
+    # envelhece calada.
+    aposentadas = {pid for p in proofs for pid in (p.get("supersedes") or [])}
     cobre = [p for p in proofs
-             if isinstance(p.get("mechanism"), dict) and p["mechanism"].get("repo") == repo]
+             if isinstance(p.get("mechanism"), dict) and p["mechanism"].get("repo") == repo
+             and p["id"] not in aposentadas]
     if not cobre:
         print(f"nenhuma prova do genoma cobre superficie de {repo!r} — nada a conferir")
         return problemas
