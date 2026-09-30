@@ -392,3 +392,12 @@
   kind: claim
   statement: "O plano de controle de autoridade distingue uma Ativa que trabalha de uma Ativa viva e parada."
   asserted_by: "premissa do modelo das tres Maes — atestar saude da Ativa e lido como atestar que ela esta CUMPRINDO o papel, e nao apenas que responde"
+
+# F3 (ciclo 15) — o instrumento, que e fato independente da topologia. NAO e a
+# CLM-0006: esta afirma que a sonda EXISTE e que o plano so aceita o que ela
+# mede; a CLM-0006 afirma que a Testemunha observa de forma INDEPENDENTE, e
+# isso exige separacao fisica, que nao existe.
+- id: CLM-0059
+  kind: claim
+  statement: "Existe uma sonda que mede a Ativa pela rede, e o que o plano de controle grava como observacao e o que ela mediu — nao o que a Testemunha declara."
+  asserted_by: "regime declarado no F3, 2026-09-30 — antes disto o ADR-003 §1.4 media que nao havia sonda em repositorio algum, e a Testemunha existia como segredo, nao como processo"
