@@ -1145,3 +1145,47 @@
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
     path: cv-backend-core/tests/test_quebrar_de_proposito.py
     note: "AS QUATRO QUEBRAS, medidas. (1) Ativa cai: ACTIVE_DOWN, a Sucessora assume, epoca 1->2, nenhuma escalacao — quebra prevista, tratada sem humano. (2) sonda cai: ACTIVE_UNOBSERVABLE, promocao bloqueada, epoca NAO avanca, escalacao com motivo active_unobservable e o veredito dentro do dossie; e a Testemunha cega que INSISTE em concordar e recusada no atestar, sem que a atestacao chegue a existir. (3) rede cortada: ACTIVE_UNOBSERVABLE com motivo DIFERENTE de both_mothers_down — rede cortada e as duas Maes mortas chegam ao mesmo lugar (nao alcancei nenhuma) e sao OPOSTAS: numa o mundo esta inteiro e o olho cegou, na outra o mundo caiu; se produzissem o mesmo sinal o sistema diria 'as duas morreram' a cada cabo que caisse. O teste que amarra os dois cobra os VALORES, porque desigualdade sozinha passaria se ambos virassem o mesmo valor novo. (4) Ativa viva e parada: ACTIVE_HEALTHY e nada acontece — sem guarda, registrado na PRF-0060. QUATRO MUTACOES, quatro pegas: unificar os motivos derruba 3; UNOBSERVABLE voltando a autorizar derruba 1; Ativa caida deixando de permitir promocao derruba 1; sonda que nao completou valendo como 'esta fora' derruba 5. A segunda mutacao NAO era pega na primeira versao do arquivo — eu atestava UNOBSERVABLE sem concordancia, entao a primeira camada nunca era exercitada e a segunda segurava sozinha; foi a mutacao que mostrou, e o caso que faltava era o perigoso. Suite inteira do CORE 287 -> 296 passando, 26 falhas antes e depois (as mesmas, locais e anteriores), nenhum arquivo de app/ tocado. O QUE ESTA PROVA NAO ALCANCA: as sondas seguem auto-reportadas e Testemunha e Ativa seguem no mesmo processo (PRF-0058). Estas quebras foram INJETADAS pelo corpo da requisicao, nao provocadas na rede: provam que o plano reage ao sinal de nao-observacao, nao que o sinal chegaria sozinho de uma Testemunha separada."
+
+# Y4 (ciclo 15) — fui medir o smoke do 3C273 e a guarda da borda estava cega.
+- id: PRF-0062
+  kind: proof
+  title: "A guarda acusa a porta reaberta tambem quando ela e escrita com variavel"
+  proves: [CLM-0039]
+  supersedes: [PRF-0034]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/tests/test_borda_compose.py
+    name: test_porta_com_variavel_no_host_e_acusada
+    pr: 76
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/borda_compose.py, cv-backend-core/tests/test_borda_compose.py]
+    content_hash: "cb141d2eab07633d781585f930d503d27f280aabf5fe10310837a68c64298788"
+    commit: "4576f98"
+  environment: ci
+  date: "2026-09-30"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/borda_compose.py
+    note: "A PRF-0034 media uma guarda que exigia DIGITOS no lado do host — (?P<host>[0-9]{1,5}):(?P<alvo>[0-9]{1,5}) — e por isso nao via \"${POSTGRES_PORT:-5432}:5432\". A linha nao casava, o laco fazia continue, e a porta sumia da varredura EM SILENCIO. O QUE ELA NAO ERA: ausencia de teste. O arquivo de teste existia desde 2026-09-23 com 12 testes bons, rodando na CI — abrem a porta de proposito, cobrem 0.0.0.0 explicito, os servicos de estado, node_modules ignorado, raiz inexistente, diretorio sem compose. Todos escrevem a porta com DIGITOS, que era exatamente o que a regex exigia; a forma com variavel nunca foi escrita por nenhum deles. Foi ausencia de uma FORMA na amostra, e a guarda passava por olhar so onde sabiam olhar. MEDIDO: sob a mutacao que devolve o defeito, os 12 originais passam TODOS — o defeito era invisivel para eles; caem 3, e sao os novos. O QUE MUDA: a leitura da linha sai da regex e vai para analisar(), pura, com tabela de decisao; segmentos() parte o mapeamento em \":\" sem quebrar dentro de ${...}, porque \"${BIND:-127.0.0.1}:5432:5432\" tem TRES segmentos e um split daria cinco; entra o caso INDETERMINADO, em que a INTERFACE vem de variavel e a guarda ACUSA em vez de deixar passar — nao conseguir ver nunca vira esta tudo bem, a mesma regra do ACTIVE_UNOBSERVABLE (PRF-0061) e do NAO_MENSURAVEL da prova de revogacao. 18 testes, nenhum falso positivo sobre as 387 linhas literais nem sobre as 4 com variavel ja presas ao loopback. Conferido que ports: em estilo de fluxo nao existe em nenhum dos 19 repositorios."
+
+# A CLM-0038 volta a ser REFUTADA. A borda nunca esteve fechada; o que estava
+# fechado era o que a guarda conseguia enxergar.
+- id: PRF-0063
+  kind: proof
+  title: "A borda nao estava fechada: 7 portas de estado publicadas em todas as interfaces, invisiveis para a guarda"
+  refutes: [CLM-0038]
+  supersedes: [PRF-0055]
+  basis: external_observation
+  external_observation:
+    instrument: "infra/security/borda_compose.py CORRIGIDO (PRF-0062), sobre a raiz dos 19 repositorios, com o main de cada um; e uma sonda independente, escrita antes da correcao, que procurava a forma com variavel sem usar a guarda"
+    observed: "7 exposicoes de servico de estado em TODAS as interfaces, em 2 repositorios. 3C273-Analytics-Data-Science 4 (Postgres 5432, MinIO 9000, MinIO console 9001, Redis 6379, todas em docker-compose.yml); John-Brasileiro- 3 (Postgres 5432, Redis 6379, NATS 4222, em john-meta-core/sandbox/docker-compose.sandbox.yml). A guarda ANTERIOR dizia zero nos dois. Os dois instrumentos — a guarda corrigida e a sonda independente — deram o mesmo 7, e as 387 linhas literais seguem sem falso positivo"
+  evidence_artifact: {repo: liceu-genome, path: docs/evidence/2026-09-30-a-borda-nao-estava-fechada.md, pr: 52}
+  environment: local
+  scale: LOCAL
+  date: "2026-09-30"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/borda_compose.py
+    note: "Supersede a PRF-0055, que anunciou 119 -> 0 e registrou esta afirmacao como PROVEN. O que ela apurou sobre as 119 continua valendo como historia: aquelas portas eram reais e foram fechadas. O que nao valia era o ZERO — ele era o zero do que a guarda conseguia enxergar, nao o do mundo. A PRF-0055 trazia um CONTROLE POSITIVO e ele passou; o controle usava a forma LITERAL, a mesma que a guarda via, entao confirmava que o instrumento enxergava aquilo que ele ja enxergava. Controle positivo so mede o que a amostra dele contem. As 7 linhas estao sendo fechadas em PR proprio por repositorio (3C273 50, John-Brasileiro- 60), e a afirmacao volta a ser candidata a PROVEN depois disso — com prova nova, nao com esta. ISTO NAO E UMA REGRESSAO DO MUNDO: nenhuma porta foi aberta hoje; o que mudou foi o que se consegue ver. A borda esteve aberta nesses 7 pontos o tempo todo, inclusive em 2026-09-29, quando foi anunciada fechada."
