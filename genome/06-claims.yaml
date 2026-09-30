@@ -369,3 +369,11 @@
   statement: "Os seis repositorios da cadeia — elos 0 a 5 — nao publicam servico de estado fora do loopback."
   asserted_by: "sessao da B1, 2026-09-28 — apos prender 54 portas ao loopback nos seis"
 
+
+# Y2 (ciclo 15) — a premissa que a F0-C ia usar para escolher o alvo da primeira
+# rotacao. Nao era "o inventario existe": era "o inventario mapeia quem depende
+# de que", que e o que transforma uma lista em criterio de raio de dano.
+- id: CLM-0056
+  kind: claim
+  statement: "O inventario da F0-A mapeia, por nome, de quantos repositorios cada segredo do ecossistema depende — e por isso serve para escolher o alvo da rotacao pelo MENOR raio de dano."
+  asserted_by: "premissa do documento F0-A, 2026-09-23 — '101 nomes distintos, 17 compartilhados' foi lido como o mapa da dependencia, e a ordem do ciclo 11 poe esse inventario ANTES da rotacao exatamente para isso"
