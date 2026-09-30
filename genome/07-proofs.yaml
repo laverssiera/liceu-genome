@@ -1106,3 +1106,42 @@
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
     path: cv-backend-core/app/services/authority_control_plane.py
     note: "Quatro decisoes: o veredito sai do corpo e vira derivacao (derive_verdict, pura); ACTIVE_UNOBSERVABLE entra e nao autoriza promocao em DUAS camadas (attest recusa concordancia sobre ele, valid_attestation_for recusa a linha); dizer que a Ativa esta sa exige dizer QUEM foi visto, e instancia vista diferente da registrada e divergencia de autoridade e nao atestacao de saude; e nao se avaliza Sucessora que a sonda nao alcancou, nem sonda de OUTRA instancia. MEDIDO: suites de autoridade 32 -> 39; suite inteira do CORE 26 falhas antes e 26 depois com conjuntos IDENTICOS (diff vazio, sao locais e anteriores), 280 -> 287 passando, zero regressao. SEIS MUTACOES, seis pegas: extra=ignore 1 cai; UNOBSERVABLE virando ACTIVE_DOWN 3 caem; sem conferir identidade da Ativa 1 cai; avalizar quem nao se alcancou 1 cai; sonda de outra instancia 1 cai; segunda camada em valid_attestation_for 1 cai. TRES testes meus passaram pelo motivo ERRADO antes de virarem guarda, e os tres so apareceram porque a mutacao os desmentiu — atestacao AUSENTE tambem bloqueia promocao, o 422 do pydantic ecoa o corpo e casa qualquer substring, e o corpo antigo sem active_probe ja falhava por campo obrigatorio. O padrao e sempre o mesmo: o teste e o defeito produzem o MESMO sinal, e so a mutacao separa os dois. O QUE ESTA PROVA NAO ALCANCA: a sonda e auto-reportada e nao torna a Testemunha honesta; quem minta sobre o que mediu produz atestacao valida. Ela prova que o plano recusa promover sem observacao, nao que houve observacao."
+
+# Y1.c (ciclo 15) — quebrar de proposito. Guarda que nunca disparou e promessa.
+- id: PRF-0060
+  kind: proof
+  title: "A sonda pergunta se a Ativa esta ai, nunca se ela trabalhou: viva e parada e indistinguivel de viva e trabalhando"
+  refutes: [CLM-0058]
+  basis: code_reading
+  date: "2026-09-30"
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [cv-backend-core/tests/test_quebrar_de_proposito.py]
+    content_hash: "9e28ea76852435bbd5899d0ee9499bb80a31a8db7117e8fd8cfd54f55a396b36"
+    commit: "c1e1e33"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/app/services/authority_control_plane.py
+    note: "Conferido na linha, nao deduzido: authority_state.updated_at e authority_instances.updated_at existem em app/models/authority.py e sao escritos pelo ORM (server_default e onupdate) — e NINGUEM os le. A string updated_at nao aparece em authority_control_plane.py em lugar nenhum, e snapshot() nao a expoe. Nao ha heartbeat no plano de autoridade: o heartbeat que existe no repositorio e do orquestrador do monolito (app/main.py, monolith_heartbeat_worker) e e outro eixo. Nao ha janela de obsolescencia nem limite de tempo desde a ultima escrita. A sonda do Y1.b pergunta reached — vivacidade — e nada mais. Uma Ativa que responde e nao escreve produz atestacao ACTIVE_HEALTHY identica a de uma Ativa que trabalha, e ha teste mostrando que as duas saidas sao iguais byte a byte: nao e sinal fraco, e ausencia de sinal. O teste que cobre isto esta marcado como CARACTERIZACAO — registra o buraco e nao o aprova; no dia em que houver liveness no plano, ele falha, e falhar ali e o aviso de reler o arquivo. CONSEQUENCIA: a falha que este plano NAO cobre e a bizantina branda — Mae viva, respondendo, e parada. A epoca contem o dano de uma Mae trocada indevidamente; a Testemunha previne a troca indevida; nenhuma das duas percebe uma Mae que nao faz nada."
+
+- id: PRF-0061
+  kind: proof
+  title: "Quatro quebras provocadas: tres guardas dispararam, e rede cortada nao se confunde com as duas Maes mortas"
+  proves: [CLM-0057]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/tests/test_quebrar_de_proposito.py
+    name: "9 testes, uma por quebra provocada mais os controles"
+    pr: 75
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [cv-backend-core/tests/test_quebrar_de_proposito.py]
+    content_hash: "9e28ea76852435bbd5899d0ee9499bb80a31a8db7117e8fd8cfd54f55a396b36"
+    commit: "c1e1e33"
+  scale: LOCAL
+  date: "2026-09-30"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/tests/test_quebrar_de_proposito.py
+    note: "AS QUATRO QUEBRAS, medidas. (1) Ativa cai: ACTIVE_DOWN, a Sucessora assume, epoca 1->2, nenhuma escalacao — quebra prevista, tratada sem humano. (2) sonda cai: ACTIVE_UNOBSERVABLE, promocao bloqueada, epoca NAO avanca, escalacao com motivo active_unobservable e o veredito dentro do dossie; e a Testemunha cega que INSISTE em concordar e recusada no atestar, sem que a atestacao chegue a existir. (3) rede cortada: ACTIVE_UNOBSERVABLE com motivo DIFERENTE de both_mothers_down — rede cortada e as duas Maes mortas chegam ao mesmo lugar (nao alcancei nenhuma) e sao OPOSTAS: numa o mundo esta inteiro e o olho cegou, na outra o mundo caiu; se produzissem o mesmo sinal o sistema diria 'as duas morreram' a cada cabo que caisse. O teste que amarra os dois cobra os VALORES, porque desigualdade sozinha passaria se ambos virassem o mesmo valor novo. (4) Ativa viva e parada: ACTIVE_HEALTHY e nada acontece — sem guarda, registrado na PRF-0060. QUATRO MUTACOES, quatro pegas: unificar os motivos derruba 3; UNOBSERVABLE voltando a autorizar derruba 1; Ativa caida deixando de permitir promocao derruba 1; sonda que nao completou valendo como 'esta fora' derruba 5. A segunda mutacao NAO era pega na primeira versao do arquivo — eu atestava UNOBSERVABLE sem concordancia, entao a primeira camada nunca era exercitada e a segunda segurava sozinha; foi a mutacao que mostrou, e o caso que faltava era o perigoso. Suite inteira do CORE 287 -> 296 passando, 26 falhas antes e depois (as mesmas, locais e anteriores), nenhum arquivo de app/ tocado. O QUE ESTA PROVA NAO ALCANCA: as sondas seguem auto-reportadas e Testemunha e Ativa seguem no mesmo processo (PRF-0058). Estas quebras foram INJETADAS pelo corpo da requisicao, nao provocadas na rede: provam que o plano reage ao sinal de nao-observacao, nao que o sinal chegaria sozinho de uma Testemunha separada."
