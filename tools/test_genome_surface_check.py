@@ -57,6 +57,45 @@ class SuperficieTests(unittest.TestCase):
         (self.root / "app" / "servico.py").write_bytes(b"def x():\r\n    return 1\r\n")
         self.assertEqual(gsc.check(_proof(self.paths, self.hash), REPO, self.root), [])
 
+    def test_prova_superseded_nao_e_cobrada(self):
+        """A guarda cobrava para sempre uma superficie que o grafo aposentou.
+
+        Apareceu no PR 74 do CONSTRUTORA: a PRF-0015 provava que attest()
+        recebia o veredito pronto no corpo do POST. O PR desfez isso, uma prova
+        nova a superseded — e a guarda continuou exigindo o hash antigo, que
+        nenhum codigo correto produz mais.
+
+        A unica saida seria editar o content_hash da prova velha: reescrever a
+        historia, que e exatamente o que a supersessao existe para evitar. O
+        esquema do genoma ja dizia que so as vigentes entram na derivacao; o
+        juiz respeitava, esta guarda nao. Duas ferramentas lendo o mesmo grafo
+        com regras diferentes sao duas verdades, e a segunda envelhece calada.
+        """
+        (self.root / "app" / "servico.py").write_text("def x():" + chr(10) + "    return 2" + chr(10),
+                                                      encoding="utf-8")
+        velha = _proof(self.paths, self.hash)[0]
+        nova = {"id": "PRF-0100", "kind": "proof", "title": "a que substitui",
+                "basis": "test", "supersedes": ["PRF-0099"],
+                "mechanism": {"repo": REPO, "paths": self.paths,
+                              "content_hash": gsc.surface_hash(self.root, self.paths)[0],
+                              "commit": "def5678"}}
+        self.assertEqual(gsc.check([velha, nova], REPO, self.root), [])
+
+    def test_a_prova_vigente_continua_sendo_cobrada(self):
+        """Controle positivo: sem ele, uma guarda que ignorasse TUDO passaria no
+        teste de cima e nao acusaria mudanca nenhuma."""
+        (self.root / "app" / "servico.py").write_text("def x():" + chr(10) + "    return 3" + chr(10),
+                                                      encoding="utf-8")
+        velha = _proof(self.paths, self.hash)[0]
+        nova = {"id": "PRF-0100", "kind": "proof", "title": "a que substitui",
+                "basis": "test", "supersedes": ["PRF-0099"],
+                "mechanism": {"repo": REPO, "paths": self.paths,
+                              "content_hash": "0" * 64, "commit": "def5678"}}
+        problemas = gsc.check([velha, nova], REPO, self.root)
+        self.assertEqual(len(problemas), 1, problemas)
+        self.assertIn("PRF-0100", problemas[0])
+        self.assertNotIn("PRF-0099", problemas[0])
+
     def test_prova_de_outro_repo_e_ignorada(self):
         self.assertEqual(gsc.check(_proof(self.paths, "0" * 64), "Outro-Repo", self.root), [])
 
