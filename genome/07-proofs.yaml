@@ -1010,3 +1010,29 @@
   commit: "b57f192"
   date: "2026-09-29"
 
+
+# Y2 (ciclo 15) — a rotacao ia escolher o alvo sobre um mapa cego. O mapa foi
+# corrigido ANTES de escolher. Isto nao e rotacao e nao e prova de revogacao.
+- id: PRF-0056
+  kind: proof
+  title: "O inventario de segredos que a F0-C consulta estava cego em 55 nomes, entre eles JWT_SECRET_KEY em 6 repositorios"
+  refutes: [CLM-0056]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/test_inventario_segredos.py
+    name: "12 testes; o carregador e test_regra_generica_nao_derruba_nome_forte"
+    pr: 72
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/inventario_segredos.py, infra/security/test_inventario_segredos.py]
+    content_hash: "e9762f732ba1799ed66aa9d25b3e84466a16ad64763c7a8079acf18c6b3068ee"
+    commit: "77ca6e8"
+  evidence_artifact: {repo: liceu-genome, path: docs/evidence/2026-09-30-inventario-cego.md, pr: 72}
+  environment: local
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/inventario_segredos.py
+    note: "A F0-C ia escolher o alvo da primeira rotacao pelo MENOR RAIO DE DANO, e o mapa que mede esse raio e este inventario. O filtro de falsos positivos trazia a alternativa KEYS?$, que barrava TODO nome terminado em _KEY: nao era excecao conferida, era regra generica derrubando uma classe inteira de nomenclatura, em silencio, contra o comentario do proprio codigo duas linhas acima. MEDIDO no mesmo dia, mesma varredura, mesmos 19 repositorios, nas duas versoes da regra: 103 -> 134 nomes de segredo, 18 -> 33 compartilhados, 0 -> 24 listados para conferencia. 55 nomes voltaram, e 15 dos 33 compartilhados existem SO por causa da correcao — o mapa ignorava 45% dos segredos compartilhados. Entre eles SECRET_KEY (7 repos), JWT_SECRET_KEY (6 repos, um dos tres nomes que a UNK-0004 pergunta), MINIO_SECRET_KEY, ANCHORS_SIGNING_KEY, JWT_RS256_PRIVATE_KEY, NATS_TLS_CLIENT_KEY, AWS_SECRET_ACCESS_KEY. Escolher o MENOR raio sobre esse mapa era sortear. O desvio esta separado de proposito: +31/+15/+24 e defeito da regra, e 101 -> 103 nomes entre 23/09 e 30/09 e o ecossistema tendo mudado; misturados, o defeito se esconderia dentro do crescimento. Viveu sete dias porque o inventario NAO TINHA TESTE NENHUM — agora tem 12, e o que importa nao confere nome, confere PRECEDENCIA: FALSO antes de FORTE porque API_KEY_HEADER e cabecalho, FORTE antes da generica porque AWS_SECRET_ACCESS_KEY e credencial. MUTACAO: reintroduzindo a linha KEYS?$, 5 dos 12 caem. A correcao NAO decide sozinha o que e chave de dicionario: 24 nomes que terminam em _KEY sem dizer o que sao saem numa lista A CONFERIR, nomeados e nao sumidos, porque descartar o que nao se sabe classificar e o defeito que isto desfez. O QUE ESTA PROVA NAO ALCANCA: ela nao e rotacao e nao e prova de revogacao. A UNK-0004 segue aberta e segue bloqueando scale:REGIONAL. Mapa correto nao revoga credencial nenhuma."
+  commit: "77ca6e8"
+  date: "2026-09-30"
