@@ -377,3 +377,11 @@
   kind: claim
   statement: "O inventario da F0-A mapeia, por nome, de quantos repositorios cada segredo do ecossistema depende — e por isso serve para escolher o alvo da rotacao pelo MENOR raio de dano."
   asserted_by: "premissa do documento F0-A, 2026-09-23 — '101 nomes distintos, 17 compartilhados' foi lido como o mapa da dependencia, e a ordem do ciclo 11 poe esse inventario ANTES da rotacao exatamente para isso"
+
+# Y1.b (ciclo 15) — o que a mudanca da Testemunha DE FATO entrega. Nao e
+# "observacao independente" (isso e a CLM-0006, que segue refutada): e a
+# recusa de promover quando nao houve observacao.
+- id: CLM-0057
+  kind: claim
+  statement: "Uma atestacao sem observacao da Ativa nao autoriza promocao: o plano de controle deriva o veredito da sonda e recusa promover quando a sonda nao completou."
+  asserted_by: "regime declarado no Y1.b, 2026-09-30 — antes disto o veredito vinha pronto no corpo do POST e nao havia como dizer 'nao consegui ver'"
