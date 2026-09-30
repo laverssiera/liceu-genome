@@ -1189,3 +1189,28 @@
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
     path: infra/security/borda_compose.py
     note: "Supersede a PRF-0055, que anunciou 119 -> 0 e registrou esta afirmacao como PROVEN. O que ela apurou sobre as 119 continua valendo como historia: aquelas portas eram reais e foram fechadas. O que nao valia era o ZERO — ele era o zero do que a guarda conseguia enxergar, nao o do mundo. A PRF-0055 trazia um CONTROLE POSITIVO e ele passou; o controle usava a forma LITERAL, a mesma que a guarda via, entao confirmava que o instrumento enxergava aquilo que ele ja enxergava. Controle positivo so mede o que a amostra dele contem. As 7 linhas estao sendo fechadas em PR proprio por repositorio (3C273 50, John-Brasileiro- 60), e a afirmacao volta a ser candidata a PROVEN depois disso — com prova nova, nao com esta. ISTO NAO E UMA REGRESSAO DO MUNDO: nenhuma porta foi aberta hoje; o que mudou foi o que se consegue ver. A borda esteve aberta nesses 7 pontos o tempo todo, inclusive em 2026-09-29, quando foi anunciada fechada."
+
+# Y4 (ciclo 15) — a borda fecha DE NOVO, agora medida por um instrumento que
+# enxerga a forma que o anterior nao via.
+- id: PRF-0064
+  kind: proof
+  title: "A borda do ecossistema fecha, medida com a guarda que enxerga porta com variavel: 0 em 56 arquivos"
+  proves: [CLM-0038]
+  supersedes: [PRF-0063]
+  basis: external_observation
+  external_observation:
+    instrument: "infra/security/borda_compose.py CORRIGIDO (PRF-0062) sobre a raiz de cada um dos 19 repositorios, com o main mergeado; e um CONTROLE POSITIVO de TRES FORMAS, nao de uma"
+    observed: "0 exposicao(oes) em 56 arquivo(s) de compose, 19 repositorios. O controle positivo acusou 1 em CADA uma das tres formas, cada uma com saida 1: literal (5432:5432), host vindo de variavel (${POSTGRES_PORT:-5432}:5432) e INTERFACE vinda de variavel (${BIND:-127.0.0.1}:${P:-5432}:5432). As 7 que a PRF-0063 apurou foram fechadas: 3C273-Analytics-Data-Science no commit 6d6485f (4 portas) e John-Brasileiro- no 5d66baf (3 portas)"
+  evidence_artifact: {repo: liceu-genome, path: docs/evidence/2026-09-30-a-borda-fecha-com-instrumento-que-ve.md, pr: 53}
+  environment: local
+  scale: LOCAL
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/borda_compose.py, cv-backend-core/tests/test_borda_compose.py]
+    content_hash: "cb141d2eab07633d781585f930d503d27f280aabf5fe10310837a68c64298788"
+    commit: "8b0ef6d"
+  date: "2026-09-30"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/borda_compose.py
+    note: "Supersede a PRF-0063, que refutava esta afirmacao com 7 exposicoes invisiveis para a guarda anterior. O QUE MUDOU EM RELACAO A PRF-0055, que tambem anunciou zero e estava errada: o controle positivo dela usava SO a forma literal — a mesma que a guarda ja via —, entao confirmava que o instrumento enxergava aquilo que ele ja enxergava. Controle positivo so mede o que a amostra dele contem. Aqui o controle tem as TRES formas, e a do meio e exatamente a que estava cega. CONFERIDO ALEM DO COMPOSE, porque a afirmacao fala do ECOSSISTEMA e nao do compose: network_mode host nao aparece em nenhum arquivo; ports em estilo de fluxo (ports: [...]) nao existe em nenhum dos 19; 88 Services de k8s foram lidos, 87 ClusterIP e 1 LoadBalancer; os 3 arquivos Terraform do ecossistema tem 12 a 22 linhas e nenhuma regra de porta ou grupo de seguranca. O unico LoadBalancer e o workflow-service do BIM.ARQ.ENG, com targetPort 9001 — que a tabela ESTADO mapeia como console do MinIO e NAO e: lido o k8s/workflow-deployment.yaml, 9001 e a porta HTTP do proprio motor de workflow (imagem workflow:local-v3, probes httpGet /health e /health/ready na mesma porta). Porta de aplicacao atras de LoadBalancer e normal. Fica registrado que a tabela mapeia por NUMERO de porta, o que e certo para porta conhecida de banco e produz falso positivo em porta alta generica — este caso so se resolveu lendo o manifesto. O QUE ESTA PROVA NAO ALCANCA: a medicao e ESTATICA, sobre arquivo versionado. Nao alcanca porta que um operador publique a mao, nem cluster em execucao, nem regra de rede fora destes arquivos. E fechar porta nao e revogar credencial: a F0-C segue bloqueada na prova de revogacao, e a UNK-0004 segue aberta."
