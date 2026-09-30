@@ -1036,3 +1036,73 @@
     note: "A F0-C ia escolher o alvo da primeira rotacao pelo MENOR RAIO DE DANO, e o mapa que mede esse raio e este inventario. O filtro de falsos positivos trazia a alternativa KEYS?$, que barrava TODO nome terminado em _KEY: nao era excecao conferida, era regra generica derrubando uma classe inteira de nomenclatura, em silencio, contra o comentario do proprio codigo duas linhas acima. MEDIDO no mesmo dia, mesma varredura, mesmos 19 repositorios, nas duas versoes da regra: 103 -> 134 nomes de segredo, 18 -> 33 compartilhados, 0 -> 24 listados para conferencia. 55 nomes voltaram, e 15 dos 33 compartilhados existem SO por causa da correcao — o mapa ignorava 45% dos segredos compartilhados. Entre eles SECRET_KEY (7 repos), JWT_SECRET_KEY (6 repos, um dos tres nomes que a UNK-0004 pergunta), MINIO_SECRET_KEY, ANCHORS_SIGNING_KEY, JWT_RS256_PRIVATE_KEY, NATS_TLS_CLIENT_KEY, AWS_SECRET_ACCESS_KEY. Escolher o MENOR raio sobre esse mapa era sortear. O desvio esta separado de proposito: +31/+15/+24 e defeito da regra, e 101 -> 103 nomes entre 23/09 e 30/09 e o ecossistema tendo mudado; misturados, o defeito se esconderia dentro do crescimento. Viveu sete dias porque o inventario NAO TINHA TESTE NENHUM — agora tem 12, e o que importa nao confere nome, confere PRECEDENCIA: FALSO antes de FORTE porque API_KEY_HEADER e cabecalho, FORTE antes da generica porque AWS_SECRET_ACCESS_KEY e credencial. MUTACAO: reintroduzindo a linha KEYS?$, 5 dos 12 caem. A correcao NAO decide sozinha o que e chave de dicionario: 24 nomes que terminam em _KEY sem dizer o que sao saem numa lista A CONFERIR, nomeados e nao sumidos, porque descartar o que nao se sabe classificar e o defeito que isto desfez. O QUE ESTA PROVA NAO ALCANCA: ela nao e rotacao e nao e prova de revogacao. A UNK-0004 segue aberta e segue bloqueando scale:REGIONAL. Mapa correto nao revoga credencial nenhuma."
   commit: "77ca6e8"
   date: "2026-09-30"
+
+# Y1.b (ciclo 15) — a superficie de duas provas mudou. A guarda de superficie
+# do CONSTRUTORA acusou as duas no PR 74, e foi ela que trouxe isto aqui.
+- id: PRF-0057
+  kind: proof
+  title: "Fencing por epoca, reprovado sobre o arquivo de teste que a atestacao por sondas alterou"
+  proves: [CLM-0004]
+  supersedes: [PRF-0004]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/tests/test_authority_control_plane.py
+    name: test_stale_epoch_is_rejected_even_with_instance_online
+    pr: 74
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [cv-backend-core/tests/test_authority_control_plane.py]
+    content_hash: "0782969cbec3370da17d761a497832d4b187835bf256717234cad1b7e951778e"
+    commit: "1991e4e"
+  scale: LOCAL
+  date: "2026-09-30"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/tests/test_authority_control_plane.py
+    note: "O COMPORTAMENTO provado nao mudou: instancia com epoca antiga continua rejeitada mesmo online, e o teste que prova isso continua o mesmo. O que mudou no arquivo foi o helper _witness_concurs, que montava o corpo da atestacao com verdict pronto e agora monta sondas. A superficie se mexeu, a prova nao. Esta supersessao existe porque o content_hash e de ARQUIVO e nao de funcao: preferir um hash que nao acusasse mudanca de helper seria preferir uma guarda que nao acusa."
+
+# A PRF-0015 dizia: attest() recebe o veredito pronto no corpo do POST. Isso
+# deixou de ser verdade. A CLM-0006 continua REFUTADA — por outro motivo, mais
+# estreito, e e esse estreitamento que esta prova registra.
+- id: PRF-0058
+  kind: proof
+  title: "O veredito deixa de vir do corpo, e ainda assim a Testemunha nao observa de forma independente"
+  refutes: [CLM-0006]
+  supersedes: [PRF-0015]
+  basis: code_reading
+  date: "2026-09-30"
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [cv-backend-core/app/services/authority_control_plane.py]
+    content_hash: "012541713ff8a7258cd2b83897c0b2b27d43e29091bae60a542be31f74c20465"
+    commit: "1991e4e"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/app/services/authority_control_plane.py
+    note: "O QUE MUDOU desde a PRF-0015: attest() nao recebe mais verdict. Recebe active_probe e successor_probe e DERIVA o veredito em derive_verdict(), funcao pura. O corpo do POST passou a extra=forbid, entao cliente que ainda mande verdict leva 422 em vez de ser ignorado calado. Entrou ACTIVE_UNOBSERVABLE, o estado que faltava: antes, Testemunha sem rota ate a Ativa tinha de escolher entre sa e morta, escolheria morta, e ACTIVE_DOWN com concordancia PROMOVE — incapacidade de observar virava autorizacao para trocar a Mae. O QUE NAO MUDOU, e por isso a CLM-0006 segue refutada: nao ha leitura da Ativa pela rede em lugar nenhum do CORE. Os campos reached, reported_instance_id e reported_epoch sao preenchidos pelo PROPRIO chamador — a sonda e auto-reportada. Pela FIT-013 continua sendo campo asserted sustentando promocao de autoridade; o que mudou e a FORMA do asserted, de conclusao para medida, nao a sua natureza. E Testemunha e Ativa seguem no mesmo processo: um ACTIVE_UNOBSERVABLE que nunca ocorre nao prova nada, so mostra que ninguem esteve em condicao de nao enxergar. Observar de forma INDEPENDENTE exige separacao fisica, que e decisao de topologia e segue em aberto. Esta prova NAO move a cadeia e NAO desbloqueia REGIONAL, que continua barrada por 4 itens."
+
+- id: PRF-0059
+  kind: proof
+  title: "Atestacao sem observacao nao promove: UNOBSERVABLE recusado em duas camadas, com seis mutacoes"
+  proves: [CLM-0057]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/tests/test_testemunha_nao_declara_o_que_viu.py
+    name: "6 testes escritos ANTES e que falhavam contra o codigo anterior"
+    pr: 74
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths:
+      - cv-backend-core/app/services/authority_control_plane.py
+      - cv-backend-core/app/main.py
+      - cv-backend-core/tests/test_testemunha_nao_declara_o_que_viu.py
+    content_hash: "74888c055d5a3779b2dcc4027b4bbd1ad253d880245c81b9ef2649b267ccb6e2"
+    commit: "1991e4e"
+  scale: LOCAL
+  date: "2026-09-30"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/app/services/authority_control_plane.py
+    note: "Quatro decisoes: o veredito sai do corpo e vira derivacao (derive_verdict, pura); ACTIVE_UNOBSERVABLE entra e nao autoriza promocao em DUAS camadas (attest recusa concordancia sobre ele, valid_attestation_for recusa a linha); dizer que a Ativa esta sa exige dizer QUEM foi visto, e instancia vista diferente da registrada e divergencia de autoridade e nao atestacao de saude; e nao se avaliza Sucessora que a sonda nao alcancou, nem sonda de OUTRA instancia. MEDIDO: suites de autoridade 32 -> 39; suite inteira do CORE 26 falhas antes e 26 depois com conjuntos IDENTICOS (diff vazio, sao locais e anteriores), 280 -> 287 passando, zero regressao. SEIS MUTACOES, seis pegas: extra=ignore 1 cai; UNOBSERVABLE virando ACTIVE_DOWN 3 caem; sem conferir identidade da Ativa 1 cai; avalizar quem nao se alcancou 1 cai; sonda de outra instancia 1 cai; segunda camada em valid_attestation_for 1 cai. TRES testes meus passaram pelo motivo ERRADO antes de virarem guarda, e os tres so apareceram porque a mutacao os desmentiu — atestacao AUSENTE tambem bloqueia promocao, o 422 do pydantic ecoa o corpo e casa qualquer substring, e o corpo antigo sem active_probe ja falhava por campo obrigatorio. O padrao e sempre o mesmo: o teste e o defeito produzem o MESMO sinal, e so a mutacao separa os dois. O QUE ESTA PROVA NAO ALCANCA: a sonda e auto-reportada e nao torna a Testemunha honesta; quem minta sobre o que mediu produz atestacao valida. Ela prova que o plano recusa promover sem observacao, nao que houve observacao."
