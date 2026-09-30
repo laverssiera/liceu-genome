@@ -385,3 +385,10 @@
   kind: claim
   statement: "Uma atestacao sem observacao da Ativa nao autoriza promocao: o plano de controle deriva o veredito da sonda e recusa promover quando a sonda nao completou."
   asserted_by: "regime declarado no Y1.b, 2026-09-30 — antes disto o veredito vinha pronto no corpo do POST e nao havia como dizer 'nao consegui ver'"
+
+# Y1.c (ciclo 15) — o que a quebra provocada descobriu. Nao estava no plano do
+# ciclo: apareceu porque a quarta quebra foi exercitada de proposito.
+- id: CLM-0058
+  kind: claim
+  statement: "O plano de controle de autoridade distingue uma Ativa que trabalha de uma Ativa viva e parada."
+  asserted_by: "premissa do modelo das tres Maes — atestar saude da Ativa e lido como atestar que ela esta CUMPRINDO o papel, e nao apenas que responde"
