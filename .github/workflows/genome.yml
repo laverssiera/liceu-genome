@@ -23,6 +23,12 @@ jobs:
       - name: Testes de mutação (juiz)
         run: python tools/test_genome_check.py
 
+      # A data que o juiz COMPARA passou a ser conferida: forma na lei, calendário
+      # e futuro no módulo. Mesma razão da FIT-017 para viver separado — a
+      # superfície da prova é o módulo, não o juiz de 1700 linhas.
+      - name: Testes de mutação (a data que o juiz compara)
+        run: python tools/test_genome_date_check.py
+
       # A FIT-017 vive em módulo próprio para que a superfície da PRF-0031 não
       # seja o juiz inteiro. Módulo que a CI não roda é módulo que ninguém
       # confere, então o passo entra junto com a separação, e não depois.
