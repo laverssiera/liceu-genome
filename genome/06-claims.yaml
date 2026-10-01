@@ -441,3 +441,10 @@
   kind: claim
   statement: "Um servico que depende de credencial externa degrada com graca quando a credencial deixa de valer."
   asserted_by: "premissa do modo simulado do JURIDICO-TECH — a existencia de um caminho de degradacao foi lida como cobertura da falha de credencial"
+
+# Ciclo 19 — o juiz julgava datas e nao conferia nenhuma. Achado ao MEDIR o
+# grafo para o relatorio, e nao ao procurar defeito.
+- id: CLM-0066
+  kind: claim
+  statement: "Toda data que o juiz compara e conferida: data mal formada, inexistente no calendario ou posterior a hoje nao entra no grafo, e o veredito nao depende do fuso de quem roda."
+  asserted_by: "premissa de TODA comparacao de data dentro do juiz — _expired faz str(expires_at) < today, a FIT-016 faz p[date] < pred[registered_at] e a historia ordena por str(date); as tres pressupoem uma data que ninguem conferia"
