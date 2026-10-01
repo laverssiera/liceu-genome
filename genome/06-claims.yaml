@@ -461,3 +461,9 @@
   kind: claim
   statement: "As varreduras do liceu-genome exigem resposta por item: arquivo que nao se deixa ler vira NAO_MENSURAVEL com nome e motivo, e a frase de aprovacao traz o denominador."
   asserted_by: "a regra em tools/varredura.py e os chamadores dela — genome_privacy_check, varredura_publica e a FIT-015 do juiz"
+
+# Ciclo 20 (D3) — o inventario passa a ter veredito por ocorrencia.
+- id: CLM-0069
+  kind: claim
+  statement: "O inventario distingue USO de MENCAO por ocorrencia, e deriva o nome da variavel que chega por env_prefix sob outro identificador."
+  asserted_by: "a regra em infra/security/uso_de_segredo.py e o inventario que a consome, construidos no ciclo 20 porque a proxima rotacao escolhe o alvo com este mapa"
