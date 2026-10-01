@@ -1450,3 +1450,116 @@
     repo: liceu-genome
     path: tools/varredura_publica.py
     note: "Mesma razao da PRF-0076: a superficie mudou e a prova foi RODADA de novo, nao transcrita — os 11 testes passam sobre a superficie nova, inclusive a isca que a primeira versao da varredura de historico nao enxergava (ela usava `git grep -E`, e o ERE POSIX nao entende \\d, entao os padroes de CPF, CEP e telefone casavam NADA, em silencio). E a CLM-0054 ganha um segundo motivo para continuar refutada, descoberto HOJE e por erro proprio: alem de 'zero achados nao e ausencia', agora esta medido que zero achados pode ser zero ITENS LIDOS — a varredura de CI dos 19 repositorios nao leu nenhum e reportou tranquilidade (PRF-0074). A isca responde a primeira metade: a varredura enxerga o que existe. O denominador responde a segunda: ela diz sobre quantos olhou. Nenhuma das duas sozinha basta. UMA MELHORA MENOR, no mesmo PR: com `--root .` o relatorio imprimia o nome do repositorio VAZIO — `root.name` de '.' e string vazia —, e um relatorio de varredura que nao diz QUAL coisa mediu e a mesma familia de defeito, em escala pequena. Agora resolve o caminho antes."
+
+# Ciclo 19 — as quatro varreduras fechadas, e a afirmacao do ecossistema com elas.
+- id: PRF-0078
+  kind: proof
+  title: "As quatro varreduras do ecossistema exigem resposta por item: as duas do monolito fecham o que faltava"
+  proves: [CLM-0067]
+  supersedes: [PRF-0074]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/test_varredura.py
+    name: "15 testes — 7 da regra pura, 5 da borda, 3 do inventario"
+    pr: 84
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/varredura.py, infra/security/test_varredura.py]
+    content_hash: "de550aa2550f7dfb31a5462c397eafb43b4d67d9506d02f6cf8fd823ed2a5753"
+    commit: "4d8b626"
+  environment: ci
+  date: "2026-10-01"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/varredura.py
+    note: "A PRF-0074 refutava esta afirmacao com QUATRO varreduras que tratavam item sem resposta como item limpo. Duas foram fechadas em liceu-genome (PR 62); estas sao as outras duas. BORDA: um compose que nao se deixasse ler sumia da conta, e o relatorio seguia anunciando 'N arquivo(s) conferido(s)' com o N da lista PRETENDIDA, nao da lida — compose ilegivel virava 'borda fechada' em silencio, e compose ilegivel pode publicar porta de banco. Agora e NAO MENSURAVEL, com o arquivo nomeado, e saida 2. INVENTARIO, com DOIS silencios e o segundo pior que o primeiro: (1) arquivo ilegivel sumia da conta, e o segredo que estivesse nele nunca entrava no inventario; (2) repositorio ausente imprimia um aviso no MEIO da saida e o relatorio FINAL seguia dizendo 'em 19 repositorios', que e a lista pretendida — rodar com metade dos repositorios fora do disco devolvia um inventario menor anunciado com o mesmo denominador, num instrumento que existe justamente para dizer de QUANTOS repositorios cada segredo depende. A frase passou a ser 'em N repositorio(s) LIDO(S) de 19 pretendido(s)'. varrer() das duas LEVANTA quando a varredura nao mediu: meia varredura nao devolve meia lista como se fosse a lista. SEIS MUTACOES, SEIS QUEDAS: item sem resposta deixando de derrubar a varredura derruba 7; a borda voltando a engolir o erro de leitura derruba 1; o inventario voltando a imprimir-e-seguir derruba 2; o inventario voltando a anunciar o denominador pretendido derruba 1; a borda voltando a aprovar sem medir derruba 1; lista vazia virando MEDIDO derruba 1. CONTROLE POSITIVO em tres: porta exposta e acusada, compose limpo passa, inventario com os 19 presentes mede e acha o segredo. A REGRA E COPIA de liceu-genome/tools/varredura.py, e a razao esta no cabecalho dos dois arquivos: os repositorios nao compartilham pacote, o kit que o monolito instala e de CONTRATOS, e regra de varredura nao e contrato. Se um TERCEIRO repositorio precisar dela, a copia deixa de ser o caminho barato e vira o argumento para um pacote proprio. UM ACHADO DENTRO DO PROPRIO CONSERTO: a primeira versao do teste escrevia o nome de segredo da fixture POR EXTENSO, e com isso o inventario do ecossistema passou de 135 para 136 nomes distintos — um nome novo nascido de um teste. Varredura nao pode poluir o que ela mede; o nome passou a ser montado por concatenacao, o mesmo cuidado que a FIT-015 exige das iscas de dado pessoal, e a medicao voltou a 135. O QUE ESTA PROVA NAO ALCANCA: ela garante que as varreduras ACUSAM o que nao conseguiram ler; nao garante que a LISTA de itens esteja completa. Alvo que nunca entrou na lista continua invisivel — foi o defeito da propria guarda de borda em 2026-09-23."
+
+# Ciclo 19 — as tres provas do monolito cuja superficie o PR 84 alterou.
+- id: PRF-0079
+  kind: proof
+  title: "O inventario segue enxergando as tres classes de nome — rodado de novo sobre a superficie nova"
+  refutes: [CLM-0056]
+  supersedes: [PRF-0056]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/test_inventario_segredos.py
+    name: "12 testes, rodados em 2026-10-01 sobre o inventario com a regra de varredura"
+    pr: 84
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/inventario_segredos.py, infra/security/test_inventario_segredos.py]
+    content_hash: "48b9158d694758d1425fb83926e23c403c07e0173f5d4c34a3396cbf06211183"
+    commit: "4d8b626"
+  environment: local
+  date: "2026-10-01"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/inventario_segredos.py
+    note: "RODADA DE NOVO, nao transcrita: os 12 testes passam sobre a superficie nova, e a medicao e identica a de 2026-09-30 — 135 nomes distintos, 42 compartilhados entre repositorios, 24 a conferir, 103 valores fracos. O que mudou no arquivo foi o COMO ele varre (um repositorio e um arquivo, cada um com sua resposta), nao o QUE ele classifica: FORTE, FALSO e CHAVE_SEM_QUALIFICADOR seguem identicos, e e sobre eles que a CLM-0056 fala. O denominador do relatorio passou a ser o lido, e nao o pretendido: 'em N repositorio(s) LIDO(S) de 19'. Uma correcao DENTRO deste PR vale ficar registrada: a primeira versao do teste novo escrevia o nome de segredo da fixture por extenso e levou o inventario de 135 para 136 nomes — a ferramenta de medicao poluindo o que mede. Foi pego exatamente por esta prova ser rodada de novo, e nao transcrita."
+
+- id: PRF-0080
+  kind: proof
+  title: "A guarda de borda segue acusando a porta reaberta, inclusive com variavel — rodada de novo sobre a superficie nova"
+  proves: [CLM-0039]
+  supersedes: [PRF-0062]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/tests/test_borda_compose.py
+    name: "18 testes, rodados em 2026-10-01 sobre a guarda com a regra de varredura"
+    pr: 84
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/borda_compose.py, cv-backend-core/tests/test_borda_compose.py]
+    content_hash: "5121d4c700ce535ad81d534739ab56aa635f90fceaa3eb10a4035c6f5f72d431"
+    commit: "4d8b626"
+  environment: ci
+  date: "2026-10-01"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/borda_compose.py
+    note: "RODADA DE NOVO: os 18 testes da PRF-0062 passam sobre a superficie nova, sem alteracao em nenhum deles — a leitura da linha (analisar, segmentos, o caso INDETERMINADO) nao foi tocada. O que mudou e o laco que a percorre: achados_de() le UM compose e nao engole excecao, varrer_medido() exige resposta por arquivo, e varrer() levanta quando a varredura nao mediu. Os 18 continuarem passando sem mudanca E o ponto: o comportamento provado pela CLM-0039 e o mesmo, e a prova foi rodada, nao copiada."
+
+- id: PRF-0081
+  kind: proof
+  title: "A borda do ecossistema segue fechada: 0 em 56 arquivos, medida de novo com a guarda que nao engole erro de leitura"
+  proves: [CLM-0038]
+  supersedes: [PRF-0064]
+  basis: external_observation
+  external_observation:
+    instrument: "infra/security/borda_compose.py sobre a raiz dos 19 repositorios, agora com a regra 'N itens, N respostas' — um compose ilegivel derrubaria a varredura em vez de sumir da conta"
+    observed: "borda fechada: 56 arquivo(s) de compose conferido(s), nenhum servico de estado publica porta fora do loopback; e 7 no monolito sozinho"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-09-30-a-borda-fecha-com-instrumento-que-ve.md
+  environment: local
+  scale: LOCAL
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/borda_compose.py, cv-backend-core/tests/test_borda_compose.py]
+    content_hash: "5121d4c700ce535ad81d534739ab56aa635f90fceaa3eb10a4035c6f5f72d431"
+    commit: "4d8b626"
+  date: "2026-10-01"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/borda_compose.py
+    note: "MEDIDO DE NOVO em 2026-10-01, com o mesmo numero da PRF-0064: 56 arquivos de compose nos 19 repositorios, zero exposicoes. A diferenca nao esta no resultado e sim no que ele agora SIGNIFICA: na PRF-0064 um compose que nao se deixasse ler teria sumido da conta e os 56 continuariam sendo anunciados, porque o numero vinha da lista pretendida. Agora os 56 sao arquivos LIDOS — se algum nao respondesse, a varredura devolveria NAO MENSURAVEL em vez de 'borda fechada'. A evidencia textual continua sendo a de 2026-09-30, porque a varredura e o resultado sao os mesmos; o que esta prova acrescenta e que o numero passou a ser verificavel. O QUE ELA NAO ALCANCA, igual a PRF-0064: compose que nao esteja no disco de quem roda nao entra na lista, e a lista completa continua sendo uma suposicao sobre o checkout."
+
+- id: PRF-0082
+  kind: proof
+  title: "O inventario segue contando ocorrencia textual, e nao consumo — relido sobre a superficie nova"
+  refutes: [CLM-0063]
+  supersedes: [PRF-0069]
+  basis: code_reading
+  date: "2026-10-01"
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/inventario_segredos.py]
+    content_hash: "561db2d1d1655c5811c9bed655b37d74ab6ea45a546382fc6040dcf4d884e988"
+    commit: "4d8b626"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/inventario_segredos.py
+    note: "RELIDO, e o defeito CONTINUA — e por isso a CLM-0063 segue refutada. A regra de varredura mudou o laco, nao o reconhecimento: SEGREDO.findall(linha) segue contando toda ocorrencia do padrao de NOME, sem distinguir atribuicao, leitura de ambiente ou mencao dentro de texto. Os tres casos da PRF-0069 permanecem verdadeiros, conferidos de novo: LEGAL_AI_OPENAI_API_KEY cuja unica ocorrencia esta dentro de uma string de mensagem; RWA_TOKEN que e tipo de entidade num knowledge graph; INVALID_API_KEY_MESSAGE que e constante de mensagem. O QUE MUDOU e ortogonal e vale registrar: o inventario deixou de ignorar em silencio arquivo ilegivel e repositorio ausente, entao agora ele e HONESTO sobre a amostra ao mesmo tempo em que continua impreciso sobre o significado de cada ocorrencia. Sao dois defeitos diferentes, e so um foi fechado. Separar atribuicao de mencao exige analise sintatica, nao regex, e continua sendo outro trabalho."
