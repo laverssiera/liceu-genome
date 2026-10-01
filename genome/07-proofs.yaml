@@ -1367,3 +1367,86 @@
     repo: liceu-genome
     path: tools/genome_date_check.py
     note: "CADA REGRA MORA ONDE PODE SER EXPRIMIDA. A forma vai para o SCHEMA, com pattern ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ nos quatro campos de data (proof.date, proof.expires_at, pfc.date, prediction.registered_at) — e lei, e outras ferramentas leem o schema. O calendario e o futuro ficam no modulo, porque pattern nao sabe dizer que 2026-02-30 nao existe nem comparar com hoje. O 'hoje' vem de hoje_utc(), declarado, e fica gravado em self.today: quem le o veredito pode dizer contra que dia ele foi dado. expires_at e o UNICO campo em que o futuro e o uso normal — dele se exige so a forma, porque uma guarda que recusasse data futura sem distinguir campo quebraria o STALE inteiro, e o STALE e o que separa 'precisa ser provado de novo' de 'e falso'. SEIS MUTACOES, SEIS QUEDAS, cada uma no caso certo: comparacao com hoje desligada derruba 3 (prova, pfc e a ligacao); pre-registro no futuro nao conferido derruba 1; calendario nao conferido derruba 1; juiz de volta ao fuso local derruba 1, e so a ligacao do fuso; juiz que deixa de chamar a regra derruba 2; pattern apagado da lei derruba 1. ESSA ULTIMA FOI INVALIDA NA PRIMEIRA TENTATIVA e o caso precisou ser refeito: apaguei o pattern do schema e os 12 testes daquela versao passaram TODOS, porque o caso da forma exigia uma frase que o juiz tambem produz — a segunda camada segurava e o teste nao distinguia qual delas. Agora ele cobra a frase do jsonschema ('does not match'), e a camada do juiz ganhou caso proprio sobre a funcao pura. CONTROLE POSITIVO, em tres: data de hoje passa, data de ontem passa, e expires_at em 2027 passa. Sem eles, uma guarda que recusasse TODA data passaria nas seis mutacoes. POR QUE EM MODULO SEPARADO: mesma razao da FIT-017 e da PRF-0031 — superficie de 1700 linhas invalida a prova a cada ciclo por mudanca que nada tem a ver com ela. A superficie aqui e o modulo e o teste dele, e o teste de LIGACAO esta DENTRO dela, para que uma regra perfeita que ninguem invoca caia. O QUE ESTA PROVA NAO ALCANCA: ela confere a data DECLARADA, nao a data VERDADEIRA. Nada impede datar de ontem uma observacao feita hoje — isso exigiria uma fonte de tempo que o autor nao controla, e nao existe aqui. E o passo da CI entra junto com o modulo, porque modulo que a CI nao roda e modulo que ninguem confere."
+
+# Ciclo 19 — o falso verde, e os quatro lugares onde o defeito mora.
+- id: PRF-0074
+  kind: proof
+  title: "Vazio lido como 'tudo bem': uma varredura mediu zero repositorios e relatou tranquilidade, e o mesmo padrao esta em quatro ferramentas"
+  refutes: [CLM-0067]
+  basis: code_reading
+  date: "2026-10-01"
+  location:
+    repo: liceu-genome
+    path: tools/genome_privacy_check.py
+    note: "O ERRO CONCRETO, cometido em 2026-10-01 no relatorio do ecossistema: uma varredura de CI percorreu os 19 repositorios e reportou 'nenhum vermelho'. O comando que ela chamava saia com ERRO — `gh run list` nao aceita `--arg`, devolve 'unknown command' e exit 1 — e a saida veio VAZIA nas 19 iteracoes. O laco tratou vazio como 'nada encontrado' e imprimiu que a varredura havia concluido. MEDIU ZERO REPOSITORIOS E RELATOU TRANQUILIDADE, e um dos 19 estava vermelho (John-Brasileiro-, Platform Validation, no proprio HEAD de main). O falso verde e pior que o falso vermelho: o falso vermelho se desfaz quando alguem vai olhar, e o falso verde nao convida ninguem a olhar. E NAO E UM ERRO DE UM SCRIPT SO. O mesmo padrao — item que falha desaparece da conta — esta em QUATRO varreduras do ecossistema, medido por leitura: `except OSError: continue` em tools/varredura_publica.py:85 e em tools/genome_privacy_check.py (as duas deste repositorio), em infra/security/borda_compose.py:139 e em infra/security/inventario_segredos.py:144 (as duas do monolito). O caso da privacidade e o pior dos quatro, porque e o guarda que impede dado pessoal de entrar em repositorio PUBLICO: um arquivo que nao se deixasse ler sumia da conta, e o silencio dele valia como limpeza. E a frase final nao trazia DENOMINADOR nenhum — 'nenhum padrao de dado pessoal encontrado', sem dizer sobre quantos arquivos. POR QUE A AFIRMACAO CONTINUA REFUTADA DEPOIS DO CONSERTO: as duas varreduras do monolito seguem com o defeito, e elas sao de outro repositorio — PR de la, nao daqui. O que foi fechado esta na CLM-0068. O ecossistema ja tinha o conceito do terceiro estado em dois lugares e nao o aplicava nas ferramentas de medicao: o ACTIVE_UNOBSERVABLE do plano de autoridade (nao alcancei a Ativa nao e a Ativa esta bem) e o NAO_MENSURAVEL da prova de revogacao."
+
+# Ciclo 19 — a regra, com sete mutacoes.
+- id: PRF-0075
+  kind: proof
+  title: "N itens, N respostas: tres estados, e o terceiro nomeia quem nao respondeu"
+  proves: [CLM-0068]
+  basis: test
+  test:
+    repo: liceu-genome
+    path: tools/test_varredura.py
+    name: "15 testes — 7 da regra pura, 5 da ligacao com a varredura de privacidade, 2 da FIT-015, mais o controle positivo da isca"
+  mechanism:
+    repo: liceu-genome
+    paths: [tools/varredura.py, tools/test_varredura.py]
+    content_hash: "a05774df24a77f5e77b6391c6922927c0f9a8ceec44c5f4fd1ce71f479efb56e"
+    commit: "63a636e"
+  environment: ci
+  date: "2026-10-01"
+  location:
+    repo: liceu-genome
+    path: tools/varredura.py
+    note: "TRES ESTADOS, e o terceiro e o que faltava. MEDIDO: os N itens responderam — so aqui 'nada encontrado' vale. NADA_A_CONFERIR: N = 0, que nao e aprovacao e sim ausencia de material (a mesma distincao que a guarda de borda ja fazia em 2026-09-23). NAO_MENSURAVEL: M < N, e os itens sem resposta sao NOMEADOS, com o motivo de cada um. A funcao e pura e recebe os itens; quem engole a excecao e segue — `except OSError: continue` — faz o item desaparecer da conta. O QUE MUDOU NOS CHAMADORES, e foi o que a regra obrigou a enxergar: scan() do genome_privacy_check devolve Resultado, entao a FIT-015 do juiz passou a ACUSAR quando a varredura nao mediu (antes ela iterava uma lista e um arquivo ilegivel saia calado), varrer_arvore leva o nao-mensuravel para a saida, e a frase de aprovacao traz o numero de arquivos conferidos. O motivo registrado NAO carrega caminho absoluto: `str(FileNotFoundError)` traz o caminho inteiro da maquina de quem rodou, e o log da CI de um repositorio publico tambem e publico — a mesma razao pela qual a varredura nunca imprime o VALOR que encontrou. SETE MUTACOES, SETE QUEDAS: item sem resposta deixa de derrubar a varredura derruba 4; lista vazia virando MEDIDO derruba 2; o motivo voltando a carregar caminho derruba 1; a privacidade voltando a engolir o erro de leitura derruba 1; a frase de aprovacao perdendo o denominador derruba 1; o juiz deixando de ver o nao-mensuravel derruba 1. CONTROLE POSITIVO, em tres: a isca de CPF montada por CONCATENACAO e achada (sem ela, uma varredura que nao lesse nada passaria em tudo), diretorio limpo passa, e o repositorio real passa dizendo quantos arquivos conferiu. O QUE ESTA PROVA NAO ALCANCA: ela garante que a varredura ACUSA o que nao conseguiu ler; nao garante que a lista de itens esteja completa. Alvo que nunca entrou na lista continua invisivel, e isso e outro defeito — foi o da guarda de borda em 2026-09-23, que olhava um arquivo de compose so."
+
+# Ciclo 19 — as duas provas cuja superficie este PR alterou. RODADAS de novo.
+- id: PRF-0076
+  kind: proof
+  title: "Os quatro publicos continuam sem dado pessoal do caso real — rodado de novo sobre a superficie nova"
+  proves: [CLM-0017]
+  supersedes: [PRF-0052]
+  basis: external_observation
+  external_observation:
+    instrument: "tools/varredura_publica.py sobre os quatro repositorios PUBLIC, arvore e historico, com a visibilidade medida por gh repo view"
+    observed: "arvore 0 nos quatro; historico 5, todos no mesmo blob c09ff07 de tools/test_genome_check.py, linhas 84 a 89 — as iscas da FIT-015, identicas as de 2026-09-28"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-01-varredura-dos-publicos-de-novo.md
+  environment: ci
+  scale: LOCAL
+  date: "2026-10-01"
+  commit: "63a636e"
+  mechanism:
+    repo: liceu-genome
+    paths: [tools/genome_privacy_check.py, tools/test_varredura_publica.py, tools/varredura_publica.py]
+    content_hash: "605034da178f68e0ad635d573acccfe87a96f0e6dc3800f83da1ba77c78f1877"
+    commit: "63a636e"
+  location:
+    repo: liceu-genome
+    path: tools/varredura_publica.py
+    note: "A PRF-0052 continuava VERDADEIRA e a superficie dela mudou: o PR da regra 'N itens, N respostas' alterou genome_privacy_check.py e varredura_publica.py. O detector acusou, que e o que ele existe para fazer, e a prova NAO FOI TRANSCRITA — foi RODADA DE NOVO em 2026-10-01, sobre os quatro repositorios, arvore e historico, com a visibilidade conferida de novo por `gh repo view --json visibility` (os quatro seguem PUBLIC). O resultado e identico ao de 2026-09-28, inclusive nas linhas: 0 na arvore nos quatro, e os mesmos 5 achados no mesmo blob antigo. Que sao iscas, e nao dado real, esta medido: o CPF tem digitos verificadores INVALIDOS e comeca em 123456789; os vizinhos sao um dominio de exemplo, um telefone de cinco-mais-quatro digitos sequenciais descendentes, a palavra matricula seguida de seis digitos em sequencia e um CEP com tres zeros no sufixo — descritos e NAO reproduzidos. O QUE MUDOU no comportamento provado: nada que estes quatro exercitem. O que mudou e o que acontece quando um arquivo NAO SE DEIXA LER, caso que nao ocorreu em nenhum dos quatro. A afirmacao vale para os PUBLICOS: os 15 privados nao sao objeto da CLM-0017 e nao foram varridos."
+
+- id: PRF-0077
+  kind: proof
+  title: "A isca continua provando que a varredura enxerga — rodada de novo sobre a superficie nova"
+  refutes: [CLM-0054]
+  supersedes: [PRF-0053]
+  basis: test
+  test:
+    repo: liceu-genome
+    path: tools/test_varredura_publica.py
+    name: "11 testes, inclusive a isca que a primeira versao da varredura nao enxergava"
+  mechanism:
+    repo: liceu-genome
+    paths: [tools/genome_privacy_check.py, tools/test_varredura_publica.py, tools/varredura_publica.py]
+    content_hash: "605034da178f68e0ad635d573acccfe87a96f0e6dc3800f83da1ba77c78f1877"
+    commit: "63a636e"
+  environment: ci
+  date: "2026-10-01"
+  location:
+    repo: liceu-genome
+    path: tools/varredura_publica.py
+    note: "Mesma razao da PRF-0076: a superficie mudou e a prova foi RODADA de novo, nao transcrita — os 11 testes passam sobre a superficie nova, inclusive a isca que a primeira versao da varredura de historico nao enxergava (ela usava `git grep -E`, e o ERE POSIX nao entende \\d, entao os padroes de CPF, CEP e telefone casavam NADA, em silencio). E a CLM-0054 ganha um segundo motivo para continuar refutada, descoberto HOJE e por erro proprio: alem de 'zero achados nao e ausencia', agora esta medido que zero achados pode ser zero ITENS LIDOS — a varredura de CI dos 19 repositorios nao leu nenhum e reportou tranquilidade (PRF-0074). A isca responde a primeira metade: a varredura enxerga o que existe. O denominador responde a segunda: ela diz sobre quantos olhou. Nenhuma das duas sozinha basta. UMA MELHORA MENOR, no mesmo PR: com `--root .` o relatorio imprimia o nome do repositorio VAZIO — `root.name` de '.' e string vazia —, e um relatorio de varredura que nao diz QUAL coisa mediu e a mesma familia de defeito, em escala pequena. Agora resolve o caminho antes."
