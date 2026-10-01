@@ -448,3 +448,16 @@
   kind: claim
   statement: "Toda data que o juiz compara e conferida: data mal formada, inexistente no calendario ou posterior a hoje nao entra no grafo, e o veredito nao depende do fuso de quem roda."
   asserted_by: "premissa de TODA comparacao de data dentro do juiz — _expired faz str(expires_at) < today, a FIT-016 faz p[date] < pred[registered_at] e a historia ordena por str(date); as tres pressupoem uma data que ninguem conferia"
+
+# Ciclo 19 — vazio significando "tudo bem". Achado por um erro cometido no
+# proprio relatorio do ecossistema, e nao por auditoria.
+- id: CLM-0067
+  kind: claim
+  statement: "As ferramentas de medicao do ecossistema distinguem 'nada encontrado' de 'nao consegui conferir': varredura que itera sobre N itens exige N respostas."
+  asserted_by: "premissa de TODA leitura de varredura — relatorio de borda, inventario de segredos, varredura de privacidade e varredura de CI foram lidos como se saida vazia significasse ausencia de achado"
+
+# Ciclo 19 — e o que este repositorio passou a garantir sobre as suas.
+- id: CLM-0068
+  kind: claim
+  statement: "As varreduras do liceu-genome exigem resposta por item: arquivo que nao se deixa ler vira NAO_MENSURAVEL com nome e motivo, e a frase de aprovacao traz o denominador."
+  asserted_by: "a regra em tools/varredura.py e os chamadores dela — genome_privacy_check, varredura_publica e a FIT-015 do juiz"

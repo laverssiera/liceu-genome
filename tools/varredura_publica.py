@@ -69,8 +69,18 @@ def _git(root: pathlib.Path, *args: str) -> str:
 
 
 def varrer_arvore(root: pathlib.Path) -> list[str]:
-    """A arvore inteira do repositorio, nao so um subdiretorio."""
-    achados = list(scan(root))
+    """A arvore inteira do repositorio, nao so um subdiretorio.
+
+    O scan devolve um Resultado desde 2026-10-01: arquivo que nao se deixa ler
+    nao conta limpo. Aqui o nao-mensuravel entra na lista de achados, porque
+    quem le esta saida decide sobre repositorio PUBLICO e nao pode receber
+    "nada encontrado" quando a verdade e "nao consegui conferir".
+    """
+    varrido = scan(root)
+    achados = [x for lista in varrido.respostas for x in lista]
+    if not varrido.mediu:
+        achados += [f"NAO MENSURAVEL: {item} ({motivo})"
+                    for item, motivo in varrido.sem_resposta]
     # As extensoes que o scan nao cobre, com os mesmos padroes.
     for f in sorted(root.rglob("*")):
         if not f.is_file() or f.suffix.lower() in {e.lower() for e in EXTENSOES}:
@@ -141,7 +151,9 @@ def main() -> int:
             return 2
         arvore = varrer_arvore(root)
         historico = [] if args.sem_historico else varrer_historico(root)
-        print(f"{root.name}: {len(arvore)} na arvore, {len(historico)} no historico")
+        # resolve() antes do name: com --root . o nome vem VAZIO, e o relatorio
+        # sai sem dizer QUE repositorio ele mediu.
+        print(f"{root.resolve().name}: {len(arvore)} na arvore, {len(historico)} no historico")
         for a in arvore:
             print(f"   arvore     {mascarar(a)}")
         for h in historico:
