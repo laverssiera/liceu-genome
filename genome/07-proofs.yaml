@@ -1291,3 +1291,32 @@
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
     path: docker-compose.vps.yml
     note: "O QUE ESTA PROVA EXPLICA, e e o motivo dela existir: a ausencia de prova em ambiente duravel parecia lacuna do genoma e e CONSEQUENCIA do mundo. O ecossistema vive em CI, efemero e local, e o genoma estava descrevendo corretamente o que existe. Ausencia explicada vale mais que ausencia estranha. O QUE ELA FECHA: a PRF-0064 (borda) e o fechamento da escala em BLOCK (PR 79 do CONSTRUTORA) levantaram a pergunta de se algum ato acima do teto ja teria passado em producao, com o modo padrao em ALERT. A resposta e nao, porque nao ha producao — o PR 79 e puramente PREVENTIVO, que e a melhor forma de ele existir. A consulta que responderia em producao esta registrada no PR 79 e vale para o dia em que houver store duravel. O QUE ELA NAO AFIRMA: que o overlay nao funcione. Ele foi escrito, e a CI testa que ele RECUSA subir sem host — o que e o comportamento certo. Nunca teve host. CONSEQUENCIA PARA A DECISAO DAS TRES PONTAS: nao ha arranjo herdado a acomodar. A decisao e de folha em branco."
+
+# B3 (ciclo 18) — o inventario acha o NOME, nao o USO.
+- id: PRF-0069
+  kind: proof
+  title: "O inventario conta ocorrencia textual, nao consumo: tres casos na mesma semana, e o terceiro quase escolheu a rotacao errada"
+  refutes: [CLM-0063]
+  basis: code_reading
+  date: "2026-10-01"
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/inventario_segredos.py]
+    content_hash: "0222bdbc0a8c5946e3c304d7e33147de3220206a7dd85ef5ff674e03a2cb23a8"
+    commit: "bf24039"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/inventario_segredos.py
+    note: "O inventario varre arquivo por linha e conta toda ocorrencia do PADRAO DE NOME. Ele nao distingue atribuicao, leitura de ambiente, nem mencao em texto. TRES CASOS medidos na mesma semana, e o defeito e o mesmo: a ferramenta acha o nome e nao o uso. (1) LEGAL_AI_OPENAI_API_KEY, 2026-10-01: a unica ocorrencia contada esta DENTRO de uma string de mensagem — JURIDICO-TECH/apps/legal-ai/legal_ai/rag.py:184, f'[Modo simulado — configure LEGAL_AI_OPENAI_API_KEY para respostas reais]'. O consumo real existe e esta em OUTRO nome: config.py:5 declara env_prefix='LEGAL_AI_' e openai_api_key, lido em rag.py:65, 71 e 75. A recomendacao de rotacionar este segredo foi dada com a linha ERRADA como fundamento, e sobreviveu por coincidencia. (2) RWA_TOKEN: nao e segredo, e tipo de entidade num knowledge graph — add_entity(..., 'RWA_TOKEN', ...). (3) INVALID_API_KEY_MESSAGE: constante de mensagem. E e a mesma familia de um defeito fora do inventario: 'escala para liceu.authority' tambem era nome de coisa dentro de texto, lido como se fosse rota. O QUE ISTO NAO DIZ: que o inventario esteja errado no que ele promete. Ele promete NOMES, e o docstring diz 'imprime NOME de variavel, arquivo e linha'. O erro foi de LEITURA — tratar ocorrencia como consumidor ao escolher raio de dano. Fica como limite conhecido, porque vai enganar de novo: separar atribuicao de mencao exige analise sintatica, nao regex, e isso e outro trabalho."
+
+# B3 (ciclo 18) — dois segredos com valor publico no codigo nao sao revogaveis.
+- id: PRF-0070
+  kind: proof
+  title: "Dois segredos tem valor literal no codigo: rotacionar nao revoga, e a prova de revogacao falharia corretamente"
+  refutes: [CLM-0064]
+  basis: code_reading
+  date: "2026-10-01"
+  location:
+    repo: BIM.ARQ.ENG-LICEU-6.0-
+    path: backend/app/core/config.py
+    note: "MEDIDO ao escolher o alvo da primeira rotacao. DOIS segredos do ecossistema tem valor literal no proprio codigo, entao trocar a variavel de ambiente NAO revoga o anterior — um processo que suba sem a variavel continua aceitando o valor que esta no git. (1) BIM.ARQ.ENG: config.py:21 traz LICEU_SERVICE_TOKEN: str = 'liceu-master-key', e auth.py:11 compara com 'if token != settings.LICEU_SERVICE_TOKEN'. (2) ECONO.TECH: app/security.py:12 traz DEFAULT_API_KEY = 'dev-econo-key' e :23 faz os.getenv('ECONO_API_KEY', DEFAULT_API_KEY). E A MESMA CLASSE que foi fechada no Archimedes em 2026-09-30 (PR 39 daquele repositorio), onde ARCHIMEDES_JWT_SECRET tinha fallback 'ARCHIMEDES_SECRET' publicado tambem no .env.example. CONSEQUENCIA PARA A F0-C: rotacionar um destes dois produziria DUAS falhas de uma vez — a revogacao nao ocorreria, e a crenca de que ocorreu. A prova de revogacao (PRF-0071 em diante) devolveria NAO_REVOGADA, que e o veredito certo, e seria a primeira vez que o instrumento acusa uma credencial nao revogavel. Eles sao candidatos a rotacao DEPOIS de fechar o fallback, nao antes. UM TERCEIRO ACHADO, no candidato escolhido: o LEGAL_AI_OPENAI_API_KEY nao tem fallback literal — vazio desliga a funcao. Mas a degradacao so e graciosa para chave AUSENTE, nao para chave REVOGADA: em rag.py, _init_llm() retorna cedo quando a chave e vazia e o modo simulado assume; com chave presente mas revogada, ChatOpenAI CONSTROI sem validar, _llm fica setado, e _llm_answer nao tem try/except — a excecao propaga. E nao ha teste do modo simulado. Isso reforca a ordem da rotacao: criar e provar a nova ANTES de revogar a antiga, porque o codigo degrada da ausencia e nao da revogacao."
