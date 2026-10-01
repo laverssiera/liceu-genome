@@ -1563,3 +1563,67 @@
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
     path: infra/security/inventario_segredos.py
     note: "RELIDO, e o defeito CONTINUA — e por isso a CLM-0063 segue refutada. A regra de varredura mudou o laco, nao o reconhecimento: SEGREDO.findall(linha) segue contando toda ocorrencia do padrao de NOME, sem distinguir atribuicao, leitura de ambiente ou mencao dentro de texto. Os tres casos da PRF-0069 permanecem verdadeiros, conferidos de novo: LEGAL_AI_OPENAI_API_KEY cuja unica ocorrencia esta dentro de uma string de mensagem; RWA_TOKEN que e tipo de entidade num knowledge graph; INVALID_API_KEY_MESSAGE que e constante de mensagem. O QUE MUDOU e ortogonal e vale registrar: o inventario deixou de ignorar em silencio arquivo ilegivel e repositorio ausente, entao agora ele e HONESTO sobre a amostra ao mesmo tempo em que continua impreciso sobre o significado de cada ocorrencia. Sao dois defeitos diferentes, e so um foi fechado. Separar atribuicao de mencao exige analise sintatica, nao regex, e continua sendo outro trabalho."
+
+# Ciclo 20 (D3) — a regra, com os tres casos no controle positivo.
+- id: PRF-0083
+  kind: proof
+  title: "Uso x mencao pela ARVORE, e o nome do env_prefix DERIVADO: dois segredos reais que nenhuma busca por literal achava"
+  proves: [CLM-0069]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/test_uso_de_segredo.py
+    name: "13 testes — 4 dos tres casos, 2 do caso real, 3 do indeterminado, 4 controles negativos"
+    pr: 86
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/uso_de_segredo.py, infra/security/test_uso_de_segredo.py]
+    content_hash: "f149e82de17866adcb721c5a29065d8b0c5c8d0b3163fbcd0e5965e79a43dab9"
+    commit: "83634c5"
+  environment: ci
+  date: "2026-10-01"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/uso_de_segredo.py
+    note: "TRES CASOS, e o terceiro e o que nenhuma busca por nome literal acha. (1) nome dentro de string de mensagem e MENCAO; (2) nome lido por os.getenv/os.environ e USO; (3) nome que chega por env_prefix sob OUTRO identificador e USO, e e INVISIVEL ao literal. POR QUE AST: a PRF-0069 escreveu a conclusao — 'separar atribuicao de mencao exige analise sintatica, nao regex, e isso e outro trabalho'. E este trabalho. Em arquivo .py o veredito vem da arvore: string literal e no Constant, os.getenv e no Call. Fora do Python valem as formas de consumo conhecidas, e o que nao casa nenhuma vira INDETERMINADO NOMEADO, nunca MENCAO por eliminacao — dizer 'e so mencao' sobre o que nao se leu e a mesma mentira que 'nada encontrado' sobre o que nao se varreu. O ACHADO QUE SO A DERIVACAO PRODUZ, e ele e real e esta em producao de codigo: OPERA_JWT_SECRET e OPERA_CURSOR_SIGNING_KEYS, consumidos em OPERA-ES-LICEU-6.0/apps/opera/core/config.py:61 e :81 via model_config = SettingsConfigDict(env_prefix='OPERA_'). CONFERIDO: grep pelo nome inteiro no repositorio OPERA nao devolve NADA — sao variaveis de ambiente que existem, sao consumidas, e que o inventario nunca teve como ver. E o jwt_secret de la tem default literal 'dev-only-change-me', que e a classe da CLM-0064. O NUMERO QUE MUDA PARA A ROTACAO: os nomes compartilhados caem de 42 para 20 quando se conta quem CONSOME em vez de onde o nome APARECE — um nome citado numa mensagem em cinco repositorios parecia um segredo de raio cinco. CINCO MUTACOES, CINCO QUEDAS: tirar a derivacao do env_prefix derruba 3; string literal virando USO derruba 4; o argumento do getenv contando duas vezes derruba 1; o que nao casa forma nenhuma virando MENCAO derruba 1; e o inventario voltando a contar ocorrencia leva os compartilhados de 20 para 44. CONTROLE POSITIVO com amostra que exercita OS TRES casos, e nao so o que a ferramenta ja acertava — foi assim que o controle da PRF-0055 errou. Mais quatro controles negativos. A ISCA NAO POLUI O QUE MEDE: os nomes das fixtures sao montados por concatenacao, porque a primeira escrita injetou dois nomes novos na contagem do ecossistema — o mesmo defeito do PR 84, cometido de novo e pego pela mesma medicao."
+
+# Ciclo 20 (D3) — as duas provas do monolito cuja superficie este PR alterou.
+- id: PRF-0084
+  kind: proof
+  title: "O inventario segue enxergando as tres classes de nome — rodado de novo sobre a superficie com veredito"
+  refutes: [CLM-0056]
+  supersedes: [PRF-0079]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/test_inventario_segredos.py
+    name: "12 testes, rodados em 2026-10-01 sobre o inventario com veredito por ocorrencia"
+    pr: 86
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/inventario_segredos.py, infra/security/test_inventario_segredos.py]
+    content_hash: "d6da3e0fe78c5b84de632ebaa3a898cde5966024fdf8616d78689512550f7a56"
+    commit: "83634c5"
+  environment: local
+  date: "2026-10-01"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/inventario_segredos.py
+    note: "RODADA DE NOVO, nao transcrita: os 12 testes passam sobre a superficie nova. A CLASSIFICACAO DE NOME nao mudou — FORTE, FALSO e CHAVE_SEM_QUALIFICADOR seguem identicos, e e sobre eles que a CLM-0056 fala. O que mudou e o veredito de cada OCORRENCIA, que e outra pergunta. A medicao de nomes distintos subiu de 135 para 137, e os dois nomes novos nao vieram de mudanca na classificacao: vieram da DERIVACAO do env_prefix (PRF-0083), que achou consumo onde nao ha nome escrito."
+
+- id: PRF-0085
+  kind: proof
+  title: "O inventario ja distingue uso de mencao, e ainda assim nao mapeia o raio de dano: 29 nomes sem veredito"
+  refutes: [CLM-0063]
+  supersedes: [PRF-0082]
+  basis: code_reading
+  date: "2026-10-01"
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/inventario_segredos.py]
+    content_hash: "ea6e6b7568d654edafee6c5b58a3311b6a3c7d57a56ee5981d3c88c93178726a"
+    commit: "83634c5"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/inventario_segredos.py
+    note: "A CLM-0063 CONTINUA REFUTADA, e por um motivo menor e mais preciso que o anterior. O QUE FOI FECHADO: os tres casos que a PRF-0069 nomeou agora tem veredito. LEGAL_AI_OPENAI_API_KEY sai como MENCAO em rag.py:184 e como USO em config.py:8, derivado do env_prefix — exatamente a distincao que faltava quando a primeira rotacao foi recomendada. Os compartilhados caem de 42 para 20, e esse e o numero que a rotacao consulta. O QUE NAO FOI FECHADO, medido em 2026-10-01: 29 dos 137 nomes ficam INDETERMINADO. Eles nao sao 'nao usados' — sao 'nao consegui ler a forma', e quase todos vivem fora do Python, onde nao ha arvore barata e so valem as formas de consumo conhecidas. 15 nomes saem como SO MENCAO, e esses sim provavelmente nao sao consumidos em lugar nenhum. Fechar a afirmacao com 29 nomes sem veredito seria trocar um numero errado por outro: o inventario ficou MELHOR e continua nao sendo um mapa completo de raio de dano. O proximo passo, quando houver consumidor para ele, e a enumeracao: hoje a ferramenta prova que acusa o que nao leu, e nao que a lista de alvos esteja completa."
