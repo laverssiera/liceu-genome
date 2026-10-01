@@ -414,3 +414,10 @@
   kind: claim
   statement: "Todo ato de autoridade do ecossistema passa pelo kit e e verificavel pelo boundary."
   asserted_by: "premissa do desenho do protocolo — o kit e a lei (ADR-001) e o boundary e quem a aplica; a atestacao da Testemunha e ato de autoridade pela Constituicao, que a poe no caminho da promocao"
+
+# A3 (ciclo 17) — a ausencia explicada vale mais que a ausencia estranha.
+# "Zero provas em ambiente duravel" parecia lacuna do genoma; e consequencia.
+- id: CLM-0062
+  kind: claim
+  statement: "O ecossistema tem ambiente implantado e duravel — producao — alem de CI, efemero e local."
+  asserted_by: "leitura do docker-compose.vps.yml (overlay de TLS com Let's Encrypt, 2026-09-21) e da propria existencia de 19 repositorios com CI verde, que sugerem algo no ar"
