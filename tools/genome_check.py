@@ -54,6 +54,7 @@ import datetime
 import subprocess
 from pathlib import Path
 
+import genome_date_check
 import genome_privacy_check
 import genome_producer_hosting
 
@@ -325,6 +326,7 @@ class Judge:
         self.kind: dict[str, list[dict]] = defaultdict(list)
         self.status: dict[str, str] = {}
         self.ephemeral: set[str] = set()
+        self.today: str = ""   # o dia contra o qual este juiz julgou (UTC)
 
     # ─────────────────────────────────────────── 1. schema e índice
     def validate_schema(self):
@@ -437,6 +439,16 @@ class Judge:
                 if pos is not None and pos > meta["chain_positions"]:
                     self.errors.append(f"{c['id']}: posição {pos} além de {meta['chain_positions']}")
 
+    # ─────────────────────────────────────────── 2-bis. datas
+    def validate_dates(self, today: str):
+        """Data mal formada, inexistente ou no futuro — antes de comparar.
+
+        A regra e os testes dela vivem em tools/genome_date_check.py, pelo mesmo
+        motivo da FIT-017: a superficie da prova e aquele modulo, nao este
+        arquivo de 1700 linhas que muda a cada ciclo. O juiz so chama e acusa.
+        """
+        self.errors.extend(genome_date_check.achados(self.kind, today))
+
     # ─────────────────────────────────────────── 3. derivação
     @staticmethod
     def _expired(p: dict, today: str) -> bool:
@@ -444,7 +456,7 @@ class Judge:
         return bool(exp) and str(exp) < today
 
     def derive(self, today: str | None = None):
-        today = today or datetime.date.today().isoformat()
+        today = today or genome_date_check.hoje_utc()
         self.today = today
         # Vigente = nenhuma outra prova a supersede E não venceu.
         self.superseded_by: dict[str, str] = {}
@@ -1066,14 +1078,20 @@ class Judge:
             "implementation": s["implementation"]["status"],
         }
 
-    def run(self):
+    def run(self, today: str | None = None):
+        # O 'hoje' fica GRAVADO no juiz antes de qualquer veredito: quem le o
+        # resultado tem de poder dizer contra que dia ele foi dado.
+        self.today = today = today or genome_date_check.hoje_utc()
         self.validate_schema()
         if self.errors:          # sem schema íntegro, o resto não tem chão
             return None
         self.resolve_edges()
         if self.errors:          # grafo partido: não há veredito sobre o que não existe
             return None
-        self.derive()
+        self.validate_dates(today)
+        if self.errors:          # data que não compara: o que vem abaixo é texto solto
+            return None
+        self.derive(today)
         self.fitness()
         self.ratchet()
         return self.self_model()

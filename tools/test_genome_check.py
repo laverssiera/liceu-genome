@@ -110,7 +110,10 @@ class Mutacoes(unittest.TestCase):
         add(f, "07-proofs.yaml", {"id": "PRF-0080", "kind": "proof", "title": "teste como oráculo",
                                   "proves": ["CLM-0023"], "basis": "test", "environment": "ci",
                                   "test": {"repo": "r", "path": "p", "name": "n"},
-                                  "date": "2026-12-01",
+                                  # posterior ao pre-registro (2026-09-22) e NO PASSADO:
+                                  # esta fixture dizia 2026-12-01 e foi o primeiro
+                                  # achado da guarda de data futura.
+                                  "date": "2026-09-23",
                                   "mechanism": {"repo": "r", "paths": ["a.py"],
                                                 "content_hash": "0" * 64, "commit": "abc1234"}})
         self.assertFails(f, "VIOLAÇÃO NOVA FIT-016: PRF-0080 resolve a previsão CLM-0023 por test")
@@ -132,7 +135,7 @@ class Mutacoes(unittest.TestCase):
                                   "external_observation": {"instrument": "protocolo na Prefeitura",
                                                             "observed": "alvara emitido sem exigencia"},
                                   "evidence_artifact": {"repo": "privado", "path": "alvara"},
-                                  "environment": "durable", "date": "2026-12-01"})
+                                  "environment": "durable", "date": "2026-09-23"})
         j, m = judge(f)
         self.assertEqual(j.errors, [], j.errors)
         self.assertEqual(m["claims"]["CLM-0023"]["status"], "PROVEN")

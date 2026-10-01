@@ -1332,3 +1332,38 @@
     repo: JURIDICO-TECH
     path: apps/legal-ai/legal_ai/rag.py
     note: "MEDIDO ao preparar a primeira rotacao, e o achado vale por si — nao depende de rotacao nenhuma. DOIS ESTADOS, DOIS COMPORTAMENTOS. Chave AUSENTE ou vazia: _init_llm() tem 'if self._llm or not self.settings.openai_api_key: return', entao _llm fica None, e answer() cai em _simulated_answer(). Degrada com graca, e ate declara model='simulated' na resposta. Chave PRESENTE mas REVOGADA: ChatOpenAI CONSTROI sem validar a credencial — construcao nao faz chamada —, _llm fica setado, answer() escolhe o ramo do LLM, e _llm_answer() nao tem try/except: 'result = await self._llm.ainvoke(messages); return result.content'. A excecao de autenticacao PROPAGA. A DIFERENCA QUE IMPORTA: a degradacao cobre 'nao configurei' e nao cobre 'configurei e deixou de valer'. E o segundo e o caso comum no mundo real — expiracao, suspensao de conta, revogacao pelo proprio provedor, rotacao do lado de quem emite. Nenhum deles chega como chave vazia; todos chegam como chave presente e recusada. E NAO HA TESTE do modo simulado: nem do ramo gracioso, nem do que levanta. CONSEQUENCIA PARA A ROTACAO: torna OBRIGATORIA — nao apenas preferivel — a ordem de criar e provar a chave nova ANTES de revogar a antiga. Revogar primeiro deixaria o servico levantando excecao em vez de degradando, com a variavel ainda apontando para a chave morta. O QUE EU NAO CONSEGUI MEDIR: se o padrao se repete no ecossistema. Seis arquivos instanciam cliente de LLM externo (ChatOpenAI, OpenAIEmbeddings, OpenAI(), AsyncOpenAI(), Anthropic()) e TODOS OS SEIS tem 'try:' em algum lugar do arquivo — sinal que nao responde nada, porque o proprio rag.py tem try: no _init_llm e NAO no _llm_answer, que e onde o defeito mora. Contar try: por arquivo e medicao falsa; responder exigiria olhar cada chamada. Fica declarado como nao medido, e nao como ausencia de defeito."
+
+# Ciclo 19 — o buraco, lido no juiz antes da correcao.
+- id: PRF-0072
+  kind: proof
+  title: "O juiz comparava datas como texto e nao conferia nenhuma: forma, calendario, futuro e fuso"
+  refutes: [CLM-0066]
+  basis: code_reading
+  date: "2026-10-01"
+  location:
+    repo: liceu-genome
+    path: tools/genome_check.py
+    note: "MEDIDO no commit c446b90, ao conferir o grafo para o relatorio do ciclo 18 — nao ao procurar defeito. O schema declarava os quatro campos de data como 'type': 'string' e MAIS NADA: nenhum pattern, nenhum format. E toda comparacao de data no juiz e comparacao de TEXTO, medida linha por linha: _expired() faz `str(exp) < today`; a FIT-016 faz `p['date'] < pred['registered_at']` (linha 735); a historia ordena por `str(x.get('date'))` (linha 496) e calcula o 'ate' da supersessao por data (linha 499). QUATRO CONSEQUENCIAS. (1) FORMA: '2026-9-30' e MAIOR que '2026-09-30' em texto e MENOR no calendario — a inversao nao levanta excecao nenhuma. (2) CALENDARIO: '2026-02-30' nao existe e nada o recusava. (3) FUTURO: prova datada de depois de hoje e observacao que ainda nao foi feita, e na FIT-016 a data futura AFROUXA a regra, porque la a pergunta e se a prova veio DEPOIS do pre-registro: quanto mais tarde a prova se declara, menos ela parece explicacao depois do ocorrido. (4) FUSO: `datetime.date.today()` devolve a data do fuso de QUEM RODA. A CI roda em UTC e a maquina de quem escreve em UTC-3: entre 21h e meia-noite local os dois discordam sobre que dia e hoje, e o mesmo grafo receberia dois vereditos. O QUE O BURACO JA TINHA PRODUZIDO, medido e nao suposto: duas fixtures do proprio teste do juiz estavam datadas de 2026-12-01, no futuro — test_56 e test_58 em tools/test_genome_check.py. Elas precisavam ser POSTERIORES ao pre-registro de 2026-09-22, nao estar no futuro, e passaram meses sem que nada as questionasse. UMA CORRECAO QUE ESTA PROVA REGISTRA CONTRA SI MESMA: o relatorio que motivou este trabalho afirmou que SEIS provas do grafo estavam datadas do futuro (PRF-0066, 0067, 0069, 0070, 0071 e uma sexta). ERRADO. Aquela leitura foi feita as 23h26 de 2026-09-30 em UTC-3, quando em UTC ja era 2026-10-01: as seis estavam datadas do dia corrente, e nao do futuro. A afirmacao foi um sintoma do mesmo defeito que ela denunciava — ler data sem declarar o fuso. O grafo nunca teve prova datada do futuro; o juiz e que nao tinha como saber."
+
+# Ciclo 19 — e a guarda, com as seis mutacoes que a sustentam.
+- id: PRF-0073
+  kind: proof
+  title: "Forma na lei, calendario e futuro no modulo, e o hoje do juiz declarado em UTC"
+  proves: [CLM-0066]
+  supersedes: [PRF-0072]
+  basis: test
+  test:
+    repo: liceu-genome
+    path: tools/test_genome_date_check.py
+    name: "17 testes — 10 recusas, 3 controles positivos e 4 de ligacao"
+  mechanism:
+    repo: liceu-genome
+    paths: [tools/genome_date_check.py, tools/test_genome_date_check.py]
+    content_hash: "dad1687273b5fd929236c64cd4983cdc907fb3ede984884f7d4dd88607940b63"
+    commit: "0411866"
+  environment: ci
+  date: "2026-10-01"
+  location:
+    repo: liceu-genome
+    path: tools/genome_date_check.py
+    note: "CADA REGRA MORA ONDE PODE SER EXPRIMIDA. A forma vai para o SCHEMA, com pattern ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ nos quatro campos de data (proof.date, proof.expires_at, pfc.date, prediction.registered_at) — e lei, e outras ferramentas leem o schema. O calendario e o futuro ficam no modulo, porque pattern nao sabe dizer que 2026-02-30 nao existe nem comparar com hoje. O 'hoje' vem de hoje_utc(), declarado, e fica gravado em self.today: quem le o veredito pode dizer contra que dia ele foi dado. expires_at e o UNICO campo em que o futuro e o uso normal — dele se exige so a forma, porque uma guarda que recusasse data futura sem distinguir campo quebraria o STALE inteiro, e o STALE e o que separa 'precisa ser provado de novo' de 'e falso'. SEIS MUTACOES, SEIS QUEDAS, cada uma no caso certo: comparacao com hoje desligada derruba 3 (prova, pfc e a ligacao); pre-registro no futuro nao conferido derruba 1; calendario nao conferido derruba 1; juiz de volta ao fuso local derruba 1, e so a ligacao do fuso; juiz que deixa de chamar a regra derruba 2; pattern apagado da lei derruba 1. ESSA ULTIMA FOI INVALIDA NA PRIMEIRA TENTATIVA e o caso precisou ser refeito: apaguei o pattern do schema e os 12 testes daquela versao passaram TODOS, porque o caso da forma exigia uma frase que o juiz tambem produz — a segunda camada segurava e o teste nao distinguia qual delas. Agora ele cobra a frase do jsonschema ('does not match'), e a camada do juiz ganhou caso proprio sobre a funcao pura. CONTROLE POSITIVO, em tres: data de hoje passa, data de ontem passa, e expires_at em 2027 passa. Sem eles, uma guarda que recusasse TODA data passaria nas seis mutacoes. POR QUE EM MODULO SEPARADO: mesma razao da FIT-017 e da PRF-0031 — superficie de 1700 linhas invalida a prova a cada ciclo por mudanca que nada tem a ver com ela. A superficie aqui e o modulo e o teste dele, e o teste de LIGACAO esta DENTRO dela, para que uma regra perfeita que ninguem invoca caia. O QUE ESTA PROVA NAO ALCANCA: ela confere a data DECLARADA, nao a data VERDADEIRA. Nada impede datar de ontem uma observacao feita hoje — isso exigiria uma fonte de tempo que o autor nao controla, e nao existe aqui. E o passo da CI entra junto com o modulo, porque modulo que a CI nao roda e modulo que ninguem confere."
