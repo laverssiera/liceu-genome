@@ -421,3 +421,23 @@
   kind: claim
   statement: "O ecossistema tem ambiente implantado e duravel — producao — alem de CI, efemero e local."
   asserted_by: "leitura do docker-compose.vps.yml (overlay de TLS com Let's Encrypt, 2026-09-21) e da propria existencia de 19 repositorios com CI verde, que sugerem algo no ar"
+
+# B3 (ciclo 18) — o limite do inventario, descoberto pela TERCEIRA vez na
+# mesma semana. "Nomeado" e "consumido" sao coisas diferentes.
+- id: CLM-0063
+  kind: claim
+  statement: "O inventario de segredos distingue nome CONSUMIDO de nome MENCIONADO: suas ocorrencias indicam uso."
+  asserted_by: "premissa do uso do inventario como mapa de raio de dano — contar ocorrencias e trata-las como consumidores, que e como ele foi lido para escolher o alvo da primeira rotacao"
+
+# B3 (ciclo 18) — rotacionar nao revoga quando o antigo tem valor no codigo.
+- id: CLM-0064
+  kind: claim
+  statement: "Os segredos do ecossistema sao rotacionaveis: trocar o valor da variavel revoga o valor anterior."
+  asserted_by: "premissa da F0-C — a rotacao pressupoe que o valor antigo deixa de ser aceito quando o novo entra"
+
+# B3 (ciclo 18) — achado independente da rotacao, e o caso mais comum no mundo
+# real: credencial que morre FORA do servico.
+- id: CLM-0065
+  kind: claim
+  statement: "Um servico que depende de credencial externa degrada com graca quando a credencial deixa de valer."
+  asserted_by: "premissa do modo simulado do JURIDICO-TECH — a existencia de um caminho de degradacao foi lida como cobertura da falha de credencial"
