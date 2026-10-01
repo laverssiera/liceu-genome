@@ -33,6 +33,14 @@ SCALE_ORDER = gc.load_scale_order()
 KIT_PRODUCERS = gc.load_kit_producers()
 
 
+# FAIXA RESERVADA PARA FIXTURE: PRF-9xxx e CLM-9xxx.
+# As fixtures destes testes ocupavam PRF-0080 a PRF-0099, que e a faixa VIVA do
+# grafo. Em 2026-10-01 o grafo real chegou a PRF-0082 e tres testes cairam por
+# "id duplicado" — o erro nao era deles nem da prova nova, era do espaco de
+# numeracao compartilhado. A faixa 9xxx nunca sera usada por prova real, e o
+# schema aceita (o pattern e ^PRF-[0-9]{4}$).
+
+
 def base():
     """O genoma real, como {arquivo: [nós]}."""
     return {f.name: yaml.safe_load(f.read_text(encoding="utf-8")) or []
@@ -107,7 +115,7 @@ class Mutacoes(unittest.TestCase):
     # U4 — pré-registro: previsão registrada depois do fato não é previsão
     def test_56_previsao_resolvida_por_teste_e_violacao(self):
         f = base()
-        add(f, "07-proofs.yaml", {"id": "PRF-0080", "kind": "proof", "title": "teste como oráculo",
+        add(f, "07-proofs.yaml", {"id": "PRF-9080", "kind": "proof", "title": "teste como oráculo",
                                   "proves": ["CLM-0023"], "basis": "test", "environment": "ci",
                                   "test": {"repo": "r", "path": "p", "name": "n"},
                                   # posterior ao pre-registro (2026-09-22) e NO PASSADO:
@@ -116,21 +124,21 @@ class Mutacoes(unittest.TestCase):
                                   "date": "2026-09-23",
                                   "mechanism": {"repo": "r", "paths": ["a.py"],
                                                 "content_hash": "0" * 64, "commit": "abc1234"}})
-        self.assertFails(f, "VIOLAÇÃO NOVA FIT-016: PRF-0080 resolve a previsão CLM-0023 por test")
+        self.assertFails(f, "VIOLAÇÃO NOVA FIT-016: PRF-9080 resolve a previsão CLM-0023 por test")
 
     def test_57_prova_anterior_ao_registro_nao_confirma_previsao(self):
         # o fato veio antes: isto é explicação depois do ocorrido, não previsão
         f = base()
-        add(f, "07-proofs.yaml", {"id": "PRF-0081", "kind": "proof", "title": "o alvará saiu antes",
+        add(f, "07-proofs.yaml", {"id": "PRF-9081", "kind": "proof", "title": "o alvará saiu antes",
                                   "proves": ["CLM-0023"], "basis": "external_observation",
                                   "external_observation": {"instrument": "protocolo", "observed": "alvara"},
                                   "evidence_artifact": {"repo": "r", "path": "p"},
                                   "environment": "durable", "date": "2020-01-01"})
-        self.assertFails(f, "VIOLAÇÃO NOVA FIT-016: PRF-0081 é de 2020-01-01 e a previsão CLM-0023")
+        self.assertFails(f, "VIOLAÇÃO NOVA FIT-016: PRF-9081 é de 2020-01-01 e a previsão CLM-0023")
 
     def test_58_observacao_externa_posterior_confirma_a_previsao(self):
         f = base()
-        add(f, "07-proofs.yaml", {"id": "PRF-0082", "kind": "proof", "title": "alvará sem exigência",
+        add(f, "07-proofs.yaml", {"id": "PRF-9082", "kind": "proof", "title": "alvará sem exigência",
                                   "proves": ["CLM-0023"], "basis": "external_observation",
                                   "external_observation": {"instrument": "protocolo na Prefeitura",
                                                             "observed": "alvara emitido sem exigencia"},
@@ -227,18 +235,18 @@ class Mutacoes(unittest.TestCase):
 
     def test_39_prova_apoiada_em_campo_asserted_nao_prova(self):
         f = base()
-        add(f, "07-proofs.yaml", {"id": "PRF-0088", "kind": "proof", "title": "elo 1 pelo campo relatado",
+        add(f, "07-proofs.yaml", {"id": "PRF-9088", "kind": "proof", "title": "elo 1 pelo campo relatado",
                                   "proves": ["CLM-L1"], "basis": "external_observation",
                                   "external_observation": {"instrument": "i", "observed": "o"},
                                   "evidence_artifact": {"repo": "r", "path": "p"},
                                   "environment": "ephemeral", "scale": "LOCAL", "date": "2026-09-22",
                                   "derived_from": ["liceu.archimedes.planning-state@2.0.0.emitters_observed"]})
-        self.assertFails(f, "VIOLAÇÃO NOVA FIT-013: PRF-0088 PROVA apoiada em")
+        self.assertFails(f, "VIOLAÇÃO NOVA FIT-013: PRF-9088 PROVA apoiada em")
 
     def test_40_refutacao_pode_se_apoiar_em_campo_asserted(self):
         # relato levanta suspeita; e refutar e levantar suspeita com consequencia
         f = base()
-        add(f, "07-proofs.yaml", {"id": "PRF-0087", "kind": "proof", "title": "relato refuta",
+        add(f, "07-proofs.yaml", {"id": "PRF-9087", "kind": "proof", "title": "relato refuta",
                                   "refutes": ["CLM-L1"], "basis": "code_reading",
                                   "location": {"repo": "r", "path": "p"}, "date": "2026-09-22",
                                   "derived_from": ["liceu.archimedes.planning-state@2.0.0.emitters_observed"]})
@@ -248,7 +256,7 @@ class Mutacoes(unittest.TestCase):
 
     def test_41_derived_from_para_campo_inexistente_e_aresta_quebrada(self):
         f = base()
-        add(f, "07-proofs.yaml", {"id": "PRF-0086", "kind": "proof", "title": "x", "refutes": ["CLM-L1"],
+        add(f, "07-proofs.yaml", {"id": "PRF-9086", "kind": "proof", "title": "x", "refutes": ["CLM-L1"],
                                   "basis": "code_reading", "location": {"repo": "r", "path": "p"},
                                   "date": "2026-09-22", "derived_from": ["liceu.opera.teto_interno"]})
         self.assertFails(f, "derived_from -> liceu.opera.teto_interno não existe no nó")
@@ -268,7 +276,7 @@ class Mutacoes(unittest.TestCase):
     def test_33_prova_nova_com_o_hash_atual_volta_a_PROVEN(self):
         f = base()
         node(f, "PRF-0002")["expires_at"] = "2026-09-01"
-        add(f, "07-proofs.yaml", {"id": "PRF-0089", "kind": "proof", "title": "entrada reobservada",
+        add(f, "07-proofs.yaml", {"id": "PRF-9089", "kind": "proof", "title": "entrada reobservada",
                                   "proves": ["CLM-0002"], "basis": "external_observation",
                                   "external_observation": {"instrument": "psql + NATS", "observed": "fato gravado"},
                                   "evidence_artifact": {"repo": "r", "path": "docs/evidence/x.md"},
@@ -304,7 +312,7 @@ class Mutacoes(unittest.TestCase):
     # FIT-011 — a contagem é por escala; escala bloqueada não conta
     def test_28_elo_provado_em_escala_bloqueada_nao_conta_naquela_escala(self):
         f = base()
-        add(f, "07-proofs.yaml", {"id": "PRF-0090", "kind": "proof", "title": "elo 1 em REGIONAL",
+        add(f, "07-proofs.yaml", {"id": "PRF-9090", "kind": "proof", "title": "elo 1 em REGIONAL",
                                   "proves": ["CLM-L1"], "basis": "external_observation",
                                   "external_observation": {"instrument": "psql + NATS", "observed": "fato gravado"},
                                   "evidence_artifact": {"repo": "r", "path": "docs/evidence/x.md"},
@@ -322,7 +330,7 @@ class Mutacoes(unittest.TestCase):
         f["07-proofs.yaml"] = [p for p in f["07-proofs.yaml"] if "CLM-L1" not in (p.get("proves") or [])]
         antes_agregado, antes_local = cadeia(judge(f)[1])
         antes_regional = judge(f)[1]["chain_by_scale"].get("REGIONAL", {}).get("structural", 0)
-        add(f, "07-proofs.yaml", {"id": "PRF-0091", "kind": "proof", "title": "elo 1 em LOCAL",
+        add(f, "07-proofs.yaml", {"id": "PRF-9091", "kind": "proof", "title": "elo 1 em LOCAL",
                                   "proves": ["CLM-L1"], "basis": "external_observation",
                                   "external_observation": {"instrument": "psql + NATS", "observed": "fato gravado"},
                                   "evidence_artifact": {"repo": "r", "path": "docs/evidence/x.md"},
@@ -336,12 +344,12 @@ class Mutacoes(unittest.TestCase):
 
     def test_30_prova_de_elo_sem_escala_e_violacao(self):
         f = base()
-        add(f, "07-proofs.yaml", {"id": "PRF-0092", "kind": "proof", "title": "elo 1 sem escala",
+        add(f, "07-proofs.yaml", {"id": "PRF-9092", "kind": "proof", "title": "elo 1 sem escala",
                                   "proves": ["CLM-L1"], "basis": "external_observation",
                                   "external_observation": {"instrument": "i", "observed": "o"},
                                   "evidence_artifact": {"repo": "r", "path": "p"},
                                   "environment": "ephemeral", "date": "2026-09-22"})
-        self.assertFails(f, "VIOLAÇÃO NOVA FIT-011: PRF-0092 prova elo da cadeia sem declarar a escala")
+        self.assertFails(f, "VIOLAÇÃO NOVA FIT-011: PRF-9092 prova elo da cadeia sem declarar a escala")
 
     def test_31_escala_fora_do_enum_da_constituicao_e_violacao(self):
         f = base()
@@ -380,7 +388,7 @@ class Mutacoes(unittest.TestCase):
     # G2 — provas têm tempo: supersedes
     def test_22_prova_que_supersede_a_refutacao_desfaz_o_REFUTED(self):
         f = base()
-        add(f, "07-proofs.yaml", {"id": "PRF-0099", "kind": "proof",
+        add(f, "07-proofs.yaml", {"id": "PRF-9099", "kind": "proof",
                                   "title": "corrigido: comparação de texto removida", "proves": ["CLM-0011"],
                                   "basis": "test", "test": {"repo": "ANCHOR.OS", "path": "tests/test_x.py"},
                                   "mechanism": {"repo": "ANCHOR.OS", "paths": ["tests/test_x.py"],
@@ -393,25 +401,25 @@ class Mutacoes(unittest.TestCase):
         self.assertEqual(m["claims"]["CLM-0011"]["status"], "TESTED")
         # a história fica: a PRF-0007 não foi apagada
         self.assertIn("PRF-0007", [n.get("id") for n in f["07-proofs.yaml"]])
-        self.assertIn(("PRF-0007", "PRF-0099"), [tuple(x) for x in m["proofs_superseded"]])
+        self.assertIn(("PRF-0007", "PRF-9099"), [tuple(x) for x in m["proofs_superseded"]])
         self.assertTrue(any("REFUTED por PRF-0007 até 2026-09-22" in h for h in m["claims"]["CLM-0011"]["history"]))
-        self.assertTrue(any("TESTED por PRF-0099 desde 2026-09-22" in h for h in m["claims"]["CLM-0011"]["history"]))
+        self.assertTrue(any("TESTED por PRF-9099 desde 2026-09-22" in h for h in m["claims"]["CLM-0011"]["history"]))
 
     def test_23_supersede_prova_que_nao_existe_e_aresta_quebrada(self):
         f = base()
-        add(f, "07-proofs.yaml", {"id": "PRF-0098", "kind": "proof", "title": "x", "proves": ["CLM-0011"],
+        add(f, "07-proofs.yaml", {"id": "PRF-9098", "kind": "proof", "title": "x", "proves": ["CLM-0011"],
                                   "basis": "test", "test": {"repo": "r", "path": "p"},
                                   "supersedes": ["PRF-0777"], "date": "2026-09-22"})
-        self.assertFails(f, "PRF-0098: aresta quebrada -> 'PRF-0777' não existe")
+        self.assertFails(f, "PRF-9098: aresta quebrada -> 'PRF-0777' não existe")
 
     def test_24_ciclo_de_supersessao_e_recusado(self):
         f = base()
-        add(f, "07-proofs.yaml", {"id": "PRF-0097", "kind": "proof", "title": "a", "refutes": ["CLM-0011"],
+        add(f, "07-proofs.yaml", {"id": "PRF-9097", "kind": "proof", "title": "a", "refutes": ["CLM-0011"],
                                   "basis": "code_reading", "location": {"repo": "r", "path": "p"},
-                                  "supersedes": ["PRF-0096"], "date": "2026-09-22"})
-        add(f, "07-proofs.yaml", {"id": "PRF-0096", "kind": "proof", "title": "b", "refutes": ["CLM-0011"],
+                                  "supersedes": ["PRF-9096"], "date": "2026-09-22"})
+        add(f, "07-proofs.yaml", {"id": "PRF-9096", "kind": "proof", "title": "b", "refutes": ["CLM-0011"],
                                   "basis": "code_reading", "location": {"repo": "r", "path": "p"},
-                                  "supersedes": ["PRF-0097"], "date": "2026-09-22"})
+                                  "supersedes": ["PRF-9097"], "date": "2026-09-22"})
         self.assertFails(f, "ciclo de supersessão")
 
     def test_25_apagar_a_prova_refutada_em_vez_de_superseder(self):
@@ -451,13 +459,13 @@ class Mutacoes(unittest.TestCase):
         # superseder com uma refutação nova mantém REFUTED; superseder e não
         # afirmar nada sobre a mesma afirmação deixa a afirmação sem prova vigente
         f = base()
-        add(f, "07-proofs.yaml", {"id": "PRF-0095", "kind": "proof", "title": "releitura", "refutes": ["CLM-0006"],
+        add(f, "07-proofs.yaml", {"id": "PRF-9095", "kind": "proof", "title": "releitura", "refutes": ["CLM-0006"],
                                   "basis": "code_reading", "location": {"repo": "r", "path": "p"},
                                   "supersedes": ["PRF-0006"], "date": "2026-09-22"})
         j, m = judge(f)
         self.assertEqual(j.errors, [], j.errors)
         self.assertEqual(m["claims"]["CLM-0006"]["status"], "REFUTED")
-        self.assertEqual(m["claims"]["CLM-0006"]["history"][0], "REFUTED por PRF-0006 até 2026-09-22 (superseded por PRF-0095)")
+        self.assertEqual(m["claims"]["CLM-0006"]["history"][0], "REFUTED por PRF-0006 até 2026-09-22 (superseded por PRF-9095)")
 
     def test_21_kit_que_muda_por_baixo_do_genoma(self):
         # O caso real do bump: o kit aposenta a versão, o genoma continua ACTIVE.
@@ -496,7 +504,7 @@ class Mutacoes(unittest.TestCase):
         # teste, SOZINHO, faz — e nao o que o genoma ja tem
         f["07-proofs.yaml"] = [p for p in f["07-proofs.yaml"] if "CLM-L1" not in (p.get("proves") or [])]
         antes, _ = cadeia(judge(f)[1])
-        add(f, "07-proofs.yaml", {"id": "PRF-0099", "kind": "proof", "title": "teste do elo 1",
+        add(f, "07-proofs.yaml", {"id": "PRF-9099", "kind": "proof", "title": "teste do elo 1",
             "proves": ["CLM-L1"], "basis": "test",
             "test": {"repo": "x", "path": "t.py"}, "scale": "LOCAL", "date": "2026-09-22",
             "mechanism": {"repo": "x", "paths": ["app/t.py"], "content_hash": "a" * 64, "commit": "abc1234"}})
@@ -507,10 +515,10 @@ class Mutacoes(unittest.TestCase):
 
     def test_06_ler_codigo_nao_prova(self):
         f = base()
-        add(f, "07-proofs.yaml", {"id": "PRF-0098", "kind": "proof", "title": "li o código",
+        add(f, "07-proofs.yaml", {"id": "PRF-9098", "kind": "proof", "title": "li o código",
             "proves": ["CLM-L1"], "basis": "code_reading",
             "location": {"repo": "x"}, "date": "2026-09-22"})
-        self.assertFails(f, "PRF-0098")
+        self.assertFails(f, "PRF-9098")
 
     def test_07_dominio_nao_emite_evento_alheio(self):
         f = base()
@@ -605,7 +613,7 @@ class ControlePositivo(unittest.TestCase):
         f = base()
         f["07-proofs.yaml"] = [p for p in f["07-proofs.yaml"] if "CLM-L1" not in (p.get("proves") or [])]
         antes_agregado, antes_local = cadeia(judge(f)[1])
-        add(f, "07-proofs.yaml", {"id": "PRF-0097", "kind": "proof",
+        add(f, "07-proofs.yaml", {"id": "PRF-9097", "kind": "proof",
             "title": "elo 1 observado", "proves": ["CLM-L1"], "basis": "external_observation",
             "external_observation": {"instrument": "connz + subscriber",
                                      "observed": "archimedes.planning-state na tabela events"},
