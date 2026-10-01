@@ -401,3 +401,16 @@
   kind: claim
   statement: "Existe uma sonda que mede a Ativa pela rede, e o que o plano de controle grava como observacao e o que ela mediu — nao o que a Testemunha declara."
   asserted_by: "regime declarado no F3, 2026-09-30 — antes disto o ADR-003 §1.4 media que nao havia sonda em repositorio algum, e a Testemunha existia como segredo, nao como processo"
+
+# Z1.1 (ciclo 16) — o levantamento que parou o Z1. A pergunta nao era se a
+# Testemunha observa de forma independente; era se ela existe.
+- id: CLM-0060
+  kind: claim
+  statement: "O modelo das tres Maes esta em operacao: ha tres instancias de liceu.authority, em dominios de falha distintos."
+  asserted_by: "Constituicao 1.11.0, que acrescenta a Mae TESTEMUNHA e exige no posicionamento 'dominio de falha distinto das duas Maes de autoridade'; e a leitura de que a sonda construida no ciclo 15 passaria a observar algo"
+
+# Z3 (ciclo 16) — o ato de autoridade nao passa pelo kit.
+- id: CLM-0061
+  kind: claim
+  statement: "Todo ato de autoridade do ecossistema passa pelo kit e e verificavel pelo boundary."
+  asserted_by: "premissa do desenho do protocolo — o kit e a lei (ADR-001) e o boundary e quem a aplica; a atestacao da Testemunha e ato de autoridade pela Constituicao, que a poe no caminho da promocao"
