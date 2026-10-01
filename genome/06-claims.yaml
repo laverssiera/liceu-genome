@@ -434,3 +434,10 @@
   kind: claim
   statement: "Os segredos do ecossistema sao rotacionaveis: trocar o valor da variavel revoga o valor anterior."
   asserted_by: "premissa da F0-C — a rotacao pressupoe que o valor antigo deixa de ser aceito quando o novo entra"
+
+# B3 (ciclo 18) — achado independente da rotacao, e o caso mais comum no mundo
+# real: credencial que morre FORA do servico.
+- id: CLM-0065
+  kind: claim
+  statement: "Um servico que depende de credencial externa degrada com graca quando a credencial deixa de valer."
+  asserted_by: "premissa do modo simulado do JURIDICO-TECH — a existencia de um caminho de degradacao foi lida como cobertura da falha de credencial"
