@@ -654,9 +654,18 @@ class Judge:
         # remover, e o blob antigo segue público. Quem varre histórico é
         # tools/varredura_publica.py, que roda sob demanda sobre os quatro
         # repositórios públicos — a CI aqui só tem um checkout.
-        for achado in genome_privacy_check.scan(self.genome_dir.parent
-                                                if self.genome_dir.name == "genome"
-                                                else self.genome_dir):
+        varrido = genome_privacy_check.scan(self.genome_dir.parent
+                                            if self.genome_dir.name == "genome"
+                                            else self.genome_dir)
+        # Varredura que não mediu NÃO é varredura limpa. Antes, um arquivo que
+        # não se deixasse ler sumia da conta e a FIT-015 passava calada — o
+        # mesmo defeito que a varredura de CI cometeu com os 19 repositórios.
+        if not varrido.mediu:
+            self.find("FIT-015", "privacidade/varredura",
+                      f"a varredura de privacidade não mediu: {varrido.estado}. "
+                      + "; ".join(f"{item} ({motivo})"
+                                  for item, motivo in varrido.sem_resposta))
+        for achado in (x for lista in varrido.respostas for x in lista):
             arquivo = achado.split(":", 1)[0]
             self.find("FIT-015", f"privacidade/{arquivo}",
                       f"dado pessoal em repositório público: {achado}")

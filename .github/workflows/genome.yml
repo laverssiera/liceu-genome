@@ -46,6 +46,12 @@ jobs:
       - name: Testes de mutação (detector de PFC sem prova executável)
         run: python tools/test_genome_pfc_check.py
 
+      # N itens, N respostas. A varredura que itera e nao exige resposta de cada
+      # item reporta tranquilidade sobre o que nao leu — foi assim que uma
+      # varredura de CI mediu zero repositorios e disse "nenhum vermelho".
+      - name: Testes de mutação (N itens, N respostas)
+        run: python tools/test_varredura.py
+
       # O genoma e o kit sao PUBLICOS: dado pessoal que entrar fica na internet.
       - name: Privacidade — nenhum dado pessoal no repositório público
         run: python tools/genome_privacy_check.py --root .
