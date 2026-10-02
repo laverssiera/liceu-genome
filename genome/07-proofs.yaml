@@ -1738,3 +1738,121 @@
     repo: JURIDICO-TECH
     path: backend/juridicotech/modules/conformidade_urbanistica.py
     note: "RODADO DE NOVO sobre a superficie nova: a T.P da P-001 segue em 10,9% contra minimo de 10,0%, e a folga segue sendo numero e nao veredito. O tipo direcao_desconhecida ACRESCENTA um caso em que folga() devolve None de proposito — sem saber de que lado se viola nao ha distancia ate violar —, o que reforca a CLM-0052 em vez de afrouxa-la: a folga continua existindo so onde ela significa alguma coisa. Nenhum limiar de 'folga pequena' foi inventado, aqui nem antes."
+
+# Ciclo 22 (G1) — o protocolo, medido pelo que subiu ao acervo.
+- id: PRF-0091
+  kind: proof
+  title: "O protocolo ocorreu em 2026-10-02: a taxa paga no dia, e o acervo mudou — e o que NAO esta legivel fica dito"
+  proves: [CLM-0072]
+  basis: external_observation
+  external_observation:
+    instrument: "leitura da pasta CASA_01 no Drive do titular pelo conector, em 2026-10-02 as 17h40, com read_file_content nos PDFs e metadado nas imagens"
+    observed: "comprovante de pagamento de R$ 38,55 para PM VARGEM GDE PTA TRIBUTOS DIVERSOS, data de pagamento 02/10/2026; 12 arquivos novos no acervo entre 17h16 e 17h22 do mesmo dia, dos quais 9 sao imagens JPEG que o conector NAO le"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-02-o-protocolo-ocorreu.md
+  environment: durable
+  scale: LOCAL
+  date: "2026-10-02"
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-02-o-protocolo-ocorreu.md
+    note: "O FATO E DO MUNDO REAL, e nao um ato do LICEU: quem protocolou foi o RT, com procuracao do titular do imovel. O LICEU nao esteve no caminho critico, o que a CLM-0016 exige e que esta prova confirma de novo. O QUE ESTA MEDIDO POR LEITURA DO DOCUMENTO: o comprovante da taxa de R$ 38,55, com data de pagamento 02/10/2026 e beneficiario PM VARGEM GDE PTA TRIBUTOS DIVERSOS. O QUE ESTA MEDIDO POR METADADO E NAO LIDO: nove imagens JPEG, todas com o MESMO titulo, subidas entre 17h16 e 17h22; o conector devolveu conteudo vazio para elas, porque nao extrai texto de JPEG. E nelas que devem estar a caderneta, o numero oficial protocolado, o comprovante da taxa de R$ 315,00 e a via assinada da ART — e por isso o Navigator NAO deriva estado delas: presenca nao e conteudo. O QUE ESTA PROVA NAO AFIRMA, e a distincao importa para o que vem depois: protocolar e ENTREGAR; a analise e outro ato e nao existe ainda. Nao afirma o numero do protocolo, que nao aparece em documento legivel. Nao afirma que a caderneta esta no acervo: nenhum arquivo legivel a identifica, o titular afirma que existe, e afirmacao do titular nao e medicao — e a mesma regra que fez o item 4 continuar INSUFICIENTE durante dez dias enquanto a ART assinada que estava na pasta era a SUBSTITUIDA. NENHUM DADO PESSOAL entrou neste registro: os documentos lidos trazem nome, CPF, matricula, inscricao e endereco, e o que ficou e o fato, a data, o parametro e o identificador do documento."
+
+# Ciclo 22 (G1) — a janela fechou ANTES, e isso se confere por data.
+- id: PRF-0092
+  kind: proof
+  title: "As quatro previsoes antecederam o protocolo em dez dias — e a FIT-016 ja exigia que antecedessem"
+  refutes: [CLM-0001]
+  basis: record_reading
+  date: "2026-10-02"
+  location:
+    repo: liceu-genome
+    path: genome/06-claims.yaml
+    note: "CONFERIVEL POR DATA, e nao por memoria: as quatro previsoes pre-registradas — CLM-0023 (C.A), CLM-0024 (T.O), CLM-0025 (T.P) e CLM-0026 (proximo ato) — tem prediction.registered_at = 2026-09-22 no arquivo. O protocolo ocorreu em 2026-10-02 (PRF-0091). Dez dias. A FIT-016 ja recusava o contrario desde o comeco: 'previsao registrada depois do fato nao e previsao — e explicacao depois do ocorrido', e a regra da linha 735 do juiz compara p[date] com pred[registered_at] exatamente para isso. O QUE ISTO E, dito sem exagero: a janela fechou a tempo sem ninguem ter coordenado o momento. Isso e SORTE, nao metodo. O que o metodo garantiu foi outra coisa, e ela e menor e mais util: a data estava gravada e conferivel ANTES, de modo que esta frase pode ser escrita agora sem depender de lembranca de ninguem. Se o protocolo tivesse ocorrido em 21/09, o proprio juiz recusaria as quatro como previsao. O QUE CONTINUA EM ABERTO: as quatro seguem UNPROVEN. Protocolar nao as resolve; resolve-las e o parecer, a exigencia ou o alvara que a Prefeitura emitir, e isso nao existe ainda. Esta prova refuta a CLM-0001 pela mesma razao de sempre — a cadeia nao e o que o processo diz, e o protocolo nao move elo nenhum da cadeia do LICEU."
+
+# Ciclo 22 (G1) — a procuracao responde a UNK-0016.
+- id: PRF-0093
+  kind: proof
+  title: "O RT pode assinar o requerimento, e a procuracao que o autoriza existe e e anterior ao protocolo"
+  refutes: [CLM-0073]
+  basis: record_reading
+  date: "2026-10-02"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-02-o-protocolo-ocorreu.md
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-02-o-protocolo-ocorreu.md
+    note: "ENCERRA A UNK-0016, aberta em 2026-09-28. A pergunta era 'quem assina o requerimento do item 1 — o titular ou o RT? Se for o RT, o item exige procuracao'. A procuracao foi LIDA no acervo em 2026-10-02 e responde as duas metades: ela e datada de 24/09/2026, portanto ANTERIOR ao protocolo de 02/10, e confere ao RT poderes nomeados um a um — 'preencher e assinar requerimentos para montagem de processos', 'protocolar documentos em geral', 'atender exigencias' e 'solicitar reconsideracao de despacho'. O ultimo poder importa para o que vem: se a Prefeitura emitir comunique-se, o RT ja esta autorizado a responder sem novo instrumento. O QUE A LEITURA NAO ALCANCA: o PDF mostra a linha de assinatura como traco, e extracao de texto nao ve tinta. O titulo do arquivo diz 'assinado' e o nome do outorgante aparece sob a linha; isso e indicio, nao prova de firma. Para o item 1 do conjunto do protocolo basta: o instrumento existe, e anterior, e nomeia o poder exato que o ato exigiu."
+
+# Ciclo 22 (G1) — as duas provas do Navigator, cuja superficie a varredura de
+# 02/10 alterou. RODADAS de novo.
+- id: PRF-0094
+  kind: proof
+  title: "O conjunto do protocolo segue derivando do acervo, e a varredura de 02/10 nao tornou item nenhum ATENDIDO"
+  refutes: [CLM-0047]
+  supersedes: [PRF-0046]
+  basis: test
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_documentos_protocolo.py
+    name: "72 testes de dominio, rodados em 2026-10-02 sobre a varredura do dia do protocolo"
+    pr: 21
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/dados/documentos_p001.json, backend/juridicotech/dados/protocolo_construcao_residencial_vgp.json, backend/juridicotech/modules/documentos_protocolo.py, backend/tests/test_documentos_protocolo.py]
+    content_hash: "e1df984ef9fd7d51b050a4d94d0af6a4a6cd2cf200ba2b0f2c5cf4ff6478be92"
+    commit: "1367aef"
+  environment: ci
+  date: "2026-10-02"
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/dados/documentos_p001.json
+    note: "RODADA DE NOVO sobre o acervo do dia do protocolo. A CLM-0047 continua REFUTADA, e por um motivo que ficou mais claro e nao menos: o conjunto segue NAO atendido nos onze itens, DEPOIS de o processo ter sido protocolado. As duas perguntas sao diferentes — 'o pedido entrou?' e 'o acervo prova cada peca?' —, e a segunda continua valendo depois da primeira, porque e dela que sai a resposta a um comunique-se. DOZE PECAS NOVAS, e NOVE delas com conteudo NAO LIDO: o conector nao extrai texto de JPEG. Elas entraram como DOC-16 a DOC-24 e NENHUMA e evidencia de item nenhum — omiti-las faria o conjunto mentir sobre o que existe, e usa-las faria presenca valer por conteudo. E a mesma regra do NAO_MENSURAVEL da varredura (CLM-0067) e do INDETERMINADO da borda, aplicada a acervo. DOIS ITENS MUDARAM DE ESTADO, os dois por leitura de documento: o item 1 subiu de SEM_EVIDENCIA para INSUFICIENTE porque a procuracao foi lida (e com ela a UNK-0016 encerrou, PRF-0093), e falta a outra metade, o requerimento preenchido; o item 8 subiu por igual porque o comprovante da taxa foi lido, e ele NAO nomeia o servico que custeia — atribuicao do titular nao e medicao, e comprovante de taxa nao e o documento que a taxa paga. UMA GUARDA DE PRIVACIDADE RECUSOU A PRIMEIRA VERSAO deste trabalho: o test_50 proibe sequencia de 13 digitos nos dados do protocolo, e eu havia escrito os numeros de ART por extenso. Numero de ART conta como identificador ali, e o test_51 vizinho existe para provar que a regra nao custa informacao — as duas ARTs se distinguem por DATA e AREA. O mesmo erro estava no documento de evidencia deste registro, num repositorio PUBLICO, e passaria pela guarda: o padrao dela exige fronteira de palavra antes e depois dos treze digitos, o sublinhado E caractere de palavra, e os numeros estavam dentro de nomes de arquivo — logo nao havia fronteira e o padrao nao casava. Corrigido antes de qualquer commit, e o buraco do `\b` fica registrado como achado."
+
+- id: PRF-0095
+  kind: proof
+  title: "Atender nao e atender com sobra, e protocolar nao e atender — rodado de novo sobre o acervo de 02/10"
+  refutes: [CLM-0052]
+  supersedes: [PRF-0090]
+  basis: test
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_conformidade_urbanistica.py
+    name: "72 testes de dominio, rodados em 2026-10-02"
+    pr: 21
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/dados/documentos_p001.json, backend/juridicotech/dados/protocolo_construcao_residencial_vgp.json, backend/juridicotech/modules/documentos_protocolo.py, backend/tests/test_documentos_protocolo.py]
+    content_hash: "e1df984ef9fd7d51b050a4d94d0af6a4a6cd2cf200ba2b0f2c5cf4ff6478be92"
+    commit: "1367aef"
+  environment: ci
+  date: "2026-10-02"
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    note: "RODADO DE NOVO: a T.P da P-001 segue em 10,9% contra minimo de 10,0%, a folga segue sendo numero e nao veredito, e o I.E segue INDETERMINADO por direcao de limite desconhecida. O PROTOCOLO NAO MUDA NADA DISSO, e e esse o ponto da CLM-0052 continuar refutada: o que atende hoje nao esta resolvido para sempre, e agora ha um segundo sentido na mesma frase — protocolar nao e ser aprovado. A conferencia urbanistica segue INDETERMINADO com cinco faltas nomeadas, e ela e justamente o que pode ser cobrado num comunique-se."
+
+- id: PRF-0096
+  kind: proof
+  title: "O item 13 segue INDETERMINADO, e agora ha nove pecas que tambem nao respondem por nao terem sido lidas"
+  proves: [CLM-0020]
+  supersedes: [PRF-0049]
+  basis: test
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_documentos_protocolo.py
+    name: "72 testes de dominio, rodados em 2026-10-02 sobre a varredura do dia do protocolo"
+    pr: 21
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/dados/documentos_p001.json, backend/juridicotech/dados/protocolo_construcao_residencial_vgp.json, backend/juridicotech/modules/documentos_protocolo.py, backend/tests/test_documentos_protocolo.py]
+    content_hash: "e1df984ef9fd7d51b050a4d94d0af6a4a6cd2cf200ba2b0f2c5cf4ff6478be92"
+    commit: "1367aef"
+  environment: ci
+  date: "2026-10-02"
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/dados/documentos_p001.json
+    note: "RODADA DE NOVO sobre o acervo de 02/10. O item 13 segue INDETERMINADO pela mesma razao: a peca que ele pede na forma escrita nao existe neste caso, porque o esgoto e coletivo com estacao propria, e o que o DHAP aceita no lugar e a UNK-0014, aberta. A CLM-0020 fica MAIS sustentada depois desta varredura, e por um motivo novo: entraram nove pecas cujo CONTEUDO NAO FOI LIDO, e o motor nao as usa como evidencia de item nenhum. Peca presente e nao lida nao e peca que responde — e e a mesma regra que faz indice ausente virar INDETERMINADO em vez de zero. Se as nove virassem evidencia por estarem na pasta, cinco itens mudariam de estado sem que ninguem tivesse lido documento algum."

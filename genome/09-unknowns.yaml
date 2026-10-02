@@ -124,10 +124,10 @@
   owner: titular
   blocks: [CLM-0047]
 
-- id: UNK-0016
-  kind: unknown
-  question: "Quem assina o requerimento do item 1 — o titular ou o RT? Se for o RT, o item exige procuracao."
-  why_unknown: "O item 1 diz: 'Se o requerente nao for o titular do imovel devera apresentar procuracao'. O requerente da P-001 nao esta definido em documento nenhum do acervo. A pergunta nao e burocratica: se o RT assina e a procuracao nao vai anexa, o pedido e recusado no balcao pela mesma regra que recusa qualquer falta — e a peca que faltaria nao e o requerimento, e a procuracao, que nem aparece na lista dos onze porque e condicional."
-  required_evidence: "A decisao do titular sobre quem requer, e a procuracao se a resposta for o RT."
-  owner: titular
-  blocks: [CLM-0047]
+# UNK-0016 ENCERRADA em 2026-10-02: a procuracao foi lida no acervo e responde
+# as duas metades da pergunta. O RT PODE assinar o requerimento, e o instrumento
+# que o autoriza existe, e datado de 24/09/2026 — anterior ao protocolo de 02/10 —
+# e nomeia os poderes um a um, inclusive 'solicitar reconsideracao de despacho',
+# que e o poder necessario para responder um comunique-se sem novo instrumento.
+# Registrada na PRF-0093. O que a leitura nao alcanca esta dito la: extracao de
+# texto nao ve tinta, e o PDF mostra a linha de assinatura como traco.

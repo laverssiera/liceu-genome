@@ -479,3 +479,15 @@
   kind: claim
   statement: "Indice cujo valor a norma traz mas cuja DIRECAO de limite ela nao declara entra na conferencia como INDETERMINADO nomeado, e nao fica fora da lista."
   asserted_by: "o tipo direcao_desconhecida em juridicotech/modules/conformidade_urbanistica.py, construido no ciclo 21 porque o I.E ficava invisivel no relatorio e a lacuna do perfil continuava dizendo que o significado era desconhecido"
+
+# Ciclo 22 (G1) — o fato que o ecossistema esperava, e que nao e ato do LICEU.
+- id: CLM-0072
+  kind: claim
+  statement: "O processo de aprovacao de projeto e execucao da Casa P-001 foi protocolado na Prefeitura de Vargem Grande Paulista."
+  asserted_by: "o titular, em 2026-10-02, e conferido contra os documentos que subiram ao acervo no mesmo dia"
+
+# Ciclo 22 (G1) — a pergunta que a procuracao respondeu.
+- id: CLM-0073
+  kind: claim
+  statement: "O requerimento do protocolo so pode ser assinado pelo titular do imovel, e o RT precisaria dele presente."
+  asserted_by: "premissa da UNK-0016, aberta em 2026-09-28: 'quem assina o requerimento do item 1 — o titular ou o RT? Se for o RT, o item exige procuracao'"
