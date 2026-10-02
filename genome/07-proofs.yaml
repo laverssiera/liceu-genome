@@ -1650,3 +1650,91 @@
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
     path: infra/security/prova_de_revogacao.py
     note: "O DEFEITO, medido antes do conserto: veredito(velha_aceita=False, nova_aceita=True) devolvia REVOGADA, e nenhuma linha do arquivo exigia que a velha tivesse funcionado algum dia. Uma credencial que NUNCA foi valida e recusada com o mesmo 401 de uma revogada. O QUE ENTROU: dois vereditos que NAO passam — SEM_LINHA_DE_BASE (recusada, e nada prova que valeu) e NUNCA_VALEU (medido que nunca valeu). PASSA segue sendo so {REVOGADA}. O 'ANTES' NAO E DECLARACAO, e isto e desenho: nao existe flag --a-velha-valia. O 'antes' vem de registrar_linha_de_base(), que SONDA a credencial enquanto ela ainda vale e grava em disco a IMPRESSAO sha256, o alvo, o veredito e a data — nunca o valor, que e a mesma regra do 'so fingerprint e evidencia' do genoma, e tem controle de privacidade proprio no teste. A leitura casa por impressao E por alvo: credencial diferente nao herda o 'antes' de outra, e a mesma chave pode valer num servico e nao noutro. Ausencia de registro devolve None, NUNCA False — 'ninguem mediu' e 'medi, e nunca valeu' sao coisas diferentes, e confundi-las e a mesma familia do vazio lido como limpo (CLM-0067). E o modo --registrar-antes RECUSA gravar o nao-mensuravel: contra alvo inalcancavel sai com codigo 2 e arquivo nenhum, porque 'nao sei' nao serve de 'antes'. CINCO MUTACOES, CINCO QUEDAS: tirar o ramo SEM_LINHA_DE_BASE derruba 1; a leitura ignorando a impressao derruba 1; sem arquivo devolvendo False derruba 1; a linha de base gravando o VALOR derruba 1; o modo registrar gravando o nao-mensuravel derruba 1. TRES TESTES ANTIGOS CAIRAM, e e informacao e nao incomodo: eles exigiam REVOGADA sem nenhum 'antes' — eram os que codificavam o defeito, e foram corrigidos para MEDIR a linha de base em vez de presumi-la. Ensaio do ciclo inteiro em JWT com chaves de teste: registrar o antes (aceita=True), depois a prova, veredito REVOGADA. O QUE ESTA PROVA NAO ALCANCA: ela garante que a ferramenta exige o 'antes'; nao garante que o 'antes' tenha sido medido no momento certo. Quem rodar --registrar-antes DEPOIS de revogar grava aceita=False e obtem NUNCA_VALEU, que e o veredito honesto para aquela evidencia, mas ninguem impede a ordem errada. A ordem continua sendo do operador; o que mudou e que errar nela deixou de produzir REVOGADA."
+
+# Ciclo 21 (E1) — o I.E deixa de ser ausencia e passa a ser lacuna nomeada.
+- id: PRF-0087
+  kind: proof
+  title: "O mesmo numero daria ATENDE ou NAO_ATENDE conforme a direcao suposta: por isso o I.E sai INDETERMINADO"
+  proves: [CLM-0071]
+  basis: test
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_conformidade_urbanistica.py
+    name: "30 testes (eram 24); os seis novos cobrem o tipo direcao_desconhecida"
+    pr: 20
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/modules/conformidade_urbanistica.py, backend/juridicotech/dados/vgp_lc030_2007_zm.json, backend/juridicotech/dados/projeto_p001.json, backend/tests/test_conformidade_urbanistica.py]
+    content_hash: "ffb475e57641747250f934c3adf7f11c03cec33ee281e7c6a0ac4120e3347824"
+    commit: "1978372"
+  environment: ci
+  scale: LOCAL
+  date: "2026-10-02"
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    note: "O TITULAR CONFIRMOU em 2026-10-02 que I.E e 'indice de elevacao', o que a PRF-0047 ja havia derivado da prancha-modelo oficial em 2026-09-27. Mas o significado era METADE da lacuna, e a confirmacao do titular nao fecha a outra metade: a Tabela I traz 4,0 para ZM e nao diz se e maximo, minimo ou exigencia. DOIS DEFEITOS MEDIDOS NO ESTADO ANTERIOR. (1) O perfil ainda dizia 'o significado da sigla nao foi encontrado' e 'o LICEU nao a avalia', cinco dias depois de o significado ter sido derivado de fonte oficial: lacuna desatualizada manda procurar o que ja foi achado. (2) O indice ficava FORA da lista de itens, e isso e pior do que sair INDETERMINADO — indice que nao aparece no relatorio nao tem lacuna visivel, e a CLM-0020 exige falta NOMEADA. O TIPO NOVO, direcao_desconhecida: viola() LEVANTA em vez de devolver False, porque devolver False faria o item sair ATENDE por omissao — a mesma traducao de 'nao sei' em 'esta tudo bem' que o ACTIVE_UNOBSERVABLE, o INDETERMINADO da borda e o NAO_MENSURAVEL da varredura recusam; folga() devolve None, porque folga e distancia ate violar e sem saber de que lado se viola nao ha distancia, e devolver 3,0 sugeriria conforto inexistente. O NUMERO QUE MOSTRA POR QUE: o projeto declara I.E = 1,0 e a norma traz 4,0. Com tipo maximo, 1,0 sai ATENDE com folga de 3,0; com tipo minimo, sai NAO_ATENDE. As duas conclusoes saem do MESMO numero, e e por isso que nenhuma vale. DUAS MUTACOES, DUAS QUEDAS: tratar direcao_desconhecida como maximo derruba 2; viola() devolvendo False derruba 1. CONTROLE: maximo e minimo seguem concluindo com folga e veredito — trocar os dois pelo tipo novo deixaria tudo INDETERMINADO e os casos de cima passariam. DOIS TESTES ANTIGOS CAIRAM, e o primeiro e uma GUARDA DE PRIVACIDADE funcionando: a lista branca de parametros do projeto recusou o campo novo por nao estar nela. Acrescentar campo ali virou ato deliberado e revisado, que e para isso que o teste existe. O caso real NAO muda de veredito: segue INDETERMINADO, agora com cinco faltas nomeadas em vez de quatro, e os cinco dizem faltas de tipos DIFERENTES — duas de aplicabilidade (limite de LOTE em projeto CONDOMINIO), duas de dado ausente no projeto, uma de direcao de limite. O QUE ISTO NAO ALCANCA: a UNK-0008 nao fecha. Ela se estreita de novo — significado e formula resolvidos, direcao do 4,0 em aberto —, e so o texto consolidado oficial fecha, exatamente como o required_evidence dela diz desde 2026-09-27."
+
+# Ciclo 21 (E1) — as tres provas cuja superficie o PR 20 do JURIDICO-TECH alterou.
+- id: PRF-0088
+  kind: proof
+  title: "A Tabela I da LC 030/2007 segue substituida pela LC 99/2021 — relido sobre o perfil com o I.E declarado"
+  refutes: [CLM-0018]
+  supersedes: [PRF-0016]
+  basis: record_reading
+  date: "2026-10-02"
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/dados/vgp_lc030_2007_zm.json]
+    content_hash: "c065b856ebe090d1964dd5bb904161c40a3f217aa24e012d5d4515c4efab5ac0"
+    commit: "1978372"
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/dados/vgp_lc030_2007_zm.json
+    note: "RELIDO, nao transcrito: o campo `norma` do perfil continua dizendo 'Lei Complementar no 030, de 13 de dezembro de 2007, com a Tabela I substituida pela Lei Complementar no 099, de 07 de julho de 2021, art. 6o', e a procedencia continua trazendo a pagina oficial, o sha256 e a nota de que a LC 30/2007 tem 261 paginas com 0 objetos /Font — digitalizacao sem camada de texto, e os valores NAO foram lidos dali. O que mudou no arquivo foi o acrescimo do limite I.E e a reescrita da lacuna dele; nada que a CLM-0018 afirme. A superficie mudou, o detector acusou, e a leitura foi refeita."
+
+- id: PRF-0089
+  kind: proof
+  title: "O motor segue nomeando a falta em vez de chutar — e agora nomeia uma falta que antes nao aparecia"
+  proves: [CLM-0020]
+  supersedes: [PRF-0017]
+  basis: test
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_conformidade_urbanistica.py
+    name: "30 testes, rodados em 2026-10-02"
+    pr: 20
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/modules/conformidade_urbanistica.py, backend/juridicotech/dados/vgp_lc030_2007_zm.json, backend/juridicotech/dados/projeto_p001.json, backend/tests/test_conformidade_urbanistica.py]
+    content_hash: "ffb475e57641747250f934c3adf7f11c03cec33ee281e7c6a0ac4120e3347824"
+    commit: "1978372"
+  environment: ci
+  date: "2026-10-02"
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    note: "RODADA DE NOVO: os 24 testes da PRF-0017 passam sobre a superficie nova — dois precisaram ser ATUALIZADOS, e nenhum dos dois por mudanca de comportamento do motor. Um e a lista branca de parametros do projeto, que recusou o campo novo e tinha razao de recusar; o outro cobrava o conjunto exato de INDETERMINADO, que cresceu de quatro para cinco. A CLM-0020 fica MAIS sustentada do que antes, e nao menos: o I.E era um indice que o motor nao avaliava e que por isso nao tinha falta nomeada em nenhum lugar da saida — agora tem. Indice ausente continua virando INDETERMINADO e nunca zero, e limite de LOTE continua nao sendo aplicado calado a projeto em CONDOMINIO."
+
+- id: PRF-0090
+  kind: proof
+  title: "Atender nao e atender com sobra: a taxa permeavel da P-001 segue atendendo por 1,58 m2 — rodado de novo"
+  refutes: [CLM-0052]
+  supersedes: [PRF-0051]
+  basis: test
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_documentos_protocolo.py
+    name: "66 testes de dominio, rodados em 2026-10-02"
+    pr: 20
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/dados/projeto_p001.json, backend/juridicotech/dados/vgp_lc030_2007_zm.json, backend/juridicotech/modules/conformidade_urbanistica.py, backend/tests/test_conformidade_urbanistica.py]
+    content_hash: "ffb475e57641747250f934c3adf7f11c03cec33ee281e7c6a0ac4120e3347824"
+    commit: "1978372"
+  environment: ci
+  date: "2026-10-02"
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    note: "RODADO DE NOVO sobre a superficie nova: a T.P da P-001 segue em 10,9% contra minimo de 10,0%, e a folga segue sendo numero e nao veredito. O tipo direcao_desconhecida ACRESCENTA um caso em que folga() devolve None de proposito — sem saber de que lado se viola nao ha distancia ate violar —, o que reforca a CLM-0052 em vez de afrouxa-la: a folga continua existindo so onde ela significa alguma coisa. Nenhum limiar de 'folga pequena' foi inventado, aqui nem antes."
