@@ -473,3 +473,9 @@
   kind: claim
   statement: "A prova de revogacao exige que a credencial antiga tenha sido MEDIDA como aceita antes da revogacao: recusa sem linha de base nao conta como revogacao."
   asserted_by: "a regra em infra/security/prova_de_revogacao.py depois do quase-acidente de 2026-10-01 (FC-007), construida porque a proxima rotacao escolhe o alvo e conclui o veredito com este instrumento"
+
+# Ciclo 21 (E1) — o indice que a ferramenta nao avaliava, e que agora acusa.
+- id: CLM-0071
+  kind: claim
+  statement: "Indice cujo valor a norma traz mas cuja DIRECAO de limite ela nao declara entra na conferencia como INDETERMINADO nomeado, e nao fica fora da lista."
+  asserted_by: "o tipo direcao_desconhecida em juridicotech/modules/conformidade_urbanistica.py, construido no ciclo 21 porque o I.E ficava invisivel no relatorio e a lacuna do perfil continuava dizendo que o significado era desconhecido"
