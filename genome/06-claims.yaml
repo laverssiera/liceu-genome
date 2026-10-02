@@ -467,3 +467,9 @@
   kind: claim
   statement: "O inventario distingue USO de MENCAO por ocorrencia, e deriva o nome da variavel que chega por env_prefix sob outro identificador."
   asserted_by: "a regra em infra/security/uso_de_segredo.py e o inventario que a consome, construidos no ciclo 20 porque a proxima rotacao escolhe o alvo com este mapa"
+
+# Ciclo 20 (D1) — o que a prova de revogacao passou a exigir.
+- id: CLM-0070
+  kind: claim
+  statement: "A prova de revogacao exige que a credencial antiga tenha sido MEDIDA como aceita antes da revogacao: recusa sem linha de base nao conta como revogacao."
+  asserted_by: "a regra em infra/security/prova_de_revogacao.py depois do quase-acidente de 2026-10-01 (FC-007), construida porque a proxima rotacao escolhe o alvo e conclui o veredito com este instrumento"
