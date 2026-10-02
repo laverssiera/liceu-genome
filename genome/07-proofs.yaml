@@ -1627,3 +1627,26 @@
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
     path: infra/security/inventario_segredos.py
     note: "A CLM-0063 CONTINUA REFUTADA, e por um motivo menor e mais preciso que o anterior. O QUE FOI FECHADO: os tres casos que a PRF-0069 nomeou agora tem veredito. LEGAL_AI_OPENAI_API_KEY sai como MENCAO em rag.py:184 e como USO em config.py:8, derivado do env_prefix — exatamente a distincao que faltava quando a primeira rotacao foi recomendada. Os compartilhados caem de 42 para 20, e esse e o numero que a rotacao consulta. O QUE NAO FOI FECHADO, medido em 2026-10-01: 29 dos 137 nomes ficam INDETERMINADO. Eles nao sao 'nao usados' — sao 'nao consegui ler a forma', e quase todos vivem fora do Python, onde nao ha arvore barata e so valem as formas de consumo conhecidas. 15 nomes saem como SO MENCAO, e esses sim provavelmente nao sao consumidos em lugar nenhum. Fechar a afirmacao com 29 nomes sem veredito seria trocar um numero errado por outro: o inventario ficou MELHOR e continua nao sendo um mapa completo de raio de dano. O proximo passo, quando houver consumidor para ele, e a enumeracao: hoje a ferramenta prova que acusa o que nao leu, e nao que a lista de alvos esteja completa."
+
+# Ciclo 20 (D1) — a regra nova, com as cinco mutacoes.
+- id: PRF-0086
+  kind: proof
+  title: "Recusa nao e revogacao: SEM_LINHA_DE_BASE e NUNCA_VALEU, e o 'antes' e medido, nao declarado"
+  proves: [CLM-0070]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/test_prova_de_revogacao.py
+    name: "29 testes (eram 19); a classe LinhaDeBase e o caso do quase-acidente"
+    pr: 87
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/prova_de_revogacao.py, infra/security/test_prova_de_revogacao.py]
+    content_hash: "1787a84c16ee82164e8505d73eb47a8649a12e3ebbaf3a22f1573f0ceaf14323"
+    commit: "e74479c"
+  environment: ci
+  date: "2026-10-01"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/prova_de_revogacao.py
+    note: "O DEFEITO, medido antes do conserto: veredito(velha_aceita=False, nova_aceita=True) devolvia REVOGADA, e nenhuma linha do arquivo exigia que a velha tivesse funcionado algum dia. Uma credencial que NUNCA foi valida e recusada com o mesmo 401 de uma revogada. O QUE ENTROU: dois vereditos que NAO passam — SEM_LINHA_DE_BASE (recusada, e nada prova que valeu) e NUNCA_VALEU (medido que nunca valeu). PASSA segue sendo so {REVOGADA}. O 'ANTES' NAO E DECLARACAO, e isto e desenho: nao existe flag --a-velha-valia. O 'antes' vem de registrar_linha_de_base(), que SONDA a credencial enquanto ela ainda vale e grava em disco a IMPRESSAO sha256, o alvo, o veredito e a data — nunca o valor, que e a mesma regra do 'so fingerprint e evidencia' do genoma, e tem controle de privacidade proprio no teste. A leitura casa por impressao E por alvo: credencial diferente nao herda o 'antes' de outra, e a mesma chave pode valer num servico e nao noutro. Ausencia de registro devolve None, NUNCA False — 'ninguem mediu' e 'medi, e nunca valeu' sao coisas diferentes, e confundi-las e a mesma familia do vazio lido como limpo (CLM-0067). E o modo --registrar-antes RECUSA gravar o nao-mensuravel: contra alvo inalcancavel sai com codigo 2 e arquivo nenhum, porque 'nao sei' nao serve de 'antes'. CINCO MUTACOES, CINCO QUEDAS: tirar o ramo SEM_LINHA_DE_BASE derruba 1; a leitura ignorando a impressao derruba 1; sem arquivo devolvendo False derruba 1; a linha de base gravando o VALOR derruba 1; o modo registrar gravando o nao-mensuravel derruba 1. TRES TESTES ANTIGOS CAIRAM, e e informacao e nao incomodo: eles exigiam REVOGADA sem nenhum 'antes' — eram os que codificavam o defeito, e foram corrigidos para MEDIR a linha de base em vez de presumi-la. Ensaio do ciclo inteiro em JWT com chaves de teste: registrar o antes (aceita=True), depois a prova, veredito REVOGADA. O QUE ESTA PROVA NAO ALCANCA: ela garante que a ferramenta exige o 'antes'; nao garante que o 'antes' tenha sido medido no momento certo. Quem rodar --registrar-antes DEPOIS de revogar grava aceita=False e obtem NUNCA_VALEU, que e o veredito honesto para aquela evidencia, mas ninguem impede a ordem errada. A ordem continua sendo do operador; o que mudou e que errar nela deixou de produzir REVOGADA."

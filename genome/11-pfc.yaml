@@ -71,3 +71,17 @@
   regression_tests:
   - {repo: JURIDICO-TECH, file: backend/tests/test_contradicao_declaracoes.py, name: test_o_caso_real_da_p001_e_pego}
   date: "2026-09-22"
+
+# Ciclo 20 (D1) — a falsa afirmacao que o titular impediu com uma frase, e que
+# agora a ferramenta impede sozinha.
+- id: FC-007
+  kind: pfc
+  title: "A prova de revogacao de uma chave que nunca funcionou"
+  false_claim: "O LEGAL_AI_OPENAI_API_KEY antigo foi REVOGADO, provado: a credencial antiga e recusada e a nova e aceita pelo mesmo instrumento. A UNK-0004 esta respondida."
+  mechanism: "SEM_LINHA_DE_BASE e NUNCA_VALEU em infra/security/prova_de_revogacao.py: REVOGADA passa a exigir que a credencial antiga tenha sido MEDIDA como aceita antes da revogacao, por registrar_linha_de_base() — que sonda enquanto ela ainda vale e grava impressao sha256, alvo e data, nunca o valor. Nao existe flag de declaracao: quem afirma nao e quem mede."
+  observed: "Em 2026-10-01 uma chave da OpenAI foi colada por engano no chat. Sondada contra api.openai.com, foi RECUSADA — e a recusa era real, nao falha de rede: sonda_http so devolve False em 401/403. Com a regra de ate entao, bastava uma chave nova aceita para o veredito sair REVOGADA, e a UNK-0004 teria sido respondida com uma prova que nao provava nada. A prova nao entrou porque o TITULAR disse, de viva voz, que aquela chave nunca havia funcionado: 'a chave que coloquei nunca funcionou e foi revogada'. O 401 nao distingue uma credencial que morreu de uma que nunca nasceu, e o instrumento nao exigia a distincao em lugar nenhum."
+  regression_tests:
+    - repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+      file: infra/security/test_prova_de_revogacao.py
+      name: test_sem_linha_de_base_NAO_e_prova_de_revogacao
+  date: "2026-10-01"
