@@ -131,3 +131,12 @@
 # que e o poder necessario para responder um comunique-se sem novo instrumento.
 # Registrada na PRF-0093. O que a leitura nao alcanca esta dito la: extracao de
 # texto nao ve tinta, e o PDF mostra a linha de assinatura como traco.
+
+# Ciclo 23 — aberta pelo incidente de 2026-10-02 (PRF-0099, PRF-0100).
+- id: UNK-0017
+  kind: unknown
+  question: "Que guarda encontra um segredo colado como VALOR em prosa, dentro de repositorio privado, sem afogar o resultado em falso positivo?"
+  why_unknown: "As duas varreduras que existem foram lidas na linha em 2026-10-02 e nenhuma alcanca o caso. O inventario de segredos (infra/security/inventario_segredos.py linha 40) casa NOME em maiusculas, e a linha 108 so extrai valor quando ha nome assim a esquerda de igual ou dois pontos: um valor dentro de curl -H ou numa celula de tabela markdown e inalcancavel por construcao. A varredura de privacidade cobre so repositorio PUBLICO, e a propria CLM-0017 diz isso na sua letra; o monolito e private. O que falta nao e configurar melhor nenhuma das duas — e um eixo de deteccao que nenhuma tem: a FORMA do valor. E ai esta a parte que ninguem decidiu, e por isso isto e incognita e nao tarefa: o valor deste incidente tem 11 caracteres com maiuscula, minuscula, digito e simbolo, nao e hex nem base64. Entropia alta o bastante para ser senha e baixa o bastante para colidir com prosa, identificador e hash curto. Casar por forma pega senha escolhida por pessoa, que foi exatamente o caso; casar por forma tambem acusa texto comum, e varredura que acusa demais e desligada em duas semanas — e varredura desligada e pior que varredura ausente, porque parece cobertura."
+  required_evidence: "Uma guarda com controle positivo cuja amostra contenha VALOR COLADO em prosa, e nao so nome de variavel, nas duas formas deste incidente: celula de tabela markdown e cabecalho dentro de curl -H. Com escopo que inclua repositorio PRIVADO, amostra montada por CONCATENACAO (como a FIT-015 ja exige, para a amostra nao acusar o arquivo da propria guarda) e, acima de tudo, a taxa de falso positivo MEDIDA sobre a arvore real dos 19 repositorios antes de a guarda virar bloqueante — numero medido, nao suposto, porque e esse numero que decide se o eixo da forma e utilizavel ou se a resposta certa e outra (por exemplo exigir que todo segredo chegue por nome conhecido, e recusar prosa que contenha qualquer coisa com cara de valor perto de um nome de segredo). Enquanto o numero nao existir, a guarda nao existe."
+  owner: titular
+  blocks: [CLM-0075]
