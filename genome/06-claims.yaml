@@ -491,3 +491,9 @@
   kind: claim
   statement: "O requerimento do protocolo so pode ser assinado pelo titular do imovel, e o RT precisaria dele presente."
   asserted_by: "premissa da UNK-0016, aberta em 2026-09-28: 'quem assina o requerimento do item 1 — o titular ou o RT? Se for o RT, o item exige procuracao'"
+
+# Ciclo 22 — credencial que existiu para um teste e ficou viva.
+- id: CLM-0074
+  kind: claim
+  statement: "Credencial criada para provar o mecanismo de revogacao e descartada depois da prova: ninguem deixa chave de teste viva."
+  asserted_by: "premissa de qualquer rotacao feita para prova — e o titular a questionou em 2026-10-02, ANTES de a chave existir: sem ambiente implantado, as credenciais da prova nao servem a nada no mundo e a unica coisa que as retira do provedor e alguem lembrar"
