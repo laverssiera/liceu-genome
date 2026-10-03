@@ -1856,3 +1856,50 @@
     repo: JURIDICO-TECH
     path: backend/juridicotech/dados/documentos_p001.json
     note: "RODADA DE NOVO sobre o acervo de 02/10. O item 13 segue INDETERMINADO pela mesma razao: a peca que ele pede na forma escrita nao existe neste caso, porque o esgoto e coletivo com estacao propria, e o que o DHAP aceita no lugar e a UNK-0014, aberta. A CLM-0020 fica MAIS sustentada depois desta varredura, e por um motivo novo: entraram nove pecas cujo CONTEUDO NAO FOI LIDO, e o motor nao as usa como evidencia de item nenhum. Peca presente e nao lida nao e peca que responde — e e a mesma regra que faz indice ausente virar INDETERMINADO em vez de zero. Se as nove virassem evidencia por estarem na pasta, cinco itens mudariam de estado sem que ninguem tivesse lido documento algum."
+
+# Ciclo 22 — a divida passa a ser cobrada pela ferramenta, nao pela memoria.
+- id: PRF-0097
+  kind: proof
+  title: "A credencial de prova viva e divida aberta, cobrada por impressao, e o ciclo a fecha sozinho"
+  refutes: [CLM-0074]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/test_prova_de_revogacao.py
+    name: "36 testes (eram 29); a classe DividaDeCredencialDeProva tem sete"
+    pr: 88
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/prova_de_revogacao.py, infra/security/test_prova_de_revogacao.py]
+    content_hash: "f637a586aa0703b022c5f35d146dd07cc4840c557ee1122c8c24711a62741965"
+    commit: "b3d14da"
+  environment: ci
+  date: "2026-10-02"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/prova_de_revogacao.py
+    note: "A AFIRMACAO E REFUTADA PELO PROPRIO DESENHO DA ROTACAO, e o titular viu isso antes de criar a chave: sem ambiente implantado (CLM-0062 REFUTED), a chave 2 e a chave 3 nao servem a nada no mundo — existem para o instrumento medir aceitacao e depois recusa. O que as retirava do provedor era alguem lembrar, e lembrar nao e mecanismo. A regra que o titular mesmo escreveu um ciclo antes se aplica: isso merece virar GUARDA, nao lembrete. O QUE ENTROU: --proposito-prova marca as credenciais da execucao, e vale para as DUAS, porque sem a marca a chave NOVA sairia da cobranca justamente por ser a que fica viva no fim; --pendentes lista as de prova cuja ultima medicao diz ACEITA, por IMPRESSAO sha256 e nunca por valor, e sai com codigo 1, porque divida aberta nao e sucesso. E O CICLO FECHA SOZINHO: a prova agora GRAVA o que mediu de volta na linha de base, entao depois do passo 7 a chave velha foi medida como recusada e SAI da cobranca, e a nova foi medida como aceita e ENTRA. Ninguem da baixa a mao, e a ferramenta nunca cobra eternamente algo que ela mesma acabou de ver morrer. DUAS DECISOES QUE O DESENHO PRECISOU TOMAR. O proposito e propriedade da CREDENCIAL e nao da medicao: medicao posterior que nao o informe HERDA o anterior, porque sem isso a divida desapareceria exatamente quando a credencial fosse medida de novo — e a prova mede as duas a cada execucao. E credencial SEM proposito nao e divida: chamar de pendencia uma credencial de producao em uso seria pedir que alguem derrube o que esta funcionando. CINCO MUTACOES, CINCO QUEDAS: pendentes ignorando o proposito derruba 1; pendentes cobrando tambem as recusadas derruba 2; o proposito deixando de ser herdado derruba 1; a prova deixando de marcar a nova derruba 1; divida aberta saindo com codigo zero derruba 1. ENSAIO DO CICLO INTEIRO em JWT com chaves de teste: registrar a chave 2 como prova, rodar o par, veredito REVOGADA, e a divida passa da 2 para a 3 automaticamente. O QUE ISTO NAO ALCANCA: a lista conhece so as credenciais que PASSARAM por este arquivo. Credencial de teste criada fora dele continua invisivel, e a saida diz isso com estas palavras — 'isto NAO afirma que nao existem credenciais de teste vivas: afirma que nenhuma das que ESTE arquivo conhece esta nesse estado'. E a mesma distincao entre varredura completa e varredura honesta da CLM-0067."
+
+# Ciclo 22 — a PRF-0086 cuja superficie este trabalho alterou.
+- id: PRF-0098
+  kind: proof
+  title: "A prova de revogacao segue exigindo linha de base medida — rodada de novo sobre a superficie com a divida"
+  proves: [CLM-0070]
+  supersedes: [PRF-0086]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/test_prova_de_revogacao.py
+    name: "36 testes, rodados em 2026-10-02"
+    pr: 88
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/prova_de_revogacao.py, infra/security/test_prova_de_revogacao.py]
+    content_hash: "f637a586aa0703b022c5f35d146dd07cc4840c557ee1122c8c24711a62741965"
+    commit: "b3d14da"
+  environment: ci
+  date: "2026-10-02"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/prova_de_revogacao.py
+    note: "RODADA DE NOVO: os 29 testes da PRF-0086 passam sem alteracao em nenhum deles, e sete novos entraram. SEM_LINHA_DE_BASE e NUNCA_VALEU seguem fora de PASSA, e REVOGADA segue exigindo que a velha tenha sido MEDIDA como aceita antes. O que mudou e ortogonal: a ferramenta passou a LEMBRAR quais credenciais existiram so para a prova, e a gravar o que mediu. A segunda parte toca a CLM-0070 de raspao e vale dizer como: a prova agora escreve na linha de base o resultado da propria medicao, e por isso uma segunda execucao da mesma prova leria 'a velha nao valia' em vez de 'a velha valia'. Isso e CORRETO e nao um defeito — depois de revogada, ela de fato nao vale —, e o veredito da primeira execucao fica no relatorio e na prova, nao no arquivo. Quem quiser repetir a prova precisa de um par novo, que e exatamente o que a sequencia das tres chaves descreve."
