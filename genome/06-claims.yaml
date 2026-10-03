@@ -497,3 +497,13 @@
   kind: claim
   statement: "Credencial criada para provar o mecanismo de revogacao e descartada depois da prova: ninguem deixa chave de teste viva."
   asserted_by: "premissa de qualquer rotacao feita para prova — e o titular a questionou em 2026-10-02, ANTES de a chave existir: sem ambiente implantado, as credenciais da prova nao servem a nada no mundo e a unica coisa que as retira do provedor e alguem lembrar"
+
+# Ciclo 23 — o incidente da credencial em claro, e as duas coisas que ele refutou.
+- id: CLM-0075
+  kind: claim
+  statement: "A varredura de segredos do monolito e deliberadamente larga: nome de segredo que exista no repositorio nao fica de fora."
+  asserted_by: "comentario que eu mesmo escrevi em infra/security/inventario_segredos.py linhas 38-39, e repeti em relatorio por tres ciclos — ate 2026-10-02 mostrar em que eixo a largura nao existe"
+- id: CLM-0076
+  kind: claim
+  statement: "Repositorio privado significa que so o titular leu o que esta nele."
+  asserted_by: "leitura natural de 'private', que o titular mesmo pos em duvida em 2026-10-02 ao perguntar 'o repositorio e privado — mas quem teve acesso de leitura nesse periodo? Fork, clone, CI de terceiro, Codespace apagado?'"
