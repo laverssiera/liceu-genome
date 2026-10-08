@@ -2088,3 +2088,27 @@
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
     path: infra/security/prova_de_revogacao.py
     note: "RODADA DE NOVO: SEM_LINHA_DE_BASE e NUNCA_VALEU seguem fora de PASSA, e REVOGADA segue exigindo que a velha tenha sido MEDIDA como aceita antes. E esta afirmacao ganhou hoje a defesa que lhe faltava. Ela exige linha de base medida, mas nada protegia a linha de base de ser APAGADA por uma execucao que nao provava nada — e o unico 'antes' desta rotacao estava a um comando de desaparecer. Exigir um 'antes' e deixa-lo destrutivel e meia exigencia. Agora a exigencia tem guarda: execucao sem veredito nao escreve, e o arquivo fica byte a byte igual, conferido em teste."
+
+# Ciclo 24 — a terceira prova que fixava a mesma superficie, e que eu esqueci.
+- id: PRF-0109
+  kind: proof
+  title: "403 segue nao sendo recusa — rodada de novo sobre a superficie com o write-back condicionado"
+  refutes: [CLM-0078]
+  supersedes: [PRF-0102]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/test_prova_de_revogacao.py
+    name: "54 testes, rodados em 2026-10-08; os doze de OQue403Significa sem alteracao"
+    pr: 91
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/prova_de_revogacao.py, infra/security/test_prova_de_revogacao.py]
+    content_hash: "1a48f3496c6679f74d87b8aed7af2945f2cd5e6a62966251ee22c029e087af82"
+    commit: "302516c"
+  environment: ci
+  date: "2026-10-08"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/prova_de_revogacao.py
+    note: "RODADA DE NOVO: os doze testes da classe OQue403Significa passam sem uma linha alterada. 403 segue devolvendo NAO MENSURAVEL com os escopos nomeados, e 401 segue recusa. POR QUE ESTA PROVA EXISTE, e e registro de um erro meu de procedimento: tres provas vigentes fixavam a mesma superficie — PRF-0102, PRF-0103 e PRF-0104 —, e ao escrever o conserto do write-back eu superseditei as duas ultimas e esqueci a primeira. A guarda de superficie acusou na CI do PR 91, nomeando a prova, o hash registrado (2d265dee..., commit 10d0051) e o calculado (1a48f349...). Nao foi revisao humana que pegou, nem memoria minha: foi a guarda, fazendo exatamente o que a PRF-0005 diz que ela faz — a prova que nao morre quando o codigo que ela cobria muda e a FC-005, e esta e a terceira vez que ela cobra uma superficie que eu mudei. A LICAO OPERACIONAL, para nao repetir: quando um conserto altera arquivos cobertos por mechanism, a conta de quantas provas VIGENTES os cobrem tem de ser MEDIDA antes de escrever as supersessoes — nao lembrada. A consulta que mede isso e uma busca por paths no 07-proofs.yaml filtrando as que ja estao superseded, e eu a rodei: ela devolveu PRF-0097 e PRF-0098 na rodada anterior, e eu nao a rodei de novo depois que PRF-0102 entrou no grafo no mesmo dia."
