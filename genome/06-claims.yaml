@@ -519,3 +519,9 @@
   kind: claim
   statement: "Recusa de autenticacao e uma coisa so: para saber se a credencial vale, basta ver se o servico negou."
   asserted_by: "sonda_http como ela foi escrita em 2026-10-01 — a linha dizia, no proprio docstring, '401/403 -> recusada' — e a sonda nao tinha nenhum teste que a contestasse"
+
+# Ciclo 24 — o passo 7 da rotacao.
+- id: CLM-0080
+  kind: claim
+  statement: "Nenhum segredo deste ecossistema foi rotacionado com prova: rotacao aqui e afirmacao de quem a fez, nunca medicao."
+  asserted_by: "UNK-0004, aberta em 2026-09-22, cujo why_unknown era exatamente 'Nao ha registro de rotacao em nenhuma sessao' — e seguiu verdadeira por 16 dias e duas tentativas falhas"
