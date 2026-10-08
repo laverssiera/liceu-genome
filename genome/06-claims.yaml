@@ -507,3 +507,9 @@
   kind: claim
   statement: "Repositorio privado significa que so o titular leu o que esta nele."
   asserted_by: "leitura natural de 'private', que o titular mesmo pos em duvida em 2026-10-02 ao perguntar 'o repositorio e privado — mas quem teve acesso de leitura nesse periodo? Fork, clone, CI de terceiro, Codespace apagado?'"
+
+# Ciclo 24 — a sonda que nunca tinha perguntado a ninguem de verdade.
+- id: CLM-0077
+  kind: claim
+  statement: "A sonda HTTP da prova de revogacao nunca foi exercida contra provedor real: tudo que ela mediu foi dublê de teste."
+  asserted_by: "estado do instrumento de 2026-10-01 a 2026-10-08 — os 36 testes da PRF-0098 usam JWT e dublê, e a FC-007 nomeou a consequencia: 'a prova de revogacao de uma chave que nunca funcionou'"
