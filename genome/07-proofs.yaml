@@ -2029,7 +2029,7 @@
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
     path: infra/security/test_prova_de_revogacao.py
     name: "54 testes (eram 48); a classe ExecucaoQueNaoProvaNaoEscreve tem seis"
-    pr: 92
+    pr: 91
   mechanism:
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
     paths: [infra/security/prova_de_revogacao.py, infra/security/test_prova_de_revogacao.py]
@@ -2053,7 +2053,7 @@
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
     path: infra/security/test_prova_de_revogacao.py
     name: "54 testes, rodados em 2026-10-08; os sete de DividaDeCredencialDeProva sem alteracao"
-    pr: 92
+    pr: 91
   mechanism:
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
     paths: [infra/security/prova_de_revogacao.py, infra/security/test_prova_de_revogacao.py]
@@ -2076,7 +2076,7 @@
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
     path: infra/security/test_prova_de_revogacao.py
     name: "54 testes, rodados em 2026-10-08"
-    pr: 92
+    pr: 91
   mechanism:
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
     paths: [infra/security/prova_de_revogacao.py, infra/security/test_prova_de_revogacao.py]
