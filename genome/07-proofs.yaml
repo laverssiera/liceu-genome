@@ -1948,3 +1948,73 @@
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
     path: infra/security/linha-de-base-rotacao.json
     note: "O QUE MUDOU DE ESTADO: ate 2026-10-08 a sonda_http so tinha sido exercida contra dublê, e os 36 testes da PRF-0098 medem JWT. Agora ela perguntou a um provedor real e foi respondida 2xx. Isso importa porque a FC-007 registra exatamente o contrario: a primeira tentativa de rotacao desta serie foi sobre uma chave que NUNCA funcionou, e foi dela que nasceu a exigencia da CLM-0070 — linha de base MEDIDA, nao declarada. Pela primeira vez o 'antes' existe como medicao. COMO O VALOR FOI MANUSEADO, porque isto e metade do que a prova vale: o titular criou a chave 2 e a guardou num arquivo FORA de qualquer repositorio, e nao a colou em conversa nenhuma. O valor foi do arquivo direto para os.environ dentro de um unico processo: nunca argv, porque argumento aparece na lista de processos e no historico do shell; nunca stdout; nunca um segundo arquivo. O que ficou em disco e impressao sha256, alvo, data e proposito, e que o arquivo nao contem valor esta CONFERIDO por grep e nao suposto: zero ocorrencias de forma de chave. UMA CONFERENCIA QUE QUASE VIROU FALSO ALARME, e vale como registro de metodo: a primeira leitura do arquivo do titular trocava cada tag XML por um espaco, e saiu 'sk -proj-...', o que teria me feito afirmar que o Word quebrou a chave. O espaco era artefato da minha extracao. Relendo pelo conteudo dos elementos w:t, o texto e exatamente uma chave de 164 caracteres, sem espaco nem quebra de linha. Afirmacao sobre conteudo exige a leitura certa, e a leitura errada estava disponivel. O QUE ISTO NAO E: nao e prova de revogacao, e e importante nao chamar de uma. E o 'antes' dela. Nenhum veredito existe enquanto o titular nao criar a chave 3 e revogar a 2; so entao a prova mede o par e, se a velha for recusada e a nova aceita, sai REVOGADA — o unico veredito que PASSA. A UNK-0004 continua aberta e a escala REGIONAL continua bloqueada por quatro itens. E A DIVIDA NASCEU COBRADA, que era o ponto da PRF-0097: marcada com proposito=prova, a chave 2 entrou em --pendentes no mesmo ato em que foi medida, e a saida sai com codigo 1 porque divida aberta nao e sucesso. Ela sai da lista sozinha quando a medicao disser recusada. Ninguem da baixa a mao."
+
+# Ciclo 24 — o erro concreto da rotacao de 2026-10-08.
+- id: PRF-0102
+  kind: proof
+  title: "A sonda chamou de recusada uma credencial viva, e com os papeis trocados teria provado uma revogacao que nunca houve"
+  refutes: [CLM-0078]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/test_prova_de_revogacao.py
+    name: "48 testes (eram 36); a classe OQue403Significa tem doze"
+    pr: 90
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/prova_de_revogacao.py, infra/security/test_prova_de_revogacao.py]
+    content_hash: "2d265deecedbfebe9af581ba2348fcc985f928b5b5ebfede7a74d01d68922726"
+    commit: "10d0051"
+  environment: ci
+  date: "2026-10-08"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/prova_de_revogacao.py
+    note: "O ERRO E CONCRETO E E DESTA ROTACAO, nao hipotetico — e por isso o instrumento mudou, que era a condicao posta pelo titular. A chave 3 foi criada com escopo minimo, como ele mesmo pediu em 2026-10-02. Contra https://api.openai.com/v1/models ela devolveu HTTP 403 'You have insufficient permissions for this operation. Missing scopes: api.model.read'. Contra https://api.openai.com/v1/me, HTTP 200. ELA ESTAVA VIVA. A sonda_http mapeava 401 E 403 para False — a frase estava no proprio docstring — logo ela respondeu RECUSADA sobre uma credencial valida. O LADO PERIGOSO NAO E O FALSO ALARME: se a credencial de escopo limitado fosse a VELHA, a aritmetica da regra seria velha=False, nova=True, linha de base=True, e o veredito sairia REVOGADA. O instrumento teria certificado uma revogacao que nunca aconteceu, e teria entrado no genoma como prova. Isso esta medido e nao argumentado: o teste test_com_403_lido_como_recusa_a_prova_falsa_apareceria roda veredito(False, True, True) e confere que o resultado e REVOGADA com prova verdadeira. E A SONDA NAO TINHA NENHUM TESTE: os 36 da PRF-0098 medem JWT e linha de base. A parte do instrumento que fala com o mundo era a unica sem cobertura, e foi exatamente onde o defeito estava. O QUE ENTROU: 401 segue recusa, agora com o motivo nomeado quando o corpo o diz — token_invalidated ou invalid_api_key; 403 passa a NAO MENSURAVEL e nomeia os escopos que faltam, porque autorizacao nao e validade e 'nao autorizada para ESTA pergunta' nao e 'nao vale'; sonda_http_detalhada devolve (veredito, motivo) e sonda_http delega, entao nenhum chamador quebrou; o motivo de cada lado passa a sair SEMPRE na prova e nao so quando falha, porque veredito que nao e prova sem dizer por que empurra quem le de volta para a adivinhacao — e foi assim que um 403 de escopo passou por recusa. E UMA PRECAUCAO QUE NASCEU DE UM INCIDENTE ANTERIOR: a OpenAI devolve a chave MASCARADA no corpo do 401, e o prefixo sozinho bastaria para o inventario deste repositorio achar nome de segredo onde nao ha segredo — foi o que aconteceu tres vezes no ciclo 20. A funcao _sem_valor apaga qualquer trecho com forma de credencial antes de o motivo sair, e ha teste para isso. OS TESTES SAO CONTRA SOCKET DE VERDADE, com um servidor HTTP local em porta efemera, e nao contra dublê de urllib: dublê de urllib testaria o meu mock e nao a minha leitura do protocolo, que e precisamente onde eu errei. Os corpos sao transcritos da resposta real do provedor e montados por CONCATENACAO, para a amostra nao acusar o arquivo da propria guarda — a regra da FIT-015, aplicada de novo. MUTACAO: devolver 403 para recusa derruba 4 dos 48. O QUE ISTO CUSTOU A ROTACAO, e vale dizer porque e o preco de acertar: com 403 lido como nao mensuravel, o veredito de hoje e SEM_CONTROLE e nao REVOGADA, e a UNK-0004 continua aberta. A chave 2 esta medida como revogada contra /v1/models (401 invalid_api_key) e contra /v1/me (401 token_invalidated, 'Your API key has been invalidated'), em duas rodadas seis segundos entre si. Falta a chave 3 poder responder no endpoint da LINHA DE BASE: ela e casada por impressao E por alvo, e o 'antes' existe so para /v1/models. Refazer a linha de base em /v1/me nao e opcao — a chave 2 ja esta invalidada e um 'antes' nao se cria depois. Entao o que fecha a prova e um escopo em um botao: api.model.read na chave 3. UMA ALTERNATIVA QUE EU RECUSEI: afrouxar ler_linha_de_base para casar so por impressao, ignorando o alvo. Fecharia o veredito hoje e seria enfraquecer o instrumento para obter o resultado que eu queria — e a aceitacao e relativa ao endpoint, o que esta rotacao acabou de demonstrar."
+
+# Ciclo 24 — as duas provas cuja superficie este conserto alterou.
+- id: PRF-0103
+  kind: proof
+  title: "A divida da credencial de prova segue cobrada — rodada de novo sobre a superficie com a distincao do 403"
+  refutes: [CLM-0074]
+  supersedes: [PRF-0097]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/test_prova_de_revogacao.py
+    name: "48 testes, rodados em 2026-10-08; os sete de DividaDeCredencialDeProva sem alteracao"
+    pr: 90
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/prova_de_revogacao.py, infra/security/test_prova_de_revogacao.py]
+    content_hash: "2d265deecedbfebe9af581ba2348fcc985f928b5b5ebfede7a74d01d68922726"
+    commit: "10d0051"
+  environment: ci
+  date: "2026-10-08"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/prova_de_revogacao.py
+    note: "RODADA DE NOVO, nao transcrita: os sete testes da classe DividaDeCredencialDeProva passam sem uma linha alterada, e --pendentes segue saindo com codigo 1 quando ha divida aberta. O que mudou e ortogonal e esta na PRF-0102. UM EFEITO QUE VALE NOMEAR: com 403 virando NAO MENSURAVEL, uma credencial de prova de escopo limitado NAO sai mais da cobranca por engano. Antes, um 403 a marcaria como recusada e a divida fecharia sozinha sobre uma credencial que continua viva — exatamente o que esta classe existe para impedir. O conserto do 403 reforcou a cobranca em vez de afrouxa-la."
+
+- id: PRF-0104
+  kind: proof
+  title: "A prova de revogacao segue exigindo linha de base medida — rodada de novo sobre a superficie com a distincao do 403"
+  proves: [CLM-0070]
+  supersedes: [PRF-0098]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/test_prova_de_revogacao.py
+    name: "48 testes, rodados em 2026-10-08"
+    pr: 90
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/prova_de_revogacao.py, infra/security/test_prova_de_revogacao.py]
+    content_hash: "2d265deecedbfebe9af581ba2348fcc985f928b5b5ebfede7a74d01d68922726"
+    commit: "10d0051"
+  environment: ci
+  date: "2026-10-08"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/prova_de_revogacao.py
+    note: "RODADA DE NOVO: SEM_LINHA_DE_BASE e NUNCA_VALEU seguem fora de PASSA, e REVOGADA segue exigindo que a velha tenha sido MEDIDA como aceita antes. Os 36 testes anteriores passam sem alteracao e doze entraram. E A EXIGENCIA DA CLM-0070 ACABOU DE SER TESTADA PELO MUNDO, nao por mim: a linha de base esta casada por impressao E POR ALVO, e a chave 3 da rotacao nao consegue responder no alvo onde o 'antes' foi gravado. Isso trava o veredito de hoje em SEM_CONTROLE. Eu poderia ter afrouxado ler_linha_de_base para casar so por impressao e o veredito sairia REVOGADA ainda hoje; recusei, porque a aceitacao e relativa ao endpoint e esta rotacao foi a prova disso. Afrouxar a regra para obter o resultado desejado e o contrario do que esta afirmacao diz."

@@ -513,3 +513,9 @@
   kind: claim
   statement: "A sonda HTTP da prova de revogacao nunca foi exercida contra provedor real: tudo que ela mediu foi dublê de teste."
   asserted_by: "estado do instrumento de 2026-10-01 a 2026-10-08 — os 36 testes da PRF-0098 usam JWT e dublê, e a FC-007 nomeou a consequencia: 'a prova de revogacao de uma chave que nunca funcionou'"
+
+# Ciclo 24 — o que um 401 e um 403 dizem, e o que eles NAO dizem.
+- id: CLM-0078
+  kind: claim
+  statement: "Recusa de autenticacao e uma coisa so: para saber se a credencial vale, basta ver se o servico negou."
+  asserted_by: "sonda_http como ela foi escrita em 2026-10-01 — a linha dizia, no proprio docstring, '401/403 -> recusada' — e a sonda nao tinha nenhum teste que a contestasse"
