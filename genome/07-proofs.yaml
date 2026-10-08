@@ -2018,3 +2018,73 @@
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
     path: infra/security/prova_de_revogacao.py
     note: "RODADA DE NOVO: SEM_LINHA_DE_BASE e NUNCA_VALEU seguem fora de PASSA, e REVOGADA segue exigindo que a velha tenha sido MEDIDA como aceita antes. Os 36 testes anteriores passam sem alteracao e doze entraram. E A EXIGENCIA DA CLM-0070 ACABOU DE SER TESTADA PELO MUNDO, nao por mim: a linha de base esta casada por impressao E POR ALVO, e a chave 3 da rotacao nao consegue responder no alvo onde o 'antes' foi gravado. Isso trava o veredito de hoje em SEM_CONTROLE. Eu poderia ter afrouxado ler_linha_de_base para casar so por impressao e o veredito sairia REVOGADA ainda hoje; recusei, porque a aceitacao e relativa ao endpoint e esta rotacao foi a prova disso. Afrouxar a regra para obter o resultado desejado e o contrario do que esta afirmacao diz."
+
+# Ciclo 24 — o quase-acidente de 2026-10-08, a um comando de acontecer.
+- id: PRF-0105
+  kind: proof
+  title: "Gravar o que se mediu numa execucao que nao prova apaga o unico 'antes' — e um 'antes' nao se cria depois"
+  refutes: [CLM-0079]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/test_prova_de_revogacao.py
+    name: "54 testes (eram 48); a classe ExecucaoQueNaoProvaNaoEscreve tem seis"
+    pr: 92
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/prova_de_revogacao.py, infra/security/test_prova_de_revogacao.py]
+    content_hash: "1a48f3496c6679f74d87b8aed7af2945f2cd5e6a62966251ee22c029e087af82"
+    commit: "302516c"
+  environment: ci
+  date: "2026-10-08"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/prova_de_revogacao.py
+    note: "O ESTADO QUE EXPOS ISTO: o titular revogou a chave 2 no passo 2 e, em seguida, revogou tambem a chave 3 — antes de ela receber o escopo api.model.read que lhe faltava. Com AS DUAS revogadas, o veredito correto e NAO_MENSURAVEL: sem nenhuma aceitacao, a recusa da velha nao prova nada, e a regra ja dizia isso desde 2026-10-01. Medido: as duas devolvem 401 invalid_api_key em /v1/models, e a linha de base da chave 2 nesse alvo segue lendo valia_antes = True. O PERIGO NAO ESTAVA NO VEREDITO, ESTAVA NO WRITE-BACK, e eu estava a um comando de executa-lo. Ele dispara sempre que a medicao nao e None — e hoje as duas medicoes sao False, nao None. E registrar_linha_de_base REMOVE o registro anterior da mesma impressao e do mesmo alvo antes de gravar o novo. Isso nao e descuido: tem de ser assim, senao pendentes() — que filtra todo registro com aceita verdadeiro — veria duas medicoes da mesma credencial e seguiria cobrando pela antiga. A CONSEQUENCIA ARITMETICA: rodar a prova hoje gravaria aceita=false sobre o unico 'antes' que existe. E um 'antes' nao se cria depois, porque a chave 2 ja esta revogada e registrar-antes exige medir ENQUANTO a credencial vale. Toda execucao futura leria velha_valia_antes = False e sairia NUNCA_VALEU, sobre uma rotacao que DE FATO ACONTECEU e que foi medida. O arquivo passaria a dizer o contrario do que foi medido, e a prova ficaria impossivel para sempre. ISSO NAO CONTRADIZ A PRF-0104, e vale separar: a nota dela diz que uma SEGUNDA execucao da prova leria 'a velha nao valia', e chama isso de correto — e e, para execucao que PROVOU. Depois de uma prova bem-sucedida, a velha de fato nao vale mais e o registro novo e verdadeiro. O caso descoberto hoje e outro: execucao que nao provou nada, destruindo o 'antes' sem produzir veredito nenhum em troca. O CONSERTO E UMA CONDICAO: o write-back fica atado a r.prova. Execucao que nao e prova nao toca o arquivo, e IMPRIME que nao tocou — silencio aqui seria a mesma falha do 403, em que o veredito nao dizia por que. ISTO NAO DESLIGA A COBRANCA, SO A CONDICIONA, e ha teste para as duas metades: depois de uma prova bem-sucedida a velha medida como recusada continua SAINDO da lista de pendentes, e a nova que ficou viva continua ENTRANDO. SEIS TESTES NOVOS, com servidor HTTP local que responde pelo TOKEN recebido — 200 para a nova viva, 401 token_invalidated para qualquer outra —, o que permite ensaiar a rotacao inteira contra socket de verdade: primeiro a execucao de hoje, com as duas mortas, conferindo que o arquivo fica BYTE A BYTE igual; depois a mesma linha de base com um controle positivo vivo, conferindo que sai REVOGADA. O segundo teste e a prova de que a rotacao segue provavel apesar da execucao falha. MUTACAO: write-back incondicional derruba 4, inclusive esse. E O QUE ISTO DIZ SOBRE A ROTACAO EM CURSO: ela nao esta perdida. O que falta e um controle positivo — uma credencial viva que o instrumento consiga ver aceita NO MESMO ALVO. A chave 3 nao precisava ser a sucessora: o papel dela na regra e distinguir 'esta credencial morreu' de 'o servico recusa tudo'. Qualquer chave viva com api.model.read serve, e o 'antes' da chave 2 continua intacto esperando por ela."
+
+# Ciclo 24 — as duas provas cuja superficie isto alterou, rodadas de novo.
+- id: PRF-0106
+  kind: proof
+  title: "A divida da credencial de prova segue cobrada — rodada de novo sobre a superficie com o write-back condicionado"
+  refutes: [CLM-0074]
+  supersedes: [PRF-0103]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/test_prova_de_revogacao.py
+    name: "54 testes, rodados em 2026-10-08; os sete de DividaDeCredencialDeProva sem alteracao"
+    pr: 92
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/prova_de_revogacao.py, infra/security/test_prova_de_revogacao.py]
+    content_hash: "1a48f3496c6679f74d87b8aed7af2945f2cd5e6a62966251ee22c029e087af82"
+    commit: "302516c"
+  environment: ci
+  date: "2026-10-08"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/prova_de_revogacao.py
+    note: "RODADA DE NOVO, nao transcrita: os sete testes da classe DividaDeCredencialDeProva passam sem uma linha alterada. A afirmacao de que o ciclo FECHA SOZINHO continua verdadeira, e agora tem teste proprio em outra classe: test_a_prova_bem_sucedida_ainda_fecha_a_divida confere que, depois de uma prova, a velha medida como recusada sai da lista de pendentes e a nova viva entra. O QUE A CONDICAO MUDOU na borda: antes, uma execucao que nao provava nada podia tirar uma credencial da cobranca ao gravar aceita=false sobre ela. Com o write-back atado a r.prova, credencial so sai da cobranca quando uma PROVA a mediu morta. A divida ficou mais dificil de fechar por acidente, nao mais facil."
+
+- id: PRF-0107
+  kind: proof
+  title: "A prova de revogacao segue exigindo linha de base medida — rodada de novo sobre a superficie com o write-back condicionado"
+  proves: [CLM-0070]
+  supersedes: [PRF-0104]
+  basis: test
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/test_prova_de_revogacao.py
+    name: "54 testes, rodados em 2026-10-08"
+    pr: 92
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [infra/security/prova_de_revogacao.py, infra/security/test_prova_de_revogacao.py]
+    content_hash: "1a48f3496c6679f74d87b8aed7af2945f2cd5e6a62966251ee22c029e087af82"
+    commit: "302516c"
+  environment: ci
+  date: "2026-10-08"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/prova_de_revogacao.py
+    note: "RODADA DE NOVO: SEM_LINHA_DE_BASE e NUNCA_VALEU seguem fora de PASSA, e REVOGADA segue exigindo que a velha tenha sido MEDIDA como aceita antes. E esta afirmacao ganhou hoje a defesa que lhe faltava. Ela exige linha de base medida, mas nada protegia a linha de base de ser APAGADA por uma execucao que nao provava nada — e o unico 'antes' desta rotacao estava a um comando de desaparecer. Exigir um 'antes' e deixa-lo destrutivel e meia exigencia. Agora a exigencia tem guarda: execucao sem veredito nao escreve, e o arquivo fica byte a byte igual, conferido em teste."

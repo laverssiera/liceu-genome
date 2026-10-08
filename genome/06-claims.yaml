@@ -519,3 +519,9 @@
   kind: claim
   statement: "Recusa de autenticacao e uma coisa so: para saber se a credencial vale, basta ver se o servico negou."
   asserted_by: "sonda_http como ela foi escrita em 2026-10-01 — a linha dizia, no proprio docstring, '401/403 -> recusada' — e a sonda nao tinha nenhum teste que a contestasse"
+
+# Ciclo 24 — gravar o que se mediu parecia nao ter custo.
+- id: CLM-0079
+  kind: claim
+  statement: "Gravar o que a prova mediu e sempre seguro: medicao e informacao, e acrescentar informacao nao destroi nenhuma."
+  asserted_by: "o write-back como entrou no ciclo 22 (PRF-0097, hoje PRF-0103): ele dispara sempre que a medicao nao e None, sem olhar se a execucao provou alguma coisa"
