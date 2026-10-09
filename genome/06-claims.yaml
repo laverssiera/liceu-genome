@@ -575,3 +575,9 @@
   kind: claim
   statement: "A proibicao que impede a Testemunha de autorizar esta na Constituicao: e la que se emenda a separacao entre votar no log e autorizar atos."
   asserted_by: "o §3 do ADR-003, que escreve 'a Testemunha so informa, nunca autoriza' atribuindo a frase a Constituicao — e e essa a atribuicao que qualquer um seguiria para redigir a emenda que a Opcao B exige"
+
+# Ciclo 25 — a fracao cujo numerador nao alcanca o proprio denominador.
+- id: CLM-0089
+  kind: claim
+  statement: "O dossie de decisao pode ficar completo quando a cadeia estiver completa: e disso que o 8 de 8 fala."
+  asserted_by: "o comentario do proprio codigo em authority_control_plane.py linhas 669-672 — 'Oito itens, cada um ancorado num contrato ou registry ja existente' — e o campo completeness.complete, que compara present == 8 como se 8 fosse alcancavel"
