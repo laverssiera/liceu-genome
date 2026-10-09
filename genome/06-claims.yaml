@@ -557,3 +557,9 @@
   kind: claim
   statement: "A rotacao provada na PRF-0108 mitigou a credencial do incidente: a cerimonia da OpenAI e a resposta ao segredo que vazou em claro."
   asserted_by: "leitura disponivel na nota da PRF-0100, que cita a conclusao da rotacao da OpenAI como analogia — 'a consequencia e a mesma que o titular tirou da rotacao da OpenAI' —, e o titular pediu em 2026-10-09 que as duas nao fossem confundidas"
+
+# Ciclo 25 — a consequencia silenciosa de escolher consenso.
+- id: CLM-0086
+  kind: claim
+  statement: "Consenso para a camada A preserva por si a exigencia de atestacao da Testemunha: o quorum e mais forte que a tabela, logo a garantia so melhora."
+  asserted_by: "leitura natural de 'o quorum decide' depois da escolha da Opcao B em 2026-10-09 — e a unica leitura que explica por que ninguem escreveu que a atestacao precisa ser preservada"
