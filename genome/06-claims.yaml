@@ -547,3 +547,13 @@
   kind: claim
   statement: "Depois da prova, a credencial de prova sobrevivente so sai da cobranca pelo write-back de outra prova; como ela e a ultima viva, fica cobrada para sempre."
   asserted_by: "eu mesmo, em 2026-10-09, ao ler as tres pastas do Desktop como AUSENTES numa unica medicao e derivar dali que os valores estavam destruidos — conclusao sobre a qual eu escrevi uma flag nova, um terceiro estado na divida, dez testes e tres mutacoes"
+
+# Ciclo 25 — as decisoes de 2026-10-09. Nenhuma entra como implementacao.
+- id: CLM-0084
+  kind: claim
+  statement: "O incidente da credencial do Canonical Event Store esta encerrado."
+  asserted_by: "ninguem ainda — a afirmacao entra UNPROVEN de proposito, com os quatro critterios que o titular fixou em 2026-10-09 como barra: identificacao do escopo, rotacao/revogacao efetiva, prova de rejeicao da credencial antiga e registro explicito do risco residual"
+- id: CLM-0085
+  kind: claim
+  statement: "A rotacao provada na PRF-0108 mitigou a credencial do incidente: a cerimonia da OpenAI e a resposta ao segredo que vazou em claro."
+  asserted_by: "leitura disponivel na nota da PRF-0100, que cita a conclusao da rotacao da OpenAI como analogia — 'a consequencia e a mesma que o titular tirou da rotacao da OpenAI' —, e o titular pediu em 2026-10-09 que as duas nao fossem confundidas"
