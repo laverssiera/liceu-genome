@@ -591,3 +591,13 @@
   kind: claim
   statement: "A Testemunha e um processo de stdlib sem disco e sem banco, e por isso cabe em plano gratuito ou em hardware do titular."
   asserted_by: "a entrada de decisao registrada nesta incognita em 2026-10-01, pelo argumento da assimetria — e verdadeira enquanto a Testemunha so OBSERVA, que era o desenho antes da Opcao B"
+
+# Ciclo 25 — a aplicacao dos quatro contratos, e o que ela expos.
+- id: CLM-0092
+  kind: claim
+  statement: "O resumo do Event Registry conta o que o registry tem: os numeros declarados ali sao derivados das chaves."
+  asserted_by: "a forma do proprio bloco resumo, que lista CANONICAL_REGISTRY_EVENTS, CONTRACT_IDS e CONTRACT_VERSIONS como se fossem contagem — e nenhuma regra do liceu_registry_check os confere"
+- id: CLM-0093
+  kind: claim
+  statement: "Aplicar os contratos no kit faz o boundary do CORE passar a conhece-los: contrato no registry e contrato em vigor no consumidor."
+  asserted_by: "leitura natural de 'os contratos entraram no registry', e a unica leitura disponivel para quem nao abre o requirements.txt do monolito"
