@@ -531,3 +531,9 @@
   kind: claim
   statement: "Gravar o que a prova mediu e sempre seguro: medicao e informacao, e acrescentar informacao nao destroi nenhuma."
   asserted_by: "o write-back como entrou no ciclo 22 (PRF-0097, hoje PRF-0103): ele dispara sempre que a medicao nao e None, sem olhar se a execucao provou alguma coisa"
+
+# Ciclo 24 — o que eu quase construi por ler uma vez.
+- id: CLM-0083
+  kind: claim
+  statement: "Depois da prova, a credencial de prova sobrevivente so sai da cobranca pelo write-back de outra prova; como ela e a ultima viva, fica cobrada para sempre."
+  asserted_by: "eu mesmo, em 2026-10-09, ao ler as tres pastas do Desktop como AUSENTES numa unica medicao e derivar dali que os valores estavam destruidos — conclusao sobre a qual eu escrevi uma flag nova, um terceiro estado na divida, dez testes e tres mutacoes"
