@@ -563,3 +563,9 @@
   kind: claim
   statement: "Consenso para a camada A preserva por si a exigencia de atestacao da Testemunha: o quorum e mais forte que a tabela, logo a garantia so melhora."
   asserted_by: "leitura natural de 'o quorum decide' depois da escolha da Opcao B em 2026-10-09 — e a unica leitura que explica por que ninguem escreveu que a atestacao precisa ser preservada"
+
+# Ciclo 25 — o que "extrair o control plane" custa de verdade.
+- id: CLM-0087
+  kind: claim
+  statement: "O control plane de autoridade e uma funcao de decisao: extrai-lo e mover um modulo, porque quem o chama e um arquivo so."
+  asserted_by: "leitura do raio de chamada, que e estreito e verdadeiro — app/main.py e os tres testes, e mais ninguem —, e e a leitura disponivel para quem mede o acoplamento pelo lado de quem chama"
