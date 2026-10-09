@@ -541,3 +541,9 @@
   kind: claim
   statement: "O no `core` da Constituicao descreve o CORE que existe: o que ele proibe esta fora, e o numero que ele registra como violacao e o numero de hoje."
   asserted_by: "a propria Constituicao, no campo violacao do no core: '[CODIGO] 114 arquivos de dominio de engenharia e obra', com procedencia '[DECIDIDO 2026-08-29]' e sem nenhuma releitura desde entao"
+
+# Ciclo 24 — o que eu quase construi por ler uma vez.
+- id: CLM-0083
+  kind: claim
+  statement: "Depois da prova, a credencial de prova sobrevivente so sai da cobranca pelo write-back de outra prova; como ela e a ultima viva, fica cobrada para sempre."
+  asserted_by: "eu mesmo, em 2026-10-09, ao ler as tres pastas do Desktop como AUSENTES numa unica medicao e derivar dali que os valores estavam destruidos — conclusao sobre a qual eu escrevi uma flag nova, um terceiro estado na divida, dez testes e tres mutacoes"
