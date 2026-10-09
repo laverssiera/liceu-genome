@@ -569,3 +569,9 @@
   kind: claim
   statement: "O control plane de autoridade e uma funcao de decisao: extrai-lo e mover um modulo, porque quem o chama e um arquivo so."
   asserted_by: "leitura do raio de chamada, que e estreito e verdadeiro — app/main.py e os tres testes, e mais ninguem —, e e a leitura disponivel para quem mede o acoplamento pelo lado de quem chama"
+
+# Ciclo 25 — onde a proibicao da Testemunha realmente vive.
+- id: CLM-0088
+  kind: claim
+  statement: "A proibicao que impede a Testemunha de autorizar esta na Constituicao: e la que se emenda a separacao entre votar no log e autorizar atos."
+  asserted_by: "o §3 do ADR-003, que escreve 'a Testemunha so informa, nunca autoriza' atribuindo a frase a Constituicao — e e essa a atribuicao que qualquer um seguiria para redigir a emenda que a Opcao B exige"
