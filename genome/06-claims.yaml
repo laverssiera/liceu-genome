@@ -601,3 +601,9 @@
   kind: claim
   statement: "Aplicar os contratos no kit faz o boundary do CORE passar a conhece-los: contrato no registry e contrato em vigor no consumidor."
   asserted_by: "leitura natural de 'os contratos entraram no registry', e a unica leitura disponivel para quem nao abre o requirements.txt do monolito"
+
+# Ciclo 25 — a publicacao, e a qualidade da minha propria verificacao.
+- id: CLM-0094
+  kind: claim
+  statement: "A busca que sustenta um 'conferido antes' cobre o que a afirmacao diz cobrir: quando eu escrevo que nada fixa um valor, procurei por esse valor."
+  asserted_by: "eu mesmo, no corpo do PR 95 do CONSTRUTORA, em 2026-10-09: 'nenhum teste nem codigo deste repositorio afirma a contagem de contratos do kit nem fixa a versao 0.24.0 — conferido por grep'"
