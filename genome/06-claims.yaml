@@ -532,6 +532,16 @@
   statement: "Gravar o que a prova mediu e sempre seguro: medicao e informacao, e acrescentar informacao nao destroi nenhuma."
   asserted_by: "o write-back como entrou no ciclo 22 (PRF-0097, hoje PRF-0103): ele dispara sempre que a medicao nao e None, sem olhar se a execucao provou alguma coisa"
 
+# Ciclo 24 — H5: dois nos baratos, medidos antes de escritos.
+- id: CLM-0081
+  kind: claim
+  statement: "O prefixo authority. no event_type identifica fato de autoridade: quem publica sob ele passa pelos cheques de autoridade do CORE."
+  asserted_by: "a propria convencao de nomes do kit, e o WITNESS_ALLOWED_PREFIXES em cv-backend-core/app/services/authority_control_plane.py linha 55, que usa o prefixo do event_type para decidir o que a Testemunha pode publicar — como se o prefixo carregasse autoridade"
+- id: CLM-0082
+  kind: claim
+  statement: "O no `core` da Constituicao descreve o CORE que existe: o que ele proibe esta fora, e o numero que ele registra como violacao e o numero de hoje."
+  asserted_by: "a propria Constituicao, no campo violacao do no core: '[CODIGO] 114 arquivos de dominio de engenharia e obra', com procedencia '[DECIDIDO 2026-08-29]' e sem nenhuma releitura desde entao"
+
 # Ciclo 24 — o que eu quase construi por ler uma vez.
 - id: CLM-0083
   kind: claim
