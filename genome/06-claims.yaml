@@ -581,3 +581,13 @@
   kind: claim
   statement: "O dossie de decisao pode ficar completo quando a cadeia estiver completa: e disso que o 8 de 8 fala."
   asserted_by: "o comentario do proprio codigo em authority_control_plane.py linhas 669-672 — 'Oito itens, cada um ancorado num contrato ou registry ja existente' — e o campo completeness.complete, que compara present == 8 como se 8 fosse alcancavel"
+
+# Ciclo 25 — o §7 respondido, e as duas coisas que a resposta expos.
+- id: CLM-0090
+  kind: claim
+  statement: "O carimbo de autoridade do CORE implementa os campos que a Constituicao declara: quem le a lei e ve activation_certificate_id pode contar com ele no envelope."
+  asserted_by: "a Constituicao, que o declara em cinco lugares — campo do envelope (linha 84), proibido ao produtor (107), origem control plane (128), lista de autoridade (967) e critterio de rejeicao (981) — sem nenhuma marca de que o codigo nao o tem"
+- id: CLM-0091
+  kind: claim
+  statement: "A Testemunha e um processo de stdlib sem disco e sem banco, e por isso cabe em plano gratuito ou em hardware do titular."
+  asserted_by: "a entrada de decisao registrada nesta incognita em 2026-10-01, pelo argumento da assimetria — e verdadeira enquanto a Testemunha so OBSERVA, que era o desenho antes da Opcao B"
