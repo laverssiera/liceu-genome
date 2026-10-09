@@ -607,3 +607,9 @@
   kind: claim
   statement: "A busca que sustenta um 'conferido antes' cobre o que a afirmacao diz cobrir: quando eu escrevo que nada fixa um valor, procurei por esse valor."
   asserted_by: "eu mesmo, no corpo do PR 95 do CONSTRUTORA, em 2026-10-09: 'nenhum teste nem codigo deste repositorio afirma a contagem de contratos do kit nem fixa a versao 0.24.0 — conferido por grep'"
+
+# Ciclo 25 — o portao da ADR, resolvido pela propria lei.
+- id: CLM-0095
+  kind: claim
+  statement: "O portao P1_07B bloqueia a extracao do control plane de autoridade: ha uma ADR exigida e nao escrita antes de qualquer codigo."
+  asserted_by: "eu mesmo, em 2026-10-09, ao medir o custo do §7.1 — 'a razao dele nomeia exatamente o que esta extracao toca: migrations, Event Store e lineage. Se o portao vale, falta uma ADR antes de qualquer codigo' (PRF-0115)"
