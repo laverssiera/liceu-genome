@@ -613,3 +613,9 @@
   kind: claim
   statement: "O portao P1_07B bloqueia a extracao do control plane de autoridade: ha uma ADR exigida e nao escrita antes de qualquer codigo."
   asserted_by: "eu mesmo, em 2026-10-09, ao medir o custo do §7.1 — 'a razao dele nomeia exatamente o que esta extracao toca: migrations, Event Store e lineage. Se o portao vale, falta uma ADR antes de qualquer codigo' (PRF-0115)"
+
+# Ciclo 25 — a classe inteira, e nao os casos avulsos.
+- id: CLM-0096
+  kind: claim
+  statement: "O que a lei do LICEU declara sobre o proprio estado confere com o estado: numero e situacao escritos na Constituicao e nos registries podem ser lidos como verdadeiros."
+  asserted_by: "a forma dos proprios artefatos, que escrevem contagem e situacao como se fossem fato — e a ausencia de qualquer regra que as confira, o que faz a leitura confiante ser a unica disponivel"
