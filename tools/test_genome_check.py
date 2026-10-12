@@ -11,6 +11,7 @@ prova real. Sem ele, um juiz que devolvesse sempre 0/5 passaria em todos os outr
 Só biblioteca padrão + yaml + jsonschema, as mesmas dependências do juiz.
 """
 import copy
+import hashlib
 import json
 import shutil
 import sys
@@ -22,6 +23,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import genome_check as gc  # noqa: E402
+import genome_scope_check as gsc  # noqa: E402
 import genome_surface_check as gsc  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -96,7 +98,14 @@ class Integro(unittest.TestCase):
                        and 1 <= c["chain_link"]["position"] <= m["chain"]["positions"]
                        and m["claims"][cid]["status"] == "PROVEN")
         self.assertEqual(m["chain"]["structural"], esperado)
-        self.assertEqual(m["claims"]["CLM-0001"]["status"], "REFUTED")
+        # CLM-0001 era REFUTED ate 2026-10-12 e hoje e STALE — e a asserção não
+        # foi afrouxada para o teste passar: ela afirma o MOTIVO. A FIT-019
+        # rebaixou as duas provas que a refutavam, as duas de leitura e sem
+        # escopo, as duas na lista fechada. Se amanhã CLM-0001 virar STALE por
+        # outro motivo, este teste falha — que é o que se quer dele.
+        self.assertEqual(m["claims"]["CLM-0001"]["status"], "STALE")
+        self.assertEqual({"PRF-0001", "PRF-0092"} - set(j.sealed_at_introduction()), set())
+        self.assertTrue({"PRF-0001", "PRF-0092"} <= set(j.indeterminate))
 
 
 class Mutacoes(unittest.TestCase):
@@ -249,6 +258,10 @@ class Mutacoes(unittest.TestCase):
         add(f, "07-proofs.yaml", {"id": "PRF-9087", "kind": "proof", "title": "relato refuta",
                                   "refutes": ["CLM-L1"], "basis": "code_reading",
                                   "location": {"repo": "r", "path": "p"}, "date": "2026-09-22",
+                                  # escopo pela FIT-019: o assunto deste teste e que
+                                  # REFUTACAO pode se apoiar em campo asserted.
+                                  "scope": {"padrao": "p", "universo": "u",
+                                            "excluidos": ["nenhum"], "instrumento": "i"},
                                   "derived_from": ["liceu.archimedes.planning-state@2.0.0.emitters_observed"]})
         j, m = judge(f)
         self.assertEqual(j.errors, [], j.errors)
@@ -461,7 +474,12 @@ class Mutacoes(unittest.TestCase):
         f = base()
         add(f, "07-proofs.yaml", {"id": "PRF-9095", "kind": "proof", "title": "releitura", "refutes": ["CLM-0006"],
                                   "basis": "code_reading", "location": {"repo": "r", "path": "p"},
-                                  "supersedes": ["PRF-0006"], "date": "2026-09-22"})
+                                  "supersedes": ["PRF-0006"], "date": "2026-09-22",
+                                  # escopo porque a FIT-019 exige de prova de leitura; o
+                                  # assunto DESTE teste e supersessao, e sem isto ele
+                                  # passaria a medir a FIT-019 em vez do que nomeia.
+                                  "scope": {"padrao": "p", "universo": "u",
+                                            "excluidos": ["nenhum"], "instrumento": "i"}})
         j, m = judge(f)
         self.assertEqual(j.errors, [], j.errors)
         self.assertEqual(m["claims"]["CLM-0006"]["status"], "REFUTED")
@@ -814,3 +832,176 @@ class YamlQuePerdeEmSilencio(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+# --------------------------------------------------- FIT-019
+SHA_DA_LISTA_FECHADA = "299f4bed433112f7790659f0ab90b813469eac1115cee963de7c06cc18cdffa0"
+
+
+def escopo(padrao="X-Canonical", universo="os 19 repositorios rastreados, ref main, em .py",
+           excluidos=None, instrumento="git grep -n"):
+    return {"padrao": padrao, "universo": universo,
+            "excluidos": excluidos if excluidos is not None else ["node_modules e build"],
+            "instrumento": instrumento}
+
+
+def prova_de_leitura(pid, refuta, com_escopo=False):
+    n = {"id": pid, "kind": "proof", "title": f"fixture {pid}", "refutes": [refuta],
+         "basis": "code_reading", "date": "2026-10-12",
+         "location": {"repo": "liceu-genome", "path": "tools/genome_check.py"}}
+    if com_escopo:
+        n["scope"] = escopo()
+    return n
+
+
+def fit019(files):
+    for n in files["08-fitness.yaml"]:
+        if n["id"] == "FIT-019":
+            return n
+    raise KeyError("FIT-019")
+
+
+class CoberturaDeclaradaDeBusca(unittest.TestCase):
+    """Prova de leitura sem escopo nao vige. VEREDITO, nao achado."""
+
+    def test_as_provas_de_leitura_sem_escopo_nao_vigem(self):
+        j, m = judge(base())
+        sc = m["scope_coverage"]
+        # Numero DERIVADO: escrever 40 aqui apodreceria a cada prova nova.
+        alvo = [x for x in base()["07-proofs.yaml"]
+                if x["basis"] in gsc.SCOPE_BASES and not x.get("scope")]
+        vivas = [x for x in alvo if x["id"] not in j.superseded_by]
+        self.assertEqual(len(sc["indeterminadas"]), len(vivas))
+        self.assertEqual(sc["com_scope"], 0)
+
+    def test_veredito_nao_e_achado_a_catraca_nao_dispara(self):
+        """O desenho inteiro depende disto: a FIT-019 nao entra em findings."""
+        j, m = judge(base())
+        self.assertEqual(j.errors, [], j.errors)
+        self.assertEqual([f for f in j.findings if f[0] == "FIT-019"], [])
+
+    def test_escopo_completo_faz_a_prova_voltar_a_viger(self):
+        """CONTROLE POSITIVO: sem ele, um juiz que rebaixasse TUDO passaria."""
+        _, antes = judge(base())
+        files = base()
+        node(files, "PRF-0006")["scope"] = escopo()
+        j, m = judge(files)
+        self.assertEqual(j.errors, [], j.errors)
+        self.assertNotIn("PRF-0006", j.indeterminate)
+        # DIFERENCA, nunca literal: o grafo ja tem prova com escopo, e um numero
+        # fixo aqui apodreceria na primeira prova nova que declarasse o seu.
+        self.assertEqual(m["scope_coverage"]["com_scope"],
+                         antes["scope_coverage"]["com_scope"] + 1)
+        # e a afirmacao que ela refutava volta de STALE para REFUTED
+        self.assertEqual(m["claims"]["CLM-0006"]["status"], "REFUTED")
+
+    def test_escopo_pela_metade_e_erro_duro_de_schema(self):
+        files = base()
+        node(files, "PRF-0006")["scope"] = {"padrao": "X", "universo": "Y"}
+        j, _ = judge(files)
+        self.assertTrue(any("PRF-0006" in e for e in j.errors), j.errors)
+
+    def test_excluidos_vazio_e_erro_duro(self):
+        """Array vazio nao se distingue de quem nao pensou no assunto."""
+        files = base()
+        node(files, "PRF-0006")["scope"] = escopo(excluidos=[])
+        j, _ = judge(files)
+        self.assertTrue(any("PRF-0006" in e for e in j.errors), j.errors)
+
+    def test_prova_por_teste_nao_e_cobrada(self):
+        """A fitness cobra LEITURA. Teste e observacao externa ficam de fora."""
+        j, m = judge(base())
+        outras = [x["id"] for x in base()["07-proofs.yaml"]
+                  if x["basis"] not in gsc.SCOPE_BASES]
+        self.assertTrue(outras)
+        self.assertEqual(set(outras) & set(m["scope_coverage"]["indeterminadas"]), set())
+
+
+class ListaFechada(unittest.TestCase):
+    """O LACRE. A isencao e uma lista de ids, e a lista nao cresce em silencio."""
+
+    def _ids(self):
+        return fit019(base())["instrument_introduced"]["proofs"]
+
+    def test_sha256_da_lista_esta_congelado(self):
+        h = hashlib.sha256("\n".join(sorted(self._ids())).encode()).hexdigest()
+        self.assertEqual(h, SHA_DA_LISTA_FECHADA,
+                         "a lista fechada mudou. Se foi para RETIRAR um id — uma prova "
+                         "ganhou escopo —, atualize este sha no mesmo PR. Se foi para "
+                         "ACRESCENTAR, pare: a lista nao isenta prova nova.")
+
+    def test_acrescentar_um_id_quebra_o_lacre(self):
+        """MUTACAO do proprio lacre: sem isto, o sha congelado seria enfeite."""
+        h = hashlib.sha256("\n".join(sorted(self._ids() + ["PRF-9001"])).encode()).hexdigest()
+        self.assertNotEqual(h, SHA_DA_LISTA_FECHADA)
+
+    def test_todo_id_da_lista_existe_no_grafo(self):
+        ids = {x["id"] for x in base()["07-proofs.yaml"]}
+        self.assertEqual([i for i in self._ids() if i not in ids], [])
+
+    def test_a_lista_nao_isenta_prova_de_fora(self):
+        j, m = judge(base())
+        self.assertEqual(m["scope_coverage"]["depois_da_introducao"], [])
+        self.assertTrue(set(m["scope_coverage"]["na_introducao"])
+                        <= set(j.sealed_at_introduction()))
+
+
+class IsencaoNaoEscondeRegressao(unittest.TestCase):
+    """As mutacoes que o titular exigiu: a isencao cobre o instrumento e nada mais.
+
+    Montagem: uma fitness de runtime de fixture cuja afirmacao e a CLM-0006 — que
+    hoje esta STALE so por provas da lista fechada — e uma divida `detection: code`
+    apontando para ela. E o braco 2 da catraca, o unico que le status.
+    """
+
+    def _livro(self, files):
+        add(files, "08-fitness.yaml", {"id": "FIT-900", "kind": "fitness",
+                                       "statement": "fixture de runtime.",
+                                       "evaluated_by": "runtime", "claim": "CLM-0006"})
+        add(files, "10-violations.yaml", {
+            "id": "VIO-9001", "kind": "violation", "fitness": "FIT-900",
+            "detection": "code", "observed": "fixture",
+            "tracked_in": {"repo": "liceu-genome"}})
+
+    def test_perda_so_da_lista_fechada_NAO_e_divida_obsoleta(self):
+        files = base()
+        self._livro(files)
+        j, m = judge(files)
+        self.assertEqual(m["claims"]["CLM-0006"]["status"], "STALE")
+        self.assertEqual([e for e in j.errors if "VIO-9001" in e], [], j.errors)
+        self.assertTrue(any("VIO-9001" in w and "insufici" in w for w in j.warnings),
+                        j.warnings)
+
+    def test_prova_NOVA_sem_escopo_nao_ganha_isencao(self):
+        files = base()
+        add(files, "07-proofs.yaml", prova_de_leitura("PRF-9001", "CLM-0006"))
+        j, m = judge(files)
+        self.assertEqual(m["scope_coverage"]["depois_da_introducao"], ["PRF-9001"])
+
+    def test_perda_MISTA_dispara_a_catraca(self):
+        """O coracao: uma prova de fora junto com duas da lista NAO e isentada."""
+        files = base()
+        self._livro(files)
+        add(files, "07-proofs.yaml", prova_de_leitura("PRF-9001", "CLM-0006"))
+        j, _ = judge(files)
+        self.assertTrue(any("DÍVIDA OBSOLETA VIO-9001" in e for e in j.errors), j.errors)
+
+    def test_prova_de_fora_COM_escopo_nao_precisa_de_isencao(self):
+        """Controle: com escopo ela vige, a CLM-0006 volta a REFUTED, nada dispara."""
+        files = base()
+        self._livro(files)
+        add(files, "07-proofs.yaml", prova_de_leitura("PRF-9001", "CLM-0006", com_escopo=True))
+        j, m = judge(files)
+        self.assertEqual(m["claims"]["CLM-0006"]["status"], "REFUTED")
+        self.assertEqual([e for e in j.errors if "VIO-9001" in e], [], j.errors)
+        self.assertEqual([w for w in j.warnings if "VIO-9001" in w], [])
+
+    def test_a_isencao_so_MANTEM_divida_nunca_apaga(self):
+        """A direcao da isencao: ela suprime 'remova do livro', nunca o contrario.
+
+        Se um dia ela errar, erra GUARDANDO divida — e nao perdoando-a.
+        """
+        files = base()
+        self._livro(files)
+        j, _ = judge(files)
+        aviso = [w for w in j.warnings if "VIO-9001" in w]
+        self.assertTrue(aviso)
+        self.assertIn("continua", aviso[0])

@@ -16,3 +16,44 @@
 - {id: FIT-016, kind: fitness, statement: "Previsao pre-registrada so se resolve pelo MUNDO REAL (observacao externa), so conta se a prova for POSTERIOR ao registro, e so vale se declarar o ato que a resolve. Previsao registrada depois do fato e explicacao do ocorrido, e explicacao do ocorrido nao mede base nenhuma.", evaluated_by: genome, check: prediction_pre_registration}
 - {id: FIT-017, kind: fitness, statement: "Produtor sem `repository` declara `hosted_in` apontando outro produtor que TENHA repositorio, mais a razao. Nenhuma fitness confere o kit contra o mundo: `repository: null` pode ser a verdade e mesmo assim nao dizer onde o codigo esta. Prosa em campo de nome maiusculo explica para humano; o juiz nao le prosa.", evaluated_by: genome, check: producer_hosting}
 - {id: FIT-018, kind: fitness, statement: "Invariante CONDICIONAL do contrato e executavel: o campo exigido 'quando' tal coisa esta no payload_schema (if/then, dependentRequired), e nao so na prosa de domain_invariants. Prosa explica para humano; gerador de vetores, boundary e produtor nao leem prosa — e quem le so o esquema acusa o produtor que obedeceu o contrato. A pergunta e por CAMPO: ter um `if` no esquema nao cobre outro campo. O vocabulario e estreito e declarado ('quando', 'somente se'); invariante escrito fora dele escapa, e isso e limite nomeado, nao cobertura. Versao RETIRED nao e cobrada (decisao do titular, 2026-09-23): ninguem pode publicar nela, e reescrever o esquema de uma versao aposentada seria mudar o que ja foi publicado — divida sem conserto ensina a ignorar o livro. DEPRECATED continua sendo cobrada, porque contrato depreciado ainda pode ser usado. O que se deixa de cobrar vira AVISO com a linha inteira: parar de contar nao e parar de olhar.", evaluated_by: genome, check: conditional_invariants}
+# FIT-019 — a cobertura declarada de busca. Veredito, nao achado: ver o statement.
+- id: FIT-019
+  kind: fitness
+  statement: "Prova de LEITURA declara a cobertura da busca: `scope` com `padrao`, `universo`, `excluidos` e
+    `instrumento`. Sem os quatro, a prova nao vige — veredito INDETERMINADO, que e INSUFICIENCIA
+    DECLARADA e nao violacao: a prova fica no grafo como historia e a afirmacao que ela sustentava
+    vira STALE, 'prove de novo', nunca UNPROVEN nem falsa. A RAZAO E UM DEFEITO MEDIDO DUAS VEZES NO
+    MESMO DIA: a PRF-0124 registrou que eu afirmei 'nada fixa a versao 0.24.0' apoiado numa busca
+    que nao cobria o arquivo que fixava, e horas depois a PRF-0128 registrou o mesmo defeito num
+    escopo mais estreito que a propria frase. Afirmacao negativa exige a busca que ACHARIA o
+    contrario, e quem le a prova nao tem como saber se ela foi feita se o escopo nao esta escrito.
+    POR QUE VEREDITO E NAO ACHADO, e isto e desenho e nao conveniencia: um achado por prova sem
+    escopo entraria em `self.findings`, e o braco 1 da catraca acusaria 40 VIOLACAO NOVA na primeira
+    execucao — obrigando a uma isencao larga o bastante para tambem absorver regressao real. O
+    veredito nao toca `findings`, reusa o mesmo mecanismo de `expired`, e nenhuma brecha precisa
+    existir. O QUE A FITNESS NAO FAZ: nao julga se o escopo e BOM. `universo: o repositorio` passa.
+    Ela cobra que o escopo exista e esteja completo, e isso move a pergunta de 'o autor buscou
+    direito?' para 'o autor disse onde buscou?' — a segunda e verificavel por quem le, a primeira
+    nao."
+  evaluated_by: genome
+  check: declared_search_scope
+  instrument_introduced:
+    date: "2026-10-12"
+    note: "As 40 provas de leitura vigentes no dia em que a FIT-019 passou a existir. Nenhuma tem `scope`,
+      e o zero e tautologico: o campo nao existia no schema antes deste commit. DECISAO DO TITULAR,
+      2026-10-12: lista fechada, e as antigas ACEITAS em INDETERMINADO — nao serao retrofitadas por
+      adivinhacao. Para as recentes eu mesmo rodei os comandos e poderia reconstruir o escopo; para
+      PRF-0001, PRF-0006 e PRF-0014 eu nao rodei, e escrever escopo que eu nao executei seria inventar
+      a medicao — exatamente o que esta fitness combate. Entao a lista nao e divida com prazo: e o
+      registro de que 40 provas medem o que alguem olhou, e nao se sabe o que existe. ELA SO ENCURTA:
+      uma prova sai daqui quando GANHA escopo completo, nunca porque alguem a acrescentou. Prova nova
+      nasce fora da lista; prova editada continua sem isencao, porque o id e o mesmo mas o conteudo
+      nao, e o lacre confere o conjunto de ids, nao o conteudo. O LACRE: sha256 da lista ordenada =
+      299f4bed433112f7790659f0ab90b813469eac1115cee963de7c06cc18cdffa0, congelado em
+      tools/test_genome_check.py::ListaFechada. Acrescentar um id reprova a CI."
+    proofs:
+      [PRF-0001, PRF-0006, PRF-0014, PRF-0021, PRF-0027, PRF-0028, PRF-0030, PRF-0032,
+       PRF-0036, PRF-0041, PRF-0044, PRF-0045, PRF-0047, PRF-0048, PRF-0050, PRF-0058,
+       PRF-0060, PRF-0066, PRF-0067, PRF-0070, PRF-0071, PRF-0085, PRF-0088, PRF-0092,
+       PRF-0093, PRF-0099, PRF-0110, PRF-0111, PRF-0113, PRF-0114, PRF-0115, PRF-0116,
+       PRF-0119, PRF-0121, PRF-0122, PRF-0124, PRF-0125, PRF-0127, PRF-0128, PRF-0129]
