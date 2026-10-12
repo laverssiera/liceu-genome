@@ -619,3 +619,13 @@
   kind: claim
   statement: "O que a lei do LICEU declara sobre o proprio estado confere com o estado: numero e situacao escritos na Constituicao e nos registries podem ser lidos como verdadeiros."
   asserted_by: "a forma dos proprios artefatos, que escrevem contagem e situacao como se fossem fato — e a ausencia de qualquer regra que as confira, o que faz a leitura confiante ser a unica disponivel"
+
+# Ciclo 25 — a decisao de classe, e a divida que ela cria.
+- id: CLM-0097
+  kind: claim
+  statement: "Corrigir o numero defasado resolve o caso: quem reconta depois de mudar mantem a lei verdadeira."
+  asserted_by: "a saida que o ecossistema praticou tres vezes — o changelog_2_5_0 corrigindo de 8/10, eu corrigindo de 11/17 no kit 0.25.1, e o resumo do Event Registry corrigido de 8/10/12 — sempre consertando o numero e nunca o mecanismo"
+- id: CLM-0098
+  kind: claim
+  statement: "A correcao do kit 0.25.1 vale para quem consome o kit: o numero certo esta na lei, logo esta em uso."
+  asserted_by: "leitura natural de 'corrigido em main', e a unica disponivel para quem nao abre o requirements.txt dos consumidores"
