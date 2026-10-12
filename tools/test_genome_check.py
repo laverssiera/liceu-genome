@@ -23,7 +23,7 @@ import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import genome_check as gc  # noqa: E402
-import genome_scope_check as gsc  # noqa: E402
+import genome_scope_check as gsco  # noqa: E402
 import genome_surface_check as gsc  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -830,8 +830,6 @@ class YamlQuePerdeEmSilencio(unittest.TestCase):
         self.assertEqual([p for p in gc.lint(ROOT / "genome") if "duplicada" in p], [])
 
 
-if __name__ == "__main__":
-    unittest.main(verbosity=2)
 # --------------------------------------------------- FIT-019
 SHA_DA_LISTA_FECHADA = "299f4bed433112f7790659f0ab90b813469eac1115cee963de7c06cc18cdffa0"
 
@@ -865,12 +863,18 @@ class CoberturaDeclaradaDeBusca(unittest.TestCase):
     def test_as_provas_de_leitura_sem_escopo_nao_vigem(self):
         j, m = judge(base())
         sc = m["scope_coverage"]
-        # Numero DERIVADO: escrever 40 aqui apodreceria a cada prova nova.
-        alvo = [x for x in base()["07-proofs.yaml"]
-                if x["basis"] in gsc.SCOPE_BASES and not x.get("scope")]
-        vivas = [x for x in alvo if x["id"] not in j.superseded_by]
-        self.assertEqual(len(sc["indeterminadas"]), len(vivas))
-        self.assertEqual(sc["com_scope"], 0)
+        # TUDO DERIVADO. Escrever 40 e 0 aqui apodreceria, e apodreceu: a
+        # PRF-0130 declarou o proprio escopo no mesmo PR e o literal 0 caiu.
+        leitura = [x for x in base()["07-proofs.yaml"]
+                   if x["basis"] in gsco.SCOPE_BASES and x["id"] not in j.superseded_by]
+        sem = [x for x in leitura if not gsco.escopo_completo(x)]
+        com = [x for x in leitura if gsco.escopo_completo(x)]
+        self.assertEqual(len(sc["indeterminadas"]), len(sem))
+        self.assertEqual(sc["com_scope"], len(com))
+        # O invariante que NAO apodrece: toda prova de leitura vigente esta de
+        # um lado ou do outro, e de um lado so.
+        self.assertEqual(sc["alvo"], len(sc["indeterminadas"]) + sc["com_scope"])
+        self.assertEqual(sc["alvo"], len(leitura))
 
     def test_veredito_nao_e_achado_a_catraca_nao_dispara(self):
         """O desenho inteiro depende disto: a FIT-019 nao entra em findings."""
@@ -910,7 +914,7 @@ class CoberturaDeclaradaDeBusca(unittest.TestCase):
         """A fitness cobra LEITURA. Teste e observacao externa ficam de fora."""
         j, m = judge(base())
         outras = [x["id"] for x in base()["07-proofs.yaml"]
-                  if x["basis"] not in gsc.SCOPE_BASES]
+                  if x["basis"] not in gsco.SCOPE_BASES]
         self.assertTrue(outras)
         self.assertEqual(set(outras) & set(m["scope_coverage"]["indeterminadas"]), set())
 
@@ -1005,3 +1009,7 @@ class IsencaoNaoEscondeRegressao(unittest.TestCase):
         aviso = [w for w in j.warnings if "VIO-9001" in w]
         self.assertTrue(aviso)
         self.assertIn("continua", aviso[0])
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)
