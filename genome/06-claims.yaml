@@ -667,3 +667,17 @@
   kind: claim
   statement: "O relatorio do ecossistema deriva do grafo: o que ele afirma sobre o dominio e o que as provas vigentes dizem."
   asserted_by: "a regra de que o unico numero anunciado e o que o genome_check imprime, e a suposicao — minha — de que ela ja cobria o bloco de dominio"
+
+# Ciclo 25 — as nove pecas do protocolo, finalmente lidas.
+- id: CLM-0107
+  kind: claim
+  statement: "Peca em formato que o conector nao le e peca NAO MENSURAVEL: presenca nao e conteudo, e conteudo nao ha como obter."
+  asserted_by: "a PRF-0091 e a PRF-0094, que mediram o conector devolvendo vazio para JPEG e, corretamente, recusaram derivar estado de nove pecas — e a leitura natural de que, nao havendo extrator, nao havia leitura possivel"
+- id: CLM-0108
+  kind: claim
+  statement: "As quatro pecas que faltavam ao conjunto do protocolo estao nas nove imagens de 02/10."
+  asserted_by: "a PRF-0091, que escreveu que e nelas que DEVEM estar a caderneta, o numero oficial protocolado, o comprovante da taxa maior e a via assinada da ART"
+- id: CLM-0109
+  kind: claim
+  statement: "Reconstruir um payload retranscrevendo-o equivale a extrai-lo: o conteudo e o mesmo, so muda o caminho."
+  asserted_by: "a forma como eu tratei o problema: o conector devolveu a imagem menor inline em vez de gravar, e eu reescrevi os 36.874 caracteres de base64 como se copiar fosse transportar"
