@@ -57,6 +57,7 @@ from pathlib import Path
 import genome_date_check
 import genome_privacy_check
 import genome_producer_hosting
+import genome_scope_check
 
 # O leitor estrito de YAML mora no KIT, e nao aqui: uma fonte, um comportamento.
 from liceu_protocol.liceu_registry_check import ChaveDuplicada, carregar_estrito
@@ -83,6 +84,10 @@ SCALE_REF = re.compile(r"^scale:[A-Z]+$")
 # O repositório do próprio genoma. Teste de regressão daqui o juiz abre; de
 # outro repositório, quem confere é a CI de lá (tools/genome_pfc_check.py).
 GENOME_REPO = "liceu-genome"
+
+# FIT-019 — cobertura declarada de busca. A regra, a lista fechada e os números
+# vivem em tools/genome_scope_check.py, pelo mesmo motivo da FIT-017 e da data:
+# a superfície da prova é aquele módulo, não este arquivo que muda a cada ciclo.
 
 # FIT-018 — invariante CONDICIONAL que vive só na prosa do contrato.
 # O vocabulário é ESTREITO de propósito, e o limite é declarado: só "quando" e
@@ -326,6 +331,7 @@ class Judge:
         self.kind: dict[str, list[dict]] = defaultdict(list)
         self.status: dict[str, str] = {}
         self.ephemeral: set[str] = set()
+        self.indeterminate: set[str] = set()   # FIT-019: prova de leitura sem escopo
         self.today: str = ""   # o dia contra o qual este juiz julgou (UTC)
 
     # ─────────────────────────────────────────── 1. schema e índice
@@ -450,6 +456,14 @@ class Judge:
         self.errors.extend(genome_date_check.achados(self.kind, today))
 
     # ─────────────────────────────────────────── 3. derivação
+    def scope_indeterminate(self) -> set[str]:
+        """FIT-019 — a regra mora em genome_scope_check; o juiz só aplica."""
+        return genome_scope_check.indeterminadas(self.kind["proof"])
+
+    def sealed_at_introduction(self) -> dict[str, tuple[str, str]]:
+        """A lista fechada do instrumento — ver genome_scope_check.lista_fechada."""
+        return genome_scope_check.lista_fechada(self.kind["fitness"])
+
     @staticmethod
     def _expired(p: dict, today: str) -> bool:
         exp = p.get("expires_at")
@@ -461,6 +475,7 @@ class Judge:
         # Vigente = nenhuma outra prova a supersede E não venceu.
         self.superseded_by: dict[str, str] = {}
         self.expired = {p["id"] for p in self.kind["proof"] if self._expired(p, today)}
+        self.indeterminate = self.scope_indeterminate()
         for p in self.kind["proof"]:
             for s in p.get("supersedes", []):
                 self.superseded_by[s] = p["id"]
@@ -468,7 +483,8 @@ class Judge:
         self.history: dict[str, list[dict]] = defaultdict(list)   # claim -> provas, vigentes ou não
         had_any: dict[str, bool] = defaultdict(bool)
         for p in self.kind["proof"]:
-            current = p["id"] not in self.superseded_by and p["id"] not in self.expired
+            current = (p["id"] not in self.superseded_by and p["id"] not in self.expired
+                       and p["id"] not in self.indeterminate)
             for c in p.get("proves", []) + p.get("refutes", []):
                 had_any[c] = True
             for c in p.get("proves", []):
@@ -512,6 +528,12 @@ class Judge:
                 out.append(f"{self.verdict_of(p)} por {p['id']} até {until} (superseded por {nxt})")
             elif p["id"] in getattr(self, "expired", set()):
                 out.append(f"{self.verdict_of(p)} por {p['id']} até {p['expires_at']} (evidência vencida — STALE)")
+            elif p["id"] in getattr(self, "indeterminate", set()):
+                selo = self.sealed_at_introduction().get(p["id"])
+                motivo = (f"escopo de busca não declarado — INDETERMINADO desde {selo[1]} "
+                          f"pela introdução da {selo[0]}" if selo else
+                          "escopo de busca não declarado — INDETERMINADO (FIT-019)")
+                out.append(f"{self.verdict_of(p)} por {p['id']} ({motivo})")
             else:
                 out.append(f"{self.verdict_of(p)} por {p['id']} desde {p.get('date')}")
         return out
@@ -904,9 +926,55 @@ class Judge:
             f = fitness.get(v["fitness"])
             claim = f.get("claim") if f else None
             if claim and self.status.get(claim) != "REFUTED":
+                selo = self._perda_so_por_instrumento(claim)
+                if selo:
+                    self.warnings.append(
+                        f"{v['id']}: {claim} está {self.status.get(claim)} e NÃO é dívida obsoleta — "
+                        f"a refutação caiu por insuficiência declarada na introdução da {selo[0]} "
+                        f"em {selo[1]} (lista fechada), não por correção provada. A dívida continua "
+                        f"no livro; o que falta é o escopo da prova, não a prova.")
+                    continue
                 self.errors.append(
                     f"DÍVIDA OBSOLETA {v['id']}: {claim} está {self.status.get(claim)}, não REFUTED — "
                     f"a refutação que sustentava a dívida não vige; remova do livro (ou registre a prova)")
+
+    def _perda_so_por_instrumento(self, cid: str) -> tuple[str, str] | None:
+        """A refutação caiu SÓ por prova da lista fechada? Então não é dívida obsoleta.
+
+        Se QUALQUER prova fora da lista participa da perda, devolve None e a
+        catraca dispara — é o que impede a isenção de esconder regressão: prova
+        nova nasce fora da lista, e prova editada continua fora dela.
+        """
+        perdidas = [pr["id"] for pr in self.history.get(cid, [])
+                    if cid in (pr.get("refutes") or [])
+                    and pr["id"] not in self.superseded_by
+                    and pr["id"] not in self.expired
+                    and pr["id"] in self.indeterminate]
+        return genome_scope_check.isenta(perdidas, self.sealed_at_introduction())
+
+    def scope_coverage(self) -> dict:
+        """FIT-019 em números: quem caiu, por que, e quem perdeu sustentação.
+
+        `depois_da_introducao` é a lista que importa: prova de leitura sem escopo
+        que NÃO está na lista fechada nasceu ou foi editada depois do
+        instrumento, e nenhuma isenção a cobre.
+        """
+        vigentes = {pr["id"] for pr in self.kind["proof"]
+                    if pr["id"] not in self.superseded_by and pr["id"] not in self.expired}
+        out = genome_scope_check.cobertura(self.kind["proof"], vigentes,
+                                           self.sealed_at_introduction(), self.indeterminate)
+        perdidas: dict[str, list[str]] = {}
+        for c in self.kind["claim"]:
+            cid = c["id"]
+            if self.status.get(cid) != "STALE":
+                continue
+            quem = sorted(pr["id"] for pr in self.history.get(cid, [])
+                          if pr["id"] in self.indeterminate
+                          and pr["id"] not in self.superseded_by
+                          and pr["id"] not in self.expired)
+            if quem:
+                perdidas[cid] = quem
+        return {**out, "claims_sem_sustentacao": perdidas}
 
     # ─────────────────────────────────────────── 6. Self-Model
     def blocked_scales(self) -> dict[str, list]:
@@ -1015,6 +1083,7 @@ class Judge:
                            "history": self.claim_history(c)} for c in claims},
             "proofs_superseded": sorted(self.superseded_by.items()),
             "proofs_expired": sorted(self.expired),
+            "scope_coverage": self.scope_coverage(),
             "q_multi_emitter": emitters,
             "q_screens_on_proposta": proposta_screens,
             "q_blocks_regional": regional,
@@ -1141,6 +1210,28 @@ def text_report(m: dict, j: Judge) -> str:
     if m["proofs_expired"]:
         L.append(f"PROVAS VENCIDAS: {', '.join(m['proofs_expired'])}  "
                  f"(a afirmação vira STALE — prove de novo, não é falsa)")
+        L.append("")
+    sc = m.get("scope_coverage") or {}
+    if sc.get("alvo"):
+        L.append("COBERTURA DECLARADA DE BUSCA (FIT-019) — insuficiência declarada, "
+                 "não violação")
+        L.append(f"  provas de leitura vigentes ............. {sc['alvo']}")
+        L.append(f"  com `scope` completo ................... {sc['com_scope']}")
+        L.append(f"  INDETERMINADAS ........................ {len(sc['indeterminadas'])}")
+        quem = ", ".join(f"{f} em {d}" for f, d in sc["introducao"]) or "nenhuma"
+        L.append(f"    na introdução do instrumento ({quem}), lista fechada: "
+                 f"{len(sc['na_introducao'])}")
+        L.append(f"    DEPOIS da introdução, sem isenção nenhuma: "
+                 f"{len(sc['depois_da_introducao'])}")
+        for i in sc["depois_da_introducao"]:
+            L.append(f"      {i}  — prova de leitura sem escopo, nascida ou editada "
+                     f"depois do instrumento")
+        perdidas = sc["claims_sem_sustentacao"]
+        L.append(f"  afirmações que perderam toda a sustentação: {len(perdidas)}")
+        for cid, quais in perdidas.items():
+            L.append(f"    STALE  {cid:9} perdeu {', '.join(quais)}")
+        L.append("  STALE é 'prove de novo', nunca 'é falsa': a prova fica no grafo como")
+        L.append("  história, e o que falta é o escopo da busca, não a medição.")
         L.append("")
     L.append("AFIRMAÇÕES")
     for cid, v in m["claims"].items():

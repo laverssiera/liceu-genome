@@ -809,6 +809,44 @@
             }
           }
         },
+        "scope": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "padrao",
+            "universo",
+            "excluidos",
+            "instrumento"
+          ],
+          "description": "COBERTURA DECLARADA DA BUSCA (FIT-019), para prova de leitura. Afirmacao negativa — 'nada le este campo', 'nao existe tal chamada' — so vale com o escopo que ACHARIA o contrario; sem ele a prova mede o que o autor olhou, nao o que existe. POR QUE NAO ESTA EM required AQUI, e e deliberado: scope ausente e INSUFICIENCIA DECLARADA, nao ma-formacao — vira veredito INDETERMINADO na FIT-019 e a prova continua no grafo como historia. Exigir aqui mataria o juiz na validacao, antes de qualquer veredito, nas 40 provas que antecedem o instrumento; e a lista de isencao teria de ser escrita DUAS vezes, aqui e na fitness, que e a objecao do ADR-002 e a regra de classe de 2026-10-09. O schema exige a FORMA: scope escrito pela metade e erro duro, porque meio escopo engana mais que escopo nenhum.",
+          "properties": {
+            "padrao": {
+              "type": "string",
+              "minLength": 1,
+              "description": "A expressao buscada, literal, como foi passada ao instrumento."
+            },
+            "universo": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Onde se buscou, com precisao bastante para repetir: repositorios, refs, extensoes."
+            },
+            "excluidos": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "minLength": 1
+              },
+              "description": "O que ficou FORA do universo, e por que. Vazio nao e permitido: 'nada foi excluido' se escreve — 'nenhum: o universo e exaustivo' — porque array vazio nao se distingue de quem nao pensou no assunto."
+            },
+            "instrumento": {
+              "type": "string",
+              "minLength": 1,
+              "description": "O comando que produziu o resultado, repetivel por outra pessoa."
+            }
+          }
+        },
         "expires_at": {
           "type": "string",
           "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$",
@@ -935,6 +973,34 @@
         },
         "check": {
           "type": "string"
+        },
+        "instrument_introduced": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "date",
+            "proofs",
+            "note"
+          ],
+          "description": "LISTA FECHADA das provas que ESTA fitness rebaixou no dia em que passou a existir. Serve a uma coisa so: separar, no relatorio e na catraca, o rebaixamento causado pelo INSTRUMENTO NOVO do rebaixamento causado por REGRESSAO. POR QUE LISTA DE IDS E NAO PREDICADO DE DATA: um criterio como 'prova anterior a tal data' isenta qualquer prova retrodatada, e uma regressao real que caia na mesma fitness no mesmo dia fica indistinguivel de um rebaixamento por instrumento — o rebaixamento tem a MESMA FORMA nos dois casos. A lista de ids nao tem esse furo: prova NOVA nasce fora dela, prova EDITADA nao ganha isencao, e a lista so encurta. O lacre e um teste — o sha256 da lista ordenada esta congelado em tools/test_genome_check.py, e acrescentar um id reprova a CI antes de isentar coisa alguma.",
+          "properties": {
+            "date": {
+              "type": "string",
+              "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
+            },
+            "proofs": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "pattern": "^PRF-[0-9]{4}$"
+              }
+            },
+            "note": {
+              "type": "string"
+            }
+          }
         },
         "claim": {
           "type": "string"

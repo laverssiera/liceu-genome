@@ -629,3 +629,13 @@
   kind: claim
   statement: "A correcao do kit 0.25.1 vale para quem consome o kit: o numero certo esta na lei, logo esta em uso."
   asserted_by: "leitura natural de 'corrigido em main', e a unica disponivel para quem nao abre o requirements.txt dos consumidores"
+
+# Ciclo 25 — a cobertura declarada de busca.
+- id: CLM-0099
+  kind: claim
+  statement: "Prova de leitura que o juiz aceita mede o que existe: se o grafo a aceitou, a busca que a produziu cobriu o assunto."
+  asserted_by: "a pratica do ecossistema ate 2026-10-12 — quarenta provas de leitura vigentes, todas aceitas pelo juiz, nenhuma declarando onde se buscou — e a leitura natural de PASSA, que nao distingue 'conferido' de 'conferido onde deu'"
+- id: CLM-0100
+  kind: claim
+  statement: "Uma isencao de catraca com id da fitness e data separa o rebaixamento causado por instrumento novo do rebaixamento causado por regressao."
+  asserted_by: "o item 4 do plano do ciclo 25, que pediu `instrument_introduced` nessa forma — e e a forma que parece bastar, porque instrumento tem id e nasce num dia"
