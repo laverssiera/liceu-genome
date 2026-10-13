@@ -687,3 +687,13 @@
   kind: claim
   statement: "Comparar o `registry_version` de um registry diz se o conteudo dele mudou: e para isso que o campo existe."
   asserted_by: "o nome do campo e o uso que o ecossistema faz dele no Contract Registry, onde o juiz o imprime a cada execucao e a FIT-010 o cita ao acusar divergencia — a leitura natural de que todo registry se versiona assim"
+
+# Ciclo 25 — C25-04: o custo sob log duravel e fsync.
+- id: CLM-0111
+  kind: claim
+  statement: "O custo da opcao B e o custo de tres hospedagens, e os cenarios de 2026-10-01 ja o orcam: US$ 12 a 36 por mes."
+  asserted_by: "o proprio documento de 2026-10-01, que mediu porte de processo e leu precos com fonte e data, e cuja conclusao em tres cenarios e a unica cifra que o ecossistema tem"
+- id: CLM-0112
+  kind: claim
+  statement: "Uma medicao de latencia de fsync caracteriza o disco: rodou o instrumento, tem o numero."
+  asserted_by: "a forma como eu mesmo escrevi a primeira versao desta medicao — uma execucao, uma tabela de percentis, e uma conclusao sobre a cauda"
