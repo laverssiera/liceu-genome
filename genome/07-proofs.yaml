@@ -2483,3 +2483,89 @@
     path: cv-backend-core/tools/control_plane_gate.py
     pr: 96
     note: "POR EXECUCAO: 23/23. Liguei sys.monitoring — process-wide, que e o que pega a thread do portal do TestClient, porque tracer so da thread principal mediria zero — sobre os 39 testes de autoridade, e todas as 23 operacoes de banco sao percorridas, sem nenhuma linha fria. ISSO NAO DIZ NADA SOBRE CARACTERIZACAO: linha executada so prova que o interpretador esteve ali. Caracterizada e a operacao cujo EFEITO esta preso, e a unica forma de medir e MUDAR E VER SE GRITA. POR MUTACAO: 17/23. Uma mutacao por operacao, serialmente, com o banco apagado antes de cada execucao — mutacao que corrompe estado nao pode envenenar a execucao seguinte e virar 'detectada' por contagio, defeito que eu ja cometi neste ecossistema rodando mutacao em paralelo com a suite contra o mesmo SQLite. AS SEIS QUE PASSARAM SEM NINGUEM VER: W02, a semeadura gravando role_since_epoch=99 — e esse campo e a auditoria de promocao, ele responde desde quando a instancia tem o papel; R02, o guarda contra semeadura duplicada; e as quatro db.refresh. DUAS ERAM CARACTERIZAVEIS E GANHARAM TESTE, e as duas estao em `ensure_state()`, a funcao que CRIA as linhas da camada A. O teste de R02 prende um caminho que nao estava coberto NEM DOCUMENTADO: o bloco de semeadura so roda quando a linha de estado esta ausente, e o `if db.get(AuthorityInstance, iid) is None` dentro dele so e alcancavel quando o estado sumiu E as instancias ficaram — restauracao parcial. Sem o guarda, a segunda semeadura insere instance_id repetido, e `instance_id` e chave primaria: o commit levanta IntegrityError e a rota devolve 500. AS QUATRO db.refresh FICARAM DECLARADAS NAO-CARACTERIZAVEL, COM RAZAO MEDIDA e nao inferida: app/database.py linha 12 chama sessionmaker(autocommit=False, autoflush=False, bind=engine) SEM passar expire_on_commit, que portanto vale True — depois do commit os atributos estao expirados e qualquer leitura os recarrega sozinha, entao o refresh muda QUANDO o SELECT sai e nao O QUE o chamador observa; todo leitor le com a sessao ABERTA, porque get_db fecha no finally depois de o handler retornar e o unico leitor externo e app/main.py na rota de attest, dentro do handler; e a linha de escalate_to_human NUNCA sai do servico, medido que nenhum chamador fora do modulo usa a funcao. A CATEGORIA E CONFERIDA NOS DOIS SENTIDOS, e e isso que a separa de uma isencao: operacao FORA da lista tem de ser PEGA, operacao DENTRO da lista tem de NAO ser pega, e declaracao falsa FALHA O PORTAO. O rotulo nao e estacionamento. E ela e estreita por teste estatico: ESCRITA nao pode entrar nela, porque escrita que nao se caracteriza nao e 'sem efeito', e buraco. RESULTADO FINAL: 19/19 das caracterizaveis, 4 declaradas sem efeito observavel e as 4 confirmadas pela propria mutacao, PORTAO ABERTO. O PORTAO FALHA FECHADO EM CINCO SITUACOES, nenhuma degradando para aviso: inventario defasado, operacao sem mutacao declarada (senao o denominador sobe e a cobertura sobe junto de graca), linha de base vermelha (sem baseline verde, 'o teste falhou' nao distingue mutacao pega de suite quebrada), declaracao de nao-caracterizavel falsa, e caracterizacao abaixo de 100% das caracterizaveis. UM LIMITE DECLARADO E NAO CONTORNADO: a caracterizacao corre em SQLite, entao semantica de transacao, bloqueio e concorrencia do Postgres NAO esta caracterizada por estes testes; o repositorio tem job contra Postgres real, mas ele so exercita bootstrap_database() e /ready. E PORTAO ABERTO REMOVE O IMPEDIMENTO, NAO CRIA A OBRIGACAO: nenhuma linha do control plane mudou, nada foi extraido, e o custo da opcao B segue sendo a pergunta do C25-04."
+
+# Ciclo 25 — C25-03: a Testemunha observa, grava, morre e continua sabendo.
+- id: PRF-0134
+  kind: proof
+  title: "Toda concordancia que este sistema ja aceitou veio de literal escrito a mao: nenhuma rota /authority diz quem respondeu"
+  refutes: [CLM-0103]
+  basis: test
+  date: "2026-10-13"
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/authority/prova_de_observacao.py
+    name: "a CONCORDANCIA produzida por medicao (item NAO-MENSURAVEL da prova)"
+    pr: 97
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths:
+      - infra/authority/testemunha.py
+      - infra/authority/prova_de_observacao.py
+    content_hash: "ff3032e9a8a258493b1597e5399ee8f7d6a039e4a844c5d6e4e3f3ef64ec3156"
+    commit: "afff7895c39a42999e9abfd6f9c5162658ed831a"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/authority/prova_de_observacao.py
+    pr: 97
+    note: "O QUE A PROVA MEDIU, com dois processos de verdade — uvicorn servindo o app como Ativa e a Testemunha como segundo processo: 15 passa, 0 falha, 2 nao-mensuravel. A Testemunha observa e grava com relogio e rota PROPRIOS; o voto e sincronizado ANTES de sair; o kill -9 na pausa declarada nao o apaga; com a rota ate a Ativa CORTADA (porta sem ninguem escutando, 'conexao recusada') ela AINDA sabe que votou, logo nao releu de ninguem; e a transicao de epoca 1 -> 2 fica no diario entre dois relogios dela. O D-040 NA FORMA MAIS FORTE QUE SE CONSEGUIU MONTAR: logo depois do kill -9 a Testemunha JA decidiu e o plano nao soube — a Sucessora nao assume, abre escalonamento com dossie e a epoca nao anda. O ACHADO QUE REFUTA A AFIRMACAO, e ele e do plano e nao meu: attest() exige que a sonda da Sucessora reporte o ALVO da concordancia ('medir uma e avalizar outra nao vale', 409 attestation_successor_probe_identity_mismatch), e a unica sonda que existe le `active_instance_id`, que e quem esta ATIVA e nunca quem RESPONDEU. Medido: snapshot() devolve federation_id, authority_epoch, active_instance_id, issuer_instance_id e instances[], e a busca por qualquer campo de auto-identificacao em app/main.py e no servico devolve NENHUM. Consequencia: TODA concordancia que este sistema ja aceitou veio de literal escrito a mao nos testes, nunca de sonda. O voto DURAVEL funciona; o que nao existe e a observacao que o tornaria cumprivel. A DECISAO DO TITULAR SOBRE A CLM-0006, 2026-10-13, e a leitura (b): 'sob a leitura (a), a Testemunha seria provada observadora enquanto o que ela observa e uma string que alguem digitou. Os bloqueadores cairiam de 3 para 2 e nada no sistema teria mudado — que e a definicao exata de declaracao melhorando um numero. E o que o PFC existe para impedir.' Entao a CLM-0006 CONTINUA ABERTA e os bloqueadores continuam tres, por decisao e com a razao escrita. A PRIMITIVA QUE FALTA, nomeada pela medicao e nao por revisao de desenho: uma rota pela qual a instancia diga QUEM ELA E, assinada e com a resposta atribuivel a quem a produziu. O titular mediu o alcance disso e e maior do que a prova disse: esta a montante dos DOIS bloqueadores, nao de um — com ela, a Testemunha observa quem respondeu em vez de quem foi declarada ativa, E a promocao da Sucessora pode ser provada pela propria instancia se identificando sob a epoca nova. Por isso o C25-05 passa a ter PRE-REQUISITO: antes dele, a rota de auto-identificacao. E tarefa e nao incognita, pelo critterio da PRF-0108: nada falta de informacao para faze-la. A PRF-0065 NAO FOI SUPERSEDIDA e a superficie dela segue inalterada: este trabalho COMPOE com a sonda em vez de altera-la, porque superseder insinuaria que o comportamento provado mudou, e ele nao mudou. O QUE ESTA PROVA NAO FECHA: nao torna a Testemunha honesta — quem roda o processo pode mentir sobre o que mediu; e nao da a ela fonte independente para o VALOR da epoca, porque nenhuma das cinco rotas /authority responde sem terminar na mesma linha de authority_state. O que e dela e a OBSERVACAO, o par (quando eu vi, por onde eu vi), e e isso que o passo da rota cortada prova ser irredutivel: as chaves de /authority/state sao active_instance_id, authority_epoch, federation_id, instances, issuer_instance_id e status, e nenhuma e um relogio dela."
+
+- id: PRF-0135
+  kind: proof
+  title: "Voto duravel que nao registra TUDO o que o plano vai exigir nao e duravel: a falta apareceu duas vezes, e as duas pelo proprio plano recusando"
+  refutes: [CLM-0104]
+  basis: test
+  date: "2026-10-13"
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/authority/test_diario_testemunha.py
+    name: "OVotoVaiAoDiscoAntesDeSair"
+    pr: 97
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths:
+      - infra/authority/diario_testemunha.py
+      - infra/authority/test_diario_testemunha.py
+    content_hash: "7e43b79f9d0d6b67ef095878cebe5ebab02628bd0bd76de87115bcd52fd5f8a5"
+    commit: "afff7895c39a42999e9abfd6f9c5162658ed831a"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/authority/diario_testemunha.py
+    pr: 97
+    note: "ESTE DEFEITO ERA MEU, e a prova o achou em dois passos — cada um foi a validacao do PROPRIO PLANO me dizendo o que eu havia deixado de persistir. Primeiro faltava a identidade da ATIVA: o reenvio precisava dizer QUEM foi visto, e attest() recusou com 422 attestation_identity_required, 'alcancar uma porta nao e reconhecer uma instancia'. Corrigido, faltava a da SUCESSORA: attest() recusou com 409 attestation_successor_probe_identity_mismatch, 'medir uma e avalizar outra nao vale'. A LICAO E GERAL e esta escrita no codigo: um voto duravel que nao registra TUDO o que o plano vai exigir para aceita-lo nao e duravel, so PARECE. E preencher no reenvio o que faltou seria inventar a medicao — o defeito que este ecossistema combate desde o primeiro ciclo —, entao `reenviavel()` recusa votar sem as duas observacoes em vez de completar a falta. O QUE O DIARIO GARANTE, e cada coisa tem teste de mutacao: fsync NAO esta dentro de try, porque diario que engole falha de sincronizacao promete durabilidade que nao tem; um registro por abertura, para que o que esta no arquivo esteja sincronizado e o que nao esta nao tenha sido escrito; escrita partida e ACUSADA — ultima linha sem newline vira TRUNCADA, linha ilegivel no meio vira ILEGIVEL —, porque um leitor que descarte linha quebrada em silencio transforma log corrompido em 'nada aconteceu', que e a leitura mais perigosa possivel porque PARECE tranquilidade; e marcar_enviado ACRESCENTA em vez de reescrever, porque a prova de que havia voto pendente nao pode ser apagada pela entrega. 26 testes. O QUE O kill -9 PROVA E O QUE ELE NAO PROVA, e a distincao esta declarada ANTES do resultado e nao depois: matar o PROCESSO nao testa fsync. Depois do write o dado esta no cache do sistema operacional, que continua vivo quando o processo morre — o registro sobrevive COM OU SEM fsync. O fsync protege contra a morte da MAQUINA, e isso exigiria queda de energia ou injecao de falha no dispositivo. NAO-MENSURAVEL neste ambiente, e nao se chama o kill -9 de prova de fsync."
+
+# Ciclo 25 — a observacao do titular: a mesma classe do escopo, no TEMPO.
+- id: PRF-0136
+  kind: proof
+  title: "A versao do kit e parte do instrumento — e o veredito e identico entre 0.24.0 e 0.26.0, entao nenhuma prova precisa ser refeita"
+  refutes: [CLM-0105]
+  basis: record_reading
+  date: "2026-10-13"
+  scope:
+    padrao: "diff dos cinco artefatos governados e dos cinco arquivos de ferramental do kit entre as refs; e o veredito completo do juiz (erros, achados de fitness, status de cada afirmacao, cadeia por escala) contra cada kit"
+    universo: "liceu-protocol nas refs v0.24.0, v0.25.0 e main (0.26.0); e o grafo do liceu-genome em main, julgado tres vezes, uma por kit"
+    excluidos:
+      - "docs/ do liceu-protocol: nao sao artefatos governados e nenhuma FIT os le"
+      - "nenhum outro: os cinco artefatos e os cinco .py do kit entraram todos, e o juiz rodou inteiro contra cada ref — nao e amostra"
+    instrumento: "git diff --stat entre as refs, mais um percurso que extrai o kit de cada ref com `git show` e constroi um Judge apontado para ele pelos parametros `path` de load_kit_registry, load_scale_order e load_kit_producers"
+  location:
+    repo: liceu-protocol
+    path: liceu_protocol/VERSION
+    note: "A OBSERVACAO E DO TITULAR, 2026-10-13, e o relatorio daquele dia nao a tinha: ha TRES VERSOES EM JOGO — lei em 0.26.0, tag publicada em 0.25.0, maquina em 0.24.0. 'A versao do kit e parte do instrumento. O FIT-019 exige instrumento declarado no escopo, e prova produzida nesta maquina foi produzida contra um kit duas versoes atras da lei. Se qualquer FIT mudou entre 0.24 e 0.26, essas provas precisam declarar a versao e, onde o FIT mudou, serem refeitas. E a mesma classe do escopo, aplicada ao TEMPO em vez do espaco.' A REGRA ESTA CORRETA E FOI ACEITA. O QUE A MEDICAO ACRESCENTA E O LIMITE DELA: entre v0.24.0 e main mudaram apenas docs (dois arquivos, nao governados), MANIFEST, VERSION, pyproject e os TRES registries — contract +244 linhas (os quatro contratos do plano de autoridade), event +71, producer -8 (as contagens removidas pela regra de classe). NAO MUDOU NENHUM dos cinco arquivos de ferramental, e NAO MUDOU a Constituicao. E O VEREDITO E IDENTICO NAS TRES VERSOES, medido rodando o juiz inteiro contra cada kit: 0 erros, 0 achados de fitness, 3 avisos (os conhecidos da FIT-018 sobre versoes RETIRED), cadeia estrutural 3/5 e substantiva 0/5, 40 provas indeterminadas. Nenhuma afirmacao muda de estado. A unica diferenca e o numero que o juiz IMPRIME: contract registry 2.13.0, 2.14.0 e 2.15.0. CONCLUSAO, e ela e mais estreita que a regra: NENHUMA PROVA PRECISA SER REFEITA. A classe e real — a versao do kit e parte do instrumento e tem de entrar no escopo — e a instancia esta VAZIA hoje. Isso so se sabia medindo, e e por isso que a regra entra como regra e nao como divida. O QUE FICA COMO TAREFA: o campo `instrumento` do `scope` passa a nomear a versao do kit quando o instrumento a carregar. Nao exige fitness nova nem mexe no denominador — e exigencia de conteudo num campo que ja existe."
+
+- id: PRF-0137
+  kind: proof
+  title: "O grafo sabia desde 27/09 e o relatorio nao derivou dele: a PRF-0046 ja media que a via assinada e da ART ERRADA"
+  refutes: [CLM-0106]
+  basis: record_reading
+  date: "2026-10-13"
+  scope:
+    padrao: "as palavras `retificadora`, `caderneta`, `4 vias` e `ART` nas afirmacoes, incognitas e notas de prova do grafo; e a leitura do documento vigente no acervo"
+    universo: "genome/06-claims.yaml, genome/07-proofs.yaml e genome/09-unknowns.yaml em main; e a pasta CASA_01 do acervo da P-001 no Drive do titular, 27 itens listados por parentId"
+    excluidos:
+      - "o conteudo pessoal do acervo: nome e CPF do contratante e do responsavel tecnico, endereco, matricula e CEP foram LIDOS para derivar estado e NAO entram aqui nem em repositorio nenhum, pela regra de minimizacao"
+      - "as outras pastas do Drive: a varredura e do acervo da P-001, e isso esta dito em vez de insinuado"
+    instrumento: "yaml.safe_load sobre os tres arquivos do grafo com busca por termo; e as ferramentas de Drive (search_files por parentId e read_file_content) sobre o acervo"
+  location:
+    repo: liceu-genome
+    path: genome/07-proofs.yaml
+    note: "O DEFEITO E DO MEU RELATORIO, NAO DO GRAFO. Em 2026-10-13 eu apresentei como derivacao NOVA do acervo que a ART retificadora esta registrada em 15/09 e sem via assinada. A PRF-0046, de 2026-09-27, ja dizia com todas as letras: 'o item 4 tem via assinada da ART ERRADA — a valida e a retificadora, registrada em 2026-09-15, com 97,20 m2 nos dois campos e citada pelo selo da planta, enquanto a assinada e a substituida'. O grafo nunca ficou errado: o relatorio e que nao derivou dele. O QUE A LEITURA DE HOJE CONFIRMA, e confirmar nao e descobrir: o documento vigente traz `Registrada em: 15/09/2026`, declara-se quitada, tem 97,20 m2 nas duas atividades tecnicas, e o campo 8 (Assinaturas) esta EM BRANCO — o formulario traz 'de __ de __', 'Local' e 'data' sem preenchimento. E a nomenclatura do proprio acervo carrega o discriminador: a ART substituida tem arquivo com `_assinado` no nome e a vigente retificadora nao. Registrada NAO e assinada. POR QUE ISTO VALE SER REGISTRADO, e nao e autocritica decorativa: a afirmacao 'a ART retificadora esta assinada' entrou numa conversa de outubro a partir de fala, e nenhuma prova foi superseded — porque o que aconteceu nao foi medicao nova, foi RELATO. O grafo tem supersessao para medicao que substitui medicao; nao tem, e nao deve ter, mecanismo para relato substituir prova. A CORRECAO DE PROCEDIMENTO: o bloco de dominio do relatorio deriva das provas VIGENTES do grafo, e quando for remedido do acervo, o resultado e conferido CONTRA elas antes de ser anunciado como novo. Foi o titular quem apontou o padrao, e o apontou pela quarta vez no mesmo dia: 'e a terceira vez hoje que o seu trabalho passado continha a resposta'. A quarta e esta, e e a mais grave das quatro, porque a resposta nao estava num nome de arquivo — estava numa prova do genoma, com data."
