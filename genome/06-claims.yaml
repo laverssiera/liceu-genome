@@ -681,3 +681,9 @@
   kind: claim
   statement: "Reconstruir um payload retranscrevendo-o equivale a extrai-lo: o conteudo e o mesmo, so muda o caminho."
   asserted_by: "a forma como eu tratei o problema: o conector devolveu a imagem menor inline em vez de gravar, e eu reescrevi os 36.874 caracteres de base64 como se copiar fosse transportar"
+
+# Ciclo 25 — a publicacao do kit 0.26.0.
+- id: CLM-0110
+  kind: claim
+  statement: "Comparar o `registry_version` de um registry diz se o conteudo dele mudou: e para isso que o campo existe."
+  asserted_by: "o nome do campo e o uso que o ecossistema faz dele no Contract Registry, onde o juiz o imprime a cada execucao e a FIT-010 o cita ao acusar divergencia — a leitura natural de que todo registry se versiona assim"
