@@ -725,3 +725,7 @@
   kind: claim
   statement: "A lista das declaracoes de estado da lei pode ser derivada por instrumento guardado, com a origem de cada uma declarada, e falhando fechado quando o mapa e a lei divergem."
   asserted_by: "ninguem ainda — a afirmacao entra para ser medida, porque o instrumento de 09/10 nao foi guardado e a regra do titular exige derivar em vez de escrever"
+- id: CLM-0119
+  kind: claim
+  statement: "Se o portao das declaracoes de estado avalia o grafo INTEIRO em vez do diff, entao ele ja cobre a deriva: campo cuja origem saiu seria pego."
+  asserted_by: "o titular em 2026-10-13, na pergunta que decidiu o item 3 — 'Se avalia so o diff, ha um buraco que o portao nao cobre e a FIT-020 cobriria: deriva. Um campo hoje corretamente derivado vira orfao depois, porque o artefato de origem saiu. Diff nao pega.' A condicional e boa e o antecedente e verdadeiro; o consequente nao era"
