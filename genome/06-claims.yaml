@@ -639,3 +639,13 @@
   kind: claim
   statement: "Uma isencao de catraca com id da fitness e data separa o rebaixamento causado por instrumento novo do rebaixamento causado por regressao."
   asserted_by: "o item 4 do plano do ciclo 25, que pediu `instrument_introduced` nessa forma — e e a forma que parece bastar, porque instrumento tem id e nasce num dia"
+
+# Ciclo 25 — o inventario e a caracterizacao do control plane.
+- id: CLM-0101
+  kind: claim
+  statement: "As escritas de um servico se inventariam contando `db.add`: quem some as chamadas de insercao sabe o que o servico grava."
+  asserted_by: "a minha propria contagem anterior deste servico, que disse 10 escritas somando `db.add` e `db.commit` — e a forma de qualquer varredura de escrita que procure a chamada que insere"
+- id: CLM-0102
+  kind: claim
+  statement: "A suite percorre todas as operacoes de banco do control plane, logo elas estao cobertas e a extracao pode comecar."
+  asserted_by: "a cobertura por execucao, medida com sys.monitoring sobre os 39 testes de autoridade: 23 de 23 operacoes executadas, sem nenhuma linha fria"
