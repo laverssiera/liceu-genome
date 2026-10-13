@@ -649,3 +649,21 @@
   kind: claim
   statement: "A suite percorre todas as operacoes de banco do control plane, logo elas estao cobertas e a extracao pode comecar."
   asserted_by: "a cobertura por execucao, medida com sys.monitoring sobre os 39 testes de autoridade: 23 de 23 operacoes executadas, sem nenhuma linha fria"
+
+# Ciclo 25 — C25-03: a Testemunha, e o que a medicao do titular acrescentou.
+- id: CLM-0103
+  kind: claim
+  statement: "A concordancia da Testemunha e medida: existe sonda que vai ate a Ativa pela rede, logo o que a Testemunha avaliza foi observado por ela."
+  asserted_by: "a existencia da sonda desde 2026-09-30 (PRF-0065) e a forma de attest(), que recebe sondas e deriva o veredito em vez de aceitar veredito no corpo — a leitura natural de 'o plano agora exige medicao'"
+- id: CLM-0104
+  kind: claim
+  statement: "Voto gravado e voto cumprivel: gravar a decisao no disco, com fsync, basta para poder cumpri-la depois."
+  asserted_by: "a propria nocao de durabilidade, e o desenho do diario tal como eu o escrevi na primeira versao — decisao, relogio, alvo e epoca, que parecia o conteudo completo de um voto"
+- id: CLM-0105
+  kind: claim
+  statement: "A versao do kit nao e parte do instrumento: o escopo declara ONDE se buscou, e o kit instalado e ambiente, nao instrumento."
+  asserted_by: "a forma do campo `scope` da FIT-019 como eu o escrevi, que pede padrao, universo, excluidos e instrumento, e nomeia o comando sem nomear a versao do que o comando carrega"
+- id: CLM-0106
+  kind: claim
+  statement: "O relatorio do ecossistema deriva do grafo: o que ele afirma sobre o dominio e o que as provas vigentes dizem."
+  asserted_by: "a regra de que o unico numero anunciado e o que o genome_check imprime, e a suposicao — minha — de que ela ja cobria o bloco de dominio"
