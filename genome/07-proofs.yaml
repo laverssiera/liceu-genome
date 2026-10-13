@@ -2569,3 +2569,31 @@
     repo: liceu-genome
     path: genome/07-proofs.yaml
     note: "O DEFEITO E DO MEU RELATORIO, NAO DO GRAFO. Em 2026-10-13 eu apresentei como derivacao NOVA do acervo que a ART retificadora esta registrada em 15/09 e sem via assinada. A PRF-0046, de 2026-09-27, ja dizia com todas as letras: 'o item 4 tem via assinada da ART ERRADA — a valida e a retificadora, registrada em 2026-09-15, com 97,20 m2 nos dois campos e citada pelo selo da planta, enquanto a assinada e a substituida'. O grafo nunca ficou errado: o relatorio e que nao derivou dele. O QUE A LEITURA DE HOJE CONFIRMA, e confirmar nao e descobrir: o documento vigente traz `Registrada em: 15/09/2026`, declara-se quitada, tem 97,20 m2 nas duas atividades tecnicas, e o campo 8 (Assinaturas) esta EM BRANCO — o formulario traz 'de __ de __', 'Local' e 'data' sem preenchimento. E a nomenclatura do proprio acervo carrega o discriminador: a ART substituida tem arquivo com `_assinado` no nome e a vigente retificadora nao. Registrada NAO e assinada. POR QUE ISTO VALE SER REGISTRADO, e nao e autocritica decorativa: a afirmacao 'a ART retificadora esta assinada' entrou numa conversa de outubro a partir de fala, e nenhuma prova foi superseded — porque o que aconteceu nao foi medicao nova, foi RELATO. O grafo tem supersessao para medicao que substitui medicao; nao tem, e nao deve ter, mecanismo para relato substituir prova. A CORRECAO DE PROCEDIMENTO: o bloco de dominio do relatorio deriva das provas VIGENTES do grafo, e quando for remedido do acervo, o resultado e conferido CONTRA elas antes de ser anunciado como novo. Foi o titular quem apontou o padrao, e o apontou pela quarta vez no mesmo dia: 'e a terceira vez hoje que o seu trabalho passado continha a resposta'. A quarta e esta, e e a mais grave das quatro, porque a resposta nao estava num nome de arquivo — estava numa prova do genoma, com data."
+
+# Ciclo 25 — a superficie da PRF-0059 mudou por acrescimo, e foi re-medida.
+- id: PRF-0138
+  kind: proof
+  title: "Atestacao sem observacao continua nao promovendo: re-medido na superficie que a rota de auto-identificacao alterou"
+  proves: [CLM-0057]
+  supersedes: [PRF-0059]
+  basis: test
+  date: "2026-10-13"
+  scale: LOCAL
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/tests/test_testemunha_nao_declara_o_que_viu.py
+    name: "os seis casos do arquivo"
+    pr: 98
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths:
+      - cv-backend-core/app/main.py
+      - cv-backend-core/app/services/authority_control_plane.py
+      - cv-backend-core/tests/test_testemunha_nao_declara_o_que_viu.py
+    content_hash: "66726a472ff4652bbadfe31f2369cb5a957df6cec83536fb4557dacfc57b744f"
+    commit: "a4e4de66836989a92758dbe04928d32a667ae8ba"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/app/main.py
+    pr: 98
+    note: "POR QUE ESTA PROVA EXISTE: a superficie da PRF-0059 mudou, e o guarda acusou na CI do CORE — hash no genoma 74888c05 (commit 1991e4e), hash agora 66726a47. A MUDANCA FOI POR ACRESCIMO: a rota GET /authority/whoami entrou em app/main.py, e com ela o import do servico novo. O caminho PROVADO nao foi tocado: attest(), promote(), derive_verdict() e a recusa de ACTIVE_UNOBSERVABLE estao identicos, e o diff do PR 98 mostra isso. RE-MEDIDO E NAO RE-ESTAMPADO, que e a diferenca entre supersessao e maquiagem: os SEIS casos de test_testemunha_nao_declara_o_que_viu.py foram executados contra a superficie nova e passam, e a suite inteira do CORE devolve 365 passam com uma falha pre-existente que e o portao de pino do kit local. Supersedo em vez de editar o hash da PRF-0059 porque editar o hash de uma prova velha e reescrever historia, e e exatamente o que a supersessao existe para evitar — a PRF-0059 fica no grafo dizendo o que valia e ate quando. O DEFEITO ESTRUTURAL QUE ISTO REVELA, nomeado e NAO consertado aqui: a superficie da PRF-0059 e app/main.py INTEIRO, que tem 8352 linhas e muda a cada ciclo. Ela vai ficar vermelha por motivo nenhum sempre que alguem acrescentar qualquer rota, e e precisamente o defeito que a PRF-0031 e a PRF-0073 identificaram e resolveram extraindo modulo — a frase esta no cabecalho do genome_scope_check que eu mesmo escrevi dois dias atras: 'guarda que acusa sem motivo ensina a ignorar a guarda'. O conserto e o mesmo: a rota de atestacao vira modulo proprio, e a superficie da prova passa a ser ele. E diagnostico separado, com PR proprio, e nao de carona neste. MEDIDO que o problema e confinado: das provas vigentes, SO esta cobre app/main.py. E UMA CORRECAO DE PROCEDIMENTO MINHA, porque o guarda nao devia ter sido o primeiro a saber: antes de construir a camada duravel da Testemunha eu CONFERI a superficie de infra/authority/sonda_testemunha.py e por isso compus em vez de alterar, preservando a PRF-0065. Antes de acrescentar a rota eu NAO conferi app/main.py. O instrumento estava na mao — genome_surface_check.py --repo LICEU_6.0_CONSTRUTORA_VIRTUAL — e eu confiro as superficies de que me lembro, nao as que a mudanca toca. O guarda pegou na CI, que e onde ele foi construido para pegar; conferir antes era mais barato e era possivel."
