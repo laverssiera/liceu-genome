@@ -697,3 +697,17 @@
   kind: claim
   statement: "Uma medicao de latencia de fsync caracteriza o disco: rodou o instrumento, tem o numero."
   asserted_by: "a forma como eu mesmo escrevi a primeira versao desta medicao — uma execucao, uma tabela de percentis, e uma conclusao sobre a cauda"
+
+# Ciclo 25 — C25-05: a Sucessora assume, e o que eu teria dito sobre como.
+- id: CLM-0113
+  kind: claim
+  statement: "O fencing de epoca e o que impede a Mae retirada de voltar a publicar depois da promocao: ela apresenta a epoca velha e o fencing token a recusa."
+  asserted_by: "a leitura natural do proprio docstring do control plane, que diz 'Fato com epoca MENOR que a vigente e REJEITADO mesmo com a instancia online - e o fencing token'; e e a leitura que eu ia escrever na prova"
+- id: CLM-0114
+  kind: claim
+  statement: "Com cada processo assinando quem ele e, duas instancias nao podem ambas se dizer ACTIVE: a assinatura resolve a ambiguidade de quem manda."
+  asserted_by: "a forma do meu proprio trabalho de auto-identificacao do ciclo 25 - uma rota assinada com Ed25519, apresentada como pre-requisito do C25-05, que e facil ler como se tornasse a autoridade atribuivel em vez de apenas a resposta"
+- id: CLM-0115
+  kind: claim
+  statement: "O alvo da concordancia da Testemunha pode ser obtido de auto-identificacao assinada e conferida, em vez de literal escrito a mao."
+  asserted_by: "ninguem ainda - a afirmacao entra para ser medida, porque o achado do C25-03 foi que TODA concordancia que este sistema ja aceitou veio de literal, e a rota de auto-identificacao foi aberta justamente para que isso deixasse de ser verdade"
