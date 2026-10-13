@@ -76,6 +76,7 @@ mapa envelheceria calado — que e o defeito que ele serve para corrigir.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import pathlib
 import re
@@ -320,27 +321,53 @@ def exige_mapa_em_dia(achadas: list[Declaracao], mapa: dict[str, Origem]) -> Non
 # deles e a frase deixar de carregar o numero, nao o numero mudar.
 # ---------------------------------------------------------------------------
 
-def _tam(no, *chaves) -> int:
+class FonteAusente(ClasseDefasada):
+    """O artefato de ORIGEM da derivacao desapareceu.
+
+    E a DERIVA, e ela nao e mudanca no campo: e mudanca NOUTRO LUGAR. A primeira
+    versao desta funcao fazia `(no or {}).get(c)` e depois `len(no or [])`, entao
+    chave de origem AUSENTE devolvia 0 em silencio — e com o campo declarando 0
+    o portao dizia OK enquanto a fonte nao existia mais. Medido em 2026-10-13:
+    apagar `constitution.pendencias` deixava declarado=0, derivado=0, bate=True.
+
+    Lista VAZIA e legitima; chave AUSENTE nao. Distinguir as duas e a diferenca
+    entre falhar fechado e falhar aberto, e a deriva so e pega pela primeira.
+    """
+
+
+def _conta(no, *chaves) -> int:
+    """Conta itens no caminho, LEVANTANDO se qualquer passo do caminho faltar."""
+    andado: list[str] = []
     for c in chaves:
-        no = (no or {}).get(c)
-    return len(no or [])
+        if not isinstance(no, dict) or c not in no:
+            raise FonteAusente(
+                f"a fonte da derivacao sumiu em {'.'.join([*andado, c])}: o caminho "
+                "declarado nao existe mais no artefato. Isto e DERIVA — o campo nao "
+                "mudou, a ORIGEM dele mudou — e falha FECHADO de proposito")
+        no = no[c]
+        andado.append(c)
+    if no is None:
+        raise FonteAusente(
+            f"{'.'.join(andado)} existe mas e nulo: tratar nulo como vazio foi "
+            "exatamente o que deixava a deriva passar")
+    return len(no)
 
 
 DERIVACOES: dict[str, object] = {
     "constitution:meta.pendencias_abertas":
-        lambda a: _tam(a["constitution"], "pendencias"),
+        lambda a: _conta(a, "constitution", "pendencias"),
     "constitution:meta.adrs_pendentes":
-        lambda a: _tam(a["constitution"], "adrs_pendentes"),
+        lambda a: _conta(a, "constitution", "adrs_pendentes"),
     "constitution:global.identidade_semantica_de_replay.total":
-        lambda a: _tam(a["constitution"], "global", "identidade_semantica_de_replay", "campos"),
+        lambda a: _conta(a, "constitution", "global", "identidade_semantica_de_replay", "campos"),
     "constitution:global.campos_exigidos_pelo_protocolo.total":
-        lambda a: _tam(a["constitution"], "global", "campos_exigidos_pelo_protocolo", "campos"),
+        lambda a: _conta(a, "constitution", "global", "campos_exigidos_pelo_protocolo", "campos"),
     "constitution:milestone.M1_CONSTITUTION_DEFINITION.criterios.CONSTITUTION_PENDING_DECISIONS":
-        lambda a: _tam(a["constitution"], "pendencias"),
+        lambda a: _conta(a, "constitution", "pendencias"),
     "constitution:milestone.M1_CONSTITUTION_DEFINITION.criterios.CANONICAL_MONOLITH_IDS":
-        lambda a: len(a["constitution"].get("monolitos") or {}),
+        lambda a: _conta(a, "constitution", "monolitos"),
     "event_reconciliation_ledger:meta.escopo_P2_5A":
-        lambda a: len(a["event_reconciliation_ledger"].get("P2_5A_minimum_causal_thread") or {}),
+        lambda a: _conta(a, "event_reconciliation_ledger", "P2_5A_minimum_causal_thread"),
 }
 
 
@@ -364,6 +391,149 @@ ISENTOS_DE_DERIVACAO = {
     "constitution:global.federation_cognition.REGRA_DE_IDENTIDADE.aplica_a":
         "idem: 'os 15 JOHNs locais' e prosa com contagem, e a cura e reescrever",
 }
+
+
+#: O LACRE DAS DUAS LISTAS DE ISENCAO, no padrao do `instrument_introduced` da
+#: FIT-019: lista fechada, lacrada por sha256, que SO ENCOLHE.
+#:
+#: Sao DUAS porque ha dois caminhos de isencao, e tratar so o primeiro deixaria o
+#: segundo como a brecha seguinte:
+#:   ISENTOS_DE_DERIVACAO  derivavel que nao se deriva aqui, com razao
+#:   SAI_DA_CLASSE         declarado nao-derivavel de artefato nenhum
+#: O segundo e o mais fundo: a razao e prosa e ninguem a confere, entao sem lacre
+#: bastaria classificar um campo novo como SAI_DA_CLASSE para fugir da regra.
+#:
+#: Medido em 2026-10-13, antes do lacre: acrescentei uma quinta isencao em tempo
+#: de execucao e o portao PASSOU. O lacre existe por causa dessa medicao.
+#:
+#: SO ENCOLHE: `conferido ⊆ lacrado`. Curar um campo tira-o da lista e o lacre
+#: segue valendo; acrescentar exige editar o lacre, e o sha256 congelado no teste
+#: torna essa edicao visivel em vez de silenciosa.
+LACRE_ISENTOS_SHA256 = "ffd84eeb4c4f577bbb3b8d5792d1275c1e351a02ee3226fe70528e47bcfdcb7b"
+LACRE_SAI_DA_CLASSE_SHA256 = "4b36b3d6e1e8b281e4182e544a0ad88b9f9ccd6ebacefd1bfe471cf9ab51c812"
+
+LACRE_ISENTOS = (
+    "constitution:global.campos_aceitos_pelo_servidor.procedencia",
+    "constitution:global.campos_aceitos_pelo_servidor.verificado_em",
+    "constitution:global.ci_adoption_order.nao_bloqueador",
+    "constitution:global.federation_cognition.REGRA_DE_IDENTIDADE.aplica_a",
+)
+
+
+#: Os 41 campos declarados NAO derivaveis em 13/10/2026. Lista lacrada que SO
+#: ENCOLHE: curar um campo tira-o daqui, acrescentar exige editar isto E o
+#: sha256 do teste. Sem este lacre bastaria classificar um campo novo como
+#: SAI_DA_CLASSE para fugir da regra, porque a razao e prosa e ninguem a confere.
+LACRE_SAI_DA_CLASSE = (
+    "constitution:global.antipadroes.antipadrao_3_fallback_silencioso.referencia_correta",
+    "constitution:global.authority_model.observacao",
+    "constitution:global.campos_exigidos_pelo_protocolo.implementation_status",
+    "constitution:global.core_dna.extracao_fisica_do_kernel.estado",
+    "constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.estado",
+    "constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.representacoes",
+    "constitution:global.federation_cognition.REGRA_DE_IDENTIDADE.medicao_atual.geracoes_de_campo_alheio_em_producao",
+    "constitution:global.federation_cognition.REGRA_DE_IDENTIDADE.medicao_atual.reivindicacoes_de_identidade",
+    "constitution:global.internal_reference_implementations.referencias.fail_closed.aplica_a",
+    "constitution:milestone.M1_CONSTITUTION_DEFINITION.status",
+    "constitution:milestone.M2_FEDERATION_PROTOCOL_AND_STATIC_CONVERGENCE.criterios.DIRECT_CROSS_DOMAIN_DB",
+    "constitution:milestone.M2_FEDERATION_PROTOCOL_AND_STATIC_CONVERGENCE.criterios.MINIMUM_THREAD_AUTHORITY_VIOLATIONS",
+    "constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.CORE_ARCHIMEDES_AUTHENTICATED_BOUNDARY",
+    "constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.DURABILITY",
+    "constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.EVENT_DELIVERY",
+    "constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.IDEMPOTENCY",
+    "constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.REPLAY",
+    "constitution:milestone.M4_FIRST_CAUSAL_AUTHORITY_CHAIN.criterios.MINIMUM_CAUSAL_THREAD_LINEAGE",
+    "constitution:milestone.M4_FIRST_CAUSAL_AUTHORITY_CHAIN.criterios.MINIMUM_CAUSAL_THREAD_REPLAY",
+    "constitution:milestone.M4_FIRST_CAUSAL_AUTHORITY_CHAIN.criterios.MINIMUM_CAUSAL_THREAD_RUNTIME",
+    "constitution:monolitos.academia.divida_conhecida[0]",
+    "constitution:monolitos.academia.divida_conhecida[1]",
+    "constitution:monolitos.anchor.fronteira_de_continuidade.coerencia_com_external_effect",
+    "constitution:monolitos.bim.violacao_critica.descricao",
+    "constitution:monolitos.cea.divida_conhecida[2]",
+    "constitution:monolitos.cea.forbidden[0].violacao",
+    "constitution:monolitos.core.forbidden[0].violacao",
+    "constitution:monolitos.core.fronteira_fisica.P1_07A_fronteira_semantica",
+    "constitution:monolitos.core.fronteira_fisica.P1_07B_extracao_fisica",
+    "constitution:monolitos.econotech.bug_conhecido.descricao",
+    "constitution:monolitos.fornecedores.a_verificar[1]",
+    "constitution:monolitos.gamemkt.violacao_critica.descricao",
+    "constitution:monolitos.john.observacao_positiva",
+    "constitution:monolitos.juridicotech.divida_conhecida[2]",
+    "constitution:monolitos.ped.estado.descricao",
+    "constitution:separacao_de_artifacts.razao",
+    "contract_registry:meta.status",
+    "event_reconciliation_ledger:P2_5B_duplicate_authority.federation.runtime.register.hipotese",
+    "event_reconciliation_ledger:meta.escopo_P2_5B",
+    "event_registry:events.authority.human.decision.recorded.implementation_status",
+    "event_registry:resumo.IMPLEMENTED_IN_MONOLITH",
+)
+
+
+def lacre(chaves) -> str:
+    return hashlib.sha256("\n".join(sorted(chaves)).encode("utf-8")).hexdigest()
+
+
+def sai_da_classe_de(mapa: dict[str, Origem]) -> list[str]:
+    return sorted(k for k, o in mapa.items() if o.classe == SAI_DA_CLASSE)
+
+
+def exige_lacre(mapa: dict[str, Origem]) -> None:
+    """As duas listas de isencao SO ENCOLHEM, e o lacre e por hash."""
+    atuais_isentos = set(ISENTOS_DE_DERIVACAO)
+    if not atuais_isentos <= set(LACRE_ISENTOS):
+        novos = sorted(atuais_isentos - set(LACRE_ISENTOS))
+        raise ClasseDefasada(
+            f"{len(novos)} isencao(oes) de derivacao FORA DO LACRE: {', '.join(novos)}. "
+            "A lista so encolhe. Acrescentar exige editar LACRE_ISENTOS e o sha256 do "
+            "teste — que e o que torna a decisao visivel em vez de silenciosa.")
+    atuais_sai = set(sai_da_classe_de(mapa))
+    if not atuais_sai <= set(LACRE_SAI_DA_CLASSE):
+        novos = sorted(atuais_sai - set(LACRE_SAI_DA_CLASSE))
+        raise ClasseDefasada(
+            f"{len(novos)} campo(s) classificado(s) SAI_DA_CLASSE FORA DO LACRE: "
+            f"{', '.join(novos)}. Sem lacre bastaria classificar um campo novo como "
+            "nao-derivavel para fugir da regra, porque a razao e prosa e ninguem a "
+            "confere. A lista so encolhe.")
+
+
+def classe_viva(mapa: dict[str, Origem]) -> list[str]:
+    """Os campos que a regra do titular ainda alcanca: derivaveis nao curados.
+
+    SAI_DA_CLASSE nao conta — por definicao a regra nao se aplica a eles, e
+    conta-los faria a classe parecer eterna.
+    """
+    return sorted(k for k, o in mapa.items()
+                  if o.classe in (PROPRIO_ARTEFATO, OUTRO_ARTEFATO))
+
+
+def gatilho_fit_020(mapa: dict[str, Origem]) -> tuple[bool, str]:
+    """O gatilho da FIT-020, MECANICO em vez de lembrado.
+
+    DECISAO DO TITULAR, 2026-10-13: a FIT-020 nao foi recusada — foi ADIADA COM
+    GATILHO, e a diferenca importa. "Recusada" fecha a pergunta; ela nao esta
+    fechada, esta agendada. O freio NAO foi excepcionado: o denominador do grafo
+    permanece 31.
+
+    POR QUE ADIAR E BARATO AQUI: o portao desta CI ja recusa as tres formas, com
+    42 mutacoes, entao a classe so pode encolher. Quando ela chegar a ZERO, a
+    FIT-020 entra como guarda de REGRESSAO com zero membros vivos — sempre
+    verde, barata, e guardando para sempre. E a forma mais limpa que uma fitness
+    pode ter, e e por isso que a ordem (converter, depois guardar) e melhor que
+    a inversa.
+
+    O GATILHO VIVE AQUI, E NAO NUMA NOTA, por um motivo medido neste ciclo: o
+    enumerador de 2026-10-09 era uma decisao que dependia de alguem lembrar, e
+    ninguem lembrou. Gatilho escrito em prosa e da mesma familia.
+    """
+    viva = classe_viva(mapa)
+    if viva:
+        return False, (f"FIT-020 ADIADA: {len(viva)} membro(s) vivo(s) na classe. "
+                       "O gatilho arma quando chegar a ZERO.")
+    return True, ("FIT-020: GATILHO ARMADO — a classe chegou a ZERO. A fitness que o "
+                  "C25-06 pediu pode entrar agora como guarda de REGRESSAO, com zero "
+                  "membros vivos, e o custo no denominador passa a comprar uma guarda "
+                  "permanente em vez de um remendo. Isto NAO e autorizacao: a excecao "
+                  "ao freio continua sendo decisao do titular.")
 
 
 def exige_derivacao_declarada(mapa: dict[str, Origem]) -> None:
@@ -403,9 +573,17 @@ def confere_derivaveis(achadas: list[Declaracao], artefatos: dict) -> list[dict]
         d = por_chave.get(chave)
         if d is None:
             fora.append({"chave": chave, "declarado": None, "derivado": None,
-                         "bate": None, "nota": "o campo nao existe mais no kit lido"})
+                         "bate": None, "deriva": False,
+                         "nota": "o campo nao existe mais no kit lido"})
             continue
-        derivado = fn(artefatos)
+        try:
+            derivado = fn(artefatos)
+        except FonteAusente as exc:
+            # DERIVA: a origem saiu e o campo ficou. Entra como achado proprio,
+            # nunca como "bate=True por coincidencia de zero".
+            fora.append({"chave": chave, "declarado": d.valor, "derivado": None,
+                         "bate": False, "deriva": True, "nota": str(exc)})
+            continue
         declarado = d.valor
         if isinstance(declarado, str):
             achados = re.findall(r"\d+", declarado)
@@ -415,7 +593,7 @@ def confere_derivaveis(achadas: list[Declaracao], artefatos: dict) -> list[dict]
             declarado_cmp = declarado
             bate = declarado == derivado
         fora.append({"chave": chave, "declarado": declarado_cmp, "derivado": derivado,
-                     "bate": bate, "nota": ""})
+                     "bate": bate, "deriva": False, "nota": ""})
     return fora
 
 
@@ -467,6 +645,9 @@ def main(argv=None) -> int:
             print(f"  {cl:18s} {contagem.get(cl, 0)}")
         print(f"  sem origem declarada ... {len(sem_origem)}")
         print(f"  origem orfa ............ {len(orfas)}")
+        armado, texto = gatilho_fit_020(mapa)
+        print()
+        print(f"{'>>> ' if armado else ''}{texto}")
     else:
         print()
         print(f"MAPA DE ORIGEM AUSENTE ({MAPA.name}): os {len(est)} ESTADO estao sem origem.")
@@ -476,11 +657,16 @@ def main(argv=None) -> int:
         print("DERIVADO x DECLARADO — e aqui a defasagem aparece sozinha")
         linhas_c = confere_derivaveis(achadas, carrega_artefatos(kit))
         for r in linhas_c:
-            marca = {True: "OK   ", False: "FALSO", None: "AUSENTE"}[r["bate"]]
+            if r.get("deriva"):
+                marca = "DERIVA"
+            else:
+                marca = {True: "OK    ", False: "FALSO ", None: "AUSENTE"}[r["bate"]]
             print(f"  [{marca}] {r['chave'].split(':', 1)[1][:62]:62s} "
                   f"declarado={r['declarado']} derivado={r['derivado']} {r['nota']}")
-        falsos = [r for r in linhas_c if r["bate"] is False]
-        print(f"  {len(linhas_c)} conferidos, {len(falsos)} defasado(s)")
+        falsos = [r for r in linhas_c if r["bate"] is False and not r.get("deriva")]
+        derivas = [r for r in linhas_c if r.get("deriva")]
+        print(f"  {len(linhas_c)} conferidos, {len(falsos)} defasado(s), "
+              f"{len(derivas)} com a FONTE sumida")
 
     if a.listar:
         print()
@@ -509,9 +695,20 @@ def main(argv=None) -> int:
     if a.exigir_mapa:
         exige_mapa_em_dia(achadas, mapa)
         exige_derivacao_declarada(mapa)
+        exige_lacre(mapa)
+        # A DERIVA tambem para a CI: fonte sumida nao e "0 por coincidencia".
+        derivas = [r for r in confere_derivaveis(achadas, carrega_artefatos(kit))
+                   if r.get("deriva")]
+        if derivas:
+            raise ClasseDefasada(
+                f"{len(derivas)} derivacao(oes) com a FONTE sumida: "
+                + "; ".join(f"{r['chave']} — {r['nota']}" for r in derivas))
         print("\nmapa de origem EM DIA: todo ESTADO tem origem, toda origem tem campo,")
-        print(f"e todo derivavel tem derivacao ou isencao nomeada "
-              f"({len(DERIVACOES)} derivadas, {len(ISENTOS_DE_DERIVACAO)} isentas).")
+        print(f"todo derivavel tem derivacao ou isencao nomeada "
+              f"({len(DERIVACOES)} derivadas, {len(ISENTOS_DE_DERIVACAO)} isentas),")
+        print(f"as duas listas de isencao estao DENTRO do lacre "
+              f"({len(LACRE_ISENTOS)} + {len(LACRE_SAI_DA_CLASSE)} lacrados, so encolhem),")
+        print("e nenhuma derivacao perdeu a fonte.")
     return 0
 
 

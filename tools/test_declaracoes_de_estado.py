@@ -255,6 +255,163 @@ class DerivavelDECLARADOTemDeSerDerivavelDEVERDADE(unittest.TestCase):
             self.assertGreater(len(razao), 40, f"{chave}: isencao sem razao de verdade")
 
 
+class ADerivaEhPegaPorFalharFECHADO(unittest.TestCase):
+    """O buraco que o titular previu, e ele existia — por outro motivo.
+
+    A pergunta dele foi: o portao avalia o grafo inteiro ou so o diff? Medido:
+    O GRAFO INTEIRO, toda CI, sem uma linha de diff. Pela logica dele isso
+    cobriria a deriva. NAO COBRIA.
+
+    `_tam` fazia `(no or {}).get(c)` e depois `len(no or [])`, entao chave de
+    origem AUSENTE devolvia 0 em silencio. Apagar `constitution.pendencias`
+    deixava declarado=0, derivado=0, bate=True — a fonte nao existia mais e o
+    portao dizia OK. A deriva nao passava por falta de escopo: passava por
+    FALHA ABERTA na funcao de contagem.
+    """
+
+    def setUp(self):
+        self.kit = de.kit_instalado()
+        self.artefatos = de.carrega_artefatos(self.kit)
+        self.achadas = de.enumera(self.kit)
+
+    def test_chave_de_origem_AUSENTE_levanta(self):
+        with self.assertRaises(de.FonteAusente):
+            de._conta({}, "pendencias")
+
+    def test_lista_VAZIA_e_legitima_e_conta_zero(self):
+        """Distinguir vazio de ausente e a diferenca inteira: `pendencias: []`
+        e estado legitimo da lei, e tem de contar 0 sem levantar."""
+        self.assertEqual(de._conta({"pendencias": []}, "pendencias"), 0)
+
+    def test_nulo_nao_passa_por_vazio(self):
+        with self.assertRaises(de.FonteAusente):
+            de._conta({"pendencias": None}, "pendencias")
+
+    def test_a_FONTE_que_sai_e_acusada_como_DERIVA_e_nao_como_OK(self):
+        """O caso exato que passava antes: a origem sai, a contagem da 0, e o
+        declarado tambem e 0. Coincidencia de zero virava aprovacao."""
+        mutado = copy.deepcopy(self.artefatos)
+        del mutado["constitution"]["pendencias"]
+        r = {x["chave"]: x for x in de.confere_derivaveis(self.achadas, mutado)}
+        alvo = r["constitution:meta.pendencias_abertas"]
+        self.assertTrue(alvo["deriva"], "a fonte sumiu e isto tem de sair como DERIVA")
+        self.assertIs(alvo["bate"], False, "deriva nunca pode sair como bate=True")
+        self.assertIn("DERIVA", alvo["nota"])
+
+    def test_a_deriva_atinge_as_DUAS_fontes_do_mesmo_numero(self):
+        """`pendencias` alimenta dois campos. Perder a fonte derruba os dois, e
+        e por isso que duas fontes a mao do mesmo valor sao piores que uma."""
+        mutado = copy.deepcopy(self.artefatos)
+        del mutado["constitution"]["pendencias"]
+        derivas = [x for x in de.confere_derivaveis(self.achadas, mutado) if x["deriva"]]
+        self.assertEqual(len(derivas), 2, f"esperava dois campos afetados, vi {derivas}")
+
+    def test_o_caminho_INTERMEDIARIO_que_sai_tambem_e_pego(self):
+        """A deriva pode ser no meio do caminho, nao so na folha."""
+        mutado = copy.deepcopy(self.artefatos)
+        del mutado["constitution"]["global"]["identidade_semantica_de_replay"]
+        r = {x["chave"]: x for x in de.confere_derivaveis(self.achadas, mutado)}
+        self.assertTrue(
+            r["constitution:global.identidade_semantica_de_replay.total"]["deriva"])
+
+
+class OLacreDasDuasListasDeIsencao(unittest.TestCase):
+    """A brecha seguinte que o titular nomeou, e ela estava aberta.
+
+    Medido em 2026-10-13, antes do lacre: acrescentei uma quinta isencao em tempo
+    de execucao e o portao PASSOU. Lista fechada que ninguem lacra nao e lista
+    fechada — e o padrao e o do `instrument_introduced` da FIT-019.
+
+    Sao DUAS listas porque ha dois caminhos de isencao, e lacrar so o primeiro
+    deixaria o segundo como a brecha depois dessa: a razao de um SAI_DA_CLASSE e
+    prosa, ninguem a confere, e bastaria classificar um campo novo assim.
+    """
+
+    def setUp(self):
+        self.mapa = de.carrega_mapa()
+
+    def test_o_sha256_das_isencoes_esta_congelado(self):
+        self.assertEqual(de.lacre(de.LACRE_ISENTOS), de.LACRE_ISENTOS_SHA256,
+                         "o lacre das isencoes mudou sem o sha256 mudar junto")
+
+    def test_o_sha256_do_SAI_DA_CLASSE_esta_congelado(self):
+        self.assertEqual(de.lacre(de.LACRE_SAI_DA_CLASSE), de.LACRE_SAI_DA_CLASSE_SHA256,
+                         "o lacre do SAI_DA_CLASSE mudou sem o sha256 mudar junto")
+
+    def test_hoje_as_duas_listas_estao_dentro_do_lacre(self):
+        de.exige_lacre(self.mapa)     # nao levanta
+
+    def test_isencao_de_derivacao_NOVA_e_recusada(self):
+        original = dict(de.ISENTOS_DE_DERIVACAO)
+        de.ISENTOS_DE_DERIVACAO["constitution:meta.inventado"] = "isencao fora do lacre"
+        try:
+            with self.assertRaises(de.ClasseDefasada) as e:
+                de.exige_lacre(self.mapa)
+            self.assertIn("FORA DO LACRE", str(e.exception))
+        finally:
+            de.ISENTOS_DE_DERIVACAO.clear()
+            de.ISENTOS_DE_DERIVACAO.update(original)
+
+    def test_SAI_DA_CLASSE_NOVO_e_recusado(self):
+        """Sem este lacre bastaria classificar um campo novo como nao-derivavel
+        para fugir da regra inteira."""
+        m = dict(self.mapa)
+        m["constitution:meta.inventado"] = de.Origem(
+            de.SAI_DA_CLASSE, "codigo dos 19 repositorios", "razao plausivel qualquer")
+        with self.assertRaises(de.ClasseDefasada) as e:
+            de.exige_lacre(m)
+        self.assertIn("SAI_DA_CLASSE FORA DO LACRE", str(e.exception))
+
+    def test_a_lista_pode_ENCOLHER_sem_mexer_no_lacre(self):
+        """So encolhe: curar um campo tira-o da lista e o lacre segue valendo.
+        Uma guarda que tambem recusasse a cura empurraria contra o trabalho."""
+        m = {k: v for k, v in self.mapa.items() if k != de.LACRE_SAI_DA_CLASSE[0]}
+        de.exige_lacre(m)             # nao levanta
+
+    def test_o_lacre_cobre_os_41_e_os_4_de_hoje(self):
+        self.assertEqual(len(de.LACRE_SAI_DA_CLASSE), 41)
+        self.assertEqual(len(de.LACRE_ISENTOS), 4)
+        self.assertEqual(set(de.ISENTOS_DE_DERIVACAO), set(de.LACRE_ISENTOS))
+
+
+class OGatilhoDaFIT020(unittest.TestCase):
+    """ADIADA COM GATILHO, e o gatilho e MECANICO em vez de lembrado.
+
+    A correcao do titular em 2026-10-13: o veredito nao e RECUSADA, e ADIADA.
+    "Recusada" fecha a pergunta; ela esta agendada. E o gatilho vive no
+    instrumento por um motivo medido NESTE ciclo — o enumerador de 09/10 era uma
+    decisao que dependia de alguem lembrar, e ninguem lembrou.
+    """
+
+    def setUp(self):
+        self.mapa = de.carrega_mapa()
+
+    def test_hoje_a_classe_tem_membros_e_o_gatilho_NAO_arma(self):
+        armado, texto = de.gatilho_fit_020(self.mapa)
+        self.assertFalse(armado)
+        self.assertIn("ADIADA", texto)
+        self.assertEqual(len(de.classe_viva(self.mapa)), 11)
+
+    def test_com_a_classe_em_ZERO_o_gatilho_ARMA(self):
+        """A contrapartida, e sem ela o gatilho seria decoracao: convertido tudo,
+        o instrumento ANUNCIA que a FIT-020 pode entrar."""
+        curado = {k: v for k, v in self.mapa.items() if v.classe == de.SAI_DA_CLASSE}
+        armado, texto = de.gatilho_fit_020(curado)
+        self.assertTrue(armado)
+        self.assertIn("GATILHO ARMADO", texto)
+
+    def test_SAI_DA_CLASSE_nao_conta_como_membro_vivo(self):
+        """Conta-los faria a classe parecer eterna e o gatilho nunca armaria."""
+        self.assertEqual(de.classe_viva({"a:b": de.Origem(de.SAI_DA_CLASSE, "x", "y")}), [])
+
+    def test_o_gatilho_armado_NAO_autoriza_a_excecao_ao_freio(self):
+        """Armar e avisar. A excecao ao freio continua sendo decisao do titular,
+        e o texto tem de dizer isso — senao o aviso vira permissao."""
+        curado = {k: v for k, v in self.mapa.items() if v.classe == de.SAI_DA_CLASSE}
+        _, texto = de.gatilho_fit_020(curado)
+        self.assertIn("NAO e autorizacao", texto)
+
+
 class OArtefatoAusente(unittest.TestCase):
     def test_kit_sem_um_dos_cinco_artefatos_LEVANTA(self):
         """Ler quatro de cinco e anunciar o total e o defeito de N itens sem N
