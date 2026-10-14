@@ -3193,4 +3193,26 @@
   location:
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
     path: infra/security/test_valor_colado.py
-    note: "A TERCEIRA MUTACAO E A QUE MAIS IMPORTA, porque e o defeito que eu cometi no C25-06: acrescentei um quinto item a uma lista de isencao em runtime e o portao passou. Aqui o lacre para a execucao, e ele quebra TAMBEM quando a lista encolhe - a lista e um ato, e encolher tambem se faz a mao, com data e motivo. A SEGUNDA MUTACAO E O QUE FAZ A ISENCAO NAO SER BURACO: a chave inclui o sha da propria linha isenta, entao a isencao vale para aquela linha como ela esta. Quem editar a linha - inclusive para colar um valor de verdade ali - perde a isencao. Isencao por numero de linha sozinho acompanharia o arquivo e seria exatamente a brecha que a lista pretende nao abrir. O ESTADO DESTA PROVA, e a regra do titular exige dizer: a DECISAO de ligar foi tomada em 2026-10-14, a EXECUCAO esta ABERTA no PR #108 e NAO MERGEADA, e a COMPROVACAO e esta. Decisao, execucao e comprovacao sao estados distintos, e nenhum deles implica o seguinte. O QUE ESTA PROVA NAO FIXA: a superficie. Declarar mechanism com content_hash sobre valor_colado.py apontaria para o conteudo do RAMO, e o arquivo ja esta na main com outro conteudo desde o #107 - o guarda de superficie trata divergencia como problema e deixaria a main daquele repositorio vermelha. A prova por teste, com a superficie fixada nos 39 testes, cabe depois do merge, e e a forma final certa."
+    note: "A TERCEIRA MUTACAO E A QUE MAIS IMPORTA, porque e o defeito que eu cometi no C25-06: acrescentei um quinto item a uma lista de isencao em runtime e o portao passou. Aqui o lacre para a execucao, e ele quebra TAMBEM quando a lista encolhe - a lista e um ato, e encolher tambem se faz a mao, com data e motivo. A SEGUNDA MUTACAO E O QUE FAZ A ISENCAO NAO SER BURACO: a chave inclui o sha da propria linha isenta, entao a isencao vale para aquela linha como ela esta. Quem editar a linha - inclusive para colar um valor de verdade ali - perde a isencao. Isencao por numero de linha sozinho acompanharia o arquivo e seria exatamente a brecha que a lista pretende nao abrir. O ESTADO DESTA PROVA, e a regra do titular exige dizer: a DECISAO de ligar foi tomada em 2026-10-14; a EXECUCAO estava ABERTA no PR #108 quando esta prova foi escrita e ENTROU na main no mesmo dia, no merge 0f8fa0c; e a COMPROVACAO e esta. Decisao, execucao e comprovacao sao estados distintos, e nenhum deles implica o seguinte -- e por isso esta linha foi corrigida A MAO quando a execucao mudou de estado, em vez de ficar afirmando NAO MERGEADA sobre algo mergeado. O QUE ESTA PROVA NAO FIXA: a superficie. Declarar mechanism com content_hash sobre valor_colado.py apontaria para o conteudo do RAMO, e o arquivo ja esta na main com outro conteudo desde o #107 - o guarda de superficie trata divergencia como problema e deixaria a main daquele repositorio vermelha. A prova por teste, com a superficie fixada nos 39 testes, e a PRF-0171, registrada depois do merge -- que era a unica ordem possivel."
+
+- id: PRF-0171
+  kind: proof
+  title: "O bloqueio e os 39 testes com a superficie FIXADA: mexer na guarda ou na linha de base passa a mover a mao no genoma"
+  proves: [CLM-0141]
+  basis: test
+  date: "2026-10-14"
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/test_valor_colado.py
+    name: ALinhaDeBaseELacrada
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths:
+      - infra/security/valor_colado.py
+      - infra/security/test_valor_colado.py
+    content_hash: c401cdc9e5d37af91fcf316bcc3c1e0bd3a4dc63c0b4f4916f36e41595d53f56
+    commit: 0f8fa0c
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/test_valor_colado.py
+    note: "ESTA PROVA SO PODIA EXISTIR DEPOIS DO MERGE, e a razao e medida e nao burocratica: o guarda de superficie confere o content_hash declarado contra o checkout, e trata divergencia como problema. Declarar o hash do RAMO teria deixado a main do CONSTRUTORA vermelha, porque valor_colado.py ja estava la com outro conteudo desde o PR #107. A PRF-0170 registrou isso como o que ela NAO fixava, e esta prova fecha a lacuna na unica ordem possivel. O QUE A FIXACAO COMPRA: a guarda e a linha de base lacrada passam a ser superficie provada. Mexer em qualquer das duas -- inclusive para acrescentar uma isencao, inclusive para baixar o limiar e calar uma linha -- faz a CI do CONSTRUTORA acusar que um PR altera superficie provada, e obriga a mover o hash A MAO no genoma. Sao agora DOIS lacres em serie sobre a mesma lista: o sha256 interno, que para a EXECUCAO, e a superficie no genoma, que para o MERGE. O primeiro protege contra acrescimo em runtime; o segundo, contra acrescimo comitado em silencio. OS 39 TESTES incluem o controle que nao se satisfaz com lembranca - a guarda rodada contra o BLOB do e0a0f19 -, as duas metades da regra do bareword no mesmo teste, a janela conferida contra a maior distancia verdadeira, e os quatro testes do lacre. O nome declarado no campo test aponta a classe do lacre porque e a que guarda o defeito do C25-06. O QUE ESTA PROVA NAO ALCANCA: os outros 18 repositorios. O portao vale onde roda, e ele roda aqui."

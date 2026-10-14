@@ -12,8 +12,8 @@ Os tres estados, e eles nao se confundem:
 | estado | onde esta |
 |---|---|
 | **decisao** | TOMADA em 2026-10-14 |
-| **execucao** | ABERTA no PR `LICEU_6.0_CONSTRUTORA_VIRTUAL#108`, commit `558b283` — **nao mergeada** |
-| **comprovacao** | as tres mutacoes, rodadas localmente e registradas na `PRF-0170` |
+| **execucao** | ENTROU na main em 2026-10-14, merge `0f8fa0c` (PR `LICEU_6.0_CONSTRUTORA_VIRTUAL#108`). Na CI o passo leu **1488** arquivos e disse `OK: 1 achado, todos da linha de base lacrada, nenhum novo` |
+| **comprovacao** | as tres mutacoes, na `PRF-0170`; e a `PRF-0171`, por teste, com a superficie fixada — que so podia vir depois do merge |
 
 ### O que a decisao alcanca
 
