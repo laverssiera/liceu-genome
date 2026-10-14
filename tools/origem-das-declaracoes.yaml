@@ -20,18 +20,10 @@
 meta:
   derivado_em: '2026-10-13'
   instrumento: tools/declaracoes_de_estado.py
-  estados_no_kit_lido: 49
+  estados_no_kit_lido: 42
   kit: conformance_kit=0.26.0 constitution=1.15.0
 
 origens:
-  'constitution:meta.pendencias_abertas':
-    classe: PROPRIO_ARTEFATO
-    fonte: 'len(constitution.pendencias)'
-    razao: 'contagem das chaves do proprio arquivo; derivado hoje = 0, declarado = 0'
-  'constitution:meta.adrs_pendentes':
-    classe: PROPRIO_ARTEFATO
-    fonte: 'len(constitution.adrs_pendentes)'
-    razao: 'contagem da propria lista; derivado hoje = 1, declarado = 1. A CONTAGEM esta certa e a LISTA esta defasada (PRF-0125): a ADR-001 foi decidida em 2026-09-18 e segue listada'
   'constitution:global.campos_aceitos_pelo_servidor.procedencia':
     classe: OUTRO_ARTEFATO
     fonte: 'cv-backend-core/app/main.py, por ANCORA e nao por numero de linha'
@@ -52,10 +44,6 @@ origens:
     classe: SAI_DA_CLASSE
     fonte: 'codigo dos 19 repositorios'
     razao: "o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. Declara '9 monolitos com fallback silencioso'"
-  'constitution:global.ci_adoption_order.nao_bloqueador':
-    classe: PROPRIO_ARTEFATO
-    fonte: 'len(constitution.monolitos)'
-    razao: "a frase carrega 'dos 15', que e a contagem dos monolitos do proprio arquivo; a cura e a frase deixar de carregar o numero"
   'constitution:global.federation_cognition.REGRA_DE_IDENTIDADE.medicao_atual.geracoes_de_campo_alheio_em_producao':
     classe: SAI_DA_CLASSE
     fonte: 'codigo dos 19 repositorios'
@@ -64,10 +52,6 @@ origens:
     classe: SAI_DA_CLASSE
     fonte: 'codigo dos 19 repositorios'
     razao: 'o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. Idem: medicao sem data'
-  'constitution:global.federation_cognition.REGRA_DE_IDENTIDADE.aplica_a':
-    classe: PROPRIO_ARTEFATO
-    fonte: 'len(constitution.monolitos)'
-    razao: "'os 15 JOHNs locais' — um JOHN por monolito, contagem do proprio arquivo"
   'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.estado':
     classe: SAI_DA_CLASSE
     fonte: 'nenhum'
@@ -80,14 +64,6 @@ origens:
     classe: SAI_DA_CLASSE
     fonte: 'nenhum'
     razao: "estado de DECISAO que ninguem registrou em artefato derivavel: nao existe arquivo de onde ler se este portao ja foi satisfeito. 'ABERTA', e a PRF-0125 ja o mediu como DEFASADO"
-  'constitution:global.identidade_semantica_de_replay.total':
-    classe: PROPRIO_ARTEFATO
-    fonte: 'len(global.identidade_semantica_de_replay.campos)'
-    razao: 'derivado hoje = 12, declarado = 12'
-  'constitution:global.campos_exigidos_pelo_protocolo.total':
-    classe: PROPRIO_ARTEFATO
-    fonte: 'len(global.campos_exigidos_pelo_protocolo.campos)'
-    razao: 'derivado hoje = 11, declarado = 11'
   'constitution:global.campos_exigidos_pelo_protocolo.implementation_status':
     classe: SAI_DA_CLASSE
     fonte: 'nenhum'
@@ -208,10 +184,6 @@ origens:
     classe: SAI_DA_CLASSE
     fonte: 'nenhum'
     razao: 'E O CASO MAIS INSTRUTIVO DOS 52, e nao e falso nem verdadeiro: NINGUEM ESCREVEU O QUE CONTA COMO IMPLEMENTADO, e quatro eventos passaram a ter EMITIDO_COMO_AUDITORIA_NAO_COMO_FATO. Numero sem definicao nao e verificavel nem refutavel, e por isso sobrevive mais que numero errado. Derivar e impossivel antes de definir; datar nao resolve, porque o problema nao e a idade'
-  'event_reconciliation_ledger:meta.escopo_P2_5A':
-    classe: PROPRIO_ARTEFATO
-    fonte: 'len(ledger.P2_5A_minimum_causal_thread)'
-    razao: "'cadeia causal minima (5 eventos)'; derivado hoje = 5 chaves, declarado = 5"
   'event_reconciliation_ledger:meta.escopo_P2_5B':
     classe: SAI_DA_CLASSE
     fonte: 'o ledger de decisoes, que nao e um dos cinco artefatos'

@@ -1,0 +1,19 @@
+{
+  "instrumento": "tools/declaracoes_de_estado.py --exigir-mapa",
+  "quando": "2026-10-14T10:30:43+00:00",
+  "kit_instalado": "conformance_kit=0.27.0 constitution=1.16.0",
+  "o_que_se_mede": "a SEGUNDA direcao do falha-fechado do portao, sobre uma CURA real: o mapa de origem sobreviveu aos campos que o lote 1 apagou da lei",
+  "antes__mapa_de_49_contra_a_lei_de_42": {
+    "exit": 2,
+    "recusa": "CLASSE DEFASADA: o mapa de origem e a lei divergiram — 7 origem(ns) declarada(s) cujo campo nao existe mais: constitution:global.campos_exigidos_pelo_protocolo.total, constitution:global.ci_adoption_order.nao_bloqueador, constitution:global.federation_cognition.REGRA_DE_IDENTIDADE.aplica_a, constitution:global.identidade_semantica_de_replay.total, constitution:meta.adrs_pendentes, constitution:meta.pendencias_abertas .... Isto falha FECHADO: mapa que envelhece calado e a classe que ele corrige."
+  },
+  "depois__mapa_encolhido_para_42": {
+    "exit": 0,
+    "fecho": [
+      "mapa de origem EM DIA: todo ESTADO tem origem, toda origem tem campo,",
+      "todo derivavel tem derivacao ou isencao nomeada (0 derivadas, 2 isentas),",
+      "as duas listas de isencao estao DENTRO do lacre (4 + 41 lacrados, so encolhem),",
+      "e nenhuma derivacao perdeu a fonte."
+    ]
+  }
+}

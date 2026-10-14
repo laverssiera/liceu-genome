@@ -125,65 +125,45 @@ class ADerivacaoAcusa(unittest.TestCase):
             self.skipTest(f"a lei esta defasada em {len(falsos)}: "
                           f"{[x['chave'] for x in falsos]} — isto e achado, nao falha do teste")
 
-    def test_mexer_na_lista_sem_recontar_e_ACUSADO(self):
-        """O defeito inteiro da classe em uma linha: alguem acrescenta uma
-        pendencia e nao atualiza o contador."""
-        mutado = copy.deepcopy(self.artefatos)
-        mutado["constitution"]["pendencias"] = ["uma pendencia nova que ninguem contou"]
-        r = {x["chave"]: x for x in de.confere_derivaveis(self.achadas, mutado)}
-        alvo = r["constitution:meta.pendencias_abertas"]
-        self.assertIs(alvo["bate"], False)
-        self.assertEqual((alvo["declarado"], alvo["derivado"]), (0, 1))
+    def test_DERIVACOES_vazio_e_o_RESULTADO_do_lote_1_e_nao_uma_lacuna(self):
+        """Cinco derivacoes sairam porque os cinco CAMPOS sairam da lei.
 
-    def test_a_SEGUNDA_FONTE_que_eu_tinha_achado_NAO_era_uma(self):
-        """Correcao de um achado meu, e ela vale guardar como teste.
-
-        Eu havia registrado que `M1.criterios.CONSTITUTION_PENDING_DECISIONS`
-        carregava o MESMO numero que `meta.pendencias_abertas` — duas fontes a
-        mao, a objecao do ADR-002. ESTAVA ERRADO pelo mesmo motivo que a
-        derivacao estava: o M1 e REGISTRO HISTORICO, com
-        `baseline_constitution_version: 1.0.0`. Nao e contagem viva duplicada; e
-        o valor de quando o M1 fechou, que por coincidencia iguala o de hoje.
-
-        Entao `pendencias` alimenta UMA derivacao, nao duas, e o teste guarda
-        isso para eu nao reinventar o achado.
+        Campo que nao existe nao precisa ser derivado: "nao se escreve, se
+        deriva", e apagar e a forma mais forte de nao escrever. Este teste
+        existe para que o vazio seja uma AFIRMACAO e nao um esquecimento.
         """
-        mutado = copy.deepcopy(self.artefatos)
-        mutado["constitution"]["pendencias"] = ["x", "y"]
-        r = {x["chave"]: x for x in de.confere_derivaveis(self.achadas, mutado)}
-        self.assertIs(r["constitution:meta.pendencias_abertas"]["bate"], False)
-        de_pendencias = [k for k in de.DERIVACOES if "pendencias_abertas" in k
-                         or "PENDING_DECISIONS" in k]
-        self.assertEqual(de_pendencias, ["constitution:meta.pendencias_abertas"],
-                         "se um segundo campo voltar a derivar de pendencias, ai sim "
-                         "a objecao do ADR-002 se aplica")
+        self.assertEqual(len(de.DERIVACOES), 0)
+        instalado = {d.chave for d in self.achadas}
+        for curado in ("constitution:meta.pendencias_abertas",
+                       "constitution:meta.adrs_pendentes",
+                       "constitution:global.identidade_semantica_de_replay.total",
+                       "constitution:global.campos_exigidos_pelo_protocolo.total",
+                       "event_reconciliation_ledger:meta.escopo_P2_5A"):
+            self.assertNotIn(curado, instalado, f"{curado} voltou a lei")
 
-    def test_len_monolitos_nao_alimenta_derivacao_nenhuma(self):
-        """O que sobrou da reclassificacao, dito em vez de calado.
+    def test_a_LISTA_de_topo_adrs_pendentes_NAO_foi_tocada(self):
+        """O que o lote 1 nao podia quebrar: `liceu_boundary_check.py:353` faz
+        `c.get("adrs_pendentes", [])` sobre a lista de TOPO. A contagem
+        `meta.adrs_pendentes` saiu; a lista fica.
 
-        `CANONICAL_MONOLITH_IDS` era a unica comparacao numerica contra
-        `len(monolitos)`, e ela saiu por ser historica. Os dois campos que ainda
-        carregam 'os 15' — `ci_adoption_order.nao_bloqueador` e
-        `REGRA_DE_IDENTIDADE.aplica_a` — sao prosa e estao ISENTOS, porque a
-        cura deles e a frase deixar de carregar o numero.
-
-        Consequencia MEDIDA e nao escondida: hoje nenhuma guarda acusa quem
-        acrescentar ou remover um monolito sem reescrever essas duas frases.
+        E o que a cura NAO curou, dito aqui para nao parecer curado: a contagem
+        estava CERTA — havia um item. Quem esta defasado e a LISTA, que segue
+        nomeando a ADR-001 como pendente desde que foi decidida em 2026-09-18
+        (PRF-0125). E essa defasagem nenhum enumerador mecanico alcanca.
         """
-        self.assertEqual([k for k in de.DERIVACOES if "MONOLITH" in k], [])
-        isentos_com_15 = [k for k in de.ISENTOS_DE_DERIVACAO
-                          if "nao_bloqueador" in k or "aplica_a" in k]
-        self.assertEqual(len(isentos_com_15), 2)
+        const = self.artefatos["constitution"]
+        self.assertIn("adrs_pendentes", const, "a lista de topo desapareceu")
+        self.assertIsInstance(const["adrs_pendentes"], list)
+        self.assertNotIn("adrs_pendentes", const["meta"], "a contagem voltou")
+        ids = [a.get("id") for a in const["adrs_pendentes"]]
+        self.assertIn("ADR-001", ids,
+                      "a lista segue nomeando a ADR-001; se um dia nao nomear, "
+                      "a defasagem que a PRF-0125 mediu foi curada e esta nota muda")
 
-    def test_a_contagem_dentro_de_PROSA_tambem_e_conferida(self):
-        """`escopo_P2_5A` diz '(5 eventos)' no meio de uma frase. O instrumento
-        extrai o primeiro numero e compara — senao a frase seria imune."""
-        mutado = copy.deepcopy(self.artefatos)
-        mutado["event_reconciliation_ledger"]["P2_5A_minimum_causal_thread"].popitem()
-        r = {x["chave"]: x for x in de.confere_derivaveis(self.achadas, mutado)}
-        alvo = r["event_reconciliation_ledger:meta.escopo_P2_5A"]
-        self.assertIs(alvo["bate"], False)
-        self.assertEqual((alvo["declarado"], alvo["derivado"]), (5, 4))
+    # A versao anterior deste caso mutava o `escopo_P2_5A` real do ledger, e ele
+    # SAIU da lei no kit 0.27.0. O caso vive agora em
+    # `ADerivaEhPegaPorFalharFECHADO`, sobre uma lei sintetica — porque teste de
+    # mecanismo nao deve morrer quando o conteudo que ele vigia e curado.
 
 
 class OMapaFalhaFechado(unittest.TestCase):
@@ -288,6 +268,35 @@ class ADerivaEhPegaPorFalharFECHADO(unittest.TestCase):
     FALHA ABERTA na funcao de contagem.
     """
 
+    #: SINTETICO de proposito. As mutacoes estavam ancoradas em campos REAIS da
+    #: lei, e quando o lote 1 do C25-06 apagou esses campos oito testes
+    #: quebraram de uma vez — a deteccao da deriva ficaria sem guarda justo
+    #: quando `DERIVACOES` esvaziou. Teste de MECANISMO nao deve depender do
+    #: conteudo que o mecanismo vigia.
+    LEI = {"constitution": {"meta": {"conta": 2, "frase": "sao 2 coisas no total"},
+                            "itens": ["a", "b"],
+                            "fundo": {"dentro": {"lista": ["x", "y"]}}}}
+    DERIVACOES = {
+        "constitution:meta.conta": lambda a: de._conta(a, "constitution", "itens"),
+        "constitution:meta.frase": lambda a: de._conta(a, "constitution", "itens"),
+        "constitution:fundo.dentro.quantos":
+            lambda a: de._conta(a, "constitution", "fundo", "dentro", "lista"),
+    }
+
+    def _achadas(self):
+        fora = []
+        for chave, valor in (("constitution:meta.conta", 2),
+                             ("constitution:meta.frase", "sao 2 coisas no total"),
+                             ("constitution:fundo.dentro.quantos", 2)):
+            art, cam = chave.split(":", 1)
+            f = de.forma_de(valor) or "inteiro"
+            fora.append(de.Declaracao(art, cam, valor, f, de.ESTADO, "sintetico"))
+        return fora
+
+    def _confere(self, lei):
+        return {x["chave"]: x for x in
+                de.confere_derivaveis(self._achadas(), lei, self.DERIVACOES)}
+
     def setUp(self):
         self.kit = de.kit_instalado()
         self.artefatos = de.carrega_artefatos(self.kit)
@@ -306,37 +315,63 @@ class ADerivaEhPegaPorFalharFECHADO(unittest.TestCase):
         with self.assertRaises(de.FonteAusente):
             de._conta({"pendencias": None}, "pendencias")
 
+    def test_com_a_lei_intacta_os_derivaveis_batem(self):
+        """A linha de base, senao as mutacoes nao provam nada: 2 = len(itens)."""
+        r = self._confere(copy.deepcopy(self.LEI))
+        self.assertTrue(all(x["bate"] for x in r.values()), r)
+
+    def test_mexer_na_lista_sem_recontar_e_ACUSADO(self):
+        """O defeito inteiro da classe em uma linha: alguem acrescenta um item e
+        nao atualiza o contador."""
+        lei = copy.deepcopy(self.LEI)
+        lei["constitution"]["itens"].append("c")
+        alvo = self._confere(lei)["constitution:meta.conta"]
+        self.assertIs(alvo["bate"], False)
+        self.assertEqual((alvo["declarado"], alvo["derivado"]), (2, 3))
+
+    def test_a_contagem_dentro_de_PROSA_tambem_e_conferida(self):
+        """Sem extrair o primeiro numero da frase, prosa com contagem seria
+        imune — e foi assim que `escopo_P2_5A` entrou na classe."""
+        lei = copy.deepcopy(self.LEI)
+        lei["constitution"]["itens"].append("c")
+        alvo = self._confere(lei)["constitution:meta.frase"]
+        self.assertIs(alvo["bate"], False)
+        self.assertEqual((alvo["declarado"], alvo["derivado"]), (2, 3))
+
     def test_a_FONTE_que_sai_e_acusada_como_DERIVA_e_nao_como_OK(self):
-        """O caso exato que passava antes: a origem sai, a contagem da 0, e o
-        declarado tambem e 0. Coincidencia de zero virava aprovacao."""
-        mutado = copy.deepcopy(self.artefatos)
-        del mutado["constitution"]["pendencias"]
-        r = {x["chave"]: x for x in de.confere_derivaveis(self.achadas, mutado)}
-        alvo = r["constitution:meta.pendencias_abertas"]
+        """O caso exato que passava antes: a origem sai, a contagem daria 0, e o
+        declarado tambem seria 0. Coincidencia de zero virava aprovacao."""
+        lei = copy.deepcopy(self.LEI)
+        del lei["constitution"]["itens"]
+        alvo = self._confere(lei)["constitution:meta.conta"]
         self.assertTrue(alvo["deriva"], "a fonte sumiu e isto tem de sair como DERIVA")
         self.assertIs(alvo["bate"], False, "deriva nunca pode sair como bate=True")
         self.assertIn("DERIVA", alvo["nota"])
 
     def test_a_deriva_atinge_TODO_campo_que_bebe_daquela_fonte(self):
-        """Quantos campos uma fonte alimenta e DERIVADO, nao fixado: a primeira
-        versao escrevia 2 aqui e o 2 apodreceu quando o M1 foi reclassificado."""
-        mutado = copy.deepcopy(self.artefatos)
-        del mutado["constitution"]["pendencias"]
-        derivas = {x["chave"] for x in de.confere_derivaveis(self.achadas, mutado)
-                   if x["deriva"]}
-        bebem = {k for k, fn in de.DERIVACOES.items()
-                 if "pendencias" in str(fn.__code__.co_consts)}
+        """Duas fontes a mao do mesmo valor caem juntas — e e por isso que duas
+        sao piores que uma. Quantos campos bebem dali e DERIVADO, nao fixado."""
+        lei = copy.deepcopy(self.LEI)
+        del lei["constitution"]["itens"]
+        r = self._confere(lei)
+        derivas = {k for k, x in r.items() if x["deriva"]}
+        bebem = {k for k, fn in self.DERIVACOES.items()
+                 if "itens" in str(fn.__code__.co_consts)}
         self.assertEqual(derivas, bebem,
                          "todo campo que deriva daquela fonte tem de cair com ela")
         self.assertTrue(derivas, "a fonte tem de alimentar ao menos um campo")
 
     def test_o_caminho_INTERMEDIARIO_que_sai_tambem_e_pego(self):
-        """A deriva pode ser no meio do caminho, nao so na folha."""
-        mutado = copy.deepcopy(self.artefatos)
-        del mutado["constitution"]["global"]["identidade_semantica_de_replay"]
-        r = {x["chave"]: x for x in de.confere_derivaveis(self.achadas, mutado)}
-        self.assertTrue(
-            r["constitution:global.identidade_semantica_de_replay.total"]["deriva"])
+        """A deriva pode ser no MEIO do caminho, nao so na folha."""
+        lei = copy.deepcopy(self.LEI)
+        del lei["constitution"]["fundo"]["dentro"]
+        self.assertTrue(self._confere(lei)["constitution:fundo.dentro.quantos"]["deriva"])
+
+    def test_a_lei_de_HOJE_nao_tem_derivavel_nenhum_e_isso_e_o_lote_1(self):
+        """A ponte entre o mecanismo sintetico e o mundo: as mutacoes acima
+        provam que a deteccao funciona; esta linha diz que hoje nao ha o que
+        detectar, porque o lote 1 apagou os campos."""
+        self.assertEqual(de.confere_derivaveis(self.achadas, self.artefatos), [])
 
 
 class OLacreDasDuasListasDeIsencao(unittest.TestCase):
@@ -392,10 +427,24 @@ class OLacreDasDuasListasDeIsencao(unittest.TestCase):
         m = {k: v for k, v in self.mapa.items() if k != de.LACRE_SAI_DA_CLASSE[0]}
         de.exige_lacre(m)             # nao levanta
 
-    def test_o_lacre_cobre_os_41_e_os_4_de_hoje(self):
-        self.assertEqual(len(de.LACRE_SAI_DA_CLASSE), 41)
+    def test_o_lacre_SO_ENCOLHE_e_hoje_ja_encolheu(self):
+        """O lacre e o MAXIMO historico, nao o estado de hoje.
+
+        Lacrados: 4 isencoes e 41 SAI_DA_CLASSE, em 2026-10-13. Depois do lote 1
+        do item 2 as isencoes vivas sao 2 — `ci_adoption_order.nao_bloqueador` e
+        `REGRA_DE_IDENTIDADE.aplica_a` sairam ao serem reescritas, que era
+        exatamente a cura que a razao de isencao delas prometia.
+
+        Exigir igualdade aqui faria a guarda empurrar contra a propria cura.
+        """
         self.assertEqual(len(de.LACRE_ISENTOS), 4)
-        self.assertEqual(set(de.ISENTOS_DE_DERIVACAO), set(de.LACRE_ISENTOS))
+        self.assertEqual(len(de.LACRE_SAI_DA_CLASSE), 41)
+        self.assertTrue(set(de.ISENTOS_DE_DERIVACAO) <= set(de.LACRE_ISENTOS),
+                        "isencao viva fora do lacre")
+        self.assertTrue(set(de.sai_da_classe_de(self.mapa)) <= set(de.LACRE_SAI_DA_CLASSE))
+        self.assertLess(len(de.ISENTOS_DE_DERIVACAO), len(de.LACRE_ISENTOS),
+                        "o lote 1 tirou duas isencoes; se voltarem a ser quatro, "
+                        "alguem desfez a cura ou acrescentou isencao")
 
 
 class ORegistroHISTORICONaoSeDeriva(unittest.TestCase):

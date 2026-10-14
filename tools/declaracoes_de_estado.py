@@ -419,15 +419,23 @@ def _conta(no, *chaves) -> int:
     return len(no)
 
 
+#: VAZIO, e isso e o RESULTADO do lote 1 do item 2 e nao uma lacuna.
+#:
+#: Estavam aqui cinco derivacoes, e os cinco campos FORAM APAGADOS DA LEI no kit
+#: 0.27.0: meta.pendencias_abertas, meta.adrs_pendentes,
+#: identidade_semantica_de_replay.total, campos_exigidos_pelo_protocolo.total e
+#: ledger meta.escopo_P2_5A. Campo que nao existe nao precisa ser derivado — a
+#: regra do titular e "nao se escreve, se deriva", e apagar e a forma mais forte
+#: de nao escrever.
+#:
+#: O PORTAO ACUSOU A CURA, que e a segunda direcao do falha-fechado: com a
+#: v0.27.0 instalada e o mapa ainda inteiro, ele nomeou as SETE origens orfas e
+#: saiu com codigo 2. Mapa que sobrevive aos campos afirma que a lei tem o que
+#: ela nao tem.
+#:
+#: Entrada nova aqui so faz sentido se um campo derivavel NOVO entrar na lei — e
+#: se entrar, `exige_derivacao_declarada` o barra ate ter derivacao ou isencao.
 DERIVACOES: dict[str, object] = {
-    "constitution:meta.pendencias_abertas":
-        lambda a: _conta(a, "constitution", "pendencias"),
-    "constitution:meta.adrs_pendentes":
-        lambda a: _conta(a, "constitution", "adrs_pendentes"),
-    "constitution:global.identidade_semantica_de_replay.total":
-        lambda a: _conta(a, "constitution", "global", "identidade_semantica_de_replay", "campos"),
-    "constitution:global.campos_exigidos_pelo_protocolo.total":
-        lambda a: _conta(a, "constitution", "global", "campos_exigidos_pelo_protocolo", "campos"),
     # NAO ENTRAM AQUI, e isto foi correcao de erro meu em 2026-10-13:
     # `M1.criterios.CONSTITUTION_PENDING_DECISIONS` e `M1.criterios.CANONICAL_MONOLITH_IDS`
     # pareciam derivaveis de `len(pendencias)` e `len(monolitos)`, e a derivacao
@@ -437,8 +445,6 @@ DERIVACOES: dict[str, object] = {
     # versao corrente'. Derivar ali sobrescreveria historia. Agora o classificador
     # os trata como HISTORICO, por regra mecanica — ver
     # `prefixos_de_registro_historico`.
-    "event_reconciliation_ledger:meta.escopo_P2_5A":
-        lambda a: _conta(a, "event_reconciliation_ledger", "P2_5A_minimum_causal_thread"),
 }
 
 
@@ -455,12 +461,15 @@ ISENTOS_DE_DERIVACAO = {
     "constitution:global.campos_aceitos_pelo_servidor.verificado_em":
         "mesmo caso, e os dois campos carregam a MESMA linha: a cura e uma ancora so, "
         "no CORE, e nao duas comparacoes aqui",
-    "constitution:global.ci_adoption_order.nao_bloqueador":
-        "a contagem esta DENTRO de prosa ('CI universal dos 15'). A cura e a frase "
-        "deixar de carregar o numero, nao o numero ser comparado — comparar "
-        "legitimaria a frase continuar a carrega-lo",
-    "constitution:global.federation_cognition.REGRA_DE_IDENTIDADE.aplica_a":
-        "idem: 'os 15 JOHNs locais' e prosa com contagem, e a cura e reescrever",
+    # SAIRAM NO KIT 0.27.0, e saindo provaram a propria razao de isencao:
+    # `ci_adoption_order.nao_bloqueador` e `REGRA_DE_IDENTIDADE.aplica_a` estavam
+    # isentos porque a contagem vivia DENTRO de prosa, e a razao escrita dizia que
+    # a cura era "a frase deixar de carregar o numero, nao o numero ser
+    # comparado". Foi o que o lote 1 fez: "dos 15" virou "dos monolitos" e "os 15
+    # JOHNs locais" virou "os JOHNs locais de todos os monolitos". Sem contagem,
+    # os dois campos deixaram de casar qualquer forma do enumerador e nao sao mais
+    # declaracao de estado. O LACRE NAO MUDA: LACRE_ISENTOS segue com os quatro, e
+    # dois saindo e encolhimento, que e o unico movimento permitido.
 }
 
 
@@ -636,11 +645,20 @@ def carrega_artefatos(kit: pathlib.Path) -> dict:
             for nome in ARTEFATOS}
 
 
-def confere_derivaveis(achadas: list[Declaracao], artefatos: dict) -> list[dict]:
-    """Declarado x derivado, para os campos cujo valor E o numero."""
+def confere_derivaveis(achadas: list[Declaracao], artefatos: dict,
+                       derivacoes: dict | None = None) -> list[dict]:
+    """Declarado x derivado, para os campos cujo valor E o numero.
+
+    `derivacoes` existe para o TESTE poder exercitar a maquinaria com dados
+    sinteticos. Sem ele, as mutacoes da deriva ficavam ancoradas em campos reais
+    da lei — e quando o lote 1 do C25-06 apagou esses campos, oito testes
+    quebraram de uma vez e a deteccao da deriva ficaria SEM GUARDA justo quando
+    `DERIVACOES` esvaziou. Teste de mecanismo nao deve depender do conteudo que o
+    mecanismo vigia.
+    """
     por_chave = {d.chave: d for d in achadas}
     fora = []
-    for chave, fn in DERIVACOES.items():
+    for chave, fn in (DERIVACOES if derivacoes is None else derivacoes).items():
         d = por_chave.get(chave)
         if d is None:
             fora.append({"chave": chave, "declarado": None, "derivado": None,
