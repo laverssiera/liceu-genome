@@ -454,13 +454,24 @@ DERIVACOES: dict[str, object] = {
 #: existe porque "classificado como derivavel" sem derivacao e exatamente a
 #: afirmacao escrita a mao que a regra do titular proibe.
 ISENTOS_DE_DERIVACAO = {
-    "constitution:global.campos_aceitos_pelo_servidor.procedencia":
-        "a derivacao e por ANCORA no cv-backend-core e pertence a CI DO CORE, que e a "
-        "unica que alcanca aquele arquivo. A CI do genoma ve o genoma e o kit, nunca o "
-        "CORE — derivar aqui seria fingir alcance",
-    "constitution:global.campos_aceitos_pelo_servidor.verificado_em":
-        "mesmo caso, e os dois campos carregam a MESMA linha: a cura e uma ancora so, "
-        "no CORE, e nao duas comparacoes aqui",
+    # VAZIO, e e o RESULTADO do lote 2 do item 2 — nao uma lacuna.
+    #
+    # As duas ultimas isencoes eram `campos_aceitos_pelo_servidor.procedencia` e
+    # `.verificado_em`, e a razao escrita delas prometia a cura: "a derivacao e
+    # por ANCORA no cv-backend-core e pertence a CI DO CORE, que e a unica que
+    # alcanca aquele arquivo — derivar aqui seria fingir alcance". No kit 0.28.0
+    # a `verificado_em` saiu (duplicava a `procedencia`) e a `procedencia` perdeu
+    # o ':617', mantendo a ancora; a derivacao passou a viver em
+    # cv-backend-core/tools/campos_aceitos.py, onde ha alcance.
+    #
+    # E A `procedencia` FICOU INVISIVEL AO ENUMERADOR, o que e achado e nao
+    # conserto: sem o numero, o valor nao casa forma nenhuma — nem inteiro, nem
+    # fracao, nem palavra de situacao — e por isso ela nem entra como candidata.
+    # Ela virou o 35o campo marcado `[CODIGO]` que este instrumento nao ve, dos
+    # 45 que a lei marca. O ponto cego e o proximo diagnostico.
+    #
+    # O LACRE NAO MUDA: LACRE_ISENTOS segue com os quatro, porque lacre e o
+    # MAXIMO historico e so encolher e permitido.
     # SAIRAM NO KIT 0.27.0, e saindo provaram a propria razao de isencao:
     # `ci_adoption_order.nao_bloqueador` e `REGRA_DE_IDENTIDADE.aplica_a` estavam
     # isentos porque a contagem vivia DENTRO de prosa, e a razao escrita dizia que

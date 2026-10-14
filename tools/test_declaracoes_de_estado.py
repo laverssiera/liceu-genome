@@ -243,15 +243,31 @@ class DerivavelDECLARADOTemDeSerDerivavelDEVERDADE(unittest.TestCase):
 
     def test_isencao_que_sobrevive_ao_campo_LEVANTA(self):
         """Isencao orfa e permissao orfa: ficaria valendo para um campo que nao
-        existe, e o proximo campo com nome parecido herdaria a licenca."""
-        m = {k: v for k, v in self.mapa.items() if k not in de.ISENTOS_DE_DERIVACAO}
-        with self.assertRaises(de.ClasseDefasada) as e:
-            de.exige_derivacao_declarada(m)
-        self.assertIn("nao esta mais no mapa", str(e.exception))
+        existe, e o proximo campo com nome parecido herdaria a licenca.
+
+        SINTETICO porque ISENTOS_DE_DERIVACAO esvaziou com o lote 2 do item 2 —
+        as duas ultimas isencoes perderam o campo quando a lei foi curada. Sem
+        injetar uma, este caso nao teria o que orfanar, e a guarda ficaria sem
+        teste justo quando a lista zerou.
+        """
+        original = dict(de.ISENTOS_DE_DERIVACAO)
+        de.ISENTOS_DE_DERIVACAO["constitution:meta.campo_que_sumiu"] = (
+            "isencao injetada pelo teste, com razao longa o bastante para a "
+            "conferencia de razao escrita passar")
+        try:
+            with self.assertRaises(de.ClasseDefasada) as e:
+                de.exige_derivacao_declarada(dict(self.mapa))
+            self.assertIn("nao esta mais no mapa", str(e.exception))
+        finally:
+            de.ISENTOS_DE_DERIVACAO.clear()
+            de.ISENTOS_DE_DERIVACAO.update(original)
 
     def test_toda_isencao_tem_razao_escrita(self):
+        """Vale tambem para a lista VAZIA: zero isencoes satisfaz a regra, e o
+        caso existe para que uma isencao futura nasca com razao."""
         for chave, razao in de.ISENTOS_DE_DERIVACAO.items():
             self.assertGreater(len(razao), 40, f"{chave}: isencao sem razao de verdade")
+        self.assertTrue(set(de.ISENTOS_DE_DERIVACAO) <= set(de.LACRE_ISENTOS))
 
 
 class ADerivaEhPegaPorFalharFECHADO(unittest.TestCase):
@@ -551,16 +567,32 @@ class OGatilhoDaFIT020(unittest.TestCase):
     def setUp(self):
         self.mapa = de.carrega_mapa()
 
-    def test_hoje_a_classe_tem_membros_e_o_gatilho_NAO_arma(self):
+    def test_HOJE_a_classe_esta_em_ZERO_e_o_gatilho_ESTA_ARMADO(self):
+        """O lote 2 do item 2 levou a classe viva a zero, e o gatilho armou
+        sozinho. Este caso era o inverso — 'tem membros e NAO arma' — e virou
+        o que e: a classe foi curada.
+
+        A contrapartida ('com membros NAO arma') esta logo abaixo, sobre um mapa
+        SINTETICO, porque teste de mecanismo nao deve morrer quando o conteudo
+        que o mecanismo vigia e curado. E a terceira vez neste ciclo que eu
+        aprendo isso, e agora esta escrito aqui.
+        """
+        self.assertEqual(de.classe_viva(self.mapa), [])
         armado, texto = de.gatilho_fit_020(self.mapa)
+        self.assertTrue(armado)
+        self.assertIn("GATILHO ARMADO", texto)
+        self.assertIn("NAO e autorizacao", texto,
+                      "armar e avisar; a excecao ao freio e decisao do titular")
+
+    def test_com_membros_na_classe_o_gatilho_NAO_arma(self):
+        """A contrapartida, em mapa sintetico: uma guarda que armasse sempre nao
+        mediria nada."""
+        m = {"constitution:meta.x": de.Origem(de.PROPRIO_ARTEFATO, "len(y)", "sintetico")}
+        armado, texto = de.gatilho_fit_020(m)
         self.assertFalse(armado)
         self.assertIn("ADIADA", texto)
-        # DERIVADO do mapa, nao fixado: a primeira versao escrevia 11 e o 11
-        # apodreceu no mesmo dia, quando o M1 virou registro historico.
-        vivos = [k for k, o in self.mapa.items()
-                 if o.classe in (de.PROPRIO_ARTEFATO, de.OUTRO_ARTEFATO)]
-        self.assertEqual(len(de.classe_viva(self.mapa)), len(vivos))
-        self.assertIn(str(len(vivos)), texto, "o numero anunciado e o derivado")
+        self.assertIn("1 membro(s) vivo(s)", texto,
+                      "o numero anunciado e o DERIVADO do mapa, nunca um literal")
 
     def test_com_a_classe_em_ZERO_o_gatilho_ARMA(self):
         """A contrapartida, e sem ela o gatilho seria decoracao: convertido tudo,
@@ -616,11 +648,18 @@ class ASaidaNaoSeContradiz(unittest.TestCase):
         s = self._saida()
         self.assertIn("CONTRADICOES DENTRO DO MESMO ARQUIVO", s)
 
-    def test_a_classe_viva_anunciada_e_a_derivada(self):
-        """O numero que o instrumento imprime tem de ser o que ele deriva."""
+    def test_o_que_o_instrumento_ANUNCIA_e_o_que_ele_DERIVA(self):
+        """Com a classe em zero o anuncio muda de forma — passa a ser o gatilho
+        armado em vez da contagem —, e o teste segue o estado DERIVADO em vez de
+        esperar uma das duas formas."""
         s = self._saida()
         vivos = len(de.classe_viva(de.carrega_mapa()))
-        self.assertIn(f"{vivos} membro(s) vivo(s)", s)
+        if vivos:
+            self.assertIn(f"{vivos} membro(s) vivo(s)", s)
+        else:
+            self.assertIn("GATILHO ARMADO", s)
+            self.assertNotIn("membro(s) vivo(s)", s,
+                             "com zero membros o instrumento nao anuncia contagem")
 
 
 class OArtefatoAusente(unittest.TestCase):

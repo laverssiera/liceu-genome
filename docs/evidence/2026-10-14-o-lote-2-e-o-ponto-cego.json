@@ -1,0 +1,64 @@
+{
+  "instrumento": "tools/declaracoes_de_estado.py --exigir-mapa; e percurso de folhas() por [CODIGO]",
+  "quando": "2026-10-14T13:08:41+00:00",
+  "kit_instalado": "conformance_kit=0.28.0 constitution=1.17.0",
+  "lote_2__o_portao_acusou_a_cura": {
+    "antes__mapa_de_42_contra_a_lei_de_40": {
+      "exit": 2,
+      "recusa": "CLASSE DEFASADA: o mapa de origem e a lei divergiram — 2 origem(ns) declarada(s) cujo campo nao existe mais: constitution:global.campos_aceitos_pelo_servidor.procedencia, constitution:global.campos_aceitos_pelo_servidor.verificado_em. Isto falha FECHADO: mapa que envelhece calado e a classe que ele corrige."
+    },
+    "depois__mapa_de_40": {
+      "exit": 0,
+      "gatilho": ">>> FIT-020: GATILHO ARMADO — a classe chegou a ZERO. A fitness que o C25-06 pediu pode entrar agora como guarda de REGRESSAO, com zero membros vivos, e o custo no denominador passa a comprar uma guarda permanente em vez de um remendo. Isto NAO e autorizacao: a excecao ao freio continua sendo decisao do titular.",
+      "fecho": [
+        "mapa de origem EM DIA: todo ESTADO tem origem, toda origem tem campo,",
+        "todo derivavel tem derivacao ou isencao nomeada (0 derivadas, 0 isentas),",
+        "as duas listas de isencao estao DENTRO do lacre (4 + 41 lacrados, so encolhem),",
+        "e nenhuma derivacao perdeu a fonte."
+      ]
+    }
+  },
+  "ponto_cego__o_marcador_da_propria_lei": {
+    "campos_marcados_CODIGO": 45,
+    "que_o_enumerador_ve": 10,
+    "invisiveis": 35,
+    "porque": "forma_de() decide se o valor e CANDIDATO antes de classifica() decidir a CATEGORIA. O [CODIGO] mora em classifica(), entao so age sobre quem JA passou pela porta — e a maioria dos marcados nao tem digito nenhum",
+    "lista": [
+      "constitution:global.antipadroes.antipadrao_1_db_coupling.violacao_conhecida",
+      "constitution:global.antipadroes.antipadrao_2_valor_inventado.violacao_conhecida",
+      "constitution:global.campos_aceitos_pelo_servidor.campos_descartados_silenciosamente[0].observacao",
+      "constitution:global.campos_aceitos_pelo_servidor.campos_descartados_silenciosamente[2].observacao",
+      "constitution:global.campos_aceitos_pelo_servidor.procedencia",
+      "constitution:global.security_model.aliases_proibidos.procedencia",
+      "constitution:global.security_model.procedencia",
+      "constitution:monolitos.academia.dependencia_quebrada.procedencia",
+      "constitution:monolitos.academia.forbidden[0].violacao",
+      "constitution:monolitos.anchor.forbidden[0].violacao",
+      "constitution:monolitos.archimedes.divida_conhecida[0]",
+      "constitution:monolitos.archimedes.divida_conhecida[1]",
+      "constitution:monolitos.archimedes.divida_conhecida[2]",
+      "constitution:monolitos.bim.forbidden[0].violacao",
+      "constitution:monolitos.bim.forbidden[1].violacao",
+      "constitution:monolitos.bim.violacao_critica.procedencia",
+      "constitution:monolitos.cea.divida_conhecida[0]",
+      "constitution:monolitos.cea.divida_conhecida[1]",
+      "constitution:monolitos.cefeida.dependencia_quebrada.procedencia",
+      "constitution:monolitos.cefeida.forbidden[0].violacao",
+      "constitution:monolitos.econotech.bug_conhecido.procedencia",
+      "constitution:monolitos.econotech.forbidden[0].violacao",
+      "constitution:monolitos.econotech.forbidden[1].violacao",
+      "constitution:monolitos.fornecedores.a_verificar[0]",
+      "constitution:monolitos.fornecedores.observacao_positiva",
+      "constitution:monolitos.gamemkt.legado.procedencia",
+      "constitution:monolitos.gamemkt.violacao_critica.procedencia",
+      "constitution:monolitos.hub.forbidden[0].violacao",
+      "constitution:monolitos.john.correcao_de_registro.procedencia",
+      "constitution:monolitos.juridicotech.divida_conhecida[0]",
+      "constitution:monolitos.juridicotech.divida_conhecida[1]",
+      "constitution:monolitos.opera.divida_conhecida[0]",
+      "constitution:monolitos.opera.divida_conhecida[1]",
+      "constitution:monolitos.opera.observacao_positiva",
+      "constitution:monolitos.ped.estado.procedencia"
+    ]
+  }
+}
