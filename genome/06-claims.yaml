@@ -807,3 +807,15 @@
   kind: claim
   statement: "Um controle positivo escrito com a FORMA do incidente prova que a guarda acha o caso real."
   asserted_by: "eu mesmo, ao escrever a isca sintetica com as quatro classes de caractere do valor e declarar o controle satisfeito"
+- id: CLM-0139
+  kind: claim
+  statement: "Ligar o --bloquear na CI significa bloquear sobre a varredura dos 19 repositorios, que e a varredura que foi medida."
+  asserted_by: "eu mesmo: 'ligar o --bloquear na CI' tem um significado obvio - a varredura cujo numero eu acabara de medir -, e eu ia escrever o passo da CI assim, sem conferir o que o runner tem"
+- id: CLM-0140
+  kind: claim
+  statement: "Exigir que o indicador de segredo venha ANTES do valor e dentro de uma janela medida derruba falso positivo sem perder nenhum dos verdadeiros."
+  asserted_by: "ninguem ainda - e a hipotese que nasceu de olhar as distancias dos 24 achados, e ela so vale se os 16 verdadeiros sobreviverem, inclusive as duas linhas do caso real"
+- id: CLM-0141
+  kind: claim
+  statement: "O bloqueio recusa valor colado novo, e a isencao da linha de base nao sobrevive nem a edicao da linha isenta nem a um acrescimo em runtime."
+  asserted_by: "ninguem ainda - e guarda que nao recusa nada nao guarda, e lista de isencao que aceita item em runtime e o defeito que eu cometi no C25-06"

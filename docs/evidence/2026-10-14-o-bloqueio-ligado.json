@@ -1,0 +1,99 @@
+{
+  "a_decisao": {
+    "quem": "o titular",
+    "quando": "2026-10-14",
+    "o_que": "ligar o --bloquear na CI",
+    "os_tres_estados_sao_distintos": {
+      "decisao": "TOMADA em 2026-10-14",
+      "execucao": "ABERTA no PR laverssiera/LICEU_6.0_CONSTRUTORA_VIRTUAL#108, commit 558b283 -- NAO MERGEADA",
+      "comprovacao": "as tres mutacoes abaixo, rodadas localmente"
+    }
+  },
+  "o_escopo_do_bloqueio_e_medido_e_nao_preferido": {
+    "escopo": "o repositorio LICEU_6.0_CONSTRUTORA_VIRTUAL, somente",
+    "porque": "o runner tem so este checkout, e a guarda varre a partir do diretorio que CONTEM os repositorios; pedir os 19 a faz falhar fechada com NAO MENSURAVEL, que e o certo e nao e portao",
+    "o_que_fica_fora": "os outros 18 repositorios, onde estao as 13 credenciais coladas. Bloquear la exige a guarda na CI de cada um"
+  },
+  "a_janela_foi_medida": {
+    "regra": "o indicador vem ANTES do valor e dentro de JANELA caracteres",
+    "janela": 48,
+    "distancias_medidas": {
+      "o_caso_real_linhas_87_e_247": [
+        23,
+        2
+      ],
+      "credencial_colada_n13": {
+        "min": 1,
+        "max": 37
+      },
+      "credencial_de_teste_n3": {
+        "min": 4,
+        "max": 4
+      },
+      "chamada_url_prosa_n4": [
+        -55,
+        -55,
+        -47,
+        -46
+      ],
+      "identificador_de_instancia_n1": [
+        66
+      ],
+      "mensagem_n1": [
+        27
+      ],
+      "mock_n2": [
+        4,
+        4
+      ]
+    },
+    "porque_48_e_nao_40": "a maior distancia verdadeira e 37; 40 deixaria 3 de margem para uma tabela de layout um pouco diferente"
+  },
+  "o_efeito_da_janela": {
+    "proximidade_ingenua": {
+      "achados": 67,
+      "falso_positivo": 0.804,
+      "nao_classificados": 11,
+      "neste_repositorio": 4
+    },
+    "com_bareword": {
+      "achados": 24,
+      "falso_positivo": 0.333,
+      "nao_classificados": 0,
+      "neste_repositorio": 4
+    },
+    "com_bareword_e_janela": {
+      "achados": 19,
+      "falso_positivo": 0.158,
+      "nao_classificados": 0,
+      "neste_repositorio": 1,
+      "verdadeiros_preservados": 16
+    }
+  },
+  "a_linha_de_base": {
+    "itens": 1,
+    "lacre_sha256": "1c86dda7a1f6f3dcb5c75fd84b7574375f172568acc2769bfb9c71b2e418cb14",
+    "a_chave_inclui_o_sha_da_linha": true,
+    "porque": "a isencao vale para AQUELA linha como ela esta; editar a linha derruba a isencao, inclusive para quem colasse um valor de verdade ali. Isencao por numero de linha seria um buraco que acompanha o arquivo",
+    "so_encolhe": "isencao que nao aparece mais sai como AVISO para ser removida",
+    "toda_isencao_carrega_data_e_motivo": true
+  },
+  "as_tres_mutacoes": {
+    "0_sem_mutacao": {
+      "exit": 0
+    },
+    "1_valor_colado_novo_num_md": {
+      "exit": 1
+    },
+    "2_a_linha_isenta_editada": {
+      "exit": 1,
+      "porque": "o sha da linha muda e a isencao cai"
+    },
+    "3_isencao_acrescentada_em_runtime": {
+      "resultado": "execucao PARADA pelo lacre",
+      "porque": "e o defeito do C25-06"
+    }
+  },
+  "testes": 39,
+  "o_que_NAO_esta_registrado_aqui": "a superficie provada. Declarar mechanism com content_hash sobre infra/security/valor_colado.py apontaria para o conteudo do RAMO, e o arquivo ja esta na main com outro conteudo desde o PR #107 -- o guarda de superficie trata divergencia como problema e deixaria a main daquele repositorio VERMELHA. A prova por teste, com a superficie fixada, cabe depois de o #108 ser mergeado"
+}

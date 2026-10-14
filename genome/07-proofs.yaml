@@ -3141,3 +3141,56 @@
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
     path: infra/security/test_valor_colado.py
     note: "A CAUSA: eu havia posto a arroba na lista de estrutura - caminho, URL, seletor -, para excluir e-mail, e o valor deste incidente tem DUAS arrobas. A guarda recusava o proprio caso. E A RAZAO DE ISSO NAO APARECER FOI A ISCA: eu a escrevi com 11 caracteres e as quatro classes, conferi 'forma Aa9#', e declarei que ela tinha a forma do incidente. MAS O `#` E UMA CLASSE, NAO UM CARACTERE - a isca usava exclamacao, porcentagem e dolar, e nao arroba. Isca com a mesma classe e simbolos diferentes nao e isca com a mesma forma, e foi exatamente no caractere ausente que o detector falhava. A LICAO E GERAL E VALE MAIS QUE A GUARDA: controle positivo reconstruido de memoria prova que o detector acha a lembranca, nao o caso. A correcao nao foi escrever uma isca melhor - foi parar de depender de isca: o controle agora roda contra o BLOB do e0a0f19, e o repositorio tem o historico, entao a guarda se prova contra o incidente de verdade sem guardar segredo nenhum. Em clone raso ele diz NAO RODOU em vez de passar, e por isso o checkout do job na CI passou a vir com fetch-depth 0. UMA DEPENDENCIA QUE PRECISA SER DITA: se a opcao A do C25-08 for escolhida, o e0a0f19 deixa de existir e este controle passa a dizer NAO RODOU para sempre. A guarda trata isso com honestidade, mas o controle forte se perde - e isso e um custo da opcao A que nao estava medido no documento das duas opcoes."
+- id: PRF-0168
+  kind: proof
+  title: "O bloqueio nao pode ser sobre os 19: o runner tem um checkout, e a guarda falha fechada ao pedir os outros dezoito"
+  refutes: [CLM-0139]
+  basis: external_observation
+  date: "2026-10-14"
+  external_observation:
+    instrument: "leitura da raiz que a guarda usa - a mesma constante RAIZ do inventario, que e o diretorio que CONTEM os repositorios - e execucao de varrer() pedindo um repositorio ausente"
+    observed: "pedir um repositorio que nao esta na raiz levanta NaoMensuravel com a frase 'NAO MENSURAVEL: 1 de 2 item(ns) nao responderam'. Na CI o runner tem SOMENTE o checkout deste repositorio, e os outros 18 nao existem la. Entao o passo bloqueante tem escopo de UM repositorio, e nele havia 4 achados antes da janela e 1 depois"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-14-o-bloqueio-ligado.json
+  environment: local
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: .github/workflows/ci.yml
+    note: "EU IA ESCREVER O PASSO COM A VARREDURA DOS 19, porque e a varredura cujo numero eu acabara de medir e porque 'ligue o --bloquear na CI' nao tem outra leitura obvia. MEDIDO: nao da. O runner tem um checkout; a guarda varre a partir do diretorio que contem os repositorios; pedir os 19 a faz falhar fechada. A FALHA FECHADA E O COMPORTAMENTO CERTO e nao e portao: um passo que sempre recusa por nao-medicao nao distingue repositorio sujo de repositorio nao lido. ENTAO O ESCOPO E UM, e isso tem consequencia que precisa estar dita: as 13 credenciais coladas que a guarda achou estao nos OUTROS dezoito, e este portao nao as alcanca. Bloquear la exige a guarda na CI de cada um - provavelmente distribuida pelo kit, com custo de versao e oito pinos -, e e decisao separada que NAO foi tomada. O QUE ESTA PROVA NAO DECIDE: se o escopo deve ser ampliado, nem como."
+
+- id: PRF-0169
+  kind: proof
+  title: "A janela medida: 24 achados e 33.3% passam a 19 e 15.8%, com os 16 verdadeiros preservados e zero nao classificados"
+  proves: [CLM-0140]
+  basis: external_observation
+  date: "2026-10-14"
+  external_observation:
+    instrument: "medicao da distancia entre o fim do indicador e o inicio do valor, em cada um dos 24 achados dos 19 repositorios, e nas duas linhas do blob real do e0a0f19; depois a guarda rodada de novo com a regra da janela, e a classificacao refeita pelas mesmas regras escritas"
+    observed: "DISTANCIAS: o caso real +23 e +2; as 13 credenciais coladas de +1 a +37; as 3 de teste +4; os falsos de chamada, URL e prosa em -55, -55, -47 e -46, com o indicador DEPOIS do token; o identificador de instancia em +66; mensagem +27 e mock +4. COM A JANELA DE 48 E O 'ANTES': 19 achados em 8252 arquivos, 16 verdadeiros, 3 falsos (2 mock declarado pelo proprio codigo, 1 mensagem), ZERO nao classificados, 15.8% - contra 24 e 33.3% sem ela, e 67 e 80.4% na proximidade ingenua. Neste repositorio: 4 achados passam a 1"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-14-o-bloqueio-ligado.json
+  environment: local
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/valor_colado.py
+    note: "A JANELA FOI MEDIDA E NAO ESCOLHIDA, e e por isso que ela nao e ajuste de limiar: o numero 48 sai da maior distancia verdadeira, que e 37, com folga para uma tabela de layout um pouco diferente - 40 deixaria 3 de margem. E O 'ANTES' VALE MAIS QUE O NUMERO: quatro dos oito falsos tinham o indicador DEPOIS do token, a 46 ou 55 caracteres de distancia, o que e coincidencia de linha e nao rotulo. Uma janela simetrica teria mantido os quatro. POR QUE ISTO NAO E BAIXAR LIMIAR PARA CALAR LINHA: a regra foi conferida contra o caso real antes de entrar - as duas linhas do blob do e0a0f19 ficam a +23 e +2 - e contra os 16 verdadeiros, que sobreviveram todos. Se a janela tivesse derrubado um verdadeiro, ela nao entraria. O QUE SOBRA DE FALSO, e e irredutivel neste eixo: 2 mocks que o proprio codigo declara como mock e 1 identificador de mensagem. A UNK-0017 previu exatamente isso - entropia alta o bastante para ser senha e baixa o bastante para colidir com identificador."
+
+- id: PRF-0170
+  kind: proof
+  title: "Tres mutacoes contra o bloqueio: valor novo recusado, linha isenta editada volta a acusar, e isencao em runtime PARA a execucao"
+  proves: [CLM-0141]
+  basis: external_observation
+  date: "2026-10-14"
+  external_observation:
+    instrument: "a guarda rodada com --bloquear quatro vezes: sem mutacao; com um .md novo carregando valor colado na forma da celula de tabela; com a linha isenta editada de um jeito que nao muda o que ela faz; e com uma isencao acrescentada a lista EM RUNTIME. Depois, git status para conferir que a arvore voltou ao que era"
+    observed: "sem mutacao exit=0, '1 achado, todos da linha de base lacrada, nenhum novo'. Valor colado novo num .md: exit=1, com o achado marcado [NOVO] e o caminho nomeado. A linha isenta editada: exit=1, o achado volta como [NOVO] porque o sha da linha mudou e a chave da isencao deixou de casar. Isencao acrescentada em runtime: execucao PARADA pelo lacre. Arvore limpa quanto aos arquivos tocados"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-14-o-bloqueio-ligado.json
+  environment: local
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/test_valor_colado.py
+    note: "A TERCEIRA MUTACAO E A QUE MAIS IMPORTA, porque e o defeito que eu cometi no C25-06: acrescentei um quinto item a uma lista de isencao em runtime e o portao passou. Aqui o lacre para a execucao, e ele quebra TAMBEM quando a lista encolhe - a lista e um ato, e encolher tambem se faz a mao, com data e motivo. A SEGUNDA MUTACAO E O QUE FAZ A ISENCAO NAO SER BURACO: a chave inclui o sha da propria linha isenta, entao a isencao vale para aquela linha como ela esta. Quem editar a linha - inclusive para colar um valor de verdade ali - perde a isencao. Isencao por numero de linha sozinho acompanharia o arquivo e seria exatamente a brecha que a lista pretende nao abrir. O ESTADO DESTA PROVA, e a regra do titular exige dizer: a DECISAO de ligar foi tomada em 2026-10-14, a EXECUCAO esta ABERTA no PR #108 e NAO MERGEADA, e a COMPROVACAO e esta. Decisao, execucao e comprovacao sao estados distintos, e nenhum deles implica o seguinte. O QUE ESTA PROVA NAO FIXA: a superficie. Declarar mechanism com content_hash sobre valor_colado.py apontaria para o conteudo do RAMO, e o arquivo ja esta na main com outro conteudo desde o #107 - o guarda de superficie trata divergencia como problema e deixaria a main daquele repositorio vermelha. A prova por teste, com a superficie fixada nos 39 testes, cabe depois do merge, e e a forma final certa."
