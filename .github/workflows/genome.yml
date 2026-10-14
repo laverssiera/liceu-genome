@@ -41,6 +41,26 @@ jobs:
       - name: Testes de mutação (FIT-019 — a cobertura declarada de busca)
         run: python tools/test_genome_scope_check.py
 
+      # C25-06: o enumerador das declarações de estado da lei. Ele existe porque
+      # o enumerador de 2026-10-09 NÃO FOI GUARDADO — o 48 da PRF-0127 virou
+      # número escrito num documento, que é exatamente a classe que ele denuncia.
+      #
+      # Os dois casos que justificam o passo: a derivação tem de ACUSAR quem mexe
+      # na lista e não reconta (mutação em `pendencias`, em `monolitos` e na
+      # contagem escrita dentro de prosa), e o mapa de origem tem de falhar
+      # FECHADO nas DUAS direções — ESTADO sem origem e origem cujo campo sumiu.
+      - name: Testes de mutação (C25-06 — as declarações de estado da lei)
+        run: python tools/test_declaracoes_de_estado.py
+
+      # E o portão propriamente: campo novo na lei sem origem declarada para a
+      # CI, e derivável DECLARADO sem derivação DE VERDADE também. A segunda
+      # metade é o buraco que o mapa sozinho deixava — declarar um campo como
+      # derivável e seguir escrevendo o valor à mão é a mesma afirmação que a
+      # regra proíbe. Custa ZERO no denominador do grafo: é guarda de
+      # instrumento, não fitness nova.
+      - name: "C25-06: todo ESTADO tem origem, e todo derivável deriva"
+        run: python tools/declaracoes_de_estado.py --exigir-mapa --conferir-derivaveis
+
       # O detector de superfície roda na CI dos monólitos; aqui prova-se que ELE
       # pega a mudança — é onde vive o teste "content_hash diferente do arquivo".
       - name: Testes de mutação (detector de superfície)

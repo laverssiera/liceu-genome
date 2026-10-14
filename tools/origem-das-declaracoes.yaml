@@ -1,0 +1,222 @@
+# Origem das declaracoes de estado da lei — item 1 do C25-06.
+#
+# NAO E GRAFO: este arquivo vive em tools/ de proposito, porque o juiz le
+# genome/*.yaml como nos e este nao e um no. Ele e o DADO do instrumento
+# tools/declaracoes_de_estado.py, e esta separado do codigo para que revisa-lo
+# seja leitura de dados em vez de leitura de programa.
+#
+# A REGRA QUE ELE SERVE, do titular em 2026-10-09:
+#     "derivavel de outro artefato" -> nao se escreve, se deriva
+#
+# As tres classes, e a terceira e a resposta ao 'espero que alguns saiam':
+#   PROPRIO_ARTEFATO  conta-se do mesmo YAML. A cura e DERIVAR.
+#   OUTRO_ARTEFATO    deriva-se de artefato que uma CI EXISTENTE alcanca.
+#   SAI_DA_CLASSE     nao e derivavel de artefato nenhum. A regra do titular
+#                     NAO se aplica, e o que resta e DATA E PROCEDENCIA.
+#
+# O mapa falha FECHADO: ESTADO sem origem, ou origem cujo campo sumiu,
+# levanta ClasseDefasada. Mapa que envelhece calado e a classe que corrige.
+
+meta:
+  derivado_em: '2026-10-13'
+  instrumento: tools/declaracoes_de_estado.py
+  estados_no_kit_lido: 49
+  kit: conformance_kit=0.26.0 constitution=1.15.0
+
+origens:
+  'constitution:meta.pendencias_abertas':
+    classe: PROPRIO_ARTEFATO
+    fonte: 'len(constitution.pendencias)'
+    razao: 'contagem das chaves do proprio arquivo; derivado hoje = 0, declarado = 0'
+  'constitution:meta.adrs_pendentes':
+    classe: PROPRIO_ARTEFATO
+    fonte: 'len(constitution.adrs_pendentes)'
+    razao: 'contagem da propria lista; derivado hoje = 1, declarado = 1. A CONTAGEM esta certa e a LISTA esta defasada (PRF-0125): a ADR-001 foi decidida em 2026-09-18 e segue listada'
+  'constitution:global.campos_aceitos_pelo_servidor.procedencia':
+    classe: OUTRO_ARTEFATO
+    fonte: 'cv-backend-core/app/main.py, por ANCORA e nao por numero de linha'
+    razao: 'mesmo caso do verificado_em, e os dois carregam a MESMA linha — segunda fonte do mesmo numero, dentro do mesmo no'
+  'constitution:global.campos_aceitos_pelo_servidor.verificado_em':
+    classe: OUTRO_ARTEFATO
+    fonte: 'cv-backend-core/app/main.py, por ANCORA e nao por numero de linha'
+    razao: "a CI do CORE alcanca este arquivo. Hoje o campo carrega 'main.py:617', e numero de linha apodrece — a cura e a do control_plane_inventory: ancorar no nome da classe e derivar a linha"
+  'constitution:global.authority_model.observacao':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios'
+    razao: "o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. Declara '1 de 15 monolitos'"
+  'constitution:global.antipadroes.antipadrao_3_fallback_silencioso.referencia_correta':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios'
+    razao: "o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. Declara 'ValueError nos 4 metodos' em arquivo do FORNECEDORES"
+  'constitution:global.internal_reference_implementations.referencias.fail_closed.aplica_a':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios'
+    razao: "o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. Declara '9 monolitos com fallback silencioso'"
+  'constitution:global.ci_adoption_order.nao_bloqueador':
+    classe: PROPRIO_ARTEFATO
+    fonte: 'len(constitution.monolitos)'
+    razao: "a frase carrega 'dos 15', que e a contagem dos monolitos do proprio arquivo; a cura e a frase deixar de carregar o numero"
+  'constitution:global.federation_cognition.REGRA_DE_IDENTIDADE.medicao_atual.geracoes_de_campo_alheio_em_producao':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios'
+    razao: 'o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. A propria CHAVE diz que e medicao — `medicao_atual` — e nao carrega data nenhuma'
+  'constitution:global.federation_cognition.REGRA_DE_IDENTIDADE.medicao_atual.reivindicacoes_de_identidade':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios'
+    razao: 'o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. Idem: medicao sem data'
+  'constitution:global.federation_cognition.REGRA_DE_IDENTIDADE.aplica_a':
+    classe: PROPRIO_ARTEFATO
+    fonte: 'len(constitution.monolitos)'
+    razao: "'os 15 JOHNs locais' — um JOHN por monolito, contagem do proprio arquivo"
+  'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.estado':
+    classe: SAI_DA_CLASSE
+    fonte: 'nenhum'
+    razao: "estado de DECISAO que ninguem registrou em artefato derivavel: nao existe arquivo de onde ler se este portao ja foi satisfeito. 'ABERTO' e estado de decisao do titular"
+  'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.representacoes':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios'
+    razao: 'o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. Declara 4 representacoes do limite no codigo'
+  'constitution:global.core_dna.extracao_fisica_do_kernel.estado':
+    classe: SAI_DA_CLASSE
+    fonte: 'nenhum'
+    razao: "estado de DECISAO que ninguem registrou em artefato derivavel: nao existe arquivo de onde ler se este portao ja foi satisfeito. 'ABERTA', e a PRF-0125 ja o mediu como DEFASADO"
+  'constitution:global.identidade_semantica_de_replay.total':
+    classe: PROPRIO_ARTEFATO
+    fonte: 'len(global.identidade_semantica_de_replay.campos)'
+    razao: 'derivado hoje = 12, declarado = 12'
+  'constitution:global.campos_exigidos_pelo_protocolo.total':
+    classe: PROPRIO_ARTEFATO
+    fonte: 'len(global.campos_exigidos_pelo_protocolo.campos)'
+    razao: 'derivado hoje = 11, declarado = 11'
+  'constitution:global.campos_exigidos_pelo_protocolo.implementation_status':
+    classe: SAI_DA_CLASSE
+    fonte: 'nenhum'
+    razao: "estado de DECISAO que ninguem registrou em artefato derivavel: nao existe arquivo de onde ler se este portao ja foi satisfeito. 'NAO_INICIADA' sem definicao de o que conta como iniciada"
+  'constitution:monolitos.core.forbidden[0].violacao':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do cv-backend-core'
+    razao: "o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. E este JA FOI MEDIDO E ESTA FALSO: declara 114 arquivos, a PRF-0111 mediu 96, dos quais 71 dentro do cv-backend-core. E o unico dos 52 que carrega data — '[DECIDIDO 2026-08-29]' — e foi por isso o unico cuja defasagem era detectavel pela propria escrita"
+  'constitution:monolitos.core.fronteira_fisica.P1_07A_fronteira_semantica':
+    classe: SAI_DA_CLASSE
+    fonte: 'nenhum'
+    razao: "estado de DECISAO que ninguem registrou em artefato derivavel: nao existe arquivo de onde ler se este portao ja foi satisfeito. 'APROVADA', medido DEFASADO pela PRF-0125. Seria derivavel se alguem escrevesse QUAL ADR satisfaz QUAL portao — esse mapeamento nao existe em artefato nenhum"
+  'constitution:monolitos.core.fronteira_fisica.P1_07B_extracao_fisica':
+    classe: SAI_DA_CLASSE
+    fonte: 'nenhum'
+    razao: "estado de DECISAO que ninguem registrou em artefato derivavel: nao existe arquivo de onde ler se este portao ja foi satisfeito. 'ADR_REQUIRED', medido DEFASADO pela PRF-0125, e o ADR-005 §5.1 registra que nem se sabe se este portao se aplica a extracao do control plane. Mesmo mapeamento ausente"
+  'constitution:monolitos.john.observacao_positiva':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do John-Brasileiro-'
+    razao: "o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. Declara 'unico dos 15'"
+  'constitution:monolitos.anchor.fronteira_de_continuidade.coerencia_com_external_effect':
+    classe: SAI_DA_CLASSE
+    fonte: 'producer_registry mais o codigo do ANCHOR'
+    razao: "o 'external_effect 0/3' vem do producer_registry, que E artefato do kit — mas a frase mistura isso com um condicional sobre o que o ANCHOR faria, que e julgamento. A parte derivavel nao se separa da nao derivavel sem reescrever o campo"
+  'constitution:monolitos.bim.violacao_critica.descricao':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do BIM.ARQ.ENG'
+    razao: 'o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento'
+  'constitution:monolitos.fornecedores.a_verificar[1]':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios'
+    razao: "o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. Declara '0 ocorrencias em 15 repositorios', que e afirmacao NEGATIVA — e afirmacao negativa exige a busca que ACHARIA o contrario, no escopo inteiro que a frase declara (PRF-0124)"
+  'constitution:monolitos.econotech.bug_conhecido.descricao':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do ECONO.TECH'
+    razao: 'o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento'
+  'constitution:monolitos.cea.forbidden[0].violacao':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do CEA-INVESTIMENTOS'
+    razao: "o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. Declara 'os 4 diretorios existem'"
+  'constitution:monolitos.cea.divida_conhecida[2]':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do CEA-INVESTIMENTOS'
+    razao: "o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. Declara '3 arvores Python paralelas e 3 frontends'"
+  'constitution:monolitos.juridicotech.divida_conhecida[2]':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do JURIDICO-TECH'
+    razao: 'o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. Declara 2338 arquivos em node_modules commitado'
+  'constitution:monolitos.gamemkt.violacao_critica.descricao':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do GAME-MKT'
+    razao: 'o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento'
+  'constitution:monolitos.academia.divida_conhecida[0]':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do LICEU-ACADEMIA-DO-SABER-'
+    razao: "o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. Declara '25 apps declarados, 2 implementados'"
+  'constitution:monolitos.academia.divida_conhecida[1]':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do LICEU-ACADEMIA-DO-SABER-'
+    razao: 'o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. Declara 1059 arquivos e 7.3 MB'
+  'constitution:monolitos.ped.estado.descricao':
+    classe: SAI_DA_CLASSE
+    fonte: 'historico git dos 19 repositorios'
+    razao: "o artefato de origem e o HISTORICO GIT — '1 commit (2026-04-19)', 'os outros 14 repositorios tem commits entre...'. Nao esta no grafo, e envelhece a cada commit de qualquer um dos 19"
+  'constitution:milestone.M2_FEDERATION_PROTOCOL_AND_STATIC_CONVERGENCE.criterios.DIRECT_CROSS_DOMAIN_DB':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios'
+    razao: 'o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. Criterio de milestone que e contagem de codigo, nao julgamento'
+  'constitution:milestone.M2_FEDERATION_PROTOCOL_AND_STATIC_CONVERGENCE.criterios.MINIMUM_THREAD_AUTHORITY_VIOLATIONS':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios'
+    razao: 'o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento'
+  'constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.CORE_ARCHIMEDES_AUTHENTICATED_BOUNDARY':
+    classe: SAI_DA_CLASSE
+    fonte: 'julgamento do M3'
+    razao: 'PASS de milestone e JULGAMENTO sobre criterios, nao contagem de artefato: verificar um exige reavaliar os criterios contra o mundo, que e o trabalho do proprio milestone'
+  'constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.DURABILITY':
+    classe: SAI_DA_CLASSE
+    fonte: 'julgamento do M3'
+    razao: 'PASS de milestone e JULGAMENTO sobre criterios, nao contagem de artefato: verificar um exige reavaliar os criterios contra o mundo, que e o trabalho do proprio milestone'
+  'constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.IDEMPOTENCY':
+    classe: SAI_DA_CLASSE
+    fonte: 'julgamento do M3'
+    razao: 'PASS de milestone e JULGAMENTO sobre criterios, nao contagem de artefato: verificar um exige reavaliar os criterios contra o mundo, que e o trabalho do proprio milestone'
+  'constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.EVENT_DELIVERY':
+    classe: SAI_DA_CLASSE
+    fonte: 'julgamento do M3'
+    razao: 'PASS de milestone e JULGAMENTO sobre criterios, nao contagem de artefato: verificar um exige reavaliar os criterios contra o mundo, que e o trabalho do proprio milestone'
+  'constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.REPLAY':
+    classe: SAI_DA_CLASSE
+    fonte: 'julgamento do M3'
+    razao: 'PASS de milestone e JULGAMENTO sobre criterios, nao contagem de artefato: verificar um exige reavaliar os criterios contra o mundo, que e o trabalho do proprio milestone'
+  'constitution:milestone.M4_FIRST_CAUSAL_AUTHORITY_CHAIN.criterios.MINIMUM_CAUSAL_THREAD_RUNTIME':
+    classe: SAI_DA_CLASSE
+    fonte: 'julgamento do M4'
+    razao: 'PASS de milestone e JULGAMENTO sobre criterios, nao contagem de artefato: verificar um exige reavaliar os criterios contra o mundo, que e o trabalho do proprio milestone. E ESTE ESTA EM TENSAO COM O GRAFO, registrada e nao resolvida: o M4 tem tres criterios PASS enquanto a cadeia substantiva que o juiz deriva e 0/5. Os dois podem ser verdadeiros se o milestone fala de outra coisa — mas o que ele afirma nao esta escrito ao lado do PASS'
+  'constitution:milestone.M4_FIRST_CAUSAL_AUTHORITY_CHAIN.criterios.MINIMUM_CAUSAL_THREAD_REPLAY':
+    classe: SAI_DA_CLASSE
+    fonte: 'julgamento do M4'
+    razao: 'PASS de milestone e JULGAMENTO sobre criterios, nao contagem de artefato: verificar um exige reavaliar os criterios contra o mundo, que e o trabalho do proprio milestone. Mesma tensao com a cadeia 0/5'
+  'constitution:milestone.M4_FIRST_CAUSAL_AUTHORITY_CHAIN.criterios.MINIMUM_CAUSAL_THREAD_LINEAGE':
+    classe: SAI_DA_CLASSE
+    fonte: 'julgamento do M4'
+    razao: 'PASS de milestone e JULGAMENTO sobre criterios, nao contagem de artefato: verificar um exige reavaliar os criterios contra o mundo, que e o trabalho do proprio milestone. Mesma tensao com a cadeia 0/5'
+  'constitution:separacao_de_artifacts.razao':
+    classe: SAI_DA_CLASSE
+    fonte: 'o ledger de decisoes, que nao e um dos cinco artefatos'
+    razao: "'arquivo gigante com 649 decisoes' — mesmo artefato ausente do escopo_P2_5B, e os dois numeros (644 e 649) nem batem entre si"
+  'contract_registry:meta.status':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios, mais definicao ausente'
+    razao: "'DEFINIDO — 0/7 implementados' junta duas coisas: o 0 e observacao de codigo (CODIGO_19) e o 7 esta defasado contra as 15 chaves de contracts do proprio arquivo. A parte contavel JA FOI CURADA no meta.escopo do #34, que diz 'CONTADO, nao declarado'; este campo e o resto que ficou"
+  'event_registry:events.authority.human.decision.recorded.implementation_status':
+    classe: SAI_DA_CLASSE
+    fonte: 'nenhum'
+    razao: "estado de DECISAO que ninguem registrou em artefato derivavel: nao existe arquivo de onde ler se este portao ja foi satisfeito. 'NAO_INICIADA', mesmo caso"
+  'event_registry:resumo.IMPLEMENTED_IN_MONOLITH':
+    classe: SAI_DA_CLASSE
+    fonte: 'nenhum'
+    razao: 'E O CASO MAIS INSTRUTIVO DOS 52, e nao e falso nem verdadeiro: NINGUEM ESCREVEU O QUE CONTA COMO IMPLEMENTADO, e quatro eventos passaram a ter EMITIDO_COMO_AUDITORIA_NAO_COMO_FATO. Numero sem definicao nao e verificavel nem refutavel, e por isso sobrevive mais que numero errado. Derivar e impossivel antes de definir; datar nao resolve, porque o problema nao e a idade'
+  'event_reconciliation_ledger:meta.escopo_P2_5A':
+    classe: PROPRIO_ARTEFATO
+    fonte: 'len(ledger.P2_5A_minimum_causal_thread)'
+    razao: "'cadeia causal minima (5 eventos)'; derivado hoje = 5 chaves, declarado = 5"
+  'event_reconciliation_ledger:meta.escopo_P2_5B':
+    classe: SAI_DA_CLASSE
+    fonte: 'o ledger de decisoes, que nao e um dos cinco artefatos'
+    razao: "'os 644 restantes' nao se deriva do proprio ledger: as secoes P2_5B_* tem 4, 9, 10 e 2 chaves — sao AMOSTRAS, nao os 644. O artefato que teria 644 e o LICEU_DECISION_LEDGER, que a propria Constituicao cita em pendencias_abertas_no_ledger e que NAO esta entre os cinco artefatos governados nem no grafo"
+  'event_reconciliation_ledger:P2_5B_duplicate_authority.federation.runtime.register.hipotese':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios'
+    razao: "o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. 'duplicado dentro de 4 dominios' e observacao, e a chave diz HIPOTESE — hipotese com numero e a pior combinacao, porque o numero parece medido"
