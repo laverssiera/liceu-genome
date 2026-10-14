@@ -1,0 +1,54 @@
+{
+  "o_que_a_UNK_0017_exige": [
+    "controle positivo com VALOR colado em prosa, nas duas formas do incidente",
+    "escopo que inclua repositorio PRIVADO",
+    "amostra montada por CONCATENACAO",
+    "a taxa de falso positivo MEDIDA sobre a arvore real antes de bloquear"
+  ],
+  "definicao_de_falso_positivo": "VERDADEIRO = o token E uma credencial colada (producao, desenvolvimento ou teste); FALSO = o token nao e valor: e nome, constante de HTTP, fragmento de URL, mensagem ou prosa. Classificado por regra escrita aplicada ao PREFIXO e SUFIXO do token, nao a linha",
+  "universo": {
+    "repositorios": 19,
+    "arquivos_lidos": 8249,
+    "ilegiveis": 0,
+    "extensoes": "as 13 de EXT do inventario, mais prosa"
+  },
+  "medicao": {
+    "proximidade_ingenua": {
+      "achados": 67,
+      "verdadeiros": 11,
+      "falsos": 45,
+      "nao_classificados": 11,
+      "taxa_de_falso_positivo": 0.8036
+    },
+    "com_a_regra_do_bareword": {
+      "achados": 24,
+      "verdadeiros": 16,
+      "falsos": 8,
+      "nao_classificados": 0,
+      "taxa_de_falso_positivo": 0.3333,
+      "achados_por_mil_arquivos": 2.9
+    }
+  },
+  "por_classe": {
+    "mensagem_ou_codigo": 1,
+    "fragmento_de_url": 2,
+    "identificador_de_instancia": 1,
+    "credencial_de_teste": 3,
+    "credencial_colada": 13,
+    "chamada_ou_classe": 1,
+    "mock_declarado": 2,
+    "prosa": 1
+  },
+  "o_que_a_guarda_achou": {
+    "credenciais_coladas": 13,
+    "credenciais_de_teste": 3,
+    "repositorios_afetados": {
+      "com_credencial_colada": 3,
+      "com_credencial_de_teste": 3,
+      "total": 6
+    },
+    "os_caminhos_NAO_estao_aqui": "este repositorio e PUBLICO, e caminho de credencial colada em repositorio privado e mapa para quem um dia tiver leitura. Contagem por repositorio tambem e, mais grosso. Os caminhos estao no PR privado laverssiera/LICEU_6.0_CONSTRUTORA_VIRTUAL#107"
+  },
+  "ponto_cego_declarado": "token gerado por maquina (hex, base64, uuid) colado em prosa SEM nome conhecido por perto nao e alcancado por este eixo; incluir hex e base64 traria todo hash e todo id de commit dos arquivos lidos. Quem alcanca token por nome e o inventario",
+  "nao_bloqueia": "o padrao e relatar. A UNK-0017 diz que enquanto o numero nao existir a guarda nao existe; o numero existe, e ligar o bloqueio e decisao do titular"
+}

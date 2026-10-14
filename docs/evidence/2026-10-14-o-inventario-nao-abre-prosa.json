@@ -1,0 +1,16 @@
+{
+  "instrumento": "contagem de arquivos por extensao nos 19 repositorios, usando as constantes EXT e IGNORAR importadas do proprio inventario_segredos, para medir o inventario e nao uma copia dele",
+  "repositorios": {
+    "pretendidos": 19,
+    "lidos": 19,
+    "ausentes": []
+  },
+  "arquivos_abertos_pelo_inventario": 7531,
+  "arquivos_de_prosa_nao_abertos": 717,
+  "outros_nao_abertos": 1165,
+  "denominador": 9413,
+  "prosa_por_extensao": {
+    ".md": 602,
+    ".txt": 115
+  }
+}
