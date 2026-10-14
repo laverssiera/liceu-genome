@@ -3085,3 +3085,59 @@
     repo: liceu-genome
     path: docs/evidence/2026-10-14-a-credencial-fora-do-head.json
     note: "A CAUSA E MINHA E E BANAL: ao inspecionar o diff eu passei um sed cuja substituicao estava ancorada no texto 'Secret: ' e trocava dali ate a proxima aspa. Isso mascara a forma do curl, e NAO mascara a forma da celula da tabela - que tem o valor entre parenteses e nenhuma aspa. As duas estavam no mesmo diff. O valor foi impresso. TODA A DISCIPLINA DESTE CICLO ESTAVA MONTADA CONTRA O CANAL ERRADO: nada de git log -S, nada de git grep, agulha em memoria, valor nunca em argv, impressao truncada a 16 hex antes de entrar em repositorio publico. E o valor saiu pela SAIDA PADRAO, num comando de inspecao que eu escrevi para ser seguro e cuja mascara eu nao conferi contra as duas formas que eu mesmo havia acabado de catalogar. A licao nao e 'mascarar melhor': e que mascara e afirmacao sobre comportamento, e afirmacao sobre comportamento exige conferir a linha - a mascara tinha de ser testada contra as duas formas ANTES de o comando rodar, exatamente como o controle positivo prova a varredura. O QUE ISTO MUDA NA DECISAO ABERTA: nada. Reescrever o historico do git nao alcanca um transcript, entao a escolha entre A e B segue com os mesmos custos medidos. O QUE MUDA E A LISTA DE EXPOSICAO, que ganha um item, e o item e meu. O QUE E NAO-MENSURAVEL DAQUI: o que o provedor do modelo retem da conversa. Nao e disco do titular, nao ha instrumento aqui que o leia, e nao se estima. O QUE NAO FOI FEITO, por nao ser meu: apagar ou redigir o transcript. Apagar prova e contra a disciplina deste genoma, e e dado do titular - a decisao e dele, com a medicao na mao."
+- id: PRF-0165
+  kind: proof
+  title: "O terceiro eixo cego do inventario, anterior aos dois da PRF-0099: ele nao abre arquivo de prosa, e o valor estava num .md"
+  refutes: [CLM-0136]
+  basis: code_reading
+  date: "2026-10-14"
+  scope:
+    padrao: "as extensoes que o inventario de segredos abre, declaradas em EXT, contra as extensoes dos arquivos que existem nos repositorios"
+    universo: "os 19 repositorios rastreados, todos os arquivos fora de IGNORAR; as constantes EXT e IGNORAR foram IMPORTADAS do proprio inventario, para medir o inventario e nao uma copia dele"
+    excluidos:
+      - "arquivo binario: valor colado em prosa nao vive la, e abrir binario encheria a medicao de ruido"
+      - "o merito de ampliar EXT: decidir que o inventario passe a ler prosa e normativo, nao leitura"
+    instrumento: "contagem de arquivos por extensao, com EXT e IGNORAR importados de infra/security/inventario_segredos.py"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-14-o-inventario-nao-abre-prosa.json
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/inventario_segredos.py
+    note: "A PRF-0099 mediu dois eixos cegos: o inventario casa NOME em maiusculas, e so extrai valor quando ha nome assim a esquerda de igual ou dois pontos. HA UM TERCEIRO, E ELE E ANTERIOR AOS DOIS: EXT tem 13 extensoes e .md nao esta entre elas. MEDIDO nos 19 repositorios: 7531 arquivos que o inventario abre, 717 de PROSA que ele nao abre - 602 .md e 115 .txt -, 1165 outros, denominador 9413. A prosa invisivel e 7.6% do total, e 172 desses arquivos estao no proprio monolito, que e onde o incidente aconteceu. POR QUE ISSO IMPORTA MAIS QUE OS OUTROS DOIS: corrigir o eixo do NOME ou o eixo do IGUAL nao teria achado nada, porque o arquivo nunca foi aberto. Uma guarda pelo eixo da FORMA, aplicada as mesmas 13 extensoes, continuaria cega para este incidente - e eu quase a escrevi assim. VALOR COLADO EM PROSA VIVE EM ARQUIVO DE PROSA, e isso parece obvio depois de contado. O QUE ESTA PROVA NAO DECIDE: se o inventario deve passar a ler prosa. A guarda nova le (13 extensoes mais 6 de prosa), e unificar as duas ou manter duas e decisao do titular."
+
+- id: PRF-0166
+  kind: proof
+  title: "A guarda da proximidade: 24 achados em 8250 arquivos, 33.3% de falso positivo, zero nao classificados - e a regra do bareword derrubou 80.4% para 33.3%"
+  proves: [CLM-0137]
+  basis: external_observation
+  date: "2026-10-14"
+  external_observation:
+    instrument: "infra/security/valor_colado.py sobre os 19 repositorios - as 13 extensoes de EXT mais prosa -, com a classificacao de cada achado por REGRA ESCRITA aplicada ao prefixo e ao sufixo do token. O valor nunca e impresso: sai o caminho, o indicador e a FORMA (quais das quatro classes de caractere o token tem). Verdadeiro e falso estao definidos pelo proposito declarado: verdadeiro quando o token E uma credencial colada, de producao, desenvolvimento ou teste; falso quando o token nao e valor - nome, constante de HTTP, fragmento de URL, mensagem ou prosa"
+    observed: "PROXIMIDADE INGENUA: 67 achados, 11 verdadeiros, 45 falsos, 11 nao classificados - taxa 80.4%. COM A REGRA DO BAREWORD: 24 achados, 16 verdadeiros, 8 falsos, ZERO nao classificados - taxa 33.3%, ou 2.9 achados por mil arquivos. Denominador 8250 arquivos, 19 repositorios, 0 ilegiveis. Por classe de falso: 2 fragmento de URL, 2 mock declarado pelo codigo, 1 mensagem, 1 identificador de instancia, 1 chamada de classe, 1 prosa. DOS VERDADEIROS: 13 credenciais coladas em 3 repositorios e 3 credenciais de teste em outros 3"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-14-a-guarda-do-valor-colado.json
+  environment: local
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/valor_colado.py
+    note: "O EIXO E PROXIMIDADE E NAO FORMA PURA, e e a alternativa que a propria UNK-0017 nomeia. A incognita explica por que a forma sozinha nao serve: o valor tem entropia alta o bastante para ser senha e baixa o bastante para colidir com prosa, identificador e hash curto, e varredura que acusa demais e desligada em duas semanas. Entao a linha so e acusada quando carrega AS DUAS COISAS, e as duas formas deste incidente satisfazem isso sem sorte: ambas tem a palavra Secret na mesma linha do valor, e NENHUMA das duas casa com nome em maiusculas - que e por isso que o inventario passou. A REGRA QUE DERRUBOU 38 DOS 45 FALSOS e de sintaxe, nao de limiar: em .py, .ts e .js um token SEM ASPAS numa expressao e um NOME - status.HTTP_401_UNAUTHORIZED, settings.NEO4J_USER, OAuth2PasswordBearer, localStorage.getItem. Em .env, .yaml e markdown um token sem aspas pode ser o valor, e o caso real e num .md dentro de parenteses e sem aspas: exigir aspas em todo lugar teria cegado a guarda para o que a motivou. Baixar limiar por limiar seria ajuste; esta e uma afirmacao sobre a linguagem do arquivo, e ela e conferivel. O QUE A GUARDA ACHOU NA PRIMEIRA CORRIDA REAL: 13 credenciais coladas, entre elas uma senha de 9 caracteres que e o DEFAULT de um getenv - sem a variavel no ambiente, ela e a senha - e uma chave de assinatura de 38 caracteres repetida como fallback em quatro arquivos de um mesmo repositorio, o que significa que sem a variavel qualquer um forja token. OS CAMINHOS NAO ESTAO AQUI, nem os nomes dos repositorios, nem a contagem por repositorio: este genoma e PUBLICO, e caminho de credencial colada em repositorio privado e mapa para quem um dia tiver leitura. Eles estao no PR privado laverssiera/LICEU_6.0_CONSTRUTORA_VIRTUAL#107. PONTO CEGO DECLARADO: token gerado por maquina - hex, base64, uuid - colado em prosa SEM nome conhecido por perto nao e alcancado por este eixo, porque incluir hex e base64 traria todo hash e todo id de commit dos 8250 arquivos. Quem alcanca token pelo nome e o inventario. A SUITE PEGOU UM FALHA-ABERTA antes de o arquivo entrar no repositorio: varrer() nao levantava com repositorio ausente, porque responder_por_item engole a excecao e marca NAO_MENSURAVEL, e nada exigia a medicao no nivel dos repositorios - 'achados: 0' com um repositorio nao lido e nao-medicao vestida de aprovacao, o mesmo defeito do _tam do C25-06. O QUE ESTA PROVA NAO DECIDE: se 33.3% e utilizavel, se a guarda passa a bloquear, e o que fazer com as 13 credenciais achadas. O padrao e RELATAR; a UNK-0017 e explicita - enquanto o numero nao existir a guarda nao existe -, e o numero existe."
+
+- id: PRF-0167
+  kind: proof
+  title: "O controle positivo sintetico aprovou um detector cego para o caso real: a isca passava e o blob do incidente devolvia zero"
+  refutes: [CLM-0138]
+  basis: external_observation
+  date: "2026-10-14"
+  external_observation:
+    instrument: "a mesma guarda, rodada duas vezes: contra a isca sintetica escrita a mao, e contra o BLOB REAL do arquivo do incidente trazido por git show do commit e0a0f19 e mantido em memoria - nada escrito em disco"
+    observed: "ISCA SINTETICA: 2 achados, um em cada forma, controle declarado satisfeito. BLOB REAL: ZERO achados, nas 270 linhas, inclusive nas linhas 87 e 247 onde o valor estava. Depois da correcao: o blob real devolve as linhas 87 e 247, exatamente as duas do incidente"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-14-a-guarda-do-valor-colado.json
+  environment: local
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: infra/security/test_valor_colado.py
+    note: "A CAUSA: eu havia posto a arroba na lista de estrutura - caminho, URL, seletor -, para excluir e-mail, e o valor deste incidente tem DUAS arrobas. A guarda recusava o proprio caso. E A RAZAO DE ISSO NAO APARECER FOI A ISCA: eu a escrevi com 11 caracteres e as quatro classes, conferi 'forma Aa9#', e declarei que ela tinha a forma do incidente. MAS O `#` E UMA CLASSE, NAO UM CARACTERE - a isca usava exclamacao, porcentagem e dolar, e nao arroba. Isca com a mesma classe e simbolos diferentes nao e isca com a mesma forma, e foi exatamente no caractere ausente que o detector falhava. A LICAO E GERAL E VALE MAIS QUE A GUARDA: controle positivo reconstruido de memoria prova que o detector acha a lembranca, nao o caso. A correcao nao foi escrever uma isca melhor - foi parar de depender de isca: o controle agora roda contra o BLOB do e0a0f19, e o repositorio tem o historico, entao a guarda se prova contra o incidente de verdade sem guardar segredo nenhum. Em clone raso ele diz NAO RODOU em vez de passar, e por isso o checkout do job na CI passou a vir com fetch-depth 0. UMA DEPENDENCIA QUE PRECISA SER DITA: se a opcao A do C25-08 for escolhida, o e0a0f19 deixa de existir e este controle passa a dizer NAO RODOU para sempre. A guarda trata isso com honestidade, mas o controle forte se perde - e isso e um custo da opcao A que nao estava medido no documento das duas opcoes."

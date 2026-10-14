@@ -795,3 +795,15 @@
   kind: claim
   statement: "O ato de tirar o valor do HEAD nao criou nenhuma copia nova do valor."
   asserted_by: "eu mesmo, por omissao: eu ia relatar a redacao como reducao limpa de superficie, e a pergunta 'este ato criou copia nova?' so foi feita porque eu fui conferir o que a minha propria saida havia impresso"
+- id: CLM-0136
+  kind: claim
+  statement: "O inventario de segredos le todos os arquivos onde um valor colado pode estar."
+  asserted_by: "o comentario do proprio inventario - 'deliberadamente largo: e melhor listar um nome que nao e segredo do que deixar um de fora' - e a PRF-0099, que mediu DOIS eixos cegos e nao foi olhar o terceiro: quais arquivos o inventario abre"
+- id: CLM-0137
+  kind: claim
+  statement: "Uma guarda pelo eixo da PROXIMIDADE - indicador de segredo e token com cara de valor na mesma linha - acha as duas formas deste incidente, e sua taxa de falso positivo sobre a arvore real dos 19 repositorios esta medida."
+  asserted_by: "ninguem ainda - e exatamente o que a UNK-0017 exige antes de a guarda poder bloquear: 'numero medido, nao suposto... enquanto o numero nao existir, a guarda nao existe'"
+- id: CLM-0138
+  kind: claim
+  statement: "Um controle positivo escrito com a FORMA do incidente prova que a guarda acha o caso real."
+  asserted_by: "eu mesmo, ao escrever a isca sintetica com as quatro classes de caractere do valor e declarar o controle satisfeito"
