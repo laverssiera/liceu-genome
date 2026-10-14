@@ -184,15 +184,37 @@ shred -u ../substituicao.txt && rm -rf ../rewrite.git
 > execuções de CI; as instalações de GitHub App com acesso de leitura; o
 > Codespace parado de 2026-03-11, que contém o arquivo; os discos de runner já
 > apagados; e qualquer cópia feita por quem teve acesso de
-> leitura. *(Os dois repositórios privados fora do universo — `Nateli-` e
+> leitura.
+>
+> **Aceito também uma exposição criada no próprio dia desta decisão, e ela não
+> estava nesta lista quando o texto foi escrito:** o valor aparece **4 vezes** no
+> transcript da sessão de 2026-10-14, no diretório de sessões do Claude Code na
+> minha máquina, porque um comando de inspeção imprimiu um diff cuja máscara
+> cobria uma das duas formas do valor e não a outra. Medido: 1 arquivo, 4
+> ocorrências em 962 varridos; o scratchpad da sessão devolve zero em 776.
+> Registrado na `PRF-0164`. **Reescrever o histórico do git não alcançaria esse
+> arquivo** — ele é disco meu, não repositório —, então este item não distingue
+> A de B: ele sobra nas duas. O que o provedor do modelo retém da conversa é
+> **NÃO-MENSURÁVEL** daqui, e não se estima. *(Os dois repositórios privados fora do universo — `Nateli-` e
 > `Tation-Engenharia-Solu-o-02-` — foram varridos em 2026-10-14 e estão limpos:
 > zero do valor e zero do nome.)*
 >
-> **Condição desta aceitação:** o valor sai do `HEAD` por commit normal, e esta
-> credencial **nunca** é usada em ambiente algum. Se um dia vier a ser usada, a
-> aceitação caduca e a reescrita volta à mesa.
+> **Condição desta aceitação, e a primeira metade já está cumprida e provada:**
+> o valor sai do `HEAD` por commit normal — **feito** em 2026-10-14, commit
+> `ce687d1`, mergeado em `f1293af`, e conferido depois do merge: a árvore de
+> `origin/main` devolve **0** em 1600 arquivos, com o `e0a0f19` ainda devolvendo
+> **2** como controle positivo (`PRF-0163`). E esta credencial **nunca** é usada
+> em ambiente algum: hoje o provedor é nenhum e nenhum arquivo de ambiente lhe
+> atribui valor. Se um dia vier a ser usada, **a aceitação caduca** e a reescrita
+> volta à mesa.
 >
 > Data: __________   Assinatura: __________
+
+> **Estado deste documento em 2026-10-14:** o titular **decidiu pela opção B**.
+> A decisão está tomada; a **assinatura acima não foi dada**, e ela é do titular
+> — não deriva da decisão. Decisão, execução e comprovação são estados distintos:
+> aqui a decisão está tomada, a execução é assinar, e a comprovação da parte
+> mensurável da condição é a `PRF-0163`.
 
 ### O que a opção B custa
 
@@ -219,7 +241,12 @@ passada — é exposição em curso.
 
 ---
 
-## 6. O que eu recomendaria, em uma linha
+## 6. O que eu recomendaria, em uma linha — e o que foi decidido
+
+> **DECIDIDO em 2026-10-14: opção B.** O titular escolheu a aceitação por
+> escrito. O que segue é a recomendação como ela foi escrita **antes** da
+> decisão, e fica como registro de que recomendação e decisão coincidiram — não
+> como se a escolha ainda estivesse aberta.
 
 **B**, porque as três coisas que a reescrita compraria — ausência nos públicos,
 ausência de fork e ausência de provedor onde revogar — já estão medidas como

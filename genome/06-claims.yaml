@@ -819,3 +819,8 @@
   kind: claim
   statement: "O bloqueio recusa valor colado novo, e a isencao da linha de base nao sobrevive nem a edicao da linha isenta nem a um acrescimo em runtime."
   asserted_by: "ninguem ainda - e guarda que nao recusa nada nao guarda, e lista de isencao que aceita item em runtime e o defeito que eu cometi no C25-06"
+
+- id: CLM-0142
+  kind: claim
+  statement: "A lista de riscos que o texto de aceitacao da opcao B enumera esta completa: o titular, ao assinar, aceita tudo o que esta medido como exposicao."
+  asserted_by: "eu mesmo, ao escrever o texto como pronto para assinar e ao recomendar a opcao B em uma linha - lista de aceitacao se le como exaustiva por construcao, e eu nao voltei a ela depois"
