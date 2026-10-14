@@ -20,18 +20,10 @@
 meta:
   derivado_em: '2026-10-13'
   instrumento: tools/declaracoes_de_estado.py
-  estados_no_kit_lido: 42
+  estados_no_kit_lido: 40
   kit: conformance_kit=0.26.0 constitution=1.15.0
 
 origens:
-  'constitution:global.campos_aceitos_pelo_servidor.procedencia':
-    classe: OUTRO_ARTEFATO
-    fonte: 'cv-backend-core/app/main.py, por ANCORA e nao por numero de linha'
-    razao: 'mesmo caso do verificado_em, e os dois carregam a MESMA linha — segunda fonte do mesmo numero, dentro do mesmo no'
-  'constitution:global.campos_aceitos_pelo_servidor.verificado_em':
-    classe: OUTRO_ARTEFATO
-    fonte: 'cv-backend-core/app/main.py, por ANCORA e nao por numero de linha'
-    razao: "a CI do CORE alcanca este arquivo. Hoje o campo carrega 'main.py:617', e numero de linha apodrece — a cura e a do control_plane_inventory: ancorar no nome da classe e derivar a linha"
   'constitution:global.authority_model.observacao':
     classe: SAI_DA_CLASSE
     fonte: 'codigo dos 19 repositorios'
