@@ -3273,3 +3273,61 @@
     repo: liceu-genome
     path: docs/evidence/2026-10-14-etcd-ou-raft-embutido.md
     note: "A PERGUNTA DO ADR-005 POE OS DOIS LADOS COMO SIMETRICOS - etcd OU Raft embutido -, e eles nao sao. Medido no INDICE DE PACOTES, nao em pagina de terceiro: pysyncobj em 0.3.17, raftify em 0.1.67, rraft-py em 0.2.27. E o estado que os proprios projetos declaram muda tudo: o raftify foi DESCONTINUADO EM PYTHON pelo proprio autor, que o reescreveu em Rust, e a pagina do PyPI dele avisa que esta em estagio muito experimental; o rraft-py e binding NAO OFICIAL do tikv/raft-rs e entrega so o modulo de consenso, com transporte e armazenamento por conta de quem usa; e a propria pagina do rraft-py diz que NAO HA biblioteca Raft de fato padrao em Python, apontando seus usuarios para Raftify ou PySyncObj - sendo que o primeiro esta descontinuado. Os outros candidatos que a busca trouxe se autodeclaram inadequados para producao, um deles dizendo na propria descricao que nao deve ser usado em ambiente de producao. ENTAO RAFT EMBUTIDO NAO E UM CAMPO: E UMA OPCAO, o PySyncObj. UMA CORRECAO DE PROCEDENCIA: a busca na web dava o rraft-py em 0.2.2, e o indice diz 0.2.27. Quando pagina de terceiro e indice discordam, vale o indice - mesma regra que este genoma ja aplicou ao preco do netcup. E O QUE O INDICE NAO DA: datas. A busca deu 30/08/2026 para o pysyncobj 0.3.17 e 04/08/2024 para o raftify 0.1.67, e eu NAO confirmei nenhuma das duas no indice - fica como procedencia de busca, nao de medicao. O QUE ESTA PROVA NAO ALCANCA, e e o que mais pesaria: a CORRECAO do PySyncObj sob particao. Nao ha prova de linearizabilidade publicada que eu possa citar, e afirmar que ele esta certo seria a afirmacao sem prova que este ecossistema recusa. Ha tambem um modo de falha nomeavel e NAO medido: Raft em Python puro divide o GIL com um FastAPI de 321 rotas, e requisicao lenta atrasa heartbeat - o mecanismo e certo, a MAGNITUDE depende da cauda de latencia sob carga real, e a PRF-0066 mediu que nao existe Testemunha nem Sucessora implantadas, entao nao ha onde medir."
+
+- id: PRF-0175
+  kind: proof
+  title: "O etcd publica a regua, e contra ela seis amostras passam com 6,5x de margem e uma falha por 9,3x -- nao era nao-mensuravel, era nao-conferido"
+  refutes: [CLM-0145]
+  basis: external_observation
+  date: "2026-10-14"
+  external_observation:
+    instrument: "leitura da pagina de hardware do etcd e do FAQ do etcd, em 2026-10-14, confrontadas com as amostras de latencia de fsync que o ADR-005 mediu em 2026-10-13"
+    observed: "da pagina de hardware: 50 sequential IOPS required, 500 recommended para cluster carregado, dois a quatro nucleos, 8GB. AUSENTES dela: tamanho de bloco e limiar em ms. Do FAQ: p99 de wal_fsync_duration_seconds abaixo de 10 ms, e 25 ms para backend_commit_duration_seconds. Contra os 10 ms: as seis amostras de p95 ate 1,53 ms ficam dentro com cerca de 6,5x de margem; a amostra de p95 92,75 ms e maximo 123,4 ms fica fora por cerca de 9,3x"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-14-etcd-ou-raft-o-parecer-incorporado.json
+  environment: local
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-14-etcd-ou-raft-embutido.md
+    note: "EU ESCREVI QUE ERA NAO-MENSURAVEL, e o etcd publica a regua -- eu nao fui procurar. Da pagina de hardware, lida em 2026-10-14: 'Typically 50 sequential IOPS (e.g., a 7200 RPM disk) is required', e 500 sequential IOPS para cluster carregado. Do FAQ: o p99 de wal_fsync_duration_seconds deve ficar abaixo de 10 ms, e o alvo de backend_commit_duration_seconds e 25 ms. CONTRA O QUE O ADR-005 JA MEDIA EM 13/10: seis amostras com p95 de ate 1,53 ms estao DENTRO dos 10 ms, com margem de cerca de 6,5 vezes; e UMA, com p95 de 92,75 ms e maximo de 123,4 ms, esta FORA por cerca de 9,3 vezes -- e sendo p95, o p99 e pior. Entao 'sobrevive?' esta respondido para seis e respondido NEGATIVAMENTE para uma, e nao era pergunta aberta: era pergunta que eu nao tinha confrontado com o limiar publicado. O QUE RESTA E MENSURAVEL SEM RAFT, SEM TESTEMUNHA E SEM SUCESSORA: se a amostra ruim e host ruim ou cauda do nivel -- reprovisionar N vezes no mesmo nivel e medir a distribuicao. Host ruim se troca; cauda de nivel, nao. UMA CORRECAO DE PROCEDENCIA NO PROPRIO LIMIAR, porque este genoma ja errou um numero de secao e aprendeu: a formulacao '50 IOPS de 8 kB sequenciais incluindo fdatasync em menos de 10 ms' NAO e uma frase do etcd. Os 50 IOPS sao da pagina de hardware; o '8 kB com fdatasync' vem da receita de fio da Red Hat; e os 10 ms sao do FAQ e se aplicam ao WAL fsync, nao ao backend commit, cujo alvo e 25 ms. A pagina de hardware NAO contem tamanho de bloco nem limiar em ms. E A ASSIMETRIA QUE EU NAO REIVINDIQUEI, e ela favorece a recomendacao que eu mesmo dei: e verdade que a cauda do disco nao distingue qual Raft espera o fsync, mas so UMA das duas opcoes vem com orcamento publicado contra o qual medir o disco. O PySyncObj nao da regua nenhuma."
+
+- id: PRF-0176
+  kind: proof
+  title: "os.fsync libera o GIL e o risco e inanicao de temporizador por CPU - e a eleicao espuria exige 400 ms de retencao continua, treze vezes o que eu medi"
+  refutes: [CLM-0146]
+  basis: external_observation
+  date: "2026-10-14"
+  external_observation:
+    instrument: "thread temporizador com alvo de 10 ms, medindo o ATRASO de cada acordar, contra tres cargas no mesmo processo: nenhuma, os.fsync em laco e aritmetica de inteiro em laco; mais leitura dos tempos padrao do PySyncObj 0.3.17 no sdist baixado e lido, nunca executado"
+    observed: "sem carga mediana 0,430 ms e maximo 1,279; com 2153 fsync em 2 s mediana 0,307 ms e maximo 12,875 - MENOR mediana que sem carga; com carga CPU-bound mediana 8,308 ms, p95 17,573 e maximo 30,870, com apenas 34 ciclos. Do fonte do PySyncObj: raftMinTimeout 0,4 s, raftMaxTimeout 1,4 s, appendEntriesPeriod 0,1 s"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-14-etcd-ou-raft-o-parecer-incorporado.json
+  environment: local
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-14-etcd-ou-raft-embutido.md
+    note: "A MINHA ENUNCIACAO CONFUNDIA DUAS COISAS: eu escrevi que 'requisicao lenta atrasa o heartbeat', e requisicao lenta por I/O NAO atrasa -- os.fsync libera o GIL durante a syscall. MEDIDO, com um temporizador de alvo 10 ms contra tres cargas no mesmo processo: sem carga, mediana de atraso 0,430 ms e maximo 1,279; com 2153 fsync em 2 segundos, mediana 0,307 ms -- MENOR que sem carga -- e maximo 12,875; com carga CPU-bound, mediana 8,308 ms, p95 17,573 e maximo 30,870. O fsync nao disputa o GIL; o trabalho CPU-bound disputa, e degrada a mediana em 19 vezes. ENTAO O RISCO E INANICAO DE TEMPORIZADOR, e o que importa medir e tempo de CPU por handler, nao fsync. E ISSO CALIBRA O ARGUMENTO EM VEZ DE SO CONFIRMA-LO: lido do fonte do PySyncObj 0.3.17 -- pysyncobj/config.py:37,40,44, do sdist baixado e lido, nunca executado -- raftMinTimeout e 0,4 s, raftMaxTimeout 1,4 s e appendEntriesPeriod 0,1 s. O heartbeat tem periodo de 100 ms e a eleicao dispara entre 400 e 1400 ms. Os 30,87 ms de maximo que eu medi ficam DENTRO do periodo de heartbeat e treze vezes ABAIXO do piso de eleicao. Logo a eleicao espuria nao e consequencia automatica de rodar Raft no processo da aplicacao: ela exige retencao CONTINUA do GIL por 400 ms ou mais. O gatilho deixou de ser qualitativo e virou numero. O QUE ISSO FAZ COM O MEU NAO-MENSURAVEL: ele estava errado na forma como eu o escrevi. A magnitude NO PROCESSO e mensuravel e acabou de ser medida; o que nao e mensuravel sem implantacao e outra coisa, mais estreita -- a distribuicao de retencao do GIL dos 321 handlers sob carga REAL de producao. No app que existe, ela e mensuravel hoje, e e o numero que decide se o PySyncObj e viavel. O ENQUADRAMENTO QUE SOBREVIVE, e e mais afiado que o meu: essa falha e a classe de pausa de processo, ocorrendo continuamente em operacao normal em vez de injetada -- escolher Raft no processo e escolher viver dentro da classe de falha a que o sistema mais precisa ser resiliente. RESSALVA DO INSTRUMENTO: CPython 3.12 em Windows, fora de conteiner, numa maquina com outros processos. O que se compara e a RAZAO entre cenarios no mesmo ambiente, nunca o valor absoluto."
+
+- id: PRF-0177
+  kind: proof
+  title: "A porta da atestacao e porta, e o teste que prova isso ja existia - o que sobra e a janela de 300 s que ninguem documentou"
+  refutes: [CLM-0147]
+  basis: test
+  date: "2026-10-14"
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/tests/test_authority_witness.py
+    name: test_expired_attestation_blocks_and_escalates
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths:
+      - cv-backend-core/app/services/authority_control_plane.py
+      - cv-backend-core/tests/test_authority_witness.py
+    content_hash: 6cae4a3e98c5c06df794b576e219f70f8eb2b6f3b15aa41461934de22c77b48f
+    commit: 0f8fa0c
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/tests/test_authority_witness.py
+    note: "A DUVIDA ERA LEGITIMA E O TESTE JA EXISTIA: test_expired_attestation_blocks_and_escalates, em cv-backend-core/tests/test_authority_witness.py, faz a atestacao expirar, chama promote() e exige 409 com attestation_missing_reason igual a attestation_expired, mais a escalacao com o mesmo motivo. Rodado em 2026-10-14: 1 passed. A porta e porta. E O CODIGO SUSTENTA A LEITURA: valid_attestation_for descarta linha consumida ou expirada e devolve attestation_expired, e promote() levanta promotion_requires_witness_attestation quando ela devolve None. O QUE ESTE TESTE NAO ALCANCA, e e a metade que fica aberta: a CLM-0086 afirma que o CONSENSO preserva a exigencia POR SI, e isso e sobre o quorum no futuro, nao sobre a tabela de hoje. Nenhum teste local pode estabelecer, porque o consenso nao existe -- a CLM-0086 segue STALE e nao foi tocada aqui. O ACHADO QUE SOBRA, e ele e operacional e nao estava escrito em lugar nenhum: a porta e ativa, o TTL e 300 s e NINGUEM RENOVA, entao promocao so e possivel dentro de 300 s de uma atestacao manual. Isso nao e defeito da porta -- e uma janela que ninguem documentou, e qualquer ensaio que suponha poder promover a qualquer momento vai encontra-la. ORDEM QUE ISSO IMPOE: medir isto antes de gastar decisao em mecanismo de consenso era o conselho certo, e a medicao estava barata porque o teste ja existia."

@@ -1,0 +1,81 @@
+{
+  "a_regua_do_etcd_com_procedencia_separada": {
+    "da_pagina_de_hardware_lida_em_2026-10-14": [
+      "Typically 50 sequential IOPS (e.g., a 7200 RPM disk) is required",
+      "500 sequential IOPS (e.g., a typical local SSD or a high performance virtualized block device) is recommended -- para cluster carregado",
+      "Typical clusters need two to four cores",
+      "Typically 8GB is enough"
+    ],
+    "AUSENTE_da_pagina_de_hardware": "tamanho de bloco e limiar de fsync em ms",
+    "do_FAQ_do_etcd": "o p99 de wal_fsync_duration_seconds deve ficar abaixo de 10 ms; o alvo de backend_commit_duration_seconds e 25 ms",
+    "NAO_e_uma_frase_do_etcd": "a formulacao '50 IOPS de 8 kB sequenciais incluindo fdatasync em menos de 10 ms' e COMPOSTA: os 50 IOPS sao da pagina de hardware, e o '8 kB com fdatasync' vem da receita de fio da Red Hat, nao do etcd"
+  },
+  "o_veredito_contra_a_regua": {
+    "amostras_do_ADR_005_de_2026-10-13": {
+      "seis": {
+        "p95_ms": 1.53,
+        "contra_10ms": "DENTRO, com margem de ~6,5x"
+      },
+      "uma": {
+        "p95_ms": 92.75,
+        "max_ms": 123.4,
+        "contra_10ms": "FORA, ~9,3x -- e sendo p95, o p99 e pior"
+      }
+    },
+    "o_que_deixa_de_ser_nao_mensuravel": "a pergunta 'sobrevive?' esta respondida para seis e NEGATIVAMENTE para uma",
+    "o_que_resta_e_e_mensuravel_sem_Raft": "se a amostra ruim e host ruim ou cauda do nivel: reprovisionar N vezes no mesmo nivel e medir a distribuicao. Host ruim se troca; cauda de nivel, nao",
+    "a_assimetria": "so uma das duas opcoes vem com orcamento publicado contra o qual medir o disco. O PySyncObj nao da regua nenhuma"
+  },
+  "o_GIL_medido": {
+    "instrumento": "thread temporizador com alvo de 10 ms, medindo o ATRASO de cada acordar, contra tres cargas no mesmo processo: nada, os.fsync em laco, e aritmetica de inteiro em laco (CPU-bound, nao libera GIL)",
+    "alvo_ms": 10.0,
+    "duracao_s": 2.0,
+    "python": "3.12.10",
+    "ressalva": "CPython em Windows, fora de conteiner, numa maquina de trabalho com outros processos. O que se compara e a RAZAO entre cenarios no mesmo ambiente, nao o valor absoluto",
+    "resultados": [
+      {
+        "cenario": "sem carga",
+        "acordares": 199,
+        "atraso_mediana_ms": 0.43,
+        "atraso_p95_ms": 0.995,
+        "atraso_max_ms": 1.279,
+        "ciclos_da_carga": null
+      },
+      {
+        "cenario": "carga de FSYNC",
+        "acordares": 200,
+        "atraso_mediana_ms": 0.307,
+        "atraso_p95_ms": 3.276,
+        "atraso_max_ms": 12.875,
+        "ciclos_da_carga": 2153
+      },
+      {
+        "cenario": "carga CPU-BOUND",
+        "acordares": 199,
+        "atraso_mediana_ms": 8.308,
+        "atraso_p95_ms": 17.573,
+        "atraso_max_ms": 30.87,
+        "ciclos_da_carga": 34
+      }
+    ]
+  },
+  "a_calibracao_que_falta_ao_argumento_do_GIL": {
+    "lido_do_fonte_do_pysyncobj_0_3_17": {
+      "raftMinTimeout_s": 0.4,
+      "raftMaxTimeout_s": 1.4,
+      "appendEntriesPeriod_s": 0.1,
+      "onde": "pysyncobj/config.py:37,40,44, do sdist baixado e LIDO, nao executado"
+    },
+    "o_que_isso_significa": "o heartbeat tem periodo de 100 ms e a eleicao dispara entre 400 e 1400 ms. A mediana medida sob carga CPU-bound foi 8,31 ms e o maximo 30,87 ms -- dentro do periodo de heartbeat, e treze vezes abaixo do piso de eleicao",
+    "entao": "o mecanismo esta CONFIRMADO e a eleicao espuria NAO e consequencia automatica: ela exige >=400 ms de retencao CONTINUA do GIL. O gatilho deixou de ser qualitativo e virou numero",
+    "o_que_resta_medir_e_e_mensuravel_hoje": "a distribuicao de tempo de retencao do GIL por handler, nos 321 do app que existe, contra o piso de 400 ms"
+  },
+  "a_porta_promotion_requires_witness_attestation": {
+    "estado": "ATIVA, e medida por teste que passa",
+    "teste": "cv-backend-core/tests/test_authority_witness.py::test_expired_attestation_blocks_and_escalates",
+    "resultado": "1 passed",
+    "o_que_ele_prova": "atestacao expirada bloqueia promote() com 409 e attestation_missing_reason=attestation_expired, e escala",
+    "o_que_ele_NAO_prova": "a CLM-0086, que afirma que o CONSENSO preserva a porta por si. Nenhum teste local alcanca isso, porque o consenso nao existe",
+    "o_achado_que_sobra": "a janela de 300 s que ninguem documentou: a porta e ativa, o TTL e 300 s e NINGUEM renova, entao promocao so e possivel dentro de 300 s de uma atestacao manual"
+  }
+}

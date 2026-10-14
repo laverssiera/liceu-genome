@@ -1,4 +1,13 @@
-# 2026-10-14 — etcd ou Raft embutido: as duas opções, medidas
+# 2026-10-14 — um sistema de engenharia contra uma biblioteca sem régua
+
+> **Este documento não se chama "etcd vs Raft embutido", de propósito.** A
+> medição no índice de pacotes diz que **não há duas famílias**: há o etcd, um
+> sistema de engenharia com orçamento publicado, contra **uma** biblioteca —
+> `PySyncObj` — sem prova de linearizabilidade citável, com as demais
+> candidatas se autodeclarando inadequadas para produção e o autor do `raftify`
+> descontinuando a sua versão em Python. Quem ler "etcd ou Raft embutido" em
+> seis meses vai supor que se comparou categoria com categoria. Não foi isso que
+> se mediu.
 
 A `UNK-0001` está atrás de uma decisão, e o `ADR-005 §5.1` nomeia esta como a
 primeira das pendentes: **etcd ou Raft embutido na camada A**. Ela não é "A, B ou
@@ -117,21 +126,97 @@ usado em ambiente de produção.
 
 ---
 
-## 4. NÃO-MENSURÁVEL, nomeado em vez de estimado
+## 4. NÃO-MENSURÁVEL — e **três dos quatro que eu listei não eram**
+
+Um parecer técnico sobre a primeira versão deste documento derrubou três. Os
+três eram meus, e nenhum caiu por opinião: caiu por medição que estava
+disponível e eu não fiz.
+
+### Caiu — o limiar do etcd é publicado (`PRF-0175`)
+
+Eu escrevi que confirmar exige rodar. **O etcd publica a régua.** Da página de
+hardware, lida em 2026-10-14: *"Typically 50 sequential IOPS (e.g., a 7200 RPM
+disk) is required"*, e 500 para cluster carregado. Do FAQ: o p99 de
+`wal_fsync_duration_seconds` abaixo de **10 ms** — e 25 ms para
+`backend_commit_duration_seconds`.
+
+| amostra do `ADR-005` (13/10) | p95 | contra os 10 ms |
+|---|---|---|
+| seis | ≤ **1,53 ms** | **dentro**, com ~6,5× de margem |
+| uma | **92,75 ms** (máx 123,4) | **fora**, ~9,3× — e sendo p95, o p99 é pior |
+
+Então "sobrevive?" está respondido para seis e respondido **negativamente** para
+uma. **O que resta é mensurável sem Raft, sem Testemunha e sem Sucessora:** se a
+amostra ruim é **host ruim** ou **cauda do nível** — reprovisionar N vezes no
+mesmo nível e medir a distribuição. Host ruim se troca; cauda de nível, não.
+
+> **Procedência, separada:** a formulação *"50 IOPS de 8 kB sequenciais
+> incluindo fdatasync em menos de 10 ms"* **não é uma frase do etcd**. Os 50 IOPS
+> são da página de hardware; o "8 kB com fdatasync" vem da receita de `fio` da
+> Red Hat; os 10 ms são do FAQ e se aplicam ao **WAL** fsync. A página de
+> hardware **não** contém tamanho de bloco nem limiar em ms.
+
+### Caiu — e a minha enunciação do GIL estava errada (`PRF-0176`)
+
+Eu escrevi *"uma requisição lenta atrasa o heartbeat"*. **Requisição lenta por
+I/O não atrasa:** `os.fsync` libera o GIL durante a syscall. Medido, com um
+temporizador de alvo 10 ms no mesmo processo:
+
+| carga | mediana do atraso | p95 | máx | ciclos |
+|---|---|---|---|---|
+| nenhuma | 0,430 ms | 0,995 | 1,279 | — |
+| **`fsync`** | **0,307 ms** | 3,276 | 12,875 | **2153** |
+| **CPU-bound** | **8,308 ms** | 17,573 | 30,870 | 34 |
+
+2153 `fsync` em 2 s deixam a mediana **menor** que sem carga. 34 ciclos
+CPU-bound a degradam **19×**. **O risco é inanição de temporizador, e o que se
+mede é tempo de CPU por handler.**
+
+**E isso calibra o argumento em vez de só confirmá-lo.** Lido do fonte do
+`PySyncObj` 0.3.17 (`pysyncobj/config.py:37,40,44`, do sdist baixado e **lido**,
+nunca executado):
+
+```
+appendEntriesPeriod = 0.1 s     período de heartbeat: 100 ms
+raftMinTimeout      = 0.4 s     piso da eleição
+raftMaxTimeout      = 1.4 s
+```
+
+Os **30,87 ms** de máximo que eu medi ficam **dentro** do período de heartbeat e
+**treze vezes abaixo** do piso de eleição. Logo a eleição espúria **não é
+consequência automática** de rodar Raft no processo: ela exige retenção
+**contínua** do GIL por **≥ 400 ms**. O gatilho deixou de ser qualitativo e
+virou número.
+
+**O que sobra de não-mensurável é mais estreito que o que eu escrevi:** a
+distribuição de retenção do GIL dos **321 handlers sob carga real de produção**.
+No app que existe, ela é **mensurável hoje** — e é o número que decide se o
+`PySyncObj` é viável.
+
+### Caiu — a porta é porta, e o teste já existia (`PRF-0177`)
+
+`test_expired_attestation_blocks_and_escalates` faz a atestação expirar, chama
+`promote()` e exige 409 com `attestation_missing_reason = attestation_expired`.
+Rodado: **1 passed**.
+
+**O achado que sobra é operacional e não estava escrito em lugar nenhum:** a
+porta é ativa, o TTL é 300 s e **ninguém renova** — então promoção só é possível
+**dentro de 300 s de uma atestação manual**. Não é defeito da porta; é uma janela
+que ninguém documentou, e qualquer ensaio que suponha poder promover a qualquer
+momento vai encontrá-la.
+
+**O que este teste não alcança:** a `CLM-0086` afirma que o **consenso** preserva
+a exigência *por si*. Isso é sobre o quorum no futuro, não sobre a tabela de
+hoje — nenhum teste local pode estabelecer, e ela **segue STALE**.
+
+### Segue não-mensurável — e é um, não quatro
 
 - **A correção do `PySyncObj` sob partição.** Não há prova de linearizabilidade
-  publicada que eu possa citar, e afirmar que ele está certo seria exatamente o
-  tipo de afirmação sem prova que este ecossistema recusa. Medir isso é projeto,
-  não leitura.
-- **A magnitude do risco do GIL.** O mecanismo é certo (Python puro, mesmo
-  processo, heartbeat concorrendo com requisição); **o tamanho** depende da cauda
-  de latência da aplicação sob carga real — e a `PRF-0066` mediu que **não existe
-  Testemunha nem Sucessora implantadas**, então não há onde medir.
-- **Se o nível mais barato de um provedor sobrevive ao padrão de `fsync` do
-  etcd.** O `ADR-005` já cita o modo de falha que o etcd descreve (*"disk
-  activity"*); confirmar exige rodar, não ler.
-- **As datas de lançamento.** O índice dá versões, não datas. A busca deu datas
-  para o `pysyncobj` (0.3.17 em 30/08/2026) e eu **não** as confirmei no índice.
+  publicada que eu possa citar, e afirmar que ele está certo seria a afirmação
+  sem prova que este ecossistema recusa. Medir isso é projeto, não leitura.
+- *(e um resíduo de procedência)* **as datas de lançamento**: o índice dá
+  versões, não datas. A busca deu 30/08/2026 para o `pysyncobj` 0.3.17, e eu
+  **não** confirmei.
 
 ---
 
@@ -142,11 +227,38 @@ Raft em Python puro dividindo o GIL com a aplicação transferiria para mim a pr
 de correção sob partição, que é precisamente o trabalho que a existência do etcd
 torna desnecessário.
 
+**E há dois argumentos mais afiados que a transferência do ônus, e os dois
+apontam para o mesmo lado:**
+
+1. **Só uma das duas opções vem com régua.** É verdade que a cauda do disco não
+   distingue qual Raft espera o `fsync` — mas apenas o etcd publica um orçamento
+   contra o qual medir o disco (p99 de WAL fsync < 10 ms, 50/500 IOPS
+   sequenciais). O `PySyncObj` não dá régua nenhuma: sem limiar publicado, não há
+   como dizer se o disco serve, e "não há como dizer" é precisamente o estado que
+   este ecossistema trata como ausência de medição.
+2. **Escolher Raft no processo é escolher viver dentro da classe de falha à qual
+   o sistema mais precisa ser resiliente.** Inanição de temporizador é pausa de
+   processo — a mesma classe que os ensaios injetam de propósito —, só que
+   ocorrendo **continuamente em operação normal** em vez de injetada.
+
 **O que mudaria isso:** se o titular recusar por princípio uma dependência
 operacional nova — e para operador sozinho isso é razão legítima, não teimosia —,
-então `PySyncObj`; mas aí o risco de correção tem de ser **aceito por escrito**,
-com a cláusula de caducidade, exatamente como o incidente da credencial. Risco não
-medido que ninguém assinou não é risco aceito: é risco esquecido.
+então `PySyncObj`; mas aí o risco de correção tem de ser **aceito por escrito**.
+
+**E a cláusula de caducidade precisa de GATILHO, não de data.** No incidente da
+credencial a aceitação tinha data e risco residual; aqui o que a torna
+falsificável é **o evento que a refuta**. Data sem gatilho vence sozinha e
+ninguém olha. Os gatilhos, nomeados:
+
+- **a primeira eleição espúria atribuível a inanição de GIL** — e ela é
+  atribuível, porque o piso é conhecido: retenção contínua ≥ 400 ms;
+- **a primeira violação observada da invariante de época única** — duas épocas
+  visíveis ao mesmo tempo em domínios diferentes;
+- **a primeira medição de retenção de GIL por handler que cruze os 400 ms** —
+  esta antecede a falha em vez de esperá-la, e é mensurável hoje.
+
+Risco não medido que ninguém assinou não é risco aceito: é risco esquecido. E
+aceitação sem gatilho não é aceitação: é uma data.
 
 **E o preço não é argumento para nenhum dos dois lados.** A carga medida
 (≤ 288 escritas/dia) não sustenta os núcleos e a RAM que os US$ 96–144 pagam —
@@ -175,3 +287,26 @@ no `ADR-005` desde 13/10.
    implantadas. Decidir o mecanismo não cria os três domínios de falha, e a
    Constituição diz o que a ausência deles custa: *"se as três compartilham
    infraestrutura, a testemunha não acrescenta independência — apenas custo"*.
+
+---
+
+## 7. A ordem: o contrato é **a montante** do mecanismo
+
+Eu listei a separação dita em contrato — *"votar no log"* não é *"autorizar
+atos"* — como **independente** desta escolha. **Ela não é independente: é a
+montante.**
+
+| se o contrato disser | então |
+|---|---|
+| votar no log **nunca** autoriza atos | a camada de consenso é **um log**, e log errado é detectável a jusante pela atestação. O ônus de correção sob partição **cai muito** |
+| votar **autoriza** | o consenso está no **caminho de confiança**, e correção sob partição passa a ser *load-bearing* — que é precisamente quando o argumento do etcd se torna decisivo |
+
+**Consequência de ordem:** decidir o contrato primeiro pode tornar a `UNK-0001`
+bem mais barata. E o contrato é **redação**, não infraestrutura — o `ADR-005
+§5.1` já diz que ele não espera mais nada.
+
+**E o que eu mediria antes de qualquer uma das duas** já está medido e custou um
+teste que já existia: a porta da atestação é ativa, e há uma **janela de 300 s**
+que ninguém documentou. Qualquer ensaio que suponha poder promover a qualquer
+momento vai encontrá-la — então ela precisa estar escrita antes do ensaio, não
+depois.

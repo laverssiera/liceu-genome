@@ -833,3 +833,16 @@
   kind: claim
   statement: "Raft embutido e um campo de opcoes para um CORE em Python: ha bibliotecas entre as quais escolher."
   asserted_by: "a propria forma da pergunta do ADR-005 - etcd OU Raft embutido - que poe os dois lados como se fossem simetricos em disponibilidade de implementacao"
+
+- id: CLM-0145
+  kind: claim
+  statement: "Se o nivel barato de disco sobrevive ao padrao de fsync do etcd e NAO-MENSURAVEL sem rodar um cluster."
+  asserted_by: "eu mesmo, na secao de nao-mensuraveis da entrada de decisao desta semana - escrevi que confirmar exige rodar, e nao fui conferir se o etcd publica limiar"
+- id: CLM-0146
+  kind: claim
+  statement: "O risco de rodar Raft no processo da aplicacao e requisicao lenta atrasando o heartbeat."
+  asserted_by: "eu mesmo, no documento de entrada desta decisao - escrevi 'uma requisicao lenta atrasa o heartbeat', sem distinguir lenta por I/O de lenta por CPU"
+- id: CLM-0147
+  kind: claim
+  statement: "A porta promotion_requires_witness_attestation pode nao ser porta: promote() depois do TTL da atestacao talvez passe, e ai ela e declaracao."
+  asserted_by: "um parecer tecnico sobre a entrada de decisao, em 2026-10-14, que propos o teste exatamente por essa duvida: falha e a porta esta ativa, passa e ela e a 49a declaracao"
