@@ -733,3 +733,11 @@
   kind: claim
   statement: "Os criterios PASS do M3 e do M4 e o status deles sao coerentes: PASS ali quer dizer que o criterio esta bem definido, nao que foi satisfeito."
   asserted_by: "a leitura mais generosa possivel dos dois blocos, e a unica que os tornaria coerentes — foi a leitura que eu considerei antes de medir, para nao chamar de defeito o que podia ser vocabulario"
+- id: CLM-0121
+  kind: claim
+  statement: "Apagar as contagens derivaveis cura as afirmacoes defasadas da lei: campo que some deixa de poder mentir."
+  asserted_by: "a leitura natural do proprio lote 1, e e a leitura que o titulo do PR convida — 'sete campos saem da lei'. Eu a registro para medir, porque e exatamente o que eu diria se nao conferisse campo por campo"
+- id: CLM-0122
+  kind: claim
+  statement: "O portao das declaracoes de estado acusa a CURA e nao so o defeito: origem que sobrevive ao campo para a CI."
+  asserted_by: "ninguem ainda — a afirmacao entra para ser medida sobre uma cura REAL, porque ate aqui a segunda direcao do falha-fechado so tinha sido exercitada por mutacao de teste"
