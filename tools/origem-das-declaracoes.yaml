@@ -20,14 +20,30 @@
 meta:
   derivado_em: '2026-10-13'
   instrumento: tools/declaracoes_de_estado.py
-  estados_no_kit_lido: 40
+  estados_no_kit_lido: 64
   kit: conformance_kit=0.26.0 constitution=1.15.0
 
 origens:
+  'constitution:global.campos_aceitos_pelo_servidor.campos_descartados_silenciosamente[0].observacao':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
+  'constitution:global.campos_aceitos_pelo_servidor.campos_descartados_silenciosamente[2].observacao':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
   'constitution:global.authority_model.observacao':
     classe: SAI_DA_CLASSE
     fonte: 'codigo dos 19 repositorios'
     razao: "o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. Declara '1 de 15 monolitos'"
+  'constitution:global.antipadroes.antipadrao_1_db_coupling.violacao_conhecida':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
+  'constitution:global.antipadroes.antipadrao_2_valor_inventado.violacao_conhecida':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
   'constitution:global.antipadroes.antipadrao_3_fallback_silencioso.referencia_correta':
     classe: SAI_DA_CLASSE
     fonte: 'codigo dos 19 repositorios'
@@ -72,22 +88,78 @@ origens:
     classe: SAI_DA_CLASSE
     fonte: 'nenhum'
     razao: "estado de DECISAO que ninguem registrou em artefato derivavel: nao existe arquivo de onde ler se este portao ja foi satisfeito. 'ADR_REQUIRED', medido DEFASADO pela PRF-0125, e o ADR-005 §5.1 registra que nem se sabe se este portao se aplica a extracao do control plane. Mesmo mapeamento ausente"
+  'constitution:monolitos.archimedes.divida_conhecida[0]':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do monolito archimedes'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
+  'constitution:monolitos.archimedes.divida_conhecida[1]':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do monolito archimedes'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
+  'constitution:monolitos.archimedes.divida_conhecida[2]':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do monolito archimedes'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
+  'constitution:monolitos.cefeida.forbidden[0].violacao':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do monolito cefeida'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
   'constitution:monolitos.john.observacao_positiva':
     classe: SAI_DA_CLASSE
     fonte: 'codigo do John-Brasileiro-'
     razao: "o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. Declara 'unico dos 15'"
+  'constitution:monolitos.anchor.forbidden[0].violacao':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do monolito anchor'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
   'constitution:monolitos.anchor.fronteira_de_continuidade.coerencia_com_external_effect':
     classe: SAI_DA_CLASSE
     fonte: 'producer_registry mais o codigo do ANCHOR'
     razao: "o 'external_effect 0/3' vem do producer_registry, que E artefato do kit — mas a frase mistura isso com um condicional sobre o que o ANCHOR faria, que e julgamento. A parte derivavel nao se separa da nao derivavel sem reescrever o campo"
+  'constitution:monolitos.opera.observacao_positiva':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do monolito opera'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
+  'constitution:monolitos.opera.divida_conhecida[0]':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do monolito opera'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
+  'constitution:monolitos.opera.divida_conhecida[1]':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do monolito opera'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
+  'constitution:monolitos.bim.forbidden[0].violacao':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do monolito bim'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
+  'constitution:monolitos.bim.forbidden[1].violacao':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do monolito bim'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
   'constitution:monolitos.bim.violacao_critica.descricao':
     classe: SAI_DA_CLASSE
     fonte: 'codigo do BIM.ARQ.ENG'
     razao: 'o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento'
+  'constitution:monolitos.fornecedores.observacao_positiva':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do monolito fornecedores'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
+  'constitution:monolitos.fornecedores.a_verificar[0]':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do monolito fornecedores'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
   'constitution:monolitos.fornecedores.a_verificar[1]':
     classe: SAI_DA_CLASSE
     fonte: 'codigo dos 19 repositorios'
     razao: "o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. Declara '0 ocorrencias em 15 repositorios', que e afirmacao NEGATIVA — e afirmacao negativa exige a busca que ACHARIA o contrario, no escopo inteiro que a frase declara (PRF-0124)"
+  'constitution:monolitos.econotech.forbidden[0].violacao':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do monolito econotech'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
+  'constitution:monolitos.econotech.forbidden[1].violacao':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do monolito econotech'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
   'constitution:monolitos.econotech.bug_conhecido.descricao':
     classe: SAI_DA_CLASSE
     fonte: 'codigo do ECONO.TECH'
@@ -96,10 +168,26 @@ origens:
     classe: SAI_DA_CLASSE
     fonte: 'codigo do CEA-INVESTIMENTOS'
     razao: "o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. Declara 'os 4 diretorios existem'"
+  'constitution:monolitos.cea.divida_conhecida[0]':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do monolito cea'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
+  'constitution:monolitos.cea.divida_conhecida[1]':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do monolito cea'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
   'constitution:monolitos.cea.divida_conhecida[2]':
     classe: SAI_DA_CLASSE
     fonte: 'codigo do CEA-INVESTIMENTOS'
     razao: "o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. Declara '3 arvores Python paralelas e 3 frontends'"
+  'constitution:monolitos.juridicotech.divida_conhecida[0]':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do monolito juridicotech'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
+  'constitution:monolitos.juridicotech.divida_conhecida[1]':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do monolito juridicotech'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
   'constitution:monolitos.juridicotech.divida_conhecida[2]':
     classe: SAI_DA_CLASSE
     fonte: 'codigo do JURIDICO-TECH'
@@ -108,6 +196,14 @@ origens:
     classe: SAI_DA_CLASSE
     fonte: 'codigo do GAME-MKT'
     razao: 'o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento'
+  'constitution:monolitos.hub.forbidden[0].violacao':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do monolito hub'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
+  'constitution:monolitos.academia.forbidden[0].violacao':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo do monolito academia'
+    razao: 'o artefato de origem e o CODIGO de outro repositorio, marcado pela PROPRIA LEI com [CODIGO], e ele NAO esta no grafo nem ao alcance de CI nenhuma. Entrou na classe em 2026-10-14, quando o marcador passou a QUALIFICAR e nao so a classificar: antes `forma_de` exigia digito e este campo nao tem'
   'constitution:monolitos.academia.divida_conhecida[0]':
     classe: SAI_DA_CLASSE
     fonte: 'codigo do LICEU-ACADEMIA-DO-SABER-'

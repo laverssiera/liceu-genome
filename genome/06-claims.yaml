@@ -749,3 +749,11 @@
   kind: claim
   statement: "O marcador [CODIGO] da lei garante que o campo marcado entre na classe: a lei marca o que observa codigo, e o instrumento le o marcador."
   asserted_by: "o proprio desenho do meu enumerador, que trata [CODIGO] como regra de classificacao e diz na docstring que 'a propria lei marca com [CODIGO]: a frase inteira e a declaracao'"
+- id: CLM-0125
+  kind: claim
+  statement: "O campo violacao do no core carrega [DECIDIDO 2026-08-29], e foi o unico dos 48 cuja defasagem era detectavel pela propria escrita — o que faz dele o precedente de 'data e procedencia' como cura do grupo nao derivavel."
+  asserted_by: "o documento de 2026-10-09, a PRF-0127, a PRF-0147 e o meu proprio mapa de origem, que repetem a frase. Ela e o UNICO precedente citado para justificar a cura escolhida para os 40 campos que saem da classe"
+- id: CLM-0126
+  kind: claim
+  statement: "Promover o marcador [CODIGO] a forma esgota o ponto cego do enumerador: com os 45 visiveis, a classe passa a ser o que a lei tem."
+  asserted_by: "ninguem ainda — a afirmacao entra porque e a conclusao natural de curar o ponto cego, e porque eu a daria se nao conferisse o que mais o portao de candidatura ainda recusa"
