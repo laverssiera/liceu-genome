@@ -3049,3 +3049,39 @@
     repo: liceu-genome
     path: genome/07-proofs.yaml
     note: "O NUMERO 19 ESTA EM 32 NOS: 26 provas, 4 incognitas, 1 claim e o inventario de segredos F0A-INVENTARIO-SEGREDOS. A conta tem 21 repositorios. Nateli- e Tation-Engenharia-Solu-o-02- sao privados e NUNCA entraram em medicao alguma deste ecossistema - nem na varredura de segredos, nem na de superficie, nem em qualquer das 26 provas que dizem 'os 19 repositorios'. O 19 NUNCA FOI DERIVADO: ele foi escrito uma vez e copiado 31 vezes, o que o torna exatamente a classe de declaracao que o C25-06 mediu dentro da Constituicao - valor afirmado que nenhuma regra le - vivendo agora no genoma, e nao na lei. O QUE ISSO MUDA NO C25-08, e e para menos: eu havia escrito no documento que os dois eram 'mensuraveis com trabalho' e que, enquanto nao medidos, a opcao B aceitava um risco de tamanho desconhecido. O trabalho era clonar e varrer. Feito: zero e zero. A recomendacao de B deixa de ser condicional. O QUE A MEDICAO QUASE PUBLICOU: o instrumento escrevia no artefato o sha256 COMPLETO do valor, e as cinco ocorrencias anteriores da impressao no genoma publicam 16 hex. A diferenca nao e estetica - 64 bits sobre um espaco de 11 caracteres deixam centenas de candidatos, e o hash inteiro deixa um. Truncado a mao antes de o artefato entrar em repositorio publico, com a razao escrita no proprio artefato. O GUARDA DE PRIVACIDADE PEGOU OUTRA COISA no mesmo movimento: as linhas de clone do roteiro usavam a forma SSH com arroba, e a regex de e-mail de tools/genome_privacy_check.py:46 as acusou. Nao e dado pessoal, e eu poderia ter excepcionado a regra - mas guarda que se excepciona na primeira vez que incomoda deixa de ser guarda, e clone --mirror funciona igual por HTTPS. Mudou o texto, nao o guarda. O QUE ESTA PROVA NAO DECIDE: se o universo das proximas medicoes passa a ser 21. Ampliar o universo e decisao do titular, e ela nao e de graca - reabre 26 provas que declaram 19 no escopo."
+- id: PRF-0163
+  kind: proof
+  title: "A credencial saiu do HEAD por commit normal, e a arvore de trabalho inteira devolve zero com controle positivo"
+  proves: [CLM-0134]
+  basis: external_observation
+  date: "2026-10-14"
+  external_observation:
+    instrument: "varredura de toda a arvore de trabalho do CONSTRUTORA, arquivo por arquivo, com a agulha recuperada de um COMMIT DO HISTORICO (git show HEAD~1:<caminho>) e nunca de argv - o arquivo da arvore ja estava redigido, entao a agulha nao podia mais vir dele. Mais a arvore de git do commit anterior, por git ls-tree alimentando git cat-file --batch, como controle"
+    observed: "arvore de trabalho: 1611 arquivos lidos, 0 ilegiveis, 0 ocorrencias do valor. CONTROLE POSITIVO: a arvore do commit anterior, 1600 arquivos, devolve 2 ocorrencias. Antes da redacao a varredura de HEAD por 1600 arquivos achava o valor em UM arquivo, com 2 ocorrencias - a celula 'API Secret Configured' e um exemplo de curl. Fim de linha conferido: 297 CRLF, 0 linha mista"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-14-a-credencial-fora-do-head.json
+  environment: local
+  commit: ce687d1
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: CANONICAL_FEDERATION_RESTORATION_REPORT.md
+    note: "O FATO QUE A TABELA REGISTRA FICA: o 'YES' da celula continua verdadeiro, e so o valor sai. O exemplo de curl passa a ler a variavel de ambiente CANONICAL_EVENT_STORE_API_SECRET, e esse nome nao foi inventado - cross_workspace_canonical_federation_gate.py:72 le exatamente esse getenv para montar o header, e em .env.example a variavel esta corretamente vazia. AS LINHAS 87 E 247 NAO MUDARAM DE NUMERO, de proposito: a nota de redacao foi para o FIM do arquivo. As PRF-0160, PRF-0161 e PRF-0162 citam esses numeros, e este ecossistema ja decidiu que numero de linha em declaracao envelhece - foi por isso que o ':617' saiu da procedencia da Constituicao no C25-06. ISTO NAO REESCREVE O HISTORICO, e o documento redigido diz isso com todas as letras: o valor segue recuperavel no commit e0a0f19 de 2026-08-24 por quem tiver acesso de leitura. O que a redacao compra e o fim do CRESCIMENTO: cada checkout de CI reescrevia o valor no disco de um runner, e foram 245 execucoes em 51 dias. O QUE ESTA PROVA NAO DECIDE: entre reescrever (opcao A) e aceitar por escrito (opcao B). Ela e o ato que serve as duas, e sob a B e condicao."
+
+- id: PRF-0164
+  kind: proof
+  title: "O proprio ato de tirar o valor do HEAD criou uma copia nova: eu imprimi o valor num diff mal mascarado, e ele esta no transcript da sessao"
+  refutes: [CLM-0135]
+  basis: external_observation
+  date: "2026-10-14"
+  external_observation:
+    instrument: "varredura do diretorio de sessoes do Claude Code e do scratchpad da sessao, com a mesma agulha vinda do historico do git"
+    observed: "diretorio de sessoes: 962 arquivos lidos, 0 ilegiveis, UM arquivo com o valor, 4 ocorrencias - o transcript desta sessao. Scratchpad: 776 arquivos lidos, 0 ocorrencias. O CAMINHO DO TRANSCRIPT NAO E REGISTRADO: ele contem o nome do titular, e este repositorio e publico"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-14-a-credencial-fora-do-head.json
+  environment: local
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-14-a-credencial-fora-do-head.json
+    note: "A CAUSA E MINHA E E BANAL: ao inspecionar o diff eu passei um sed cuja substituicao estava ancorada no texto 'Secret: ' e trocava dali ate a proxima aspa. Isso mascara a forma do curl, e NAO mascara a forma da celula da tabela - que tem o valor entre parenteses e nenhuma aspa. As duas estavam no mesmo diff. O valor foi impresso. TODA A DISCIPLINA DESTE CICLO ESTAVA MONTADA CONTRA O CANAL ERRADO: nada de git log -S, nada de git grep, agulha em memoria, valor nunca em argv, impressao truncada a 16 hex antes de entrar em repositorio publico. E o valor saiu pela SAIDA PADRAO, num comando de inspecao que eu escrevi para ser seguro e cuja mascara eu nao conferi contra as duas formas que eu mesmo havia acabado de catalogar. A licao nao e 'mascarar melhor': e que mascara e afirmacao sobre comportamento, e afirmacao sobre comportamento exige conferir a linha - a mascara tinha de ser testada contra as duas formas ANTES de o comando rodar, exatamente como o controle positivo prova a varredura. O QUE ISTO MUDA NA DECISAO ABERTA: nada. Reescrever o historico do git nao alcanca um transcript, entao a escolha entre A e B segue com os mesmos custos medidos. O QUE MUDA E A LISTA DE EXPOSICAO, que ganha um item, e o item e meu. O QUE E NAO-MENSURAVEL DAQUI: o que o provedor do modelo retem da conversa. Nao e disco do titular, nao ha instrumento aqui que o leia, e nao se estima. O QUE NAO FOI FEITO, por nao ser meu: apagar ou redigir o transcript. Apagar prova e contra a disciplina deste genoma, e e dado do titular - a decisao e dele, com a medicao na mao."
