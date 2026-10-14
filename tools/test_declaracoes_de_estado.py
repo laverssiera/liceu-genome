@@ -93,6 +93,113 @@ class AClassificacaoPorChave(unittest.TestCase):
         self.assertEqual(_decl("meta.pendencias_abertas", 0)[1], de.ESTADO)
 
 
+class OMarcadorDaLeiQUALIFICA(unittest.TestCase):
+    """O ponto cego da PRF-0154, e o defeito era de ORDEM e nao de regra.
+
+    `forma_de()` decide se o valor e CANDIDATO; `classifica()` decide a
+    CATEGORIA. O `[CODIGO]` morava so em `classifica()`, entao agia apenas sobre
+    quem JA tinha passado pela porta — e a maioria dos campos marcados nao tem
+    digito nenhum. Medido em 2026-10-14: a lei marcava 45 campos com [CODIGO] e o
+    enumerador via DEZ.
+
+    Eu havia escrito na docstring do modulo que "a propria lei marca com
+    [CODIGO]: a frase inteira e a declaracao". Verdade para os dez que entravam,
+    falsa para os trinta e cinco que nao.
+    """
+
+    def test_marcador_sem_digito_nenhum_AGORA_qualifica(self):
+        """O caso exato que passava: `[CODIGO] routers/investors.py` nao tem
+        inteiro, nem fracao, nem palavra de situacao no comeco."""
+        self.assertEqual(de.forma_de("[CODIGO] routers/investors.py"), "marcador")
+
+    def test_marcador_NU_tambem_qualifica(self):
+        """`[CODIGO]` sozinho tem de entrar — para ser CONTADO como procedencia,
+        nao para virar declaracao."""
+        self.assertEqual(de.forma_de("[CODIGO]"), "marcador")
+        self.assertEqual(de.forma_de("[DECIDIDO 2026-08-29]"), "marcador")
+
+    def test_prosa_SEM_marcador_e_sem_numero_continua_fora(self):
+        """A contrapartida: a porta alargou para o marcador, nao para tudo. Se
+        qualquer texto entrasse, a classe viraria o arquivo inteiro."""
+        self.assertIsNone(de.forma_de("o kit vive num repositorio proprio"))
+        self.assertIsNone(de.forma_de("convergir os streams para namespace comum"))
+
+    def test_o_marcador_NAO_vence_chave_de_NORMA(self):
+        """Ordem preservada: NORMA e HISTORICO sao conferidos antes. Um
+        `[CODIGO]` dentro de changelog segue sendo historico."""
+        self.assertEqual(
+            de.classifica("meta.changelog_1_5_0", "[CODIGO] alguma coisa", "marcador")[0],
+            de.HISTORICO)
+
+    def test_a_lei_marca_45_e_o_enumerador_agora_ve_os_45(self):
+        """O numero que fecha o diagnostico, DERIVADO e nao fixado."""
+        import yaml as _y
+        kit = de.kit_instalado()
+        marcados, vistos = set(), {f"{d.artefato}:{d.caminho}" for d in de.enumera(kit)}
+        for nome in de.ARTEFATOS:
+            dados = _y.safe_load((kit / nome).read_text(encoding="utf-8"))
+            curto = nome.removeprefix("liceu_").removesuffix(".yaml")
+            for cam, v in de.folhas(dados):
+                if isinstance(v, str) and de.MARCADOR_DE_CODIGO in v:
+                    marcados.add(f"{curto}:{cam}")
+        self.assertTrue(marcados <= vistos,
+                        f"{len(marcados - vistos)} campo(s) [CODIGO] seguem invisiveis: "
+                        f"{sorted(marcados - vistos)[:5]}")
+
+
+class APROCEDENCIANaoEhDeclaracao(unittest.TestCase):
+    """Contar a cura como doenca inflaria a classe com campos que nao afirmam.
+
+    A decisao de classe da UNK-0018 para o grupo nao derivavel foi "data E
+    procedencia obrigatorias". Os campos `procedencia` SAO esse mecanismo, e
+    classifica-los como ESTADO os contaria como o problema.
+
+    E a medicao que a separacao torna possivel e o achado: 50 procedencias, 39
+    COM data e 11 SEM — e as 11 sem data sao exatamente as que marcam observacao
+    de codigo. A cura existe e falta no grupo que precisa dela.
+    """
+
+    def setUp(self):
+        self.achadas = de.enumera(de.kit_instalado())
+        self.proc = [d for d in self.achadas if d.categoria == de.PROCEDENCIA]
+
+    def test_a_chave_procedencia_decide_com_data_ou_sem(self):
+        for valor in ("[CODIGO]", "[DECIDIDO 2026-08-29]",
+                      "[DECIDIDO 2026-08-29] lista mestre de evolucao",
+                      "[CODIGO] cv-backend-core/app/main.py Federation"):
+            cat, _ = de.classifica("global.x.procedencia", valor, "marcador")
+            self.assertEqual(cat, de.PROCEDENCIA, valor)
+
+    def test_a_folha_vence_segmento_de_ESTADO_no_caminho(self):
+        """`monolitos.ped.estado.procedencia` tem `estado` num segmento. Se
+        CHAVES_ESTADO fosse conferida antes, a procedencia viraria declaracao."""
+        cat, _ = de.classifica("monolitos.ped.estado.procedencia", "[CODIGO]", "marcador")
+        self.assertEqual(cat, de.PROCEDENCIA)
+
+    def test_valor_marcado_que_NAO_e_procedencia_segue_ESTADO(self):
+        """A contrapartida: `violacao` com [CODIGO] e declaracao, nao metadado."""
+        cat, _ = de.classifica("monolitos.bim.forbidden[0].violacao",
+                               "[CODIGO] routers/investors.py", "marcador")
+        self.assertEqual(cat, de.ESTADO)
+
+    def test_a_cura_esta_medida_e_falta_onde_precisa(self):
+        com = [d for d in self.proc if de.DATA_NO_MARCADOR.search(str(d.valor))]
+        cod = [d for d in self.proc if de.MARCADOR_DE_CODIGO in str(d.valor)]
+        self.assertGreater(len(self.proc), 0)
+        self.assertEqual(len(com) + len(self.proc) - len(com), len(self.proc))
+        datadas_de_codigo = [d for d in cod if de.DATA_NO_MARCADOR.search(str(d.valor))]
+        self.assertEqual(
+            len(datadas_de_codigo), 0,
+            "se uma procedencia de [CODIGO] passar a ter data, a cura comecou e "
+            "este caso tem de mudar junto com a nota que o explica")
+
+    def test_PROCEDENCIA_nao_entra_na_classe_nem_no_mapa(self):
+        """Ela nao e declaracao de estado, entao nao tem origem a declarar."""
+        mapa = de.carrega_mapa()
+        for d in self.proc:
+            self.assertNotIn(d.chave, mapa, f"{d.chave} e PROCEDENCIA e esta no mapa")
+
+
 class AExclusaoDeclarada(unittest.TestCase):
     def test_payload_schema_fica_fora(self):
         """JSON Schema diz o que um payload DEVE ter: norma por definicao.
@@ -443,24 +550,29 @@ class OLacreDasDuasListasDeIsencao(unittest.TestCase):
         m = {k: v for k, v in self.mapa.items() if k != de.LACRE_SAI_DA_CLASSE[0]}
         de.exige_lacre(m)             # nao levanta
 
-    def test_o_lacre_SO_ENCOLHE_e_hoje_ja_encolheu(self):
+    def test_o_lacre_SO_ENCOLHE_POR_SI_e_crescer_e_um_ATO(self):
         """O lacre e o MAXIMO historico, nao o estado de hoje.
 
-        Lacrados: 4 isencoes e 41 SAI_DA_CLASSE, em 2026-10-13. Depois do lote 1
-        do item 2 as isencoes vivas sao 2 — `ci_adoption_order.nao_bloqueador` e
-        `REGRA_DE_IDENTIDADE.aplica_a` sairam ao serem reescritas, que era
-        exatamente a cura que a razao de isencao delas prometia.
+        ENCOLHER acontece sozinho: o lote 1 do item 2 curou campos e as isencoes
+        cairam de 4 para 0 sem ninguem tocar no lacre, e o SAI_DA_CLASSE caiu de
+        41 para 40 do mesmo jeito. Exigir igualdade aqui faria a guarda empurrar
+        contra a propria cura.
 
-        Exigir igualdade aqui faria a guarda empurrar contra a propria cura.
+        CRESCER nao acontece sozinho, e e o ponto: quando o conserto do ponto
+        cego trouxe 24 campos de uma vez, o lacre RECUSOU com codigo 2. Estender
+        de 41 para 64 foi um ato, com a razao escrita no modulo e o sha256 movido
+        aqui — e e este sha256 congelado que torna a edicao visivel.
         """
         self.assertEqual(len(de.LACRE_ISENTOS), 4)
-        self.assertEqual(len(de.LACRE_SAI_DA_CLASSE), 41)
+        self.assertEqual(len(de.LACRE_SAI_DA_CLASSE), 64,
+                         "o lacre foi estendido de 41 para 64 em 2026-10-14; se mudou "
+                         "de novo, a razao tem de estar no modulo e o sha256 aqui")
         self.assertTrue(set(de.ISENTOS_DE_DERIVACAO) <= set(de.LACRE_ISENTOS),
                         "isencao viva fora do lacre")
         self.assertTrue(set(de.sai_da_classe_de(self.mapa)) <= set(de.LACRE_SAI_DA_CLASSE))
-        self.assertLess(len(de.ISENTOS_DE_DERIVACAO), len(de.LACRE_ISENTOS),
-                        "o lote 1 tirou duas isencoes; se voltarem a ser quatro, "
-                        "alguem desfez a cura ou acrescentou isencao")
+        self.assertEqual(len(de.ISENTOS_DE_DERIVACAO), 0,
+                         "as isencoes zeraram com o lote 2; se voltarem, alguem "
+                         "desfez a cura ou acrescentou isencao")
 
 
 class ORegistroHISTORICONaoSeDeriva(unittest.TestCase):

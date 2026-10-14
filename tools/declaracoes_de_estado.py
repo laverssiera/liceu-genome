@@ -123,6 +123,16 @@ CHAVES_ESTADO = frozenset({
 })
 PREFIXOS_ESTADO = ("coerencia_com_", "escopo_P", "LIMITE_NAO_DEFINIDO")
 
+#: A chave DIZ que e procedencia. Conferida na FOLHA e ANTES de CHAVES_ESTADO,
+#: porque caminhos como `monolitos.ped.estado.procedencia` tem `estado` num
+#: segmento e a folha e que manda.
+#:
+#: Entram aqui com data e sem, com nota de origem e sem: `[DECIDIDO 2026-08-29]`,
+#: `[DECIDIDO 2026-08-29] lista mestre de evolucao`, `[CODIGO]`, e
+#: `[CODIGO] cv-backend-core/app/main.py FederationEventPublishRequest`. Nenhum
+#: deles afirma algo sobre o mundo — todos dizem de onde o IRMAO veio.
+CHAVES_PROCEDENCIA = frozenset({"procedencia", "verificado_em", "fonte"})
+
 SITUACAO = re.compile(
     r"^(ABERTA|ABERTO|FECHADA|FECHADO|PENDENTE|PASS|APROVADA|APROVADO|RECUSADA|"
     r"ADR_REQUIRED|NAO_INICIADA|INICIADA|EM_ANDAMENTO|CONCLUIDA|DEFINIDO|"
@@ -134,6 +144,25 @@ MARCADOR_DE_CODIGO = "[CODIGO]"
 PALAVRAS_QUE_FAZEM_PROSA = 10
 
 ESTADO, NORMA, HISTORICO, PROSA = "ESTADO", "NORMA", "HISTORICO", "PROSA"
+#: PROCEDENCIA — metadado sobre o campo IRMAO, nao declaracao sobre o mundo.
+#:
+#: Valor que e SO marcador — `[CODIGO]`, `[CERT][CODIGO]`, `[DECIDIDO 2026-08-29]`
+#: — nao afirma nada sobre o mundo: diz de onde o IRMAO veio. E e o MECANISMO DA
+#: CURA que a UNK-0018 escolheu para o grupo nao derivavel ("data E procedencia
+#: obrigatorias"), entao classifica-lo como ESTADO seria contar a cura como
+#: doenca.
+#:
+#: Contar a parte e o que torna a cura MEDIVEL: quantas procedencias existem, e
+#: quantas delas carregam DATA. Medido em 2026-10-14: 30 procedencias, 20 com
+#: data (`[DECIDIDO 2026-08-29]`, todas em NORMAS) e 10 sem (`[CODIGO]`, todas
+#: em observacao de codigo) — e ZERO sobreposicao. A cura existe, e falta
+#: exatamente no grupo que precisa dela.
+PROCEDENCIA = "PROCEDENCIA"
+
+#: O valor e SO marcadores, sem conteudo proprio.
+SO_MARCADORES = re.compile(r"^(?:\[[A-Z][A-Z_]*(?:\s+[^\]]*)?\]\s*)+$")
+#: Data ISO dentro de um marcador: separa procedencia DATADA de procedencia nua.
+DATA_NO_MARCADOR = re.compile(r"\[[A-Z][A-Z_]*\s+\d{4}-\d{2}-\d{2}[^\]]*\]")
 
 PROPRIO_ARTEFATO = "PROPRIO_ARTEFATO"
 OUTRO_ARTEFATO = "OUTRO_ARTEFATO"
@@ -201,6 +230,18 @@ def forma_de(valor) -> str | None:
         return "fracao"
     if NUM_SUBSTANTIVO.search(valor):
         return "numero+substantivo"
+    # O MARCADOR DA PROPRIA LEI QUALIFICA, e nao so classifica.
+    #
+    # DEFEITO DE ORDEM, corrigido aqui: `forma_de()` decide se o valor e
+    # CANDIDATO antes de `classifica()` decidir a CATEGORIA, e o `[CODIGO]`
+    # morava so em `classifica()`. So agia sobre quem JA tinha passado pela
+    # porta — e a maioria dos campos marcados nao tem digito nenhum, entao nunca
+    # passava. Medido em 2026-10-14: a lei marcava 45 campos com `[CODIGO]` e o
+    # enumerador via DEZ (PRF-0154). Eu havia escrito na docstring deste modulo
+    # que "a propria lei marca com [CODIGO]: a frase inteira e a declaracao" —
+    # verdade para os dez que entravam, falsa para os trinta e cinco que nao.
+    if MARCADOR_DE_CODIGO in valor or DATA_NO_MARCADOR.search(valor):
+        return "marcador"
     return None
 
 
@@ -241,12 +282,24 @@ def classifica(caminho: str, valor, forma: str,
             return HISTORICO, (f"{p.rstrip('.')} declara baseline_constitution_version: e "
                                "registro FECHADO do que valia quando fechou, nao do mundo "
                                "de hoje — derivar ali sobrescreveria historia")
+    if folha in CHAVES_PROCEDENCIA:
+        datada = bool(DATA_NO_MARCADOR.search(str(valor)))
+        return PROCEDENCIA, (
+            f"a chave {folha!r} declara PROCEDENCIA, {'COM' if datada else 'SEM'} data: "
+            "diz de onde o campo IRMAO veio e nao afirma nada sobre o mundo")
     segmentos = [re.sub(r"\[\d+\]$", "", s) for s in caminho.split(".")]
     for s in segmentos:
         if s in CHAVES_ESTADO or s.startswith(PREFIXOS_ESTADO):
             return ESTADO, f"a chave {s!r} declara o que E, e isso vence a regra de prosa"
+    if isinstance(valor, str) and SO_MARCADORES.match(valor.strip()):
+        datada = bool(DATA_NO_MARCADOR.search(valor))
+        return PROCEDENCIA, (
+            f"o valor e SO marcador, {'COM' if datada else 'SEM'} data: diz de onde o "
+            "campo IRMAO veio e nao afirma nada sobre o mundo. E o mecanismo da cura "
+            "que a UNK-0018 escolheu para o grupo nao derivavel, e contar a cura como "
+            "doenca inflaria a classe com campos que nao fazem afirmacao nenhuma")
     if isinstance(valor, str) and MARCADOR_DE_CODIGO in valor:
-        return ESTADO, "a propria lei marca com [CODIGO]: a frase inteira e a declaracao"
+        return ESTADO, "a lei marca com [CODIGO] e o campo tem CONTEUDO: a frase e a declaracao"
     if isinstance(valor, str) and len(valor.split()) > PALAVRAS_QUE_FAZEM_PROSA:
         return PROSA, (f"o numero esta dentro de frase de {len(valor.split())} palavras; "
                        "o campo argumenta em vez de declarar")
@@ -501,7 +554,7 @@ ISENTOS_DE_DERIVACAO = {
 #: segue valendo; acrescentar exige editar o lacre, e o sha256 congelado no teste
 #: torna essa edicao visivel em vez de silenciosa.
 LACRE_ISENTOS_SHA256 = "ffd84eeb4c4f577bbb3b8d5792d1275c1e351a02ee3226fe70528e47bcfdcb7b"
-LACRE_SAI_DA_CLASSE_SHA256 = "4b36b3d6e1e8b281e4182e544a0ad88b9f9ccd6ebacefd1bfe471cf9ab51c812"
+LACRE_SAI_DA_CLASSE_SHA256 = "dafe32819de00f06047b4f197a0eb2b2ff73118a7dc54ec7bf2f125825b09da3"
 
 LACRE_ISENTOS = (
     "constitution:global.campos_aceitos_pelo_servidor.procedencia",
@@ -511,13 +564,37 @@ LACRE_ISENTOS = (
 )
 
 
-#: Os 41 campos declarados NAO derivaveis em 13/10/2026. Lista lacrada que SO
-#: ENCOLHE: curar um campo tira-o daqui, acrescentar exige editar isto E o
-#: sha256 do teste. Sem este lacre bastaria classificar um campo novo como
-#: SAI_DA_CLASSE para fugir da regra, porque a razao e prosa e ninguem a confere.
+#: Os campos declarados NAO derivaveis. Lista lacrada que SO ENCOLHE por si:
+#: curar um campo tira-o daqui, e ACRESCENTAR exige editar isto E o sha256 do
+#: teste — que e o que torna o crescimento um ATO e nao um efeito colateral.
+#: Sem este lacre bastaria classificar um campo novo como SAI_DA_CLASSE para
+#: fugir da regra, porque a razao e prosa e ninguem a confere.
+#:
+#: ESTENDIDO UMA VEZ, DE 41 PARA 64, EM 2026-10-14, e a razao fica aqui porque e
+#: aqui que o proximo a editar vai olhar:
+#:
+#:   O lacre foi criado com 41 em 13/10. O lote 2 do item 2 curou campos e ele
+#:   encolheu para 40 sem ser tocado, que e o movimento que ele permite. Depois,
+#:   o diagnostico do ponto cego (PRF-0154) mediu que a lei marca 45 campos com
+#:   [CODIGO] e o enumerador via DEZ: o marcador CLASSIFICAVA mas nao
+#:   QUALIFICAVA, porque `forma_de` exigia digito e a maioria dos marcados nao
+#:   tem. Corrigido o portao de candidatura, 24 campos entraram de uma vez —
+#:   violacoes declaradas e dividas conhecidas de dez monolitos — e o lacre
+#:   RECUSOU os 24, com codigo 2, exatamente como desenhado.
+#:
+#:   O crescimento NAO e a classe piorando: e o instrumento deixando de ser
+#:   cego. Os 24 estavam na lei desde a v0.9.0 e nenhum e derivavel de artefato
+#:   nenhum. Estender o lacre aqui e o ato que a guarda exigia.
+#:
+#:   O que o lacre segue proibindo e o que importa: campo NOVO classificado
+#:   SAI_DA_CLASSE sem alguem editar esta lista e mover o sha256.
 LACRE_SAI_DA_CLASSE = (
+    "constitution:global.antipadroes.antipadrao_1_db_coupling.violacao_conhecida",
+    "constitution:global.antipadroes.antipadrao_2_valor_inventado.violacao_conhecida",
     "constitution:global.antipadroes.antipadrao_3_fallback_silencioso.referencia_correta",
     "constitution:global.authority_model.observacao",
+    "constitution:global.campos_aceitos_pelo_servidor.campos_descartados_silenciosamente[0].observacao",
+    "constitution:global.campos_aceitos_pelo_servidor.campos_descartados_silenciosamente[2].observacao",
     "constitution:global.campos_exigidos_pelo_protocolo.implementation_status",
     "constitution:global.core_dna.extracao_fisica_do_kernel.estado",
     "constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.estado",
@@ -525,7 +602,6 @@ LACRE_SAI_DA_CLASSE = (
     "constitution:global.federation_cognition.REGRA_DE_IDENTIDADE.medicao_atual.geracoes_de_campo_alheio_em_producao",
     "constitution:global.federation_cognition.REGRA_DE_IDENTIDADE.medicao_atual.reivindicacoes_de_identidade",
     "constitution:global.internal_reference_implementations.referencias.fail_closed.aplica_a",
-    "constitution:milestone.M1_CONSTITUTION_DEFINITION.status",
     "constitution:milestone.M2_FEDERATION_PROTOCOL_AND_STATIC_CONVERGENCE.criterios.DIRECT_CROSS_DOMAIN_DB",
     "constitution:milestone.M2_FEDERATION_PROTOCOL_AND_STATIC_CONVERGENCE.criterios.MINIMUM_THREAD_AUTHORITY_VIOLATIONS",
     "constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.CORE_ARCHIMEDES_AUTHENTICATED_BOUNDARY",
@@ -538,18 +614,38 @@ LACRE_SAI_DA_CLASSE = (
     "constitution:milestone.M4_FIRST_CAUSAL_AUTHORITY_CHAIN.criterios.MINIMUM_CAUSAL_THREAD_RUNTIME",
     "constitution:monolitos.academia.divida_conhecida[0]",
     "constitution:monolitos.academia.divida_conhecida[1]",
+    "constitution:monolitos.academia.forbidden[0].violacao",
+    "constitution:monolitos.anchor.forbidden[0].violacao",
     "constitution:monolitos.anchor.fronteira_de_continuidade.coerencia_com_external_effect",
+    "constitution:monolitos.archimedes.divida_conhecida[0]",
+    "constitution:monolitos.archimedes.divida_conhecida[1]",
+    "constitution:monolitos.archimedes.divida_conhecida[2]",
+    "constitution:monolitos.bim.forbidden[0].violacao",
+    "constitution:monolitos.bim.forbidden[1].violacao",
     "constitution:monolitos.bim.violacao_critica.descricao",
+    "constitution:monolitos.cea.divida_conhecida[0]",
+    "constitution:monolitos.cea.divida_conhecida[1]",
     "constitution:monolitos.cea.divida_conhecida[2]",
     "constitution:monolitos.cea.forbidden[0].violacao",
+    "constitution:monolitos.cefeida.forbidden[0].violacao",
     "constitution:monolitos.core.forbidden[0].violacao",
     "constitution:monolitos.core.fronteira_fisica.P1_07A_fronteira_semantica",
     "constitution:monolitos.core.fronteira_fisica.P1_07B_extracao_fisica",
     "constitution:monolitos.econotech.bug_conhecido.descricao",
+    "constitution:monolitos.econotech.forbidden[0].violacao",
+    "constitution:monolitos.econotech.forbidden[1].violacao",
+    "constitution:monolitos.fornecedores.a_verificar[0]",
     "constitution:monolitos.fornecedores.a_verificar[1]",
+    "constitution:monolitos.fornecedores.observacao_positiva",
     "constitution:monolitos.gamemkt.violacao_critica.descricao",
+    "constitution:monolitos.hub.forbidden[0].violacao",
     "constitution:monolitos.john.observacao_positiva",
+    "constitution:monolitos.juridicotech.divida_conhecida[0]",
+    "constitution:monolitos.juridicotech.divida_conhecida[1]",
     "constitution:monolitos.juridicotech.divida_conhecida[2]",
+    "constitution:monolitos.opera.divida_conhecida[0]",
+    "constitution:monolitos.opera.divida_conhecida[1]",
+    "constitution:monolitos.opera.observacao_positiva",
     "constitution:monolitos.ped.estado.descricao",
     "constitution:separacao_de_artifacts.razao",
     "contract_registry:meta.status",
@@ -700,7 +796,7 @@ def confere_derivaveis(achadas: list[Declaracao], artefatos: dict,
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--kit", help="diretorio do kit; o default e o INSTALADO")
-    ap.add_argument("--listar", choices=[ESTADO, NORMA, HISTORICO, PROSA, "todos"],
+    ap.add_argument("--listar", choices=[ESTADO, NORMA, HISTORICO, PROSA, PROCEDENCIA, "todos"],
                     help="imprime as declaracoes de uma categoria")
     ap.add_argument("--json", help="grava o resultado")
     ap.add_argument("--conferir-derivaveis", action="store_true",
@@ -725,7 +821,7 @@ def main(argv=None) -> int:
         print(f"               constitution={linhas.get('constitution','?')} "
               f"conformance_kit={linhas.get('conformance_kit','?')}")
     print(f"candidatos ..... {len(achadas)}")
-    for c in (ESTADO, NORMA, HISTORICO, PROSA):
+    for c in (ESTADO, NORMA, HISTORICO, PROSA, PROCEDENCIA):
         print(f"  {c:11s} {cats.get(c, 0)}")
     print()
     print("por artefato (ESTADO / total):")
