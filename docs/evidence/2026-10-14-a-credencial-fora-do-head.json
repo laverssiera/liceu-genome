@@ -1,0 +1,40 @@
+{
+  "impressao_do_valor_16hex": "402f633e52d80787",
+  "porque_truncado": "16 hex como as outras ocorrencias do genoma: 64 bits sobre um espaco de 11 caracteres deixam centenas de candidatos, o hash inteiro deixa um",
+  "instrumento": "a agulha foi recuperada de um COMMIT DO HISTORICO (git show <rev>:<caminho>), nunca de argv, porque o arquivo da arvore de trabalho ja estava redigido; pertinencia testada em memoria",
+  "o_que_saiu_do_HEAD": {
+    "repo": "LICEU_6.0_CONSTRUTORA_VIRTUAL",
+    "arquivo": "CANONICAL_FEDERATION_RESTORATION_REPORT.md",
+    "linhas": [
+      87,
+      247
+    ],
+    "commit_da_redacao": "ce687d1",
+    "linhas_mantiveram_o_numero": true,
+    "porque": "as PRF-0160/0161/0162 citam 87 e 247; a nota foi para o fim do arquivo para nao deslocar nada",
+    "fim_de_linha": {
+      "crlf_depois": 297,
+      "linhas_mistas": 0
+    }
+  },
+  "conferencia_da_arvore_de_trabalho": {
+    "arquivos_lidos": 1611,
+    "ilegiveis": 0,
+    "ocorrencias_do_valor": 0,
+    "controle_positivo_arvore_de_HEAD_anterior": 2
+  },
+  "copia_nova_criada_pelo_proprio_ato": {
+    "onde": "o transcript desta sessao, no diretorio de sessoes do Claude Code na maquina do titular. O CAMINHO NAO E REGISTRADO AQUI: ele contem o nome do titular, e este repositorio e publico",
+    "arquivos_com_o_valor": 1,
+    "ocorrencias": 4,
+    "diretorio_varrido": 962,
+    "scratchpad_da_sessao": {
+      "arquivos_lidos": 776,
+      "ocorrencias": 0
+    },
+    "causa": "ao inspecionar o diff eu mascarei a forma do curl e nao a da celula da tabela, e rodei o diff com as duas"
+  },
+  "nao_mensuravel": [
+    "o que o provedor do modelo retem da conversa: nao e disco do titular e nao ha instrumento aqui que o leia"
+  ]
+}
