@@ -1,0 +1,29 @@
+{
+  "instrumento": "liceu_protocol/liceu_registry_check.py, regra R0G",
+  "quando": "2026-10-14T14:27:13+00:00",
+  "kit": "constitution=1.18.0 conformance_kit=0.29.0 registry_checker=1.7.0",
+  "o_que_se_mede": "se a R0G acusa portao que exige ADR ja decidida, inclusive na forma em que o portao NAO nomeia a ADR; e se para de acusar quando fecha",
+  "antes_da_cura__constituicao_1_17_0": {
+    "exit": 1,
+    "R0G": [
+      "[ERRO ] R0G       portao fantasma: adrs_pendentes lista ADR-001 como aberta, e ela foi decidida em 2026-09-18; a entrada aponta para monolitos.core.fronteira_fisica.P1_07B_extracao_fisica",
+      "[ERRO ] R0G       portao fantasma: monolitos.core.fronteira_fisica.P1_07B_extracao_fisica = 'ADR_REQUIRED — nao executar antes da ADR' e o portao NAO nomeia a ADR; quem aponta e adrs_pendentes.ADR-001, decidida em 2026-09-18",
+      "[ERRO ] R0G       portao fantasma: global.core_dna.extracao_fisica_do_kernel.estado = 'ABERTA' enquanto global.core_dna.extracao_fisica_do_kernel.depende_de = ADR-001 foi decidida em 2026-09-18"
+    ],
+    "total": "7 erro(s), 2 aviso(s)"
+  },
+  "depois_da_cura__constituicao_1_18_0": {
+    "exit": 0,
+    "R0G": [
+      "[OK   ] R0G       nenhum portao fantasma: 3 ADR(s) decidida(s) e nenhum portao aberto as nomeia"
+    ],
+    "total": "0 erro(s), 2 aviso(s)"
+  },
+  "mutacao__reabrindo_so_o_P1_07B": {
+    "exit": 1,
+    "R0G": [
+      "[ERRO ] R0G       portao fantasma: monolitos.core.fronteira_fisica.P1_07B_extracao_fisica nomeia ADR-001 (decidida em 2026-09-18) e segue escrito como bloqueio: 'ADR_REQUIRED — ADR-001 decidida em 2026-09-18, sha256 dfc6d8ede955b3987bbe6079f3'"
+    ],
+    "total": "5 erro(s), 2 aviso(s)"
+  }
+}

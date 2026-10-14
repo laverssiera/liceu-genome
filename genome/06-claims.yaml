@@ -757,3 +757,21 @@
   kind: claim
   statement: "Promover o marcador [CODIGO] a forma esgota o ponto cego do enumerador: com os 45 visiveis, a classe passa a ser o que a lei tem."
   asserted_by: "ninguem ainda — a afirmacao entra porque e a conclusao natural de curar o ponto cego, e porque eu a daria se nao conferisse o que mais o portao de candidatura ainda recusa"
+
+# Ciclo 25 — C25-07: o portao fantasma, e o que eu ia concluir sobre ele.
+- id: CLM-0127
+  kind: claim
+  statement: "O vinculo entre o portao P1_07B e a ADR-001 esta no documento da ADR: procurar P1_07B nos seis ADRs acha o portao, e nao achar significa que a ADR-001 nao e a ADR que ele exige."
+  asserted_by: "eu mesmo, em 2026-10-14, nos primeiros quinze minutos deste item — grepei P1_07B, fronteira_fisica e 'extracao fisica' nos seis ADRs, achei ZERO, e ia anunciar que a premissa do titular estava errada"
+- id: CLM-0128
+  kind: claim
+  statement: "O portao fantasma e um padrao: ha outros portoes no ecossistema exigindo algo que ja foi decidido."
+  asserted_by: "a pergunta de cobertura do proprio item do ciclo 25 — 'quantos OUTROS portoes exigem algo que ja foi decidido?' —, que pressupoe plural; e e a suposicao razoavel, porque um defeito de 26 dias raramente e unico"
+- id: CLM-0129
+  kind: claim
+  statement: "O liceu_boundary_check.py roda em alguma CI do ecossistema, entao a linha 'ADR aberta: ADR-001' era impressa a cada execucao durante os 26 dias."
+  asserted_by: "ninguem ainda — eu ia escrever isso como o CUSTO operacional do portao fantasma, porque o checker le adrs_pendentes e imprime uma linha por entrada, e parecia obvio que alguem o rodasse"
+- id: CLM-0130
+  kind: claim
+  statement: "A regra R0G acusa portao que exige ADR ja decidida INCLUSIVE quando o portao nao nomeia a ADR, e para de acusar quando o portao fecha."
+  asserted_by: "ninguem ainda — a afirmacao entra para ser medida nas tres pontas: antes da cura, depois dela, e com o portao reaberto de proposito"
