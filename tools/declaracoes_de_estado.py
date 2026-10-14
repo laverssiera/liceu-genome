@@ -719,7 +719,17 @@ def main(argv=None) -> int:
         armado, texto = gatilho_fit_020(mapa)
         print()
         print(f"{'>>> ' if armado else ''}{texto}")
+    else:
+        print()
+        print(f"MAPA DE ORIGEM AUSENTE ({MAPA.name}): os {len(est)} ESTADO estao sem origem.")
 
+    # Este bloco fica DEPOIS do if/else de proposito. Quando ele estava entre o
+    # corpo do `if mapa:` e o `else:`, o Python ligou o `else` ao LACO `for` — e
+    # `for ... else` e construcao legal, entao nao houve erro: a saida passou a
+    # imprimir "MAPA DE ORIGEM AUSENTE" e "mapa de origem EM DIA" na MESMA
+    # execucao, uma contradizendo a outra. Codigo valido fazendo a coisa errada
+    # em silencio, que e a forma de defeito que este instrumento existe para
+    # nomear — e foi pego por ler a saida inteira em vez do codigo de retorno.
     incoerentes = incoerencias_internas(kit)
     print()
     print("CONTRADICOES DENTRO DO MESMO ARQUIVO — insuficiencia declarada, nao violacao")
@@ -730,9 +740,6 @@ def main(argv=None) -> int:
         print(f"    status={i['status']} e {len(i['criterios_em_PASS'])} criterio(s) em PASS: "
               f"{', '.join(i['criterios_em_PASS'])}")
         print("    uma das duas afirmacoes e falsa, e o arquivo nao diz qual")
-    else:
-        print()
-        print(f"MAPA DE ORIGEM AUSENTE ({MAPA.name}): os {len(est)} ESTADO estao sem origem.")
 
     if a.conferir_derivaveis:
         print()

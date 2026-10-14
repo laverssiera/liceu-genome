@@ -533,6 +533,47 @@ class OGatilhoDaFIT020(unittest.TestCase):
         self.assertIn("NAO e autorizacao", texto)
 
 
+class ASaidaNaoSeContradiz(unittest.TestCase):
+    """Codigo VALIDO fazendo a coisa errada em silencio.
+
+    Ao inserir o bloco das contradicoes internas entre o corpo do `if mapa:` e o
+    `else:`, o Python ligou o `else` ao LACO `for` — e `for ... else` e
+    construcao legal. Nao houve erro de sintaxe e o codigo de retorno continuou
+    0; a saida passou a imprimir "MAPA DE ORIGEM AUSENTE" e "mapa de origem EM
+    DIA" na MESMA execucao, uma contradizendo a outra.
+
+    Foi pego por LER A SAIDA INTEIRA em vez de conferir o exit code — que e a
+    mesma licao do `--self-test` e do `--repo` deste ciclo. Este teste guarda a
+    licao em vez de confiar nela.
+    """
+
+    def _saida(self):
+        import contextlib
+        import io
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            de.main(["--exigir-mapa", "--conferir-derivaveis"])
+        return buf.getvalue()
+
+    def test_as_duas_linhas_do_mapa_nunca_coexistem(self):
+        s = self._saida()
+        ausente = "MAPA DE ORIGEM AUSENTE" in s
+        em_dia = "mapa de origem EM DIA" in s
+        self.assertNotEqual(ausente, em_dia,
+                            "o mapa esta ausente OU em dia; as duas linhas juntas sao "
+                            "saida que se contradiz, e nenhum exit code pega isso")
+
+    def test_o_bloco_das_contradicoes_sai_sempre_mesmo_com_mapa(self):
+        s = self._saida()
+        self.assertIn("CONTRADICOES DENTRO DO MESMO ARQUIVO", s)
+
+    def test_a_classe_viva_anunciada_e_a_derivada(self):
+        """O numero que o instrumento imprime tem de ser o que ele deriva."""
+        s = self._saida()
+        vivos = len(de.classe_viva(de.carrega_mapa()))
+        self.assertIn(f"{vivos} membro(s) vivo(s)", s)
+
+
 class OArtefatoAusente(unittest.TestCase):
     def test_kit_sem_um_dos_cinco_artefatos_LEVANTA(self):
         """Ler quatro de cinco e anunciar o total e o defeito de N itens sem N
