@@ -741,3 +741,11 @@
   kind: claim
   statement: "O portao das declaracoes de estado acusa a CURA e nao so o defeito: origem que sobrevive ao campo para a CI."
   asserted_by: "ninguem ainda — a afirmacao entra para ser medida sobre uma cura REAL, porque ate aqui a segunda direcao do falha-fechado so tinha sido exercitada por mutacao de teste"
+- id: CLM-0123
+  kind: claim
+  statement: "Com a classe viva em zero, a lei deixou de carregar declaracao de estado derivavel: o item 2 do C25-06 esgotou o alvo."
+  asserted_by: "a leitura natural do proprio resultado, e e a que eu daria ao anunciar o gatilho armado — classe viva 0, DERIVACOES 0, isencoes 0"
+- id: CLM-0124
+  kind: claim
+  statement: "O marcador [CODIGO] da lei garante que o campo marcado entre na classe: a lei marca o que observa codigo, e o instrumento le o marcador."
+  asserted_by: "o proprio desenho do meu enumerador, que trata [CODIGO] como regra de classificacao e diz na docstring que 'a propria lei marca com [CODIGO]: a frase inteira e a declaracao'"
