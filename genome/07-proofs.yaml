@@ -3234,3 +3234,42 @@
     repo: liceu-genome
     path: docs/evidence/2026-10-14-o-incidente-da-credencial-as-duas-opcoes.md
     note: "O TEXTO FOI ESCRITO PARA SER ASSINADO, e lista de aceitacao se le como exaustiva: quem assina aceita o que esta ali e nada mais. ELE FICOU INCOMPLETO NO MESMO DIA, e por minha causa: horas depois de escreve-lo eu imprimi o valor num diff cuja mascara cobria a forma do curl e nao a da celula de tabela, e o valor foi para o transcript da sessao - 4 ocorrencias em 1 arquivo, medidas na PRF-0164. O item nao estava na lista porque nao existia quando a lista foi escrita. ISSO NAO E DETALHE DE REDACAO: assinar uma lista que omite exposicao conhecida e aceitar menos que a realidade, e a aceitacao valeria por menos do que o titular pensa estar aceitando. O item entrou no texto, com a medicao e com a causa. O QUE ELE NAO MUDA: a escolha entre A e B. Reescrever o historico do git nao alcanca um transcript - ele e disco do titular, nao repositorio -, entao o item sobra nas duas opcoes e nao favorece nenhuma. O QUE ELE MUDA: o tamanho do que se aceita, e e para mais. A DECISAO DO TITULAR, registrada em docs/evidence/2026-10-14-decisoes-do-titular.md: OPCAO B, em 2026-10-14. E OS TRES ESTADOS NAO SE CONFUNDEM - a decisao esta TOMADA; a execucao e ASSINAR, e a assinatura NAO FOI DADA e nao deriva da decisao; a comprovacao da parte mensuravel da condicao e a PRF-0163, que mede a arvore de origin/main em zero com controle positivo no e0a0f19. A SEGUNDA METADE DA CONDICAO nao e comprovavel hoje nem nunca por medicao unica: 'esta credencial nunca e usada em ambiente algum' e uma obrigacao continua, e a clausula de caducidade existe exatamente porque ninguem pode prova-la de antemao. O QUE A OPCAO B PRESERVA, e so apareceu depois do documento: a PRF-0167 mede que a reescrita destruiria o unico controle positivo que nao depende de isca - a guarda da UNK-0017 rodando contra o blob do e0a0f19. A decisao mantem esse controle vivo."
+
+- id: PRF-0173
+  kind: proof
+  title: "A carga da camada A e de no maximo 288 escritas por dia - e o preco do consenso nao cai com ela, porque o que ele compra e disco e nao capacidade"
+  refutes: [CLM-0143]
+  basis: code_reading
+  date: "2026-10-14"
+  scope:
+    padrao: "escrita em tabela da camada A do estado de autoridade - authority_state, authority_instances e atestacoes vigentes -, e a configuracao que governa a frequencia dessa escrita"
+    universo: "app/services/authority_control_plane.py inteiro, app/config.py, e os chamadores de attest() em app/main.py, no cv-backend-core do LICEU_6.0_CONSTRUTORA_VIRTUAL"
+    excluidos:
+      - "escrita em historico e event store: o paragrafo 2 do ADR-003 pede so durabilidade para as camadas B e C, e a pergunta aqui e sobre a linearizavel"
+      - "a latencia de fsync: ela foi MEDIDA no ADR-005 em 2026-10-13 e nao e releitura deste escopo; entra na nota como o que me corrige"
+    instrumento: "leitura das operacoes do control plane uma a uma, conferindo quais tocam tabela da camada A; leitura do default de AUTHORITY_ATTESTATION_TTL_SECONDS; e busca por scheduler, laco ou daemon que renove a atestacao"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-14-etcd-ou-raft-a-entrada-de-decisao.json
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/app/services/authority_control_plane.py
+    note: "A CLAIM ERA MINHA E CAIU NA MESMA SESSAO EM QUE EU A ESCREVI. Medi a carga da camada A operacao por operacao: escrevem nela promote(), attest() e ensure_state(); _audit() e escalate_to_human() tambem escrevem e NAO sao camada A, porque o paragrafo 2 do ADR-003 pede linearizabilidade so para epoca, papeis e atestacoes vigentes, e durabilidade para o resto. O TTL governa a taxa, e ele e 300 segundos em app/config.py:86. NINGUEM RENOVA: attest() so e chamado pelo endpoint HTTP, nao ha scheduler nem laco, e a sonda nao tem intervalo. Teto com renovacao continua: 288 escritas por dia, 0,0033 por segundo; automaticas hoje, ZERO. DAI EU CONCLUI ERRADO: escrevi que a carga baixa faz o orcamento cair para o piso de EUR 7-8 que o genoma mediu para duas pontas da aplicacao. O QUE ME CORRIGE JA ESTAVA MEDIDO, no ADR-005 de 2026-10-13: a latencia de fsync no nivel barato tem mediana entre 0,664 e 0,738 ms e p95 ate 1,53 ms em SEIS amostras, e UMA com p95 de 92,75 ms e maximo de 123,4 ms. A mediana quase nao se move; o que explode e a cauda, e e o modo de falha que a documentacao do etcd descreve - atividade de disco de outros processos causa fsync longo, heartbeat perdido, perda temporaria de lider. CARGA BAIXA NAO RESOLVE CAUDA DE DISCO: uma escrita a cada 300 segundos que espera 92 ms no momento errado perde o heartbeat igual. EU CONFUNDI CAPACIDADE COM ISOLAMENTO. O que o preco compra e disco dedicado, nao nucleo nem RAM - e por isso a carga medida derruba a recomendacao do etcd como referencia de CAPACIDADE e nao derruba o preco. E A CORRECAO VALE PARA OS DOIS LADOS: a cauda nao distingue qual implementacao de consenso espera o fsync, entao o piso barato tambem nao serve ao Raft embutido. O preco deixou de ser argumento para qualquer um dos dois. O QUE ESTA PROVA NAO DECIDE: a escolha. Ela e entrada de decisao."
+
+- id: PRF-0174
+  kind: proof
+  title: "Raft embutido nao e um campo de opcoes para um CORE em Python: e uma, o PySyncObj - o raftify foi descontinuado em Python pelo proprio autor"
+  refutes: [CLM-0144]
+  basis: external_observation
+  date: "2026-10-14"
+  external_observation:
+    instrument: "consulta ao INDICE DE PACOTES com pip index versions, para os tres candidatos que a busca na web nomeou; mais o estado que cada projeto declara de si"
+    observed: "pysyncobj 0.3.17, raftify 0.1.67, rraft-py 0.2.27. O raftify esta descontinuado em Python pelo proprio autor, reescrito em Rust, com aviso de estagio muito experimental no PyPI; o rraft-py e binding nao oficial do tikv/raft-rs e entrega so o modulo de consenso; e a pagina do rraft-py declara que nao ha biblioteca Raft de fato padrao em Python. A busca dava o rraft-py em 0.2.2, e o indice diz 0.2.27"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-14-etcd-ou-raft-a-entrada-de-decisao.json
+  environment: local
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-14-etcd-ou-raft-embutido.md
+    note: "A PERGUNTA DO ADR-005 POE OS DOIS LADOS COMO SIMETRICOS - etcd OU Raft embutido -, e eles nao sao. Medido no INDICE DE PACOTES, nao em pagina de terceiro: pysyncobj em 0.3.17, raftify em 0.1.67, rraft-py em 0.2.27. E o estado que os proprios projetos declaram muda tudo: o raftify foi DESCONTINUADO EM PYTHON pelo proprio autor, que o reescreveu em Rust, e a pagina do PyPI dele avisa que esta em estagio muito experimental; o rraft-py e binding NAO OFICIAL do tikv/raft-rs e entrega so o modulo de consenso, com transporte e armazenamento por conta de quem usa; e a propria pagina do rraft-py diz que NAO HA biblioteca Raft de fato padrao em Python, apontando seus usuarios para Raftify ou PySyncObj - sendo que o primeiro esta descontinuado. Os outros candidatos que a busca trouxe se autodeclaram inadequados para producao, um deles dizendo na propria descricao que nao deve ser usado em ambiente de producao. ENTAO RAFT EMBUTIDO NAO E UM CAMPO: E UMA OPCAO, o PySyncObj. UMA CORRECAO DE PROCEDENCIA: a busca na web dava o rraft-py em 0.2.2, e o indice diz 0.2.27. Quando pagina de terceiro e indice discordam, vale o indice - mesma regra que este genoma ja aplicou ao preco do netcup. E O QUE O INDICE NAO DA: datas. A busca deu 30/08/2026 para o pysyncobj 0.3.17 e 04/08/2024 para o raftify 0.1.67, e eu NAO confirmei nenhuma das duas no indice - fica como procedencia de busca, nao de medicao. O QUE ESTA PROVA NAO ALCANCA, e e o que mais pesaria: a CORRECAO do PySyncObj sob particao. Nao ha prova de linearizabilidade publicada que eu possa citar, e afirmar que ele esta certo seria a afirmacao sem prova que este ecossistema recusa. Ha tambem um modo de falha nomeavel e NAO medido: Raft em Python puro divide o GIL com um FastAPI de 321 rotas, e requisicao lenta atrasa heartbeat - o mecanismo e certo, a MAGNITUDE depende da cauda de latencia sob carga real, e a PRF-0066 mediu que nao existe Testemunha nem Sucessora implantadas, entao nao ha onde medir."
