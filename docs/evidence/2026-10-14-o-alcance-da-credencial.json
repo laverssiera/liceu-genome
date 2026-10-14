@@ -1,0 +1,39 @@
+{
+  "impressao_do_valor_16hex": "402f633e52d80787",
+  "porque_truncado": "sha256 TRUNCADO a 16 hex de proposito, como as outras cinco ocorrencias do genoma: 64 bits estreitam o espaco de uma senha de 11 caracteres a centenas de candidatos, e o hash inteiro estreitaria a um. O instrumento escrevia os 64; truncado a mao antes de entrar em repositorio publico.",
+  "instrumento": "percurso de git rev-list --all --objects + git cat-file --batch, com pertinencia testada em MEMORIA; o valor nunca foi para argv",
+  "comprimento": 11,
+  "publicos_medidos": [
+    "liceu-design-tokens",
+    "liceu-genome",
+    "liceu-protocol",
+    "liceu-shell"
+  ],
+  "resultado": {
+    "liceu-design-tokens": {
+      "blobs": 26,
+      "acertos": 0,
+      "refs": 5
+    },
+    "liceu-genome": {
+      "blobs": 1019,
+      "acertos": 0,
+      "refs": 130
+    },
+    "liceu-protocol": {
+      "blobs": 382,
+      "acertos": 0,
+      "refs": 73
+    },
+    "liceu-shell": {
+      "blobs": 20,
+      "acertos": 0,
+      "refs": 5
+    },
+    "LICEU_6.0_CONSTRUTORA_VIRTUAL (privado, controle)": {
+      "blobs": 2926,
+      "acertos": 2,
+      "refs": 95
+    }
+  }
+}

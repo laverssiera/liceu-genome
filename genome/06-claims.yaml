@@ -775,3 +775,15 @@
   kind: claim
   statement: "A regra R0G acusa portao que exige ADR ja decidida INCLUSIVE quando o portao nao nomeia a ADR, e para de acusar quando o portao fecha."
   asserted_by: "ninguem ainda — a afirmacao entra para ser medida nas tres pontas: antes da cura, depois dela, e com o portao reaberto de proposito"
+- id: CLM-0131
+  kind: claim
+  statement: "A opcao A - reescrita de historico - tem como consequencia o re-pin obrigatorio dos oito repositorios que consomem o pacote pinado."
+  asserted_by: "o proprio item C25-08 do ciclo 25, que lista essa consequencia entre parenteses como se fosse dado estabelecido; e eu ia transcreve-la para o documento das duas opcoes sem conferir"
+- id: CLM-0132
+  kind: claim
+  statement: "O valor da credencial do incidente esta confinado a um repositorio privado: nao esta em nenhum repositorio publico, nao ha fork de onde copia-lo, nao ha release publicada e nao ha passo de CI por onde a arvore saia como artefato."
+  asserted_by: "ninguem ainda - e o que o item C25-08 pede medir, e e a base factual sem a qual nem a reescrita nem a aceitacao por escrito podem ser decididas"
+- id: CLM-0133
+  kind: claim
+  statement: "O universo 'os 19 repositorios rastreados', declarado em 32 nos do genoma, e o universo dos repositorios da conta."
+  asserted_by: "eu mesmo, 32 vezes: em 26 provas, 4 incognitas, 1 claim e no inventario de segredos F0A-INVENTARIO-SEGREDOS - sempre escrito como se fosse a conta inteira, e nunca conferido contra a lista real"

@@ -2990,3 +2990,62 @@
     repo: liceu-protocol
     path: liceu_protocol/liceu_registry_check.py
     note: "A REGRA FOI ESCRITA ANTES DA CURA, de proposito, e foi a ordem que a melhorou. Na primeira versao ela acusava DOIS dos tres: a lista de ADRs abertas e o par depende_de/estado. PERDIA EXATAMENTE O PORTAO QUE O ITEM NOMEIA PRIMEIRO, porque eu havia escrito a conferencia como 'texto do portao cita o id da ADR decidida' — e o P1_07B nao cita id nenhum. Acrescentada a quarta forma, que segue o campo `referencia` de adrs_pendentes ate o caminho do portao e confere o ALVO. Se eu tivesse curado primeiro, a regra teria nascido cega para o caso que a motivou. E A REGRA ACUSOU UM FALSO POSITIVO MEU, que vale mais que os verdadeiros: o changelog_1_18_0 que eu escrevi para FECHAR o portao cita a ADR-001 e repete a frase 'nao executar antes da ADR' ao descrever o que o portao dizia — e foi lido como portao. A correcao e de principio e nao de ajuste: chave que registra o passado fica fora, porque PORTAO FECHADO TEM DE PODER SER DESCRITO SEM REABRIR. Sem isso, documentar a cura reintroduziria o defeito. O AVISO QUE SOBROU ERA MEU TAMBEM: o ADR-005 nao tinha campo Estado, e a R0G avisa quando nao consegue ler o estado de uma ADR porque ai nao pode decidir sobre portao que a nomeie. Corrigido dizendo o que aquele documento E — 'REGISTRO. Este documento nao decide' —, e o aviso saiu por o campo passar a existir, nao por eu silenciar a regra. O QUE ESTA PROVA NAO ALCANCA: a R0G ve a lei e as ADRs do REPOSITORIO. Rodando a partir do kit instalado ela nao ve docs/, e nesse caso diz que NAO RODOU em vez de passar — mesma disciplina da R0F. Portao que viva fora da lei, em protecao de ramo ou em configuracao de plataforma, segue fora de alcance e esta declarado no escopo da PRF-0157."
+- id: PRF-0160
+  kind: proof
+  title: "O re-pin que a opcao A exigiria nao existe: os oito pinam o liceu-protocol, e o valor esta no CONSTRUTORA"
+  refutes: [CLM-0131]
+  basis: code_reading
+  date: "2026-10-14"
+  scope:
+    padrao: "declaracao de dependencia que resolva para o repositorio LICEU_6.0_CONSTRUTORA_VIRTUAL - por pino de tag, por URL de git, por submodulo ou por caminho relativo"
+    universo: "os arquivos de requisitos dos oito consumidores do kit (os mesmos oito que esta sessao moveu para v0.29.0), mais .gitmodules de cada um dos 21 repositorios da conta, mais as tags do CONSTRUTORA"
+    excluidos:
+      - "dependencia por copia manual de arquivo: nao e pino e nao quebra com reescrita de SHA"
+      - "o merito da reescrita: o que a opcao A CUSTA em rastreabilidade esta na PRF-0161 e no documento, e nao aqui"
+    instrumento: "leitura do arquivo de requisitos de cada um dos oito, conferindo o alvo do pino; busca por .gitmodules nos 21; git tag no CONSTRUTORA"
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: requirements.txt
+    note: "EU IA TRANSCREVER A PREMISSA DO ITEM. Ele diz que a opcao A tem 'a consequencia para os 8 repos que consomem o pacote pinado (re-pin obrigatorio)', e isso soa obvio porque esta sessao moveu esses oito pinos quatro vezes. MEDIDO: os oito pinam liceu-protocol@v0.29.0, e o valor da credencial esta no LICEU_6.0_CONSTRUTORA_VIRTUAL. Sao repositorios diferentes. Zero dos oito pina o CONSTRUTORA; zero submodulo em qualquer dos 21 repositorios aponta para ele; e ele tem ZERO tags, o que elimina a outra forma de alguem depender de um SHA seu. RE-PIN NAO E NECESSARIO, e o efeito disso e contra-intuitivo: a correcao da premissa torna a opcao A MAIS BARATA do que o item supunha, nao mais cara. Entao esta prova nao favorece a recomendacao que eu dou no documento - ela a enfraquece, e entra assim mesmo. O QUE A REESCRITA AINDA CUSTA, e esta medido no documento: 69 ramos remotos reescritos, 169 commits depois do e0a0f19 com SHA novo, todo clone local invalidado, e as 245 execucoes de CI apontando para SHAs que deixam de existir - mais as provas do genoma que citam SHA deste repositorio, inclusive mechanism.commit de superficies provadas, que precisariam ser reconferidas uma a uma."
+
+- id: PRF-0161
+  kind: proof
+  title: "O valor nao esta em nenhum repositorio publico - varrido o grafo de objetos inteiro, com controle positivo, e sem o valor passar por argv"
+  proves: [CLM-0132]
+  basis: external_observation
+  date: "2026-10-14"
+  external_observation:
+    instrument: "percurso do grafo de objetos de cada repositorio - git rev-list --all --objects alimentando git cat-file --batch por stdin -, com a pertinencia do valor testada EM MEMORIA. Nao foi usado git log -S nem git grep com o valor: argumento aparece na lista de processos e no historico do shell. O valor foi recuperado do arquivo e confirmado pela impressao antes de qualquer varredura: medir outro valor seria medir outra coisa"
+    observed: "liceu-design-tokens 26 objetos / 5 refs -> 0; liceu-genome 1019 / 130 -> 0; liceu-protocol 382 / 73 -> 0; liceu-shell 20 / 5 -> 0. CONTROLE POSITIVO: LICEU_6.0_CONSTRUTORA_VIRTUAL 2926 objetos / 95 refs -> 2 ocorrencias, as duas do arquivo CANONICAL_FEDERATION_RESTORATION_REPORT.md, linhas 87 e 247, no commit e0a0f19 de 2026-08-24, ancestral de origin/main e AINDA NO HEAD. Fora do git: 0 releases nos quatro publicos, 0 passos upload-artifact no CONSTRUTORA, 0 ocorrencias de set -x ou printenv, 0 workflows que nomeiem o arquivo, e forkCount 0 em TODOS os 21 repositorios da conta"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-14-o-alcance-da-credencial.json
+  environment: local
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-14-o-incidente-da-credencial-as-duas-opcoes.md
+    note: "O CONTROLE POSITIVO E O QUE DA VALOR AOS ZEROS: varredura que nao acha onde se SABE que esta nao prova ausencia em lugar nenhum, e por isso o repositorio onde o valor vive entrou na mesma varredura e devolveu 2. DUAS PREMISSAS DO ITEM CAIRAM NO CAMINHO: ele lista cinco repositorios publicos, e liceu-core-schemas NAO EXISTE sob a conta - sao quatro; e ele supoe o universo de 19 repositorios, quando a conta tem 21 (ver CLM-0133 e PRF-0162). O QUE ESTA PROVA NAO ALCANCA, nomeado em vez de estimado: se a senha de 11 caracteres e reutilizada FORA dos repositorios - nao ha como saber, e nao se estima; o conteudo das 245 execucoes de CI, das quais eu medi a AUSENCIA DE CAMINHO (nenhum passo nomeia o arquivo, nenhum upload-artifact, nenhum rastro de shell) e nao a ausencia de ocorrencia, porque nao li 245 logs; as instalacoes de GitHub App com acesso de leitura, ja declaradas nao-mensuraveis em 02/10; o Codespace parado de 2026-03-11, que contem o arquivo e cujos leitores nao sao enumeraveis; e os discos de runner de cada uma das 245 execucoes, ja apagados. A JANELA CRESCEU DESDE A ULTIMA MEDICAO: eram 39 dias e 180 execucoes em 02/10, sao 51 dias e 245 execucoes hoje - porque o arquivo segue no HEAD, e e por isso que remove-lo do HEAD por commit normal e o primeiro ato das DUAS opcoes, redundante sob A e condicao sob B. E O PROVEDOR E NENHUM: nao ha servico que aceite este valor, logo nao ha sessao a revogar, e isso e o que mais pesa na recomendacao."
+
+- id: PRF-0162
+  kind: proof
+  title: "O universo declarado 32 vezes no genoma cobre 19 dos 21 repositorios da conta; os dois de fora foram varridos pela primeira vez hoje, e estao limpos"
+  refutes: [CLM-0133]
+  basis: record_reading
+  date: "2026-10-14"
+  scope:
+    padrao: "a expressao '19 repositorios' ou 'dezenove repositorios' usada para delimitar o universo de uma medicao"
+    universo: "todos os nos de genome/*.yaml - provas, claims, incognitas, conhecimento, fitness e PFC -, conferidos contra a lista real de repositorios da conta obtida por gh repo list"
+    excluidos:
+      - "prosa fora do genoma: docs/ e README citam o numero, e corrigi-los nao e o que esta medido aqui"
+      - "o merito de quais repositorios DEVEM estar no universo: ampliar o universo e decisao do titular, nao leitura"
+    instrumento: "busca da expressao em genome/*.yaml com carga YAML e serializacao de cada no, para contar NOS e nao linhas; e gh repo list para a lista real"
+  external_observation:
+    instrument: "o mesmo percurso de grafo de objetos da PRF-0161, aplicado a clones-espelho dos dois repositorios que estavam fora do universo"
+    observed: "Nateli- 692 objetos / 1 ref -> 0 ocorrencias do valor e 0 do nome; tation.git 4903 objetos / 1 ref -> 0 e 0. Os clones foram apagados depois da medicao"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-14-os-dois-fora-do-universo.json
+  location:
+    repo: liceu-genome
+    path: genome/07-proofs.yaml
+    note: "O NUMERO 19 ESTA EM 32 NOS: 26 provas, 4 incognitas, 1 claim e o inventario de segredos F0A-INVENTARIO-SEGREDOS. A conta tem 21 repositorios. Nateli- e Tation-Engenharia-Solu-o-02- sao privados e NUNCA entraram em medicao alguma deste ecossistema - nem na varredura de segredos, nem na de superficie, nem em qualquer das 26 provas que dizem 'os 19 repositorios'. O 19 NUNCA FOI DERIVADO: ele foi escrito uma vez e copiado 31 vezes, o que o torna exatamente a classe de declaracao que o C25-06 mediu dentro da Constituicao - valor afirmado que nenhuma regra le - vivendo agora no genoma, e nao na lei. O QUE ISSO MUDA NO C25-08, e e para menos: eu havia escrito no documento que os dois eram 'mensuraveis com trabalho' e que, enquanto nao medidos, a opcao B aceitava um risco de tamanho desconhecido. O trabalho era clonar e varrer. Feito: zero e zero. A recomendacao de B deixa de ser condicional. O QUE A MEDICAO QUASE PUBLICOU: o instrumento escrevia no artefato o sha256 COMPLETO do valor, e as cinco ocorrencias anteriores da impressao no genoma publicam 16 hex. A diferenca nao e estetica - 64 bits sobre um espaco de 11 caracteres deixam centenas de candidatos, e o hash inteiro deixa um. Truncado a mao antes de o artefato entrar em repositorio publico, com a razao escrita no proprio artefato. O GUARDA DE PRIVACIDADE PEGOU OUTRA COISA no mesmo movimento: as linhas de clone do roteiro usavam a forma SSH com arroba, e a regex de e-mail de tools/genome_privacy_check.py:46 as acusou. Nao e dado pessoal, e eu poderia ter excepcionado a regra - mas guarda que se excepciona na primeira vez que incomoda deixa de ser guarda, e clone --mirror funciona igual por HTTPS. Mudou o texto, nao o guarda. O QUE ESTA PROVA NAO DECIDE: se o universo das proximas medicoes passa a ser 21. Ampliar o universo e decisao do titular, e ela nao e de graca - reabre 26 provas que declaram 19 no escopo."
