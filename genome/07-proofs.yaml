@@ -2781,8 +2781,8 @@
     paths:
     - tools/declaracoes_de_estado.py
     - tools/test_declaracoes_de_estado.py
-    content_hash: 029ccfb3362cb4f0f3887ba2867560ea5b85132732b96aa03c3bb5687c67ced3
-    commit: cc53bc8
+    content_hash: 57e11b381e234e4cf850236196e058cb09c229c8e8adf789ea69329d4aaf0fe4
+    commit: 018baa8
   location:
     repo: liceu-genome
     path: tools/declaracoes_de_estado.py
@@ -2802,8 +2802,8 @@
     paths:
     - tools/declaracoes_de_estado.py
     - tools/test_declaracoes_de_estado.py
-    content_hash: 029ccfb3362cb4f0f3887ba2867560ea5b85132732b96aa03c3bb5687c67ced3
-    commit: cc53bc8
+    content_hash: 57e11b381e234e4cf850236196e058cb09c229c8e8adf789ea69329d4aaf0fe4
+    commit: 018baa8
   location:
     repo: liceu-genome
     path: tools/declaracoes_de_estado.py
@@ -2928,8 +2928,8 @@
     paths:
     - tools/declaracoes_de_estado.py
     - tools/test_declaracoes_de_estado.py
-    content_hash: 029ccfb3362cb4f0f3887ba2867560ea5b85132732b96aa03c3bb5687c67ced3
-    commit: cc53bc8
+    content_hash: 57e11b381e234e4cf850236196e058cb09c229c8e8adf789ea69329d4aaf0fe4
+    commit: 018baa8
   location:
     repo: liceu-genome
     path: tools/declaracoes_de_estado.py
