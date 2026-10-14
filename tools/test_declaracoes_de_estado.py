@@ -248,24 +248,31 @@ class ADerivacaoAcusa(unittest.TestCase):
                        "event_reconciliation_ledger:meta.escopo_P2_5A"):
             self.assertNotIn(curado, instalado, f"{curado} voltou a lei")
 
-    def test_a_LISTA_de_topo_adrs_pendentes_NAO_foi_tocada(self):
-        """O que o lote 1 nao podia quebrar: `liceu_boundary_check.py:353` faz
-        `c.get("adrs_pendentes", [])` sobre a lista de TOPO. A contagem
-        `meta.adrs_pendentes` saiu; a lista fica.
+    def test_a_LISTA_de_topo_adrs_pendentes_FICA_e_agora_esta_VAZIA(self):
+        """O estopim disparou um dia depois, e a mensagem dele previu isso.
 
-        E o que a cura NAO curou, dito aqui para nao parecer curado: a contagem
-        estava CERTA — havia um item. Quem esta defasado e a LISTA, que segue
-        nomeando a ADR-001 como pendente desde que foi decidida em 2026-09-18
-        (PRF-0125). E essa defasagem nenhum enumerador mecanico alcanca.
+        No lote 1 eu escrevi aqui que a lista "segue nomeando a ADR-001", com a
+        condicao: "se um dia nao nomear, a defasagem que a PRF-0125 mediu foi
+        curada e esta nota muda". O C25-07 curou-a em 2026-10-14 — a entrada
+        saiu, a lista ficou VAZIA, e este caso mudou junto.
+
+        A LISTA FICA, e e o que o lote 1 nao podia quebrar:
+        `liceu_boundary_check.py:353` faz `c.get("adrs_pendentes", [])` sobre a
+        lista de TOPO. O que saiu foi a entrada de uma ADR decidida, nao a lista.
+        A contagem `meta.adrs_pendentes` tinha saido antes, no lote 1.
+
+        E A GUARDA PASSOU PARA O LADO DO KIT: a regra R0G do
+        liceu_registry_check acusa qualquer entrada futura que cite uma ADR
+        decidida. Aqui fica a forma; lá fica o conteudo.
         """
         const = self.artefatos["constitution"]
         self.assertIn("adrs_pendentes", const, "a lista de topo desapareceu")
         self.assertIsInstance(const["adrs_pendentes"], list)
         self.assertNotIn("adrs_pendentes", const["meta"], "a contagem voltou")
-        ids = [a.get("id") for a in const["adrs_pendentes"]]
-        self.assertIn("ADR-001", ids,
-                      "a lista segue nomeando a ADR-001; se um dia nao nomear, "
-                      "a defasagem que a PRF-0125 mediu foi curada e esta nota muda")
+        self.assertEqual(const["adrs_pendentes"], [],
+                         "a lista voltou a ter entrada; se for uma ADR decidida, a "
+                         "R0G do kit acusa — e se for uma ADR aberta de verdade, "
+                         "este caso e que tem de mudar")
 
     # A versao anterior deste caso mutava o `escopo_P2_5A` real do ledger, e ele
     # SAIU da lei no kit 0.27.0. O caso vive agora em

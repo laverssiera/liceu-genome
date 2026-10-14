@@ -20,7 +20,7 @@
 meta:
   derivado_em: '2026-10-13'
   instrumento: tools/declaracoes_de_estado.py
-  estados_no_kit_lido: 64
+  estados_no_kit_lido: 63
   kit: conformance_kit=0.26.0 constitution=1.15.0
 
 origens:
@@ -84,10 +84,6 @@ origens:
     classe: SAI_DA_CLASSE
     fonte: 'nenhum'
     razao: "estado de DECISAO que ninguem registrou em artefato derivavel: nao existe arquivo de onde ler se este portao ja foi satisfeito. 'APROVADA', medido DEFASADO pela PRF-0125. Seria derivavel se alguem escrevesse QUAL ADR satisfaz QUAL portao — esse mapeamento nao existe em artefato nenhum"
-  'constitution:monolitos.core.fronteira_fisica.P1_07B_extracao_fisica':
-    classe: SAI_DA_CLASSE
-    fonte: 'nenhum'
-    razao: "estado de DECISAO que ninguem registrou em artefato derivavel: nao existe arquivo de onde ler se este portao ja foi satisfeito. 'ADR_REQUIRED', medido DEFASADO pela PRF-0125, e o ADR-005 §5.1 registra que nem se sabe se este portao se aplica a extracao do control plane. Mesmo mapeamento ausente"
   'constitution:monolitos.archimedes.divida_conhecida[0]':
     classe: SAI_DA_CLASSE
     fonte: 'codigo do monolito archimedes'
