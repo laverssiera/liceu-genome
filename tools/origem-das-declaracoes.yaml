@@ -20,7 +20,7 @@
 meta:
   derivado_em: '2026-10-13'
   instrumento: tools/declaracoes_de_estado.py
-  estados_no_kit_lido: 52
+  estados_no_kit_lido: 49
   kit: conformance_kit=0.26.0 constitution=1.15.0
 
 origens:
@@ -152,18 +152,6 @@ origens:
     classe: SAI_DA_CLASSE
     fonte: 'historico git dos 19 repositorios'
     razao: "o artefato de origem e o HISTORICO GIT — '1 commit (2026-04-19)', 'os outros 14 repositorios tem commits entre...'. Nao esta no grafo, e envelhece a cada commit de qualquer um dos 19"
-  'constitution:milestone.M1_CONSTITUTION_DEFINITION.status':
-    classe: SAI_DA_CLASSE
-    fonte: 'os criterios do proprio M1'
-    razao: 'PASS de milestone e JULGAMENTO sobre criterios, nao contagem de artefato: verificar um exige reavaliar os criterios contra o mundo, que e o trabalho do proprio milestone'
-  'constitution:milestone.M1_CONSTITUTION_DEFINITION.criterios.CONSTITUTION_PENDING_DECISIONS':
-    classe: PROPRIO_ARTEFATO
-    fonte: 'len(constitution.pendencias)'
-    razao: 'derivado hoje = 0, declarado = 0 — e e SEGUNDA FONTE do mesmo numero que meta.pendencias_abertas carrega. A objecao e a do ADR-002: duas funcoes calculando a mesma coisa divergem mesmo escritas iguais, e foi a copia esquecida que ficou falsa no meta.contagem'
-  'constitution:milestone.M1_CONSTITUTION_DEFINITION.criterios.CANONICAL_MONOLITH_IDS':
-    classe: PROPRIO_ARTEFATO
-    fonte: 'len(constitution.monolitos)'
-    razao: 'derivado hoje = 15, declarado = 15'
   'constitution:milestone.M2_FEDERATION_PROTOCOL_AND_STATIC_CONVERGENCE.criterios.DIRECT_CROSS_DOMAIN_DB':
     classe: SAI_DA_CLASSE
     fonte: 'codigo dos 19 repositorios'

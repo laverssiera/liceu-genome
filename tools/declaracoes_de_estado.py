@@ -204,7 +204,31 @@ def forma_de(valor) -> str | None:
     return None
 
 
-def classifica(caminho: str, valor, forma: str) -> tuple[str, str]:
+def prefixos_de_registro_historico(dados: dict) -> tuple[str, ...]:
+    """Subarvores que sao REGISTRO FECHADO, pela declaracao da propria lei.
+
+    Um milestone que declara `baseline_constitution_version` nao descreve o
+    mundo de hoje: ele registra o que valia quando ele fechou. O M1 escreve isso
+    por extenso — 'M1 foi concluido contra a Constituicao 1.0.0. O campo preserva
+    lineage historico; nao sobrescrever com a versao corrente.'
+
+    POR QUE ESTA REGRA EXISTE, e e correcao de um erro meu: eu havia classificado
+    `M1.criterios.CONSTITUTION_PENDING_DECISIONS` e `M1.criterios.CANONICAL_MONOLITH_IDS`
+    como derivaveis do proprio arquivo, de `len(pendencias)` e `len(monolitos)`.
+    A derivacao BATIA — 0 e 15 — e batia por COINCIDENCIA: a Constituicao hoje
+    esta em 1.15.0 e o M1 fechou contra a 1.0.0. Derivar ali seria sobrescrever
+    historia com o valor corrente, que e exatamente o que a nota proibe. Mesma
+    familia da coincidencia de zero que deixava a deriva passar.
+    """
+    fora: list[str] = []
+    for nome, bloco in (dados.get("milestone") or {}).items():
+        if isinstance(bloco, dict) and bloco.get("baseline_constitution_version"):
+            fora.append(f"milestone.{nome}.")
+    return tuple(fora)
+
+
+def classifica(caminho: str, valor, forma: str,
+               prefixos_historicos: tuple[str, ...] = ()) -> tuple[str, str]:
     folha = _folha_final(caminho)
     if folha in CHAVES_NORMA:
         return NORMA, f"chave {folha!r} ordena, posiciona ou exige"
@@ -212,6 +236,11 @@ def classifica(caminho: str, valor, forma: str) -> tuple[str, str]:
         return NORMA, f"chave {folha!r} comeca por prefixo de norma"
     if folha in CHAVES_HISTORICO or any(folha.startswith(p) for p in PREFIXOS_HISTORICO):
         return HISTORICO, f"chave {folha!r} registra o passado"
+    for p in prefixos_historicos:
+        if caminho.startswith(p):
+            return HISTORICO, (f"{p.rstrip('.')} declara baseline_constitution_version: e "
+                               "registro FECHADO do que valia quando fechou, nao do mundo "
+                               "de hoje — derivar ali sobrescreveria historia")
     segmentos = [re.sub(r"\[\d+\]$", "", s) for s in caminho.split(".")]
     for s in segmentos:
         if s in CHAVES_ESTADO or s.startswith(PREFIXOS_ESTADO):
@@ -232,13 +261,50 @@ def enumera(kit: pathlib.Path) -> list[Declaracao]:
             raise ClasseDefasada(f"artefato governado ausente do kit instalado: {nome}")
         dados = yaml.safe_load(caminho_arq.read_text(encoding="utf-8"))
         curto = nome.removeprefix("liceu_").removesuffix(".yaml")
+        historicos = prefixos_de_registro_historico(dados)
         for caminho, valor in folhas(dados):
             f = forma_de(valor)
             if f is None:
                 continue
-            cat, regra = classifica(caminho, valor, f)
+            cat, regra = classifica(caminho, valor, f, historicos)
             achadas.append(Declaracao(curto, caminho, valor, f, cat, regra))
     return achadas
+
+
+def incoerencias_internas(kit: pathlib.Path) -> list[dict]:
+    """Contradicoes DENTRO do mesmo arquivo, derivadas sem sair do kit.
+
+    MILESTONE QUE NAO COMECOU COM CRITERIO EM `PASS`. Medido em 2026-10-13: o M3
+    declara `status: NOT_STARTED` e os CINCO criterios dele dizem PASS; o M4
+    declara NOT_STARTED e os TRES dizem PASS. Nenhum dos dois blocos tem nota
+    explicando, e `PASS` aparece SO nesses dois — o M1 e o M2 usam booleanos,
+    inteiros e `KNOWN`. Se PASS quisesse dizer 'criterio bem definido', o M1 e o
+    M2 tambem o usariam.
+
+    O QUE ISTO NAO DECIDE: qual das duas afirmacoes e a falsa. Ou os criterios
+    foram marcados e o status nao foi atualizado, ou o status esta certo e os
+    criterios sao aspiracionais. O arquivo nao diz, e esta funcao nao escolhe.
+
+    E e o caso mais puro da classe da UNK-0018: duas declaracoes no mesmo bloco,
+    nenhuma regra as lendo, e a contradicao sobrevivendo porque ninguem reconta.
+    """
+    dados = yaml.safe_load((kit / "liceu_constitution.yaml").read_text(encoding="utf-8"))
+    fora: list[dict] = []
+    for nome, bloco in (dados.get("milestone") or {}).items():
+        if not isinstance(bloco, dict):
+            continue
+        status = bloco.get("status")
+        passes = [c for c, v in (bloco.get("criterios") or {}).items() if v == "PASS"]
+        if status in ("NOT_STARTED", "FROZEN") and passes:
+            fora.append({
+                "onde": f"constitution:milestone.{nome}",
+                "status": status,
+                "criterios_em_PASS": passes,
+                "o_que": (f"{nome} declara status={status} e {len(passes)} criterio(s) em "
+                          "PASS, no mesmo bloco e sem nota. Uma das duas afirmacoes e "
+                          "falsa, e o arquivo nao diz qual"),
+            })
+    return fora
 
 
 def estados(achadas: list[Declaracao]) -> list[Declaracao]:
@@ -362,10 +428,15 @@ DERIVACOES: dict[str, object] = {
         lambda a: _conta(a, "constitution", "global", "identidade_semantica_de_replay", "campos"),
     "constitution:global.campos_exigidos_pelo_protocolo.total":
         lambda a: _conta(a, "constitution", "global", "campos_exigidos_pelo_protocolo", "campos"),
-    "constitution:milestone.M1_CONSTITUTION_DEFINITION.criterios.CONSTITUTION_PENDING_DECISIONS":
-        lambda a: _conta(a, "constitution", "pendencias"),
-    "constitution:milestone.M1_CONSTITUTION_DEFINITION.criterios.CANONICAL_MONOLITH_IDS":
-        lambda a: _conta(a, "constitution", "monolitos"),
+    # NAO ENTRAM AQUI, e isto foi correcao de erro meu em 2026-10-13:
+    # `M1.criterios.CONSTITUTION_PENDING_DECISIONS` e `M1.criterios.CANONICAL_MONOLITH_IDS`
+    # pareciam derivaveis de `len(pendencias)` e `len(monolitos)`, e a derivacao
+    # BATIA (0 e 15). Batia por COINCIDENCIA: o M1 declara
+    # `baseline_constitution_version: 1.0.0` e a Constituicao esta em 1.15.0, e a
+    # nota do proprio M1 diz 'preserva lineage historico; nao sobrescrever com a
+    # versao corrente'. Derivar ali sobrescreveria historia. Agora o classificador
+    # os trata como HISTORICO, por regra mecanica — ver
+    # `prefixos_de_registro_historico`.
     "event_reconciliation_ledger:meta.escopo_P2_5A":
         lambda a: _conta(a, "event_reconciliation_ledger", "P2_5A_minimum_causal_thread"),
 }
@@ -648,6 +719,17 @@ def main(argv=None) -> int:
         armado, texto = gatilho_fit_020(mapa)
         print()
         print(f"{'>>> ' if armado else ''}{texto}")
+
+    incoerentes = incoerencias_internas(kit)
+    print()
+    print("CONTRADICOES DENTRO DO MESMO ARQUIVO — insuficiencia declarada, nao violacao")
+    if not incoerentes:
+        print("  nenhuma.")
+    for i in incoerentes:
+        print(f"  {i['onde']}")
+        print(f"    status={i['status']} e {len(i['criterios_em_PASS'])} criterio(s) em PASS: "
+              f"{', '.join(i['criterios_em_PASS'])}")
+        print("    uma das duas afirmacoes e falsa, e o arquivo nao diz qual")
     else:
         print()
         print(f"MAPA DE ORIGEM AUSENTE ({MAPA.name}): os {len(est)} ESTADO estao sem origem.")

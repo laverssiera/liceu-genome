@@ -117,7 +117,10 @@ class ADerivacaoAcusa(unittest.TestCase):
         defasagem e nao a falha deste teste — por isso ele REPORTA."""
         r = de.confere_derivaveis(self.achadas, self.artefatos)
         falsos = [x for x in r if x["bate"] is False]
-        self.assertEqual(len(r), 7, "o conjunto de derivacoes mudou de tamanho")
+        # DERIVADO, nao fixado: a primeira versao escrevia 7 aqui, e o 7 apodreceu
+        # no mesmo dia em que a reclassificacao do M1 tirou duas derivacoes. Numero
+        # fixado em teste e a mesma classe que este instrumento cura.
+        self.assertEqual(len(r), len(de.DERIVACOES))
         if falsos:
             self.skipTest(f"a lei esta defasada em {len(falsos)}: "
                           f"{[x['chave'] for x in falsos]} — isto e achado, nao falha do teste")
@@ -132,29 +135,45 @@ class ADerivacaoAcusa(unittest.TestCase):
         self.assertIs(alvo["bate"], False)
         self.assertEqual((alvo["declarado"], alvo["derivado"]), (0, 1))
 
-    def test_a_SEGUNDA_FONTE_tambem_e_acusada(self):
-        """`M1.criterios.CONSTITUTION_PENDING_DECISIONS` carrega o MESMO numero
-        que `meta.pendencias_abertas`. Duas fontes a mao divergem — e a objecao
-        e a do ADR-002, que recusou A+B por isso."""
+    def test_a_SEGUNDA_FONTE_que_eu_tinha_achado_NAO_era_uma(self):
+        """Correcao de um achado meu, e ela vale guardar como teste.
+
+        Eu havia registrado que `M1.criterios.CONSTITUTION_PENDING_DECISIONS`
+        carregava o MESMO numero que `meta.pendencias_abertas` — duas fontes a
+        mao, a objecao do ADR-002. ESTAVA ERRADO pelo mesmo motivo que a
+        derivacao estava: o M1 e REGISTRO HISTORICO, com
+        `baseline_constitution_version: 1.0.0`. Nao e contagem viva duplicada; e
+        o valor de quando o M1 fechou, que por coincidencia iguala o de hoje.
+
+        Entao `pendencias` alimenta UMA derivacao, nao duas, e o teste guarda
+        isso para eu nao reinventar o achado.
+        """
         mutado = copy.deepcopy(self.artefatos)
         mutado["constitution"]["pendencias"] = ["x", "y"]
         r = {x["chave"]: x for x in de.confere_derivaveis(self.achadas, mutado)}
-        a = r["constitution:meta.pendencias_abertas"]
-        b = r["constitution:milestone.M1_CONSTITUTION_DEFINITION.criterios."
-              "CONSTITUTION_PENDING_DECISIONS"]
-        self.assertIs(a["bate"], False)
-        self.assertIs(b["bate"], False)
-        self.assertEqual(a["derivado"], b["derivado"],
-                         "as duas fontes derivam do mesmo lugar, logo so divergem a mao")
+        self.assertIs(r["constitution:meta.pendencias_abertas"]["bate"], False)
+        de_pendencias = [k for k in de.DERIVACOES if "pendencias_abertas" in k
+                         or "PENDING_DECISIONS" in k]
+        self.assertEqual(de_pendencias, ["constitution:meta.pendencias_abertas"],
+                         "se um segundo campo voltar a derivar de pendencias, ai sim "
+                         "a objecao do ADR-002 se aplica")
 
-    def test_remover_um_monolito_sem_recontar_e_ACUSADO(self):
-        mutado = copy.deepcopy(self.artefatos)
-        mutado["constitution"]["monolitos"].pop("ped")
-        r = {x["chave"]: x for x in de.confere_derivaveis(self.achadas, mutado)}
-        alvo = r["constitution:milestone.M1_CONSTITUTION_DEFINITION.criterios."
-                 "CANONICAL_MONOLITH_IDS"]
-        self.assertIs(alvo["bate"], False)
-        self.assertEqual((alvo["declarado"], alvo["derivado"]), (15, 14))
+    def test_len_monolitos_nao_alimenta_derivacao_nenhuma(self):
+        """O que sobrou da reclassificacao, dito em vez de calado.
+
+        `CANONICAL_MONOLITH_IDS` era a unica comparacao numerica contra
+        `len(monolitos)`, e ela saiu por ser historica. Os dois campos que ainda
+        carregam 'os 15' — `ci_adoption_order.nao_bloqueador` e
+        `REGRA_DE_IDENTIDADE.aplica_a` — sao prosa e estao ISENTOS, porque a
+        cura deles e a frase deixar de carregar o numero.
+
+        Consequencia MEDIDA e nao escondida: hoje nenhuma guarda acusa quem
+        acrescentar ou remover um monolito sem reescrever essas duas frases.
+        """
+        self.assertEqual([k for k in de.DERIVACOES if "MONOLITH" in k], [])
+        isentos_com_15 = [k for k in de.ISENTOS_DE_DERIVACAO
+                          if "nao_bloqueador" in k or "aplica_a" in k]
+        self.assertEqual(len(isentos_com_15), 2)
 
     def test_a_contagem_dentro_de_PROSA_tambem_e_conferida(self):
         """`escopo_P2_5A` diz '(5 eventos)' no meio de uma frase. O instrumento
@@ -298,13 +317,18 @@ class ADerivaEhPegaPorFalharFECHADO(unittest.TestCase):
         self.assertIs(alvo["bate"], False, "deriva nunca pode sair como bate=True")
         self.assertIn("DERIVA", alvo["nota"])
 
-    def test_a_deriva_atinge_as_DUAS_fontes_do_mesmo_numero(self):
-        """`pendencias` alimenta dois campos. Perder a fonte derruba os dois, e
-        e por isso que duas fontes a mao do mesmo valor sao piores que uma."""
+    def test_a_deriva_atinge_TODO_campo_que_bebe_daquela_fonte(self):
+        """Quantos campos uma fonte alimenta e DERIVADO, nao fixado: a primeira
+        versao escrevia 2 aqui e o 2 apodreceu quando o M1 foi reclassificado."""
         mutado = copy.deepcopy(self.artefatos)
         del mutado["constitution"]["pendencias"]
-        derivas = [x for x in de.confere_derivaveis(self.achadas, mutado) if x["deriva"]]
-        self.assertEqual(len(derivas), 2, f"esperava dois campos afetados, vi {derivas}")
+        derivas = {x["chave"] for x in de.confere_derivaveis(self.achadas, mutado)
+                   if x["deriva"]}
+        bebem = {k for k, fn in de.DERIVACOES.items()
+                 if "pendencias" in str(fn.__code__.co_consts)}
+        self.assertEqual(derivas, bebem,
+                         "todo campo que deriva daquela fonte tem de cair com ela")
+        self.assertTrue(derivas, "a fonte tem de alimentar ao menos um campo")
 
     def test_o_caminho_INTERMEDIARIO_que_sai_tambem_e_pego(self):
         """A deriva pode ser no meio do caminho, nao so na folha."""
@@ -374,6 +398,98 @@ class OLacreDasDuasListasDeIsencao(unittest.TestCase):
         self.assertEqual(set(de.ISENTOS_DE_DERIVACAO), set(de.LACRE_ISENTOS))
 
 
+class ORegistroHISTORICONaoSeDeriva(unittest.TestCase):
+    """Correcao de um erro meu, pega ao preparar o item 2.
+
+    Eu havia classificado `M1.criterios.CONSTITUTION_PENDING_DECISIONS` e
+    `M1.criterios.CANONICAL_MONOLITH_IDS` como derivaveis do proprio arquivo, de
+    `len(pendencias)` e `len(monolitos)`. A derivacao BATIA — 0 e 15 — e batia
+    por COINCIDENCIA: o M1 declara `baseline_constitution_version: 1.0.0`, a
+    Constituicao esta em 1.15.0, e a nota do proprio M1 diz 'preserva lineage
+    historico; nao sobrescrever com a versao corrente'.
+
+    Derivar ali sobrescreveria historia com o valor corrente. E a mesma familia
+    da coincidencia de zero que deixava a deriva passar: o numero batia e a
+    razao estava errada.
+    """
+
+    def setUp(self):
+        self.kit = de.kit_instalado()
+        self.achadas = de.enumera(self.kit)
+        self.por = {d.chave: d for d in self.achadas}
+
+    def test_milestone_com_baseline_e_reconhecido_pela_propria_declaracao(self):
+        import yaml as _y
+        dados = _y.safe_load(
+            (self.kit / "liceu_constitution.yaml").read_text(encoding="utf-8"))
+        prefixos = de.prefixos_de_registro_historico(dados)
+        self.assertIn("milestone.M1_CONSTITUTION_DEFINITION.", prefixos)
+        self.assertEqual(len(prefixos), 1,
+                         "so o M1 declara baseline_constitution_version; se outro passar "
+                         "a declarar, esta regra o alcanca sozinha")
+
+    def test_os_criterios_do_M1_sao_HISTORICO_e_nao_ESTADO(self):
+        for folha in ("CONSTITUTION_PENDING_DECISIONS", "CANONICAL_MONOLITH_IDS"):
+            chave = ("constitution:milestone.M1_CONSTITUTION_DEFINITION.criterios." + folha)
+            self.assertEqual(self.por[chave].categoria, de.HISTORICO, folha)
+
+    def test_nenhum_campo_do_M1_tem_derivacao(self):
+        """A guarda contra eu repetir o erro: derivacao para dentro de registro
+        historico e sobrescrita de historia, nao cura."""
+        for chave in de.DERIVACOES:
+            self.assertNotIn("M1_CONSTITUTION_DEFINITION", chave)
+
+    def test_milestone_SEM_baseline_continua_sendo_lido_normalmente(self):
+        """A contrapartida: a regra nao pode isentar milestone nenhum por ser
+        milestone. M3 e M4 nao declaram baseline, e os criterios deles seguem
+        na classe."""
+        chave = ("constitution:milestone.M4_FIRST_CAUSAL_AUTHORITY_CHAIN."
+                 "criterios.MINIMUM_CAUSAL_THREAD_RUNTIME")
+        self.assertEqual(self.por[chave].categoria, de.ESTADO)
+
+
+class AsContradicoesDentroDoMesmoArquivo(unittest.TestCase):
+    """O caso mais puro da classe da UNK-0018, achado ao preparar o item 2.
+
+    Duas declaracoes no MESMO bloco se contradizem, nenhuma regra as le, e a
+    contradicao sobrevive porque ninguem reconta. Medido em 2026-10-13: M3
+    declara `status: NOT_STARTED` com os CINCO criterios em PASS; M4 declara
+    NOT_STARTED com os TRES em PASS. Nenhum bloco tem nota.
+
+    `PASS` aparece SO nesses dois — M1 e M2 usam booleanos, inteiros e `KNOWN`.
+    Se PASS quisesse dizer 'criterio bem definido', M1 e M2 tambem o usariam.
+    """
+
+    def setUp(self):
+        self.achadas = de.incoerencias_internas(de.kit_instalado())
+
+    def test_M3_e_M4_estao_incoerentes_hoje(self):
+        onde = {i["onde"] for i in self.achadas}
+        self.assertIn("constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE", onde)
+        self.assertIn("constitution:milestone.M4_FIRST_CAUSAL_AUTHORITY_CHAIN", onde)
+
+    def test_a_contagem_de_PASS_vai_nomeada_e_nao_resumida(self):
+        """Dizer 'ha incoerencia' sem nomear os criterios obrigaria a reabrir o
+        arquivo para agir."""
+        por = {i["onde"]: i for i in self.achadas}
+        m3 = por["constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE"]
+        self.assertEqual(len(m3["criterios_em_PASS"]), 5)
+        self.assertIn("DURABILITY", m3["criterios_em_PASS"])
+
+    def test_milestone_que_COMECOU_nao_e_acusado(self):
+        """A contrapartida, senao a guarda acusaria todo milestone com criterio.
+        M1 (PASS) e M2 (ACTIVE) nao entram."""
+        onde = {i["onde"] for i in self.achadas}
+        self.assertNotIn("constitution:milestone.M1_CONSTITUTION_DEFINITION", onde)
+        self.assertNotIn(
+            "constitution:milestone.M2_FEDERATION_PROTOCOL_AND_STATIC_CONVERGENCE", onde)
+
+    def test_a_funcao_NAO_escolhe_qual_das_duas_e_falsa(self):
+        """Escolher seria decidir o que a lei afirma, e isso nao e do instrumento."""
+        for i in self.achadas:
+            self.assertIn("o arquivo nao diz qual", i["o_que"])
+
+
 class OGatilhoDaFIT020(unittest.TestCase):
     """ADIADA COM GATILHO, e o gatilho e MECANICO em vez de lembrado.
 
@@ -390,7 +506,12 @@ class OGatilhoDaFIT020(unittest.TestCase):
         armado, texto = de.gatilho_fit_020(self.mapa)
         self.assertFalse(armado)
         self.assertIn("ADIADA", texto)
-        self.assertEqual(len(de.classe_viva(self.mapa)), 11)
+        # DERIVADO do mapa, nao fixado: a primeira versao escrevia 11 e o 11
+        # apodreceu no mesmo dia, quando o M1 virou registro historico.
+        vivos = [k for k, o in self.mapa.items()
+                 if o.classe in (de.PROPRIO_ARTEFATO, de.OUTRO_ARTEFATO)]
+        self.assertEqual(len(de.classe_viva(self.mapa)), len(vivos))
+        self.assertIn(str(len(vivos)), texto, "o numero anunciado e o derivado")
 
     def test_com_a_classe_em_ZERO_o_gatilho_ARMA(self):
         """A contrapartida, e sem ela o gatilho seria decoracao: convertido tudo,
