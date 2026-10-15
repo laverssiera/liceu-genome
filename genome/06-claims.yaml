@@ -865,3 +865,12 @@
   kind: claim
   statement: "Entre as provas de leitura INDETERMINADAS ha alguma que sustentava, como unica base, algo que hoje aparece EM ORDEM na camada de autoridade -- e por isso a contagem de tres bloqueadores da REGIONAL esta subestimada."
   asserted_by: "o plano do ciclo 26, de 2026-10-13, no item C26-00: 'o que acreditavamos estar EM ORDEM na camada de autoridade pode estar apoiado em leitura que hoje e INDETERMINADA. Se estiver, a contagem de tres esta SUBESTIMADA'"
+
+- id: CLM-0151
+  kind: claim
+  statement: "O risco de inanicao de GIL e decisivo contra rodar Raft no processo da aplicacao: a eleicao espuria e consequencia de operar assim."
+  asserted_by: "eu mesmo, em 2026-10-14, como um dos dois argumentos afiados a favor do etcd - escrevi que escolher Raft no processo e escolher viver dentro da classe de falha de pausa de processo, sem ter medido a magnitude no app que existe"
+- id: CLM-0152
+  kind: claim
+  statement: "Com o contrato aplicado, log errado passa a ser detectavel a jusante pela atestacao, e o onus de correcao sob particao cai muito."
+  asserted_by: "a PRF-0173, em 2026-10-14, ao estabelecer que o contrato e a montante do mecanismo; e eu, ao repetir isso como razao para o contrato vir primeiro"

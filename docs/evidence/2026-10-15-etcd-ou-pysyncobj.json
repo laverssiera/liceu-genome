@@ -1,0 +1,86 @@
+{
+  "instrumento": "thread que tenta acordar a cada 1 ms dentro do processo que roda a suite do CORE, registrando o ATRASO de cada acordar; atraso grande = o GIL ficou retido por trabalho que nao o libera. Cada pico acima de 100 ms e ATRIBUIDO ao teste que corria, via pytest_runtest_logstart. Nao e perfilagem por handler: e o LIMITE SUPERIOR observado de retencao continua, que e a grandeza que o temporizador do Raft sofreria",
+  "universo": "os 396 testes do cv-backend-core, a MESMA selecao que a CI usa (--deselect de .github/ci-known-failures.txt)",
+  "o_piso_que_decide": {
+    "raftMinTimeout_ms": 400,
+    "appendEntriesPeriod_ms": 100,
+    "fonte": "pysyncobj/config.py:37,44 do sdist 0.3.17, baixado e LIDO",
+    "e_configuravel": true
+  },
+  "medido": {
+    "acordares": 65706,
+    "alvo_ms": 1,
+    "mediana_ms": 0.199,
+    "p95_ms": 0.804,
+    "p99_ms": 4.628,
+    "p999_ms": 16.301,
+    "maximo_ms": 205.496,
+    "acordares_acima_de_400ms": 0,
+    "acordares_acima_de_100ms": 4
+  },
+  "a_atribuicao_dos_quatro_picos": [
+    {
+      "ms": 205.5,
+      "onde": "(antes do primeiro teste)",
+      "e_producao": false,
+      "o_que_e": "coleta e import"
+    },
+    {
+      "ms": 201.1,
+      "onde": "test_campos_aceitos::...contra_o_kit_instalado",
+      "e_producao": false,
+      "o_que_e": "instrumento de teste: AST do modelo mais carga do kit"
+    },
+    {
+      "ms": 199.9,
+      "onde": "test_campos_aceitos::...o_modelo_REAL...deriva",
+      "e_producao": false,
+      "o_que_e": "o mesmo instrumento"
+    },
+    {
+      "ms": 117.8,
+      "onde": "test_payload_refs::...lineage_not_conformance",
+      "e_producao": true,
+      "o_que_e": "resolucao de resolvable_refs, no caminho critico do publish"
+    }
+  ],
+  "o_maximo_e_RUIDOSO": {
+    "duas_execucoes_da_mesma_suite": [
+      282.408,
+      205.496
+    ],
+    "variacao_ms": 76.9,
+    "o_que_e_estavel": {
+      "p99_ms": [
+        5.57,
+        4.628
+      ],
+      "p999_ms": [
+        15.686,
+        16.301
+      ]
+    },
+    "consequencia": "reportar um maximo isolado como 'o numero' seria exagero; o que e estavel e a cauda ate o p999, cerca de 16 ms"
+  },
+  "contra_o_piso": {
+    "p999_estavel": "16 ms, 25x abaixo",
+    "maximo_atribuivel_a_producao": "117,8 ms, 3,4x abaixo",
+    "maximo_bruto_com_instrumentos_de_teste": "205 a 282 ms, 1,4 a 1,9x abaixo"
+  },
+  "a_composicao_com_a_cauda_de_disco_nao_fecha": "117,8 ms de producao mais 123,4 ms, o maximo de fsync medido no ADR-005, dao 241,2 ms -- ainda abaixo dos 400. Ontem eu insinuei que somar os dois cruzaria o piso; com a atribuicao feita, nao cruza",
+  "o_que_o_contrato_aplicado_resolve_e_o_que_nao": {
+    "autorizacao": {
+      "resolvido": true,
+      "porque": "esta escrito que votar no log nao autoriza, e a porta da atestacao e ATIVA e testada (PRF-0177)"
+    },
+    "linearizabilidade": {
+      "resolvido": false,
+      "porque": "o paragrafo 2 do ADR-003 exige uma unica sequencia de epocas visivel igual em todos os dominios, e a porta da atestacao NAO confere epocas -- ela recusa promocao sem atestacao, nao detecta duas epocas"
+    }
+  },
+  "nao_mensuravel": [
+    "a correcao do PySyncObj sob particao: segue sem prova citavel, e e o unico item que nao caiu em dois dias",
+    "a retencao de GIL sob carga de PRODUCAO: o numero acima e a suite, e handler pesado que nenhum teste chama nao aparece. Deixou de ser nao-mensuravel e passou a ser medido COM ESCOPO DECLARADO",
+    "host-vs-cauda do nivel barato: exige reprovisionar, e criar recurso nao e meu"
+  ]
+}
