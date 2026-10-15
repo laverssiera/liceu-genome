@@ -1,0 +1,67 @@
+{
+  "o_furo": "classifica decidia NORMA e HISTORICO pelo ULTIMO segmento do caminho (_folha_final) e ESTADO por QUALQUER segmento. Entao monolitos.john.correcao_de_registro.descricao caia em PROSA com correcao_de_registro DENTRO de CHAVES_HISTORICO: o ancestral dizia que a subarvore era registro do passado e ninguem o escutava",
+  "as_tres_variantes_IMPLEMENTADAS_e_medidas": {
+    "metodo": "as tres reimplementadas num arranjo e comparadas campo por campo sobre a lei real, com a categoria antes e depois de cada uma",
+    "simetria_total": {
+      "campos_que_mudam": 8,
+      "SAEM_DE_ESTADO": 2,
+      "colateral": "tambem tira 1 campo de PROCEDENCIA"
+    },
+    "subarvore_ANTES_da_procedencia": {
+      "campos_que_mudam": 2,
+      "SAEM_DE_ESTADO": 0,
+      "colateral": "tira 1 campo de PROCEDENCIA"
+    },
+    "subarvore_DEPOIS_da_procedencia": {
+      "campos_que_mudam": 1,
+      "SAEM_DE_ESTADO": 0,
+      "colateral": "nenhum — so o furo"
+    },
+    "escolhida": "subarvore DEPOIS da procedencia"
+  },
+  "por_que_NAO_pelos_dois_lados": "os dois campos que sairiam de ESTADO sao REGRA_DE_IDENTIDADE.medicao_atual.geracoes_de_campo_alheio_em_producao e ...reivindicacoes_de_identidade: a chave diz MEDICAO_ATUAL e o valor e estado de verdade. Eles ficariam ESCONDIDOS atras de um ancestral normativo, e campo que sai da classe medida sai tambem da exigencia de origem — falhar ABERTO",
+  "a_assimetria_de_ESTADO_FICA_e_a_razao_e_a_DIRECAO": "ESTADO varre todos os segmentos e roda DEPOIS de norma, historico e procedencia. Entao nunca TIRA um campo de outra classe: ou o campo ja foi classificado antes, ou ela o traz PARA a classe medida. A assimetria nao e descuido — e a unica direcao segura, e agora esta escrita e testada",
+  "a_regra": "a subarvore passa a poder falar, mas so quando DECLARADA em SUBARVORES_HISTORICAS ou SUBARVORES_NORMATIVAS, e so DEPOIS da procedencia — para que `procedencia` siga sendo metadado do campo IRMAO em vez de ser engolida pelo ancestral",
+  "as_duas_listas": {
+    "SUBARVORES_HISTORICAS": [
+      "correcao_de_registro"
+    ],
+    "SUBARVORES_NORMATIVAS": "VAZIA POR DECISAO, com a medicao como razao escrita"
+  },
+  "o_teste_que_impede_a_razao_de_envelhecer": "test_fechar_pelos_DOIS_lados_tiraria_DOIS_campos_de_ESTADO recalcula a cada CI quem sairia de ESTADO se o ancestral normativo falasse, e exige que seja exatamente aqueles dois, por nome. A razao de SUBARVORES_NORMATIVAS estar vazia e prosa no modulo, e prosa envelhece calada — este teste a transforma em medicao repetida",
+  "a_PRIMEIRA_CURA_da_classe_PROSA": {
+    "quem_acusou": "o portao, SOZINHO, com codigo 2: '1 julgamento(s) cujo campo nao e mais PROSA: constitution:monolitos.john.correcao_de_registro.descricao. Se o campo foi curado, tire o julgamento daqui e mova o sha256'",
+    "o_que_isso_prova": "a maquinaria da PRF-0186 funcionou na PRIMEIRA oportunidade, e na direcao do ORFAO — que era a metade da guarda que nenhuma cura ainda tinha exercitado",
+    "PROSA": "25 -> 24",
+    "HISTORICO": "22 -> 23",
+    "LACRE_PROSA": "25 -> 24, com o sha256 movido a mao",
+    "INALTERADOS": {
+      "ESTADO": 70,
+      "NORMA": 40,
+      "PROCEDENCIA": 52
+    }
+  },
+  "medido_e_nao_suposto": {
+    "funcoes_alteradas": [
+      "classifica"
+    ],
+    "funcoes_novas": [],
+    "funcoes_removidas": [],
+    "campos_com_CODIGO_ainda_vistos": 45,
+    "extensoes_ainda_no_mapa": 7,
+    "origens_no_mapa": 70
+  },
+  "as_duas_mutacoes": {
+    "esvaziar_SUBARVORES_HISTORICAS": "7 testes caem",
+    "povoar_SUBARVORES_NORMATIVAS": "8 testes caem, inclusive test_hoje_o_mapa_esta_em_dia — que e o falhar-aberto aparecendo sozinho"
+  },
+  "o_que_segue_aberto": [
+    "o furo ABAIXO de PROSA: frase longa SEM numero e SEM palavra de situacao nunca chega a ser candidata, porque forma_de filtra antes da classificacao",
+    "curar os NOVE de AFIRMACAO_DERIVAVEL: cada um pede a frase ser reescrita para que a afirmacao vire campo, e isso e decisao de classe do titular pela UNK-0018"
+  ],
+  "verde": {
+    "testes_do_portao": 96,
+    "portao": "exit 0",
+    "lacres": "5 + 70 + 24, so encolhem"
+  }
+}
