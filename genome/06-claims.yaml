@@ -846,3 +846,12 @@
   kind: claim
   statement: "A porta promotion_requires_witness_attestation pode nao ser porta: promote() depois do TTL da atestacao talvez passe, e ai ela e declaracao."
   asserted_by: "um parecer tecnico sobre a entrada de decisao, em 2026-10-14, que propos o teste exatamente por essa duvida: falha e a porta esta ativa, passa e ela e a 49a declaracao"
+
+- id: CLM-0148
+  kind: claim
+  statement: "As tres proibicoes da Testemunha - nunca autoriza, nunca estabelece teto, nunca assume o papel da ativa - sao aplicadas pelo sistema."
+  asserted_by: "o proprio bloco do Producer Registry, que as lista sob a chave PROIBICOES: lista chamada proibicoes se le como em vigor por construcao; e o paragrafo 3 do ADR-003, que trata nunca autoriza como restricao que a Opcao B nao pode violar - isto e, como algo em vigor"
+- id: CLM-0149
+  kind: claim
+  statement: "Escrever a separacao entre votar no log e autorizar atos no Producer Registry basta para o contrato existir: escrita, ela passa a reger o comportamento."
+  asserted_by: "eu mesmo, ao listar a separacao como redacao que ja nao espera mais nada, seguindo o paragrafo 5.1 do ADR-005 - e redacao que nao rege nada nao e contrato, e a classe que o C25-06 acabou de zerar"

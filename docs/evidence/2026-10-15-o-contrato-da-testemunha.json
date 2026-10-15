@@ -1,0 +1,62 @@
+{
+  "o_rascunho_nao_envelheceu": {
+    "arquivo": "liceu-protocol/docs/2026-10-09-rascunho-contratos-do-plano-de-autoridade.md",
+    "linhas": 398,
+    "bloco_da_testemunha": "ainda nas linhas 560-566 do liceu_producer_registry.yaml",
+    "as_tres_proibicoes": "inalteradas",
+    "porque_conferir": "o kit andou de v0.26.0 a v0.29.0 entre o rascunho e hoje, e este genoma ja perdeu um ':617' por envelhecimento de numero de linha"
+  },
+  "as_tres_proibicoes_medidas": {
+    "nunca_autoriza": {
+      "aplicada": true,
+      "onde": "authority_control_plane.py:273-276, recusa witness_cannot_authorize",
+      "mecanismo": "lista de prefixos permitidos em WITNESS_ALLOWED_PREFIXES, linha 55: authority.witness. e authority.human.decision."
+    },
+    "nunca_assume_o_papel_da_ativa": {
+      "aplicada": true,
+      "onde": "o papel vem da identidade autenticada (linha 11) e promote() recusa promotion_target_not_successor",
+      "ressalva": "aplicada POR CONSEQUENCIA, nao por regra que a nomeie"
+    },
+    "nunca_estabelece_teto": {
+      "aplicada": false,
+      "medicao": "zero ocorrencias de teto, ceiling, scale_cap ou max_scale no control plane inteiro",
+      "estado": "nao e violada; nao e tocada por nada"
+    }
+  },
+  "a_chave_PROIBICOES_e_lida_por_nada": {
+    "universo": "os 19 repositorios, em .py .sh .yml .yaml, fora do arquivo que a declara",
+    "ocorrencias": 2,
+    "quais": "a MESMA linha de docstring, liceu_federation_sdk.py:138 ('Ver PROIBICOES em publish()'), mais sua copia em build/",
+    "para_comparar": "authority_role, no mesmo bloco, e lido por liceu_conformance.py, liceu_registry_check.py, app/main.py e o control plane",
+    "consequencia": "a aplicacao de 'nunca autoriza' nao deriva do registry: vive numa constante Python. Registry e codigo concordam por COINCIDENCIA DE AUTORIA, nao por derivacao -- se divergirem, nada percebe"
+  },
+  "o_voto_de_raft_nunca_passa_pelo_portao": {
+    "porque": "o portao e sobre o event_type de um PUBLISH, dentro de enforce(); um voto de Raft e trafego do protocolo de consenso, nao fato publicado",
+    "a_favor_de_escrever": "a separacao nao exige tocar enforce(): a tensao e NORMATIVA, nao mecanica",
+    "contra_escrever_sozinha": "justamente porque o portao nao ve o voto, nada verificaria que o voto nao autorizou"
+  },
+  "a_proposta_nao_e_especulacao": {
+    "o_CORE_ja_carrega_o_registry_do_kit": [
+      "app/services/protocol_kit.py:55  from liceu_protocol import KIT_DIR",
+      "app/services/protocol_kit.py:90  producer_registry=_yaml(directory, 'liceu_producer_registry.yaml')",
+      "app/services/protocol_kit.py:40  return self.producer_registry.get('producers')"
+    ],
+    "o_que_a_troca_compra": [
+      "'nunca autoriza' passa a ser a FONTE do portao em vez de descricao dele",
+      "satisfaz a regra de classe de 2026-10-09: derivavel de outro artefato nao se escreve, se deriva -- hoje a lista esta escrita duas vezes",
+      "VOTO_NO_LOG_DE_CONSENSO passa a ser acrescentado a um bloco que E lido"
+    ]
+  },
+  "o_custo_de_aplicar_medido": {
+    "o_producer_registry_e_governado_R13": {
+      "constitution_version": "1.18.0",
+      "constitution_sha256": "29b95fb1b72e3dd26f839bdc5bc103c98cc064c7af8d13c00cdeff3f85726d62",
+      "registry_version": "1.4.0"
+    },
+    "a_constituicao_nao_muda": true,
+    "o_que_muda": "registry_version 1.4.0 -> 1.5.0; kit com versao nova e TAG; 8 PRs de pino e 8 merges",
+    "procedencia_do_custo": "medido quatro vezes nesta semana, nao estimado"
+  },
+  "uma_atribuicao_que_eu_desconfiei_e_esta_CERTA": "o comentario do codigo atribui a Constituicao a frase 'so autoriza apos promocao valida', e eu fui conferir porque o paragrafo 0 do rascunho pegou a OUTRA atribuicao errada -- 'so informa, nunca autoriza' e atribuida pelo ADR-003 a Constituicao e NAO esta la, esta no Producer Registry. Esta esta: liceu_constitution.yaml:1008, e fala do SUCCESSOR",
+  "o_que_caiu_do_rascunho_desde_09_10": "a pendencia do portao P1_07B: ele foi FECHADO em 2026-10-14 -- liceu_constitution.yaml:1365, 'CUMPRIDO - ADR-001 decidida em 2026-09-18' -- e e a unica coisa que mudou no rascunho desde que ele foi escrito"
+}
