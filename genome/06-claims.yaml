@@ -884,3 +884,8 @@
   kind: claim
   statement: "O furo da extensao esta fechado: afirmacao que vive no tamanho de uma lista sob chave de estado passa a ser vista, classificada e coberta pelo mapa de origem."
   asserted_by: "ninguem ainda - e o que a decisao do titular de 2026-10-15 manda aplicar, e so vale se o portao passar a ver as extensoes da LEI REAL e o mapa continuar em dia"
+
+- id: CLM-0156
+  kind: claim
+  statement: "Entrar na classe PROSA passa a custar um ATO: todo membro esta julgado por escrito e dentro de um lacre por sha256, e acolchoar uma declaracao de estado alem do limite de palavras nao e mais saida de graca."
+  asserted_by: "ninguem ainda - e o que a decisao do titular de 2026-10-15 manda aplicar, e so vale se o portao recusar o campo acolchoado e a lei real continuar passando com os 25 julgados"
