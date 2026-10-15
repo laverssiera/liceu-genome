@@ -140,6 +140,53 @@ SITUACAO = re.compile(
 FRACAO = re.compile(r"\b\d+\s*/\s*\d+\b")
 NUM_SUBSTANTIVO = re.compile(r"\b\d+\s+[a-zA-ZÀ-ſ]{3,}")
 MARCADOR_DE_CODIGO = "[CODIGO]"
+
+# ---------------------------------------------------------------------------
+# A ASSIMETRIA DA VARREDURA, e por que ela nao se fecha pelos dois lados
+# ---------------------------------------------------------------------------
+# O DEFEITO: `classifica` decidia NORMA e HISTORICO pelo ULTIMO segmento do
+# caminho (`_folha_final`) e ESTADO por QUALQUER segmento. Entao
+# `monolitos.john.correcao_de_registro.descricao` caia em PROSA com
+# `correcao_de_registro` DENTRO de CHAVES_HISTORICO: o ancestral dizia que a
+# subarvore era registro do passado e ninguem o escutava.
+#
+# FECHAR PELA SIMETRIA TOTAL SERIA PIOR, e isto foi MEDIDO em 2026-10-15 sobre a
+# lei real, com as tres variantes implementadas e comparadas campo por campo:
+#
+#   NORMA e HISTORICO varrendo TODOS os segmentos .... 8 campos mudam,
+#                                                      e DOIS SAEM DE ESTADO
+#   subarvore declarada, ANTES da procedencia ........ 2 campos mudam,
+#                                                      e 1 sai de PROCEDENCIA
+#   subarvore declarada, DEPOIS da procedencia ....... 1 campo muda, e so o furo
+#
+# Os dois que sairiam de ESTADO sao
+# `REGRA_DE_IDENTIDADE.medicao_atual.geracoes_de_campo_alheio_em_producao` e
+# `...reivindicacoes_de_identidade`: a chave diz MEDICAO_ATUAL e o valor e
+# estado de verdade. Eles ficariam ESCONDIDOS atras de um ancestral normativo, e
+# campo que sai da classe medida sai tambem da exigencia de origem — e isso e
+# falhar ABERTO. A assimetria de ESTADO tem DIRECAO, e a direcao e segura: ele
+# varre todos os segmentos e por isso so pode ACRESCENTAR a classe medida.
+#
+# ENTAO A ASSIMETRIA SE FECHA ASSIM: a subarvore passa a poder falar, mas so
+# quando DECLARADA numa destas duas listas, e so DEPOIS da procedencia — para
+# que `procedencia` continue sendo metadado do campo IRMAO em vez de ser
+# engolida pelo ancestral. O que era acidente (uma regra varre, outra nao) passa
+# a ser DECISAO escrita, com o custo de cada alternativa medido acima.
+
+#: Subarvores que sao REGISTRO DO PASSADO por declaracao da chave do ancestral.
+#: CRIADA COM UMA, e a razao de ser exatamente uma esta na medicao acima.
+SUBARVORES_HISTORICAS = (
+    "correcao_de_registro",
+)
+
+#: Subarvores NORMATIVAS por declaracao do ancestral. VAZIA POR DECISAO, e a
+#: decisao esta medida: povoar esta lista com os prefixos de norma tiraria DOIS
+#: campos `medicao_atual` da classe medida, e campo fora da classe nao precisa
+#: mais de origem. Acrescentar um item aqui e um ATO que tem de vir com a
+#: medicao de QUEM sai de ESTADO — ha um teste que repete essa medicao a cada
+#: CI exatamente para que esta razao nao envelheca calada.
+SUBARVORES_NORMATIVAS = ()
+
 #: Quantas palavras tornam o campo uma FRASE em vez de uma declaracao.
 PALAVRAS_QUE_FAZEM_PROSA = 10
 
@@ -362,6 +409,18 @@ def classifica(caminho: str, valor, forma: str,
         return PROCEDENCIA, (
             f"a chave {folha!r} declara PROCEDENCIA, {'COM' if datada else 'SEM'} data: "
             "diz de onde o campo IRMAO veio e nao afirma nada sobre o mundo")
+    # A SUBARVORE FALA AQUI, e nao antes: a procedencia ja decidiu, entao
+    # `correcao_de_registro.procedencia` continua sendo metadado do campo IRMAO
+    # em vez de ser engolida pelo ancestral. Medido: mover isto para antes da
+    # procedencia muda 2 campos em vez de 1, e o segundo e uma procedencia.
+    ancestrais = [re.sub(r"\[\d+\]$", "", s) for s in caminho.split(".")[:-1]]
+    for s in ancestrais:
+        if s in SUBARVORES_HISTORICAS:
+            return HISTORICO, (f"a subarvore {s!r} e REGISTRO DO PASSADO por declaracao "
+                               "do ancestral: a chave esta em SUBARVORES_HISTORICAS, e "
+                               "sem esta regra o ancestral dizia e ninguem escutava")
+        if s in SUBARVORES_NORMATIVAS:
+            return NORMA, (f"a subarvore {s!r} e NORMATIVA por declaracao do ancestral")
     segmentos = [re.sub(r"\[\d+\]$", "", s) for s in caminho.split(".")]
     for s in segmentos:
         if s in CHAVES_ESTADO or s.startswith(PREFIXOS_ESTADO):
@@ -772,7 +831,7 @@ ISENTOS_DE_DERIVACAO = {
 #: torna essa edicao visivel em vez de silenciosa.
 LACRE_ISENTOS_SHA256 = "95f0037a92a02b8927ab105e8a70636176a0e48bafb0c12c4c9613b4778de448"
 LACRE_SAI_DA_CLASSE_SHA256 = "ec8160e63f571cbd7845d5663f63cdeedc30583afc5c4d06a7441a9163d3de92"
-LACRE_PROSA_SHA256 = "d8977c8bcd762848653f0b126238d7955f7f93ae95684fbb5000b835e806e88d"
+LACRE_PROSA_SHA256 = "2d878b3da0fb90a412615807cc0eef6a42194f1841ff547e12e1176323346557"
 
 LACRE_ISENTOS = (
     "constitution:global.campos_aceitos_pelo_servidor.procedencia",
@@ -896,6 +955,12 @@ LACRE_SAI_DA_CLASSE = (
 #: O julgamento de cada um dos 25 vive em `origem-das-declaracoes.yaml`, sob
 #: `prosa_julgada`, pelo mesmo motivo que o mapa de origem vive la: revisar um
 #: julgamento tem de ser leitura de DADOS, nao leitura de programa.
+#:
+#: ENCOLHEU DE 25 PARA 24 EM 2026-10-15, e encolher e exatamente o movimento que
+#: este lacre permite: fechar a assimetria da varredura fez
+#: `monolitos.john.correcao_de_registro.descricao` virar HISTORICO, que e o que
+#: a chave do ancestral sempre disse. O portao acusou a cura SOZINHO, com codigo
+#: 2 e dizendo o que fazer -- e foi a primeira cura desta classe.
 LACRE_PROSA = (
     'constitution:global.camadas_transversais.REGRA_UNICA.texto',
     'constitution:global.federation_authority.CLASSE_DE_AUTORIDADE.NAO_e',
@@ -907,7 +972,6 @@ LACRE_PROSA = (
     'constitution:global.transport_policy.acao',
     'constitution:minimum_federated_causal_thread.razao',
     'constitution:monolitos.core.fronteira_fisica.P1_07B_extracao_fisica',
-    'constitution:monolitos.john.correcao_de_registro.descricao',
     'contract_registry:contracts.liceu.anchor.authorization.1.1.0.authority_invariants[4]',
     'contract_registry:contracts.liceu.authority.human-decision.2.0.0.CORRECAO_DE_DESENHO.por_que_estava_errado',
     'contract_registry:contracts.liceu.cefeida.evidence.2.0.0.authority_invariants[0]',
