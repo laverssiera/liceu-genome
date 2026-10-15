@@ -879,3 +879,8 @@
   kind: claim
   statement: "A classe dos campos declarativos de estado esta em ZERO membros vivos, e esse zero mede a classe."
   asserted_by: "eu mesmo, no C25-06, e o portao repete a cada CI: a frase 'a classe chegou a ZERO' e o que armou o gatilho da FIT-020. Zero medido por um instrumento se le como zero da classe"
+
+- id: CLM-0155
+  kind: claim
+  statement: "O furo da extensao esta fechado: afirmacao que vive no tamanho de uma lista sob chave de estado passa a ser vista, classificada e coberta pelo mapa de origem."
+  asserted_by: "ninguem ainda - e o que a decisao do titular de 2026-10-15 manda aplicar, e so vale se o portao passar a ver as extensoes da LEI REAL e o mapa continuar em dia"

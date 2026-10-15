@@ -276,3 +276,31 @@ origens:
     classe: SAI_DA_CLASSE
     fonte: 'codigo dos 19 repositorios'
     razao: "o artefato de origem e o CODIGO dos 19 repositorios, e ele NAO esta no grafo nem ao alcance de CI nenhuma: a CI do kit ve o kit, a do genoma ve o genoma mais o kit, a do CORE ve o CORE. Derivar aqui exigiria uma varredura dos 19, que e outro instrumento. 'duplicado dentro de 4 dominios' e observacao, e a chave diz HIPOTESE — hipotese com numero e a pior combinacao, porque o numero parece medido"
+  'constitution:monolitos.archimedes.divida_conhecida':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios'
+    razao: 'a EXTENSAO desta lista afirma quantas dividas conhecidas o monolito tem, e as dividas sao achados de prosa sobre CODIGO, marcados pela propria lei com [CODIGO]. Nenhum artefato as enumera, entao nao sao derivaveis de artefato nenhum. Entrou na classe em 2026-10-15, quando o furo da EXTENSAO foi fechado (PRF-0184): antes a lista nao tinha folha onde ser vista, e o portao nunca chegava a classifica-la. O que ela pede e DATA E PROCEDENCIA, nao derivacao'
+  'constitution:monolitos.opera.divida_conhecida':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios'
+    razao: 'a EXTENSAO desta lista afirma quantas dividas conhecidas o monolito tem, e as dividas sao achados de prosa sobre CODIGO, marcados pela propria lei com [CODIGO]. Nenhum artefato as enumera, entao nao sao derivaveis de artefato nenhum. Entrou na classe em 2026-10-15, quando o furo da EXTENSAO foi fechado (PRF-0184): antes a lista nao tinha folha onde ser vista, e o portao nunca chegava a classifica-la. O que ela pede e DATA E PROCEDENCIA, nao derivacao'
+  'constitution:monolitos.fornecedores.a_verificar':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios'
+    razao: 'a EXTENSAO desta lista afirma quantas dividas conhecidas o monolito tem, e as dividas sao achados de prosa sobre CODIGO, marcados pela propria lei com [CODIGO]. Nenhum artefato as enumera, entao nao sao derivaveis de artefato nenhum. Entrou na classe em 2026-10-15, quando o furo da EXTENSAO foi fechado (PRF-0184): antes a lista nao tinha folha onde ser vista, e o portao nunca chegava a classifica-la. O que ela pede e DATA E PROCEDENCIA, nao derivacao'
+  'constitution:monolitos.cea.divida_conhecida':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios'
+    razao: 'a EXTENSAO desta lista afirma quantas dividas conhecidas o monolito tem, e as dividas sao achados de prosa sobre CODIGO, marcados pela propria lei com [CODIGO]. Nenhum artefato as enumera, entao nao sao derivaveis de artefato nenhum. Entrou na classe em 2026-10-15, quando o furo da EXTENSAO foi fechado (PRF-0184): antes a lista nao tinha folha onde ser vista, e o portao nunca chegava a classifica-la. O que ela pede e DATA E PROCEDENCIA, nao derivacao'
+  'constitution:monolitos.juridicotech.divida_conhecida':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios'
+    razao: 'a EXTENSAO desta lista afirma quantas dividas conhecidas o monolito tem, e as dividas sao achados de prosa sobre CODIGO, marcados pela propria lei com [CODIGO]. Nenhum artefato as enumera, entao nao sao derivaveis de artefato nenhum. Entrou na classe em 2026-10-15, quando o furo da EXTENSAO foi fechado (PRF-0184): antes a lista nao tinha folha onde ser vista, e o portao nunca chegava a classifica-la. O que ela pede e DATA E PROCEDENCIA, nao derivacao'
+  'constitution:monolitos.academia.divida_conhecida':
+    classe: SAI_DA_CLASSE
+    fonte: 'codigo dos 19 repositorios'
+    razao: 'a EXTENSAO desta lista afirma quantas dividas conhecidas o monolito tem, e as dividas sao achados de prosa sobre CODIGO, marcados pela propria lei com [CODIGO]. Nenhum artefato as enumera, entao nao sao derivaveis de artefato nenhum. Entrou na classe em 2026-10-15, quando o furo da EXTENSAO foi fechado (PRF-0184): antes a lista nao tinha folha onde ser vista, e o portao nunca chegava a classifica-la. O que ela pede e DATA E PROCEDENCIA, nao derivacao'
+  'constitution:adrs_pendentes':
+    classe: OUTRO_ARTEFATO
+    fonte: 'docs/ADR-*.md do liceu-protocol, campo Estado'
+    razao: 'a EXTENSAO desta lista afirma quantas ADRs estao pendentes, e isso E derivavel: a R0G do registry_check le o campo Estado dos ADRs e segue o campo referencia ate o portao que os exige. Entrou na classe em 2026-10-15, com o furo da EXTENSAO fechado. A lista foi deliberadamente MANTIDA vazia pelo C25-07 porque liceu_boundary_check.py:353 a le'

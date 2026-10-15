@@ -570,16 +570,25 @@ class OLacreDasDuasListasDeIsencao(unittest.TestCase):
         de 41 para 64 foi um ato, com a razao escrita no modulo e o sha256 movido
         aqui — e e este sha256 congelado que torna a edicao visivel.
         """
-        self.assertEqual(len(de.LACRE_ISENTOS), 4)
-        self.assertEqual(len(de.LACRE_SAI_DA_CLASSE), 64,
-                         "o lacre foi estendido de 41 para 64 em 2026-10-14; se mudou "
+        # SEGUNDO ATO DE CRESCIMENTO, 2026-10-15: fechar o furo da EXTENSAO
+        # (PRF-0184) trouxe SETE candidatos que o portao nunca via -- seis
+        # extensoes de divida_conhecida/a_verificar e a de adrs_pendentes. As
+        # seis sao SAI_DA_CLASSE (64 -> 70) e a de adrs_pendentes e isenta de
+        # derivacao (4 -> 5), porque ela E derivavel dos ADRs mas este portao
+        # roda do kit instalado e docs/ nao e empacotado. As duas razoes estao
+        # escritas no modulo, e os dois sha256 foram movidos a mao.
+        self.assertEqual(len(de.LACRE_ISENTOS), 5,
+                         "4 -> 5 em 2026-10-15, com o furo da extensao fechado")
+        self.assertEqual(len(de.LACRE_SAI_DA_CLASSE), 70,
+                         "41 -> 64 em 2026-10-14, e 64 -> 70 em 2026-10-15; se mudou "
                          "de novo, a razao tem de estar no modulo e o sha256 aqui")
         self.assertTrue(set(de.ISENTOS_DE_DERIVACAO) <= set(de.LACRE_ISENTOS),
                         "isencao viva fora do lacre")
         self.assertTrue(set(de.sai_da_classe_de(self.mapa)) <= set(de.LACRE_SAI_DA_CLASSE))
-        self.assertEqual(len(de.ISENTOS_DE_DERIVACAO), 0,
-                         "as isencoes zeraram com o lote 2; se voltarem, alguem "
-                         "desfez a cura ou acrescentou isencao")
+        self.assertEqual(len(de.ISENTOS_DE_DERIVACAO), 1,
+                         "zeraram com o lote 2 e voltaram a UMA em 2026-10-15, com o "
+                         "furo da extensao fechado: adrs_pendentes. Se o numero subir "
+                         "sem razao escrita no modulo, alguem desfez uma cura")
 
 
 class ORegistroHISTORICONaoSeDeriva(unittest.TestCase):
@@ -686,22 +695,29 @@ class OGatilhoDaFIT020(unittest.TestCase):
     def setUp(self):
         self.mapa = de.carrega_mapa()
 
-    def test_HOJE_a_classe_esta_em_ZERO_e_o_gatilho_ESTA_ARMADO(self):
-        """O lote 2 do item 2 levou a classe viva a zero, e o gatilho armou
-        sozinho. Este caso era o inverso — 'tem membros e NAO arma' — e virou
-        o que e: a classe foi curada.
+    def test_HOJE_a_classe_tem_UM_membro_e_o_gatilho_DESARMOU(self):
+        """O gatilho DESARMOU, e desarmou porque o instrumento ficou mais afiado.
 
-        A contrapartida ('com membros NAO arma') esta logo abaixo, sobre um mapa
-        SINTETICO, porque teste de mecanismo nao deve morrer quando o conteudo
-        que o mecanismo vigia e curado. E a terceira vez neste ciclo que eu
-        aprendo isso, e agora esta escrito aqui.
+        Em 2026-10-14 a classe chegou a ZERO e o gatilho armou. Em 2026-10-15 o
+        furo da EXTENSAO foi fechado (PRF-0184): a travessia rendia par so no
+        ramo escalar, e afirmacao que vive no TAMANHO de uma lista nao tinha
+        folha onde ser vista. Fechado o furo, apareceram SETE candidatos, e um
+        deles -- a extensao de `adrs_pendentes` -- E derivavel dos ADRs.
+
+        ENTAO O ZERO DE ONTEM ERA ZERO DO QUE O PORTAO VIA, e nao zero da
+        classe. O gatilho nao desarmou por regressao: desarmou porque a medicao
+        da pertinencia melhorou, e esse e o unico jeito honesto de um gatilho
+        mecanico se comportar.
+
+        Este teste guarda a DIRECAO: se a classe voltar a zero, que seja por
+        cura registrada, e quem a zerar tera de mexer aqui e dizer por que.
         """
-        self.assertEqual(de.classe_viva(self.mapa), [])
-        armado, texto = de.gatilho_fit_020(self.mapa)
-        self.assertTrue(armado)
-        self.assertIn("GATILHO ARMADO", texto)
-        self.assertIn("NAO e autorizacao", texto,
-                      "armar e avisar; a excecao ao freio e decisao do titular")
+        vivos = de.classe_viva(self.mapa)
+        self.assertEqual(vivos, ["constitution:adrs_pendentes"],
+                         "o unico membro vivo e a extensao de adrs_pendentes")
+        armado, razao = de.gatilho_fit_020(self.mapa)
+        self.assertFalse(armado, "o gatilho nao pode estar armado com membro vivo")
+        self.assertIn("1", razao)
 
     def test_com_membros_na_classe_o_gatilho_NAO_arma(self):
         """A contrapartida, em mapa sintetico: uma guarda que armasse sempre nao
@@ -789,6 +805,67 @@ class OArtefatoAusente(unittest.TestCase):
         with self.assertRaises(de.ClasseDefasada) as e:
             de.enumera(vazio)
         self.assertIn("artefato governado ausente", str(e.exception))
+
+
+class OFuroDaExtensaoEstaFechado(unittest.TestCase):
+    """O furo que a PRF-0184 enunciou, e a regra mais estreita que o fecha.
+
+    O teste que mais importa aqui e
+    `test_a_MESMA_afirmacao_nas_duas_formas`: ele nao confere a regra, confere
+    a SIMETRIA que faltava -- antes, a mesma afirmacao escrita como numero era
+    vista e escrita como extensao de lista nao era.
+    """
+
+    def test_a_MESMA_afirmacao_nas_duas_formas(self):
+        lei_numero = {"global": {"x": {"total": 16}}}
+        lei_lista = {"global": {"x": {"total": [f"n{i}" for i in range(16)]}}}
+        como_numero = [c for c, v in de.folhas(lei_numero) if de.forma_de(v)]
+        como_extensao = [c for c, _ in de.extensoes_de_estado(lei_lista)]
+        self.assertEqual(como_numero, ["global.x.total"])
+        self.assertEqual(como_extensao, ["global.x.total"],
+                         "a mesma afirmacao, como extensao, tem de ser vista")
+
+    def test_a_extensao_rende_o_COMPRIMENTO_e_nao_a_lista(self):
+        """Escalar mantem intacto tudo o que vem depois: classificacao, mapa,
+        lacre e derivacao trabalham sobre valor, nao sobre estrutura."""
+        lei = {"status": ["a", "b", "c"]}
+        self.assertEqual(list(de.extensoes_de_estado(lei)), [("status", 3)])
+
+    def test_lista_sob_chave_que_NAO_e_de_estado_fica_fora(self):
+        """A regra e a mais ESTREITA que fecha o furo. Lista sob chave de norma
+        nao entra, e isso esta na PRF-0184 como o que ela NAO cobre."""
+        lei = {"global": {"campos_exigidos_pelo_protocolo":
+                          {"campos": ["a", "b"]}}}
+        self.assertEqual(list(de.extensoes_de_estado(lei)), [])
+
+    def test_a_subarvore_excluida_continua_excluida(self):
+        lei = {"payload_schema": {"status": ["a", "b"]}}
+        self.assertEqual(list(de.extensoes_de_estado(lei)), [])
+
+    def test_lista_dentro_de_lista_e_alcancada(self):
+        lei = {"monolitos": [{"status": ["a"]}, {"status": ["b", "c"]}]}
+        self.assertEqual(list(de.extensoes_de_estado(lei)),
+                         [("monolitos[0].status", 1), ("monolitos[1].status", 2)])
+
+    def test_lista_VAZIA_tambem_afirma_e_tambem_e_vista(self):
+        """`adrs_pendentes: []` afirma 'nenhuma pendente'. Zero e afirmacao."""
+        self.assertEqual(list(de.extensoes_de_estado({"adrs_pendentes": []})),
+                         [("adrs_pendentes", 0)])
+
+    def test_a_extensao_e_classificada_ESTADO(self):
+        cat, _ = de.classifica("global.x.status", 3, de.EXTENSAO, ())
+        self.assertEqual(cat, de.ESTADO)
+
+    def test_a_lei_REAL_traz_as_sete(self):
+        """Sobre o kit instalado, nao sobre lei sintetica."""
+        kit = de.kit_instalado()
+        import yaml as _y
+        achadas = []
+        for nome in de.ARTEFATOS:
+            d = _y.safe_load((kit / nome).read_text(encoding="utf-8"))
+            achadas += list(de.extensoes_de_estado(d))
+        self.assertEqual(len(achadas), 7,
+                         f"a lei real traz 7 extensoes de estado; achei {len(achadas)}")
 
 
 if __name__ == "__main__":

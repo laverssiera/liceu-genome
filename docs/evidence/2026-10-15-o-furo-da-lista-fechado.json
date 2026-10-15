@@ -1,0 +1,47 @@
+{
+  "o_furo_que_se_fecha": "PRF-0184: a travessia folhas() rendia par (caminho, valor) so no ramo escalar; afirmacao na EXTENSAO de uma lista nao tinha folha onde ser vista",
+  "a_regra_mais_estreita_que_o_fecha": "chave em CHAVES_ESTADO com valor LISTA: a extensao e declaracao de estado. Rende o COMPRIMENTO, nao a lista, para manter escalar tudo o que vem depois",
+  "o_que_ela_revelou_na_lei_real": {
+    "extensoes_de_estado": 7,
+    "seis": "divida_conhecida e a_verificar de archimedes, opera, fornecedores, cea, juridicotech e academia -- achados de prosa sobre CODIGO, marcados pela propria lei com [CODIGO]",
+    "uma": "adrs_pendentes, com extensao ZERO -- a lista que o C25-07 manteve vazia de proposito porque liceu_boundary_check.py:353 a le"
+  },
+  "as_origens_atribuidas_uma_por_uma": {
+    "as_seis": {
+      "classe": "SAI_DA_CLASSE",
+      "razao": "nenhum artefato enumera as dividas; nao sao derivaveis de artefato nenhum, e o que pedem e DATA E PROCEDENCIA pela decisao de classe da UNK-0018"
+    },
+    "a_de_adrs_pendentes": {
+      "classe": "OUTRO_ARTEFATO",
+      "razao": "'ha 0 ADRs pendentes' E derivavel: a R0G le o campo Estado dos ADRs e segue o campo referencia ate o portao",
+      "isenta_de_derivacao": "a R0G roda do REPOSITORIO; este portao roda do KIT INSTALADO e docs/ nao e empacotado -- derivar aqui seria FINGIR ALCANCE, que e textualmente a razao das duas isencoes que o lote 2 do C25-06 curou"
+    }
+  },
+  "os_dois_lacres_refeitos_A_MAO": {
+    "LACRE_ISENTOS": {
+      "de": 4,
+      "para": 5
+    },
+    "LACRE_SAI_DA_CLASSE": {
+      "de": 64,
+      "para": 70,
+      "historico": "41 -> 64 em 2026-10-14, 64 -> 70 em 2026-10-15"
+    },
+    "porque_e_um_ATO": "o teste congela os dois tamanhos justamente para que crescer seja visivel; ele FALHOU com 5 != 4 e 70 != 64, que e o desenho funcionando"
+  },
+  "a_consequencia_que_o_portao_calcula_sozinho": {
+    "antes": "FIT-020: GATILHO ARMADO -- a classe chegou a ZERO",
+    "depois": "FIT-020 ADIADA: 1 membro(s) vivo(s) na classe. O gatilho arma quando chegar a ZERO",
+    "porque": "classe_viva() conta PROPRIO_ARTEFATO e OUTRO_ARTEFATO; a de adrs_pendentes e OUTRO_ARTEFATO. O gatilho NAO desarmou por regressao: desarmou porque a medicao da pertinencia melhorou"
+  },
+  "o_que_o_remedio_NAO_cobre_e_segue_aberto": [
+    "lista sob chave de nome NEUTRO: o classificador trabalha sobre nome de chave",
+    "afirmacao que vive numa RELACAO entre extensoes, do tipo 'estas duas listas tem o mesmo tamanho'",
+    "o furo da PROSA, o outro membro medido da classe (C25-06, a nota de 72 palavras do P1_07B), que pede remedio proprio"
+  ],
+  "verde": {
+    "testes_do_portao": 78,
+    "portao": "exit 0",
+    "mapa": "70 origens, 0 sem origem, 0 orfa"
+  }
+}
