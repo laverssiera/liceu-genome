@@ -15,6 +15,7 @@ nao e melhor que campo que envelhece calado.
 """
 import copy
 import pathlib
+import shutil
 import sys
 import tempfile
 import unittest
@@ -589,6 +590,17 @@ class OLacreDasDuasListasDeIsencao(unittest.TestCase):
                          "zeraram com o lote 2 e voltaram a UMA em 2026-10-15, com o "
                          "furo da extensao fechado: adrs_pendentes. Se o numero subir "
                          "sem razao escrita no modulo, alguem desfez uma cura")
+        # TERCEIRO LACRE, NASCIDO EM 2026-10-15: fechar o furo da PROSA.
+        # Ele nao CRESCEU de um tamanho anterior -- nasceu com 25, que e o
+        # tamanho medido da classe no dia. A razao de existir esta no modulo e
+        # foi medida: a mesma declaracao de estado, acolchoada com catorze
+        # palavras a mais, trocava "o portao RECUSOU" por "o portao PASSOU".
+        # PROSA era a unica classe em que se entrava escrevendo.
+        self.assertEqual(len(de.LACRE_PROSA), 25,
+                         "nasceu com 25 em 2026-10-15; se mudou, a razao tem de estar "
+                         "no modulo e o sha256 aqui. Encolher e o que uma CURA faz")
+        self.assertEqual(de.lacre(de.LACRE_PROSA), de.LACRE_PROSA_SHA256,
+                         "o lacre da prosa nao fecha com a lista")
 
 
 class ORegistroHISTORICONaoSeDeriva(unittest.TestCase):
@@ -866,6 +878,173 @@ class OFuroDaExtensaoEstaFechado(unittest.TestCase):
             achadas += list(de.extensoes_de_estado(d))
         self.assertEqual(len(achadas), 7,
                          f"a lei real traz 7 extensoes de estado; achei {len(achadas)}")
+
+
+class OFuroDaProsaEstaFechado(unittest.TestCase):
+    """PROSA era a unica classe em que se entrava SEM ATO.
+
+    O teste que sustenta esta classe e
+    `test_acolchoar_uma_declaracao_NAO_ESCAPA_mais`: ele nao confere a regra,
+    REPRODUZ a medicao que justificou o remedio. Antes dele, a mesma afirmacao
+    escrita curta era recusada e escrita com catorze palavras a mais passava --
+    e nenhuma das outras duas saidas da classe custa menos que editar o mapa,
+    editar o lacre e mover o sha256.
+    """
+
+    CURTA = "11 monolitos migrados"
+    LONGA = ("11 monolitos migrados ate agora, e o restante segue na fila por "
+             "decisao de sequencia do titular")
+
+    def setUp(self):
+        self.mapa = de.carrega_mapa()
+        self.julg = de.carrega_julgamento_da_prosa()
+
+    def _lei_com(self, valor):
+        """Uma copia da lei real com UM campo novo, e o portao perguntado nela."""
+        tmp = pathlib.Path(tempfile.mkdtemp(prefix="lei_prosa_"))
+        self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
+        orig = de.kit_instalado()
+        for nome in de.ARTEFATOS:
+            shutil.copy2(orig / nome, tmp / nome)
+        alvo = tmp / "liceu_constitution.yaml"
+        b = alvo.read_bytes()
+        fim = b"\r\n" if b.count(b"\r\n") else b"\n"
+        alvo.write_bytes(b.rstrip(b"\r\n") + fim
+                         + f"campo_novo_do_experimento: {valor}".encode("utf-8") + fim)
+        return de.enumera(tmp)
+
+    def _portao(self, achadas):
+        """A sequencia COMPLETA, na ordem de main().
+
+        Chamar so as guardas antigas aqui foi exatamente o erro que fez a
+        primeira medicao deste remedio dizer PASSOU: arranjo incompleto faz
+        conserto parecer no-op e no-op parecer conserto.
+        """
+        de.exige_mapa_em_dia(achadas, self.mapa)
+        de.exige_derivacao_declarada(self.mapa)
+        de.exige_prosa_julgada(achadas, self.julg)
+        de.exige_lacre(self.mapa)
+
+    def test_acolchoar_uma_declaracao_NAO_ESCAPA_mais(self):
+        achadas = self._lei_com(self.LONGA)
+        d = next(x for x in achadas if x.caminho == "campo_novo_do_experimento")
+        self.assertEqual(d.categoria, de.PROSA, "o acolchoamento ainda cai em PROSA")
+        with self.assertRaises(de.ClasseDefasada) as ctx:
+            self._portao(achadas)
+        self.assertIn("SEM JULGAMENTO", str(ctx.exception))
+
+    def test_a_MESMA_afirmacao_curta_tambem_e_recusada(self):
+        """A simetria: nenhuma das duas formas e de graca."""
+        achadas = self._lei_com(self.CURTA)
+        d = next(x for x in achadas if x.caminho == "campo_novo_do_experimento")
+        self.assertEqual(d.categoria, de.ESTADO)
+        with self.assertRaises(de.ClasseDefasada) as ctx:
+            self._portao(achadas)
+        self.assertIn("sem origem declarada", str(ctx.exception))
+
+    def test_a_lei_REAL_passa_com_os_25_julgados(self):
+        achadas = de.enumera(de.kit_instalado())
+        self._portao(achadas)
+        sem, orfas = de.confere_prosa(achadas, self.julg)
+        self.assertEqual((sem, orfas), ([], []))
+
+    def test_julgamento_ORFAO_derruba_o_portao(self):
+        """Campo curado e julgamento esquecido: falha fechado na outra direcao."""
+        achadas = de.enumera(de.kit_instalado())
+        sujo = dict(self.julg)
+        sujo["constitution:campo_que_nao_existe"] = de.Julgamento(
+            "nada", de.ARGUMENTA, False, "inventado pelo teste")
+        with self.assertRaises(de.ClasseDefasada) as ctx:
+            de.exige_prosa_julgada(achadas, sujo)
+        self.assertIn("nao e mais PROSA", str(ctx.exception))
+
+    def test_natureza_INVENTADA_e_recusada_na_leitura(self):
+        tmp = pathlib.Path(tempfile.mkdtemp(prefix="julg_"))
+        self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
+        q = tmp / "mapa.yaml"
+        q.write_text("origens: {}\nprosa_julgada:\n"
+                     "  'x:y':\n    afirmacao: algo\n    natureza: QUASE_NORMA\n"
+                     "    derivavel: false\n    razao: teste\n",
+                     encoding="utf-8", newline="\n")
+        with self.assertRaises(de.ClasseDefasada) as ctx:
+            de.carrega_julgamento_da_prosa(q)
+        self.assertIn("nao existe", str(ctx.exception))
+
+    def test_derivavel_em_PROSA_e_recusado(self):
+        """`derivavel` e a medida da divida, e divida medida por prosa nao soma."""
+        tmp = pathlib.Path(tempfile.mkdtemp(prefix="julg_"))
+        self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
+        q = tmp / "mapa.yaml"
+        q.write_text("origens: {}\nprosa_julgada:\n"
+                     "  'x:y':\n    afirmacao: algo\n    natureza: ARGUMENTA\n"
+                     "    derivavel: 'mais ou menos'\n    razao: teste\n",
+                     encoding="utf-8", newline="\n")
+        with self.assertRaises(de.ClasseDefasada) as ctx:
+            de.carrega_julgamento_da_prosa(q)
+        self.assertIn("booleano", str(ctx.exception))
+
+    def test_julgamento_sem_AFIRMACAO_e_recusado(self):
+        """Dizer O QUE a frase afirma e o trabalho todo."""
+        tmp = pathlib.Path(tempfile.mkdtemp(prefix="julg_"))
+        self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
+        q = tmp / "mapa.yaml"
+        q.write_text("origens: {}\nprosa_julgada:\n"
+                     "  'x:y':\n    afirmacao: '   '\n    natureza: ARGUMENTA\n"
+                     "    derivavel: false\n    razao: teste\n",
+                     encoding="utf-8", newline="\n")
+        with self.assertRaises(de.ClasseDefasada) as ctx:
+            de.carrega_julgamento_da_prosa(q)
+        self.assertIn("afirmacao", str(ctx.exception))
+
+    def test_julgar_um_campo_NOVO_fora_do_lacre_e_recusado(self):
+        """A fuga de volta: crescer a classe em silencio."""
+        import unittest.mock as mock
+        achadas = de.enumera(de.kit_instalado())
+        sujo = dict(self.julg)
+        sujo["constitution:global.transport_policy.acao_nova"] = de.Julgamento(
+            "algo", de.ARGUMENTA, False, "entrou sem mover o sha256")
+        with mock.patch.object(de, "carrega_julgamento_da_prosa", lambda *_a: sujo):
+            with self.assertRaises(de.ClasseDefasada) as ctx:
+                de.exige_lacre(self.mapa)
+        self.assertIn("FORA DO LACRE", str(ctx.exception))
+
+    def test_a_classe_e_MEDIDA_por_natureza_e_nao_so_contada(self):
+        """PROSA nao era um saco de argumentos: medido, so 4 dos 25 argumentam.
+
+        Este numero e o achado do remedio. Se ele mudar, alguem recategorizou um
+        membro, e recategorizar e um ato que pede razao escrita no YAML.
+        """
+        d = de.divida_da_prosa(self.julg)
+        self.assertEqual(d[de.AFIRMA_ESTADO], 11)
+        self.assertEqual(d[de.ARGUMENTA], 4)
+        self.assertEqual(d[de.REGISTRO_PASSADO], 6)
+        self.assertEqual(d[de.NORMA_NAO_REGISTRADA], 4)
+        self.assertEqual(sum(d[n] for n in sorted(de.NATUREZAS_DA_PROSA)), 25)
+        self.assertEqual(d["AFIRMACAO_DERIVAVEL"], 9,
+                         "a DIVIDA: 9 afirmacoes deriváveis presas dentro de frases")
+
+    def test_o_remedio_NAO_extrai_numero_de_dentro_da_frase(self):
+        """A recusa deliberada, e o campo que a justifica.
+
+        `o_que_isso_revisa` cita '5 monolitos' de uma versao REVOGADA. Extrair e
+        exigir origem converteria o registro de uma correcao em declaracao sobre
+        o mundo de hoje.
+        """
+        k = ("constitution:global.federation_cognition.REGRA_UNIVERSAL."
+             "o_que_isso_revisa")
+        j = self.julg[k]
+        self.assertEqual(j.natureza, de.REGISTRO_PASSADO)
+        self.assertFalse(j.derivavel)
+        self.assertNotIn(k, self.mapa,
+                         "um REGISTRO_PASSADO nao entra no mapa de origem")
+
+    def test_o_campo_que_a_PRF_0184_nomeou_esta_julgado(self):
+        """O segundo membro medido da classe de omissao, por nome."""
+        k = "constitution:monolitos.core.fronteira_fisica.P1_07B_extracao_fisica"
+        self.assertIn(k, self.julg)
+        self.assertEqual(self.julg[k].natureza, de.AFIRMA_ESTADO)
+        self.assertTrue(self.julg[k].derivavel)
+        self.assertIn(k, de.LACRE_PROSA)
 
 
 if __name__ == "__main__":

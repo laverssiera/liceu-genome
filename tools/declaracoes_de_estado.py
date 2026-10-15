@@ -172,6 +172,38 @@ SAI_DA_CLASSE = "SAI_DA_CLASSE"
 class ClasseDefasada(RuntimeError):
     """O mapa de origem e a lei divergiram. Falha fechado de proposito."""
 
+#: A NATUREZA de um membro de PROSA: POR QUE a frase caiu na classe.
+#:
+#: Sem isto, PROSA e um saco com quatro coisas diferentes dentro, e nenhuma
+#: medicao da classe diz nada. Medido em 2026-10-15 sobre a lei real: dos 25
+#: membros, nem todos sao "argumento" -- ha estado escondido em frase, ha
+#: registro do passado e ha NORMA que caiu aqui so porque a chave nao esta
+#: registrada. Nomear a natureza e o que torna a cura enderecavel.
+AFIRMA_ESTADO = "AFIRMA_ESTADO"
+ARGUMENTA = "ARGUMENTA"
+REGISTRO_PASSADO = "REGISTRO_PASSADO"
+NORMA_NAO_REGISTRADA = "NORMA_NAO_REGISTRADA"
+NATUREZAS_DA_PROSA = frozenset({AFIRMA_ESTADO, ARGUMENTA, REGISTRO_PASSADO,
+                                NORMA_NAO_REGISTRADA})
+
+
+@dataclass(frozen=True)
+class Julgamento:
+    """O julgamento escrito de um membro de PROSA.
+
+    `derivavel` e sobre a AFIRMACAO, nao sobre o campo: diz se o que a frase
+    afirma seria derivavel de algum artefato se estivesse escrito como campo.
+    E a medida da DIVIDA, e nao uma promessa de derivacao -- derivar de dentro
+    de uma frase exigiria editar texto, e o portao nao faz isso. A cura ja esta
+    escrita neste modulo, no comentario das derivacoes: "a cura deles e a frase
+    deixar de carregar o numero, nao o numero mudar".
+    """
+    afirmacao: str
+    natureza: str
+    derivavel: bool
+    razao: str
+
+
 
 @dataclass(frozen=True)
 class Origem:
@@ -477,6 +509,139 @@ def exige_mapa_em_dia(achadas: list[Declaracao], mapa: dict[str, Origem]) -> Non
             + "; ".join(partes)
             + ". Isto falha FECHADO: mapa que envelhece calado e a classe que ele corrige.")
 
+# ---------------------------------------------------------------------------
+# O FURO DA PROSA, e a unica classe em que se entrava SEM ATO
+# ---------------------------------------------------------------------------
+# O DEFEITO, medido em 2026-10-15 e nao deduzido. A mesma afirmacao, escrita
+# nas duas formas, num campo novo da lei:
+#
+#   "11 monolitos migrados"                      -> ESTADO, e o portao RECUSOU
+#   "11 monolitos migrados ate agora, e o         -> PROSA, e o portao PASSOU
+#    restante segue na fila por decisao de
+#    sequencia do titular"
+#
+# Fugir da regra do titular custava CATORZE PALAVRAS. E o custo das outras duas
+# saidas, pela doutrina que este modulo ja escreve, e outro: para SAI_DA_CLASSE
+# exige-se editar o mapa, editar `LACRE_SAI_DA_CLASSE` e mover o sha256
+# congelado no teste. PROSA era a UNICA classe em que se entrava escrevendo.
+#
+# E o argumento do lacre, que este modulo ja usou duas vezes, vale aqui com mais
+# forca: "a razao e prosa e ninguem a confere". Em PROSA nao havia nem razao.
+#
+# A REGRA E A MAIS ESTREITA QUE FECHA ESTE FURO: todo membro de PROSA tem de
+# estar JULGADO por escrito e DENTRO de um lacre por sha256, e a guarda falha
+# fechado nas duas direcoes -- membro sem julgamento e julgamento cujo campo
+# deixou de ser PROSA. Entrar na classe passa a custar o mesmo que entrar nas
+# outras duas: um ato visivel.
+#
+# O QUE ELA NAO FAZ, de proposito: nao EXTRAI a afirmacao de dentro da frase. O
+# campo `REGRA_UNIVERSAL.o_que_isso_revisa` e a razao medida dessa recusa -- ele
+# diz "a versao 1.6.0 dizia que 5 monolitos nao tinham camada cognitiva.
+# Errado: todos tem", e o 5 e CITACAO de uma afirmacao revogada. Extrair e
+# exigir origem para ele converteria o registro de uma correcao em declaracao
+# sobre o mundo de hoje, que e a mesma familia do erro que
+# `baseline_constitution_version` ja corrige neste modulo. Nomear continua sendo
+# mais honesto que classificar; o que muda e que nomear passa a ser obrigatorio.
+#
+# O QUE SEGUE ABERTO, medido e nao suposto:
+#   - a ASSIMETRIA DA VARREDURA. A regra de ESTADO olha TODOS os segmentos do
+#     caminho; as de NORMA e HISTORICO olham so o ultimo (`_folha_final`). Por
+#     isso `monolitos.john.correcao_de_registro.descricao` cai em PROSA, com
+#     `correcao_de_registro` DENTRO de CHAVES_HISTORICO. Medido: varrer todos os
+#     segmentos moveria 2 campos para HISTORICO e 6 para NORMA -- e DOIS desses
+#     seis sao `REGRA_DE_IDENTIDADE.medicao_atual.*`, que sao estado de verdade
+#     e seriam ESCONDIDOS atras do ancestral normativo. Entao alargar a varredura
+#     NAO e obviamente certo, e por isso fica nomeado em vez de corrigido.
+#   - frase longa SEM numero e SEM palavra de situacao nunca chega a ser
+#     candidata, porque `forma_de` filtra antes da classificacao. Esse furo esta
+#     ABAIXO de PROSA e pede remedio proprio.
+
+
+def carrega_julgamento_da_prosa(
+        caminho: pathlib.Path | None = None) -> dict[str, Julgamento]:
+    """Julgamento por membro, lido do MESMO YAML do mapa e pelo mesmo motivo.
+
+    Dado separado do codigo para que revisa-lo seja leitura de dados.
+    """
+    pth = caminho or MAPA
+    if not pth.exists():
+        return {}
+    bruto = yaml.safe_load(pth.read_text(encoding="utf-8")) or {}
+    fora: dict[str, Julgamento] = {}
+    for chave, j in (bruto.get("prosa_julgada") or {}).items():
+        nat = j.get("natureza")
+        if nat not in NATUREZAS_DA_PROSA:
+            raise ClasseDefasada(
+                f"{chave}: natureza {nat!r} nao existe. As quatro sao "
+                f"{sorted(NATUREZAS_DA_PROSA)}, e inventar uma quinta aqui seria a "
+                "mesma fuga que o lacre fecha.")
+        if not isinstance(j.get("derivavel"), bool):
+            raise ClasseDefasada(
+                f"{chave}: `derivavel` tem de ser booleano, e veio "
+                f"{j.get('derivavel')!r}. Ele e a medida da divida, e divida medida "
+                "por prosa nao se soma.")
+        if not str(j.get("afirmacao", "")).strip():
+            raise ClasseDefasada(
+                f"{chave}: sem `afirmacao`. Dizer O QUE a frase afirma e o trabalho "
+                "todo — julgamento sem isso e so uma linha a mais na lista.")
+        fora[chave] = Julgamento(j["afirmacao"], nat, j["derivavel"],
+                                 j.get("razao", ""))
+    return fora
+
+
+def prosa(achadas: list[Declaracao]) -> list[Declaracao]:
+    return [d for d in achadas if d.categoria == PROSA]
+
+
+def confere_prosa(achadas: list[Declaracao],
+                  julg: dict[str, Julgamento]) -> tuple[list[str], list[str]]:
+    """(membros de PROSA sem julgamento, julgamentos cujo campo nao e mais PROSA)."""
+    presentes = {d.chave for d in prosa(achadas)}
+    return sorted(presentes - set(julg)), sorted(set(julg) - presentes)
+
+
+def exige_prosa_julgada(achadas: list[Declaracao],
+                        julg: dict[str, Julgamento]) -> None:
+    """Falha FECHADO nas duas direcoes, pelo mesmo motivo que o mapa.
+
+    Sem julgamento: alguem acolchoou uma declaracao e entrou na classe de graca.
+    Julgamento orfao: o campo foi curado ou reescrito e o julgamento ficou para
+    tras — e julgamento que envelhece calado e o defeito que ele serve para
+    corrigir.
+    """
+    sem, orfas = confere_prosa(achadas, julg)
+    if not (sem or orfas):
+        return
+    partes = []
+    if sem:
+        partes.append(
+            f"{len(sem)} membro(s) de PROSA SEM JULGAMENTO: "
+            + ", ".join(sem[:6]) + (" ..." if len(sem) > 6 else "")
+            + ". Acolchoar uma declaracao de estado alem de "
+            f"{PALAVRAS_QUE_FAZEM_PROSA} palavras NAO e mais saida de graca")
+    if orfas:
+        partes.append(
+            f"{len(orfas)} julgamento(s) cujo campo nao e mais PROSA: "
+            + ", ".join(orfas[:6]) + (" ..." if len(orfas) > 6 else "")
+            + ". Se o campo foi curado, tire o julgamento daqui e mova o sha256 — "
+            "encolher e o movimento que o lacre permite")
+    raise ClasseDefasada("a classe PROSA e o julgamento divergiram — "
+                         + "; ".join(partes))
+
+
+def divida_da_prosa(julg: dict[str, Julgamento]) -> dict[str, int]:
+    """A classe MEDIDA: quantos por natureza, e quantos com afirmacao derivavel.
+
+    Contar a parte e o que torna a cura medivel — e o mesmo motivo pelo qual
+    este modulo conta procedencias COM e SEM data em vez de somar as duas.
+    """
+    conta = {n: 0 for n in sorted(NATUREZAS_DA_PROSA)}
+    for j in julg.values():
+        conta[j.natureza] += 1
+    conta["AFIRMACAO_DERIVAVEL"] = sum(1 for j in julg.values() if j.derivavel)
+    return conta
+
+
 
 # ---------------------------------------------------------------------------
 # As derivacoes de verdade. Classificar um campo como derivavel e dizer que ele
@@ -607,6 +772,7 @@ ISENTOS_DE_DERIVACAO = {
 #: torna essa edicao visivel em vez de silenciosa.
 LACRE_ISENTOS_SHA256 = "95f0037a92a02b8927ab105e8a70636176a0e48bafb0c12c4c9613b4778de448"
 LACRE_SAI_DA_CLASSE_SHA256 = "ec8160e63f571cbd7845d5663f63cdeedc30583afc5c4d06a7441a9163d3de92"
+LACRE_PROSA_SHA256 = "d8977c8bcd762848653f0b126238d7955f7f93ae95684fbb5000b835e806e88d"
 
 LACRE_ISENTOS = (
     "constitution:global.campos_aceitos_pelo_servidor.procedencia",
@@ -714,6 +880,50 @@ LACRE_SAI_DA_CLASSE = (
     'constitution:monolitos.academia.divida_conhecida',
 )
 
+#: O TERCEIRO LACRE, e o que fecha a saida mais barata de todas.
+#:
+#: As duas primeiras listas lacradas custam um ATO para crescer: editar o mapa
+#: ou a lista, e mover o sha256 congelado no teste. PROSA nao custava nada —
+#: medido em 2026-10-15, escrever a MESMA declaracao de estado com catorze
+#: palavras a mais trocava "o portao RECUSOU" por "o portao PASSOU". Era a
+#: unica classe em que se entrava escrevendo.
+#:
+#: CRIADO COM 25, que e o tamanho medido da classe no dia em que o lacre nasceu.
+#: A lista foi GERADA do enumerador e nao transcrita. Como as outras duas: SO
+#: ENCOLHE, e encolher e o que uma cura faz — reescrever o campo para que a
+#: afirmacao deixe de viver dentro da frase tira-o daqui.
+#:
+#: O julgamento de cada um dos 25 vive em `origem-das-declaracoes.yaml`, sob
+#: `prosa_julgada`, pelo mesmo motivo que o mapa de origem vive la: revisar um
+#: julgamento tem de ser leitura de DADOS, nao leitura de programa.
+LACRE_PROSA = (
+    'constitution:global.camadas_transversais.REGRA_UNICA.texto',
+    'constitution:global.federation_authority.CLASSE_DE_AUTORIDADE.NAO_e',
+    'constitution:global.federation_authority.FALLBACK.REQUISITO_NOVO.CONSEQUENCIA_DURA',
+    'constitution:global.federation_authority.MAE_REDUNDANTE.TESTEMUNHA.o_que_resolve.quorum',
+    'constitution:global.federation_authority.delegacao.universalidade',
+    'constitution:global.federation_cognition.REGRA_UNIVERSAL.o_que_isso_revisa',
+    'constitution:global.federation_scale.vocabulario_rejeitado.planetary.evidencia',
+    'constitution:global.transport_policy.acao',
+    'constitution:minimum_federated_causal_thread.razao',
+    'constitution:monolitos.core.fronteira_fisica.P1_07B_extracao_fisica',
+    'constitution:monolitos.john.correcao_de_registro.descricao',
+    'contract_registry:contracts.liceu.anchor.authorization.1.1.0.authority_invariants[4]',
+    'contract_registry:contracts.liceu.authority.human-decision.2.0.0.CORRECAO_DE_DESENHO.por_que_estava_errado',
+    'contract_registry:contracts.liceu.cefeida.evidence.2.0.0.authority_invariants[0]',
+    'contract_registry:contracts.liceu.hub.planning-request.1.0.0.authority_invariants[4]',
+    'contract_registry:meta.contagem_removida',
+    'contract_registry:meta.escopo',
+    'contract_registry:meta.nota_legal_coverage',
+    'event_reconciliation_ledger:P2_5B_missing_producer_amostra.cefeida.causal.analyze.pergunta_aberta',
+    'event_reconciliation_ledger:P2_5B_missing_producer_amostra.cefeida.digital_twin.query.pergunta_aberta',
+    'event_reconciliation_ledger:P2_5B_missing_producer_amostra.cefeida.temporal.predict.pergunta_aberta',
+    'event_registry:events.hub.planning.requested.nota',
+    'event_registry:resumo.contagem_removida',
+    'producer_registry:meta.external_effect_regra',
+    'producer_registry:producers.liceu.authority.NAO_E_MONOLITO_SOBERANO',
+)
+
 
 def lacre(chaves) -> str:
     return hashlib.sha256("\n".join(sorted(chaves)).encode("utf-8")).hexdigest()
@@ -740,6 +950,15 @@ def exige_lacre(mapa: dict[str, Origem]) -> None:
             f"{', '.join(novos)}. Sem lacre bastaria classificar um campo novo como "
             "nao-derivavel para fugir da regra, porque a razao e prosa e ninguem a "
             "confere. A lista so encolhe.")
+
+    atuais_prosa = set(carrega_julgamento_da_prosa())
+    if not atuais_prosa <= set(LACRE_PROSA):
+        novos = sorted(atuais_prosa - set(LACRE_PROSA))
+        raise ClasseDefasada(
+            f"{len(novos)} julgamento(s) de PROSA FORA DO LACRE: "
+            f"{', '.join(novos)}. Julgar um campo novo sem mover o sha256 seria a "
+            "fuga de volta: a classe cresceria em silencio, que e o que as outras "
+            "duas listas ja proibem. A lista so encolhe.")
 
 
 def classe_viva(mapa: dict[str, Origem]) -> list[str]:
@@ -869,6 +1088,7 @@ def main(argv=None) -> int:
     cats = por_categoria(achadas)
     est = estados(achadas)
     mapa = carrega_mapa()
+    julgamento_da_prosa = carrega_julgamento_da_prosa()
 
     print("DECLARACOES DE ESTADO NA LEI — derivadas, nao escritas")
     print("=" * 74)
@@ -968,6 +1188,7 @@ def main(argv=None) -> int:
     if a.exigir_mapa:
         exige_mapa_em_dia(achadas, mapa)
         exige_derivacao_declarada(mapa)
+        exige_prosa_julgada(achadas, julgamento_da_prosa)
         exige_lacre(mapa)
         # A DERIVA tambem para a CI: fonte sumida nao e "0 por coincidencia".
         derivas = [r for r in confere_derivaveis(achadas, carrega_artefatos(kit))
@@ -979,9 +1200,19 @@ def main(argv=None) -> int:
         print("\nmapa de origem EM DIA: todo ESTADO tem origem, toda origem tem campo,")
         print(f"todo derivavel tem derivacao ou isencao nomeada "
               f"({len(DERIVACOES)} derivadas, {len(ISENTOS_DE_DERIVACAO)} isentas),")
-        print(f"as duas listas de isencao estao DENTRO do lacre "
-              f"({len(LACRE_ISENTOS)} + {len(LACRE_SAI_DA_CLASSE)} lacrados, so encolhem),")
+        print(f"as tres listas lacradas estao DENTRO do lacre "
+              f"({len(LACRE_ISENTOS)} + {len(LACRE_SAI_DA_CLASSE)} + "
+              f"{len(LACRE_PROSA)} lacrados, so encolhem),")
         print("e nenhuma derivacao perdeu a fonte.")
+        d = divida_da_prosa(julgamento_da_prosa)
+        print(f"\nPROSA JULGADA: {len(julgamento_da_prosa)} membro(s), todos dentro do "
+              f"lacre. Entrar na classe custa um ATO.")
+        print(f"  afirma estado ......... {d[AFIRMA_ESTADO]}")
+        print(f"  argumenta ............. {d[ARGUMENTA]}")
+        print(f"  registro do passado ... {d[REGISTRO_PASSADO]}")
+        print(f"  norma nao registrada .. {d[NORMA_NAO_REGISTRADA]}")
+        print(f"  DIVIDA: {d['AFIRMACAO_DERIVAVEL']} com afirmacao DERIVAVEL de artefato — "
+              "a cura de cada um e a frase deixar de carregar o numero.")
     return 0
 
 
