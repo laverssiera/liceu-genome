@@ -14,6 +14,7 @@ E `OMapaFalhaFechado` cobre as duas direcoes, porque mapa que envelhece calado
 nao e melhor que campo que envelhece calado.
 """
 import copy
+import re
 import pathlib
 import shutil
 import sys
@@ -596,9 +597,14 @@ class OLacreDasDuasListasDeIsencao(unittest.TestCase):
         # foi medida: a mesma declaracao de estado, acolchoada com catorze
         # palavras a mais, trocava "o portao RECUSOU" por "o portao PASSOU".
         # PROSA era a unica classe em que se entrava escrevendo.
-        self.assertEqual(len(de.LACRE_PROSA), 25,
-                         "nasceu com 25 em 2026-10-15; se mudou, a razao tem de estar "
-                         "no modulo e o sha256 aqui. Encolher e o que uma CURA faz")
+        # ENCOLHEU PARA 24 NO MESMO DIA, e por uma CURA: fechar a assimetria
+        # da varredura fez correcao_de_registro.descricao virar HISTORICO, que e
+        # o que a chave do ancestral sempre disse. O portao acusou sozinho, com
+        # codigo 2, e foi a primeira cura desta classe.
+        self.assertEqual(len(de.LACRE_PROSA), 24,
+                         "nasceu com 25 e encolheu para 24 em 2026-10-15, pela cura da "
+                         "assimetria; se mudou, a razao tem de estar no modulo e o "
+                         "sha256 aqui. Encolher e o que uma CURA faz")
         self.assertEqual(de.lacre(de.LACRE_PROSA), de.LACRE_PROSA_SHA256,
                          "o lacre da prosa nao fecha com a lista")
 
@@ -942,8 +948,10 @@ class OFuroDaProsaEstaFechado(unittest.TestCase):
             self._portao(achadas)
         self.assertIn("sem origem declarada", str(ctx.exception))
 
-    def test_a_lei_REAL_passa_com_os_25_julgados(self):
+    def test_a_lei_REAL_passa_com_os_24_julgados(self):
         achadas = de.enumera(de.kit_instalado())
+        self.assertEqual(len(self.julg), 24,
+                         "eram 25 e a cura da assimetria deixou 24")
         self._portao(achadas)
         sem, orfas = de.confere_prosa(achadas, self.julg)
         self.assertEqual((sem, orfas), ([], []))
@@ -1017,9 +1025,11 @@ class OFuroDaProsaEstaFechado(unittest.TestCase):
         d = de.divida_da_prosa(self.julg)
         self.assertEqual(d[de.AFIRMA_ESTADO], 11)
         self.assertEqual(d[de.ARGUMENTA], 4)
-        self.assertEqual(d[de.REGISTRO_PASSADO], 6)
+        self.assertEqual(d[de.REGISTRO_PASSADO], 5,
+                         "eram 6 e viraram 5 no mesmo dia: correcao_de_registro."
+                         "descricao foi CURADO para HISTORICO pela assimetria fechada")
         self.assertEqual(d[de.NORMA_NAO_REGISTRADA], 4)
-        self.assertEqual(sum(d[n] for n in sorted(de.NATUREZAS_DA_PROSA)), 25)
+        self.assertEqual(sum(d[n] for n in sorted(de.NATUREZAS_DA_PROSA)), 24)
         self.assertEqual(d["AFIRMACAO_DERIVAVEL"], 9,
                          "a DIVIDA: 9 afirmacoes deriváveis presas dentro de frases")
 
@@ -1045,6 +1055,111 @@ class OFuroDaProsaEstaFechado(unittest.TestCase):
         self.assertEqual(self.julg[k].natureza, de.AFIRMA_ESTADO)
         self.assertTrue(self.julg[k].derivavel)
         self.assertIn(k, de.LACRE_PROSA)
+
+
+class AAssimetriaDaVarreduraEstaFechada(unittest.TestCase):
+    """A subarvore passa a poder falar, mas so quando DECLARADA.
+
+    O teste que sustenta esta classe e
+    `test_fechar_pelos_DOIS_lados_tiraria_DOIS_campos_de_ESTADO`: ele nao
+    confere a regra, REPETE A MEDICAO que decidiu nao fechar pela simetria
+    total. A razao de `SUBARVORES_NORMATIVAS` estar vazia e prosa no modulo, e
+    prosa envelhece calada -- este teste faz a CI recalcular o custo a cada
+    execucao.
+    """
+
+    def setUp(self):
+        self.kit = de.kit_instalado()
+        self.achadas = de.enumera(self.kit)
+        self.por = {d.chave: d for d in self.achadas}
+
+    # ------------------------------------------------------------------ o furo
+    def test_o_ancestral_HISTORICO_agora_e_escutado(self):
+        """`correcao_de_registro` estava em CHAVES_HISTORICO e caia em PROSA."""
+        d = self.por["constitution:monolitos.john.correcao_de_registro.descricao"]
+        self.assertEqual(d.categoria, de.HISTORICO)
+        self.assertIn("declaracao do ancestral", d.regra)
+
+    def test_a_PROCEDENCIA_da_mesma_subarvore_NAO_foi_engolida(self):
+        """A regra fala DEPOIS da procedencia, e e por isso que ela existe ali.
+
+        Medido: mover a regra para antes da procedencia muda 2 campos em vez de
+        1, e o segundo e esta procedencia — que e metadado do campo IRMAO.
+        """
+        d = self.por["constitution:monolitos.john.correcao_de_registro.procedencia"]
+        self.assertEqual(d.categoria, de.PROCEDENCIA)
+
+    def test_subarvore_NAO_declarada_continua_sem_falar(self):
+        """A regra e a mais estreita: so a chave declarada na lista fala."""
+        cat, _ = de.classifica("global.alguma_coisa.erro_corrigido_antigo.total", 3,
+                               "numero+substantivo", ())
+        self.assertEqual(cat, de.ESTADO,
+                         "ancestral que NAO esta na lista nao classifica nada")
+
+    # ------------------------------------- a razao de nao fechar pelos dois lados
+    def test_fechar_pelos_DOIS_lados_tiraria_DOIS_campos_de_ESTADO(self):
+        """A MEDICAO que decidiu a forma, repetida pela CI.
+
+        Se alguem povoar `SUBARVORES_NORMATIVAS` com os prefixos de norma, estes
+        dois campos saem da classe medida — e campo fora da classe medida nao
+        precisa mais de origem, o que e falhar ABERTO.
+        """
+        alvos = [
+            "constitution:global.federation_cognition.REGRA_DE_IDENTIDADE."
+            "medicao_atual.geracoes_de_campo_alheio_em_producao",
+            "constitution:global.federation_cognition.REGRA_DE_IDENTIDADE."
+            "medicao_atual.reivindicacoes_de_identidade",
+        ]
+        for k in alvos:
+            self.assertEqual(self.por[k].categoria, de.ESTADO,
+                             f"{k} e estado de verdade: a chave diz medicao_atual")
+            self.assertIn(k, de.carrega_mapa(), "e por isso ele tem origem declarada")
+
+        # quantos campos sairiam de ESTADO se o ancestral normativo falasse
+        sairiam = []
+        for d in self.achadas:
+            if d.categoria != de.ESTADO:
+                continue
+            ancestrais = [re.sub(r"\[\d+\]$", "", s)
+                          for s in d.caminho.split(".")[:-1]]
+            if any(s in de.CHAVES_NORMA or s.startswith(de.PREFIXOS_NORMA)
+                   for s in ancestrais):
+                sairiam.append(d.chave)
+        self.assertEqual(sorted(sairiam), sorted(alvos),
+                         "a medicao mudou: recalcule o custo antes de povoar "
+                         "SUBARVORES_NORMATIVAS")
+
+    def test_a_lista_NORMATIVA_esta_vazia_POR_DECISAO(self):
+        """Vazia com razao escrita, e crescer e um ATO que pede a medicao acima."""
+        self.assertEqual(de.SUBARVORES_NORMATIVAS, ())
+        self.assertEqual(de.SUBARVORES_HISTORICAS, ("correcao_de_registro",))
+
+    # -------------------------------------------- a direcao, que e o invariante
+    def test_a_varredura_de_ESTADO_so_pode_ACRESCENTAR(self):
+        """Por que a assimetria de ESTADO fica: a direcao dela e segura.
+
+        ESTADO varre TODOS os segmentos e roda DEPOIS de norma, historico e
+        procedencia. Entao ela nunca tira um campo de outra classe: ou o campo
+        ja foi classificado antes, ou ela o traz para a classe medida. Conferido
+        aqui pelo efeito: nenhum campo cuja folha final e de NORMA, HISTORICO ou
+        PROCEDENCIA foi parar em ESTADO por causa de um ancestral.
+        """
+        for d in self.achadas:
+            if d.categoria != de.ESTADO:
+                continue
+            folha = de._folha_final(d.caminho)
+            self.assertNotIn(folha, de.CHAVES_NORMA, d.chave)
+            self.assertNotIn(folha, de.CHAVES_HISTORICO, d.chave)
+            self.assertNotIn(folha, de.CHAVES_PROCEDENCIA, d.chave)
+
+    def test_a_classe_PROSA_encolheu_e_isso_e_uma_CURA(self):
+        """25 -> 24, e o portao acusou sozinho com codigo 2."""
+        julg = de.carrega_julgamento_da_prosa()
+        self.assertEqual(len(julg), 24)
+        self.assertNotIn("constitution:monolitos.john.correcao_de_registro.descricao",
+                         julg)
+        self.assertEqual(len(de.LACRE_PROSA), 24)
+        de.exige_prosa_julgada(self.achadas, julg)
 
 
 if __name__ == "__main__":

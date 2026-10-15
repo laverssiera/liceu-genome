@@ -385,17 +385,6 @@ prosa_julgada:
       Estado de docs/ADR-001 — a regra R0G do registry_check JA o le —, mas docs/ nao e empacotado
       e este portao roda do kit instalado: mesma razao da isencao de `adrs_pendentes`. O ''oito
       consumidores'' nao e derivavel de artefato governado nenhum'
-  constitution:monolitos.john.correcao_de_registro.descricao:
-    afirmacao: o gate W88A2 registrou acoplamento direto do JOHN e isso se propagou por 3 documentos;
-      a inspecao direta nao encontrou o acoplamento, que e do BIM
-    derivavel: false
-    natureza: REGISTRO_PASSADO
-    razao: 'o campo registra uma correcao, e `correcao_de_registro` ESTA em CHAVES_HISTORICO —
-      ele caiu em PROSA porque a classificacao de HISTORICO olha so o ultimo segmento (`descricao`).
-      Medido em 2026-10-15: varrer todos os segmentos moveria 2 campos para HISTORICO, mas moveria
-      6 para NORMA e DOIS desses seis sao `REGRA_DE_IDENTIDADE.medicao_atual.*`, que sao estado
-      de verdade e ficariam ESCONDIDOS atras do ancestral normativo. Por isso a assimetria fica
-      NOMEADA e nao corrigida'
   contract_registry:contracts.liceu.anchor.authorization.1.1.0.authority_invariants[4]:
     afirmacao: a autorizacao carrega a epoca do aceite e nao a da causa, e copiar a epoca da causa
       e rejeitado com 409 authority_epoch_stale
