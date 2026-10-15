@@ -3331,3 +3331,45 @@
     repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
     path: cv-backend-core/tests/test_authority_witness.py
     note: "A DUVIDA ERA LEGITIMA E O TESTE JA EXISTIA: test_expired_attestation_blocks_and_escalates, em cv-backend-core/tests/test_authority_witness.py, faz a atestacao expirar, chama promote() e exige 409 com attestation_missing_reason igual a attestation_expired, mais a escalacao com o mesmo motivo. Rodado em 2026-10-14: 1 passed. A porta e porta. E O CODIGO SUSTENTA A LEITURA: valid_attestation_for descarta linha consumida ou expirada e devolve attestation_expired, e promote() levanta promotion_requires_witness_attestation quando ela devolve None. O QUE ESTE TESTE NAO ALCANCA, e e a metade que fica aberta: a CLM-0086 afirma que o CONSENSO preserva a exigencia POR SI, e isso e sobre o quorum no futuro, nao sobre a tabela de hoje. Nenhum teste local pode estabelecer, porque o consenso nao existe -- a CLM-0086 segue STALE e nao foi tocada aqui. O ACHADO QUE SOBRA, e ele e operacional e nao estava escrito em lugar nenhum: a porta e ativa, o TTL e 300 s e NINGUEM RENOVA, entao promocao so e possivel dentro de 300 s de uma atestacao manual. Isso nao e defeito da porta -- e uma janela que ninguem documentou, e qualquer ensaio que suponha poder promover a qualquer momento vai encontra-la. ORDEM QUE ISSO IMPOE: medir isto antes de gastar decisao em mecanismo de consenso era o conselho certo, e a medicao estava barata porque o teste ja existia."
+
+- id: PRF-0178
+  kind: proof
+  title: "Das tres proibicoes da Testemunha, duas sao aplicadas por codigo e uma por nada - e a chave PROIBICOES e lida por nada: a aplicacao vive numa constante Python"
+  refutes: [CLM-0148]
+  basis: code_reading
+  date: "2026-10-15"
+  scope:
+    padrao: "codigo que leia a chave PROIBICOES ou que aplique cada uma das tres proibicoes do bloco liceu.authority#mother-witness, nomeando-a ou por consequencia"
+    universo: "os 19 repositorios rastreados, em .py, .sh, .yml e .yaml, excluindo o proprio liceu_producer_registry.yaml que a declara; mais o authority_control_plane.py inteiro do cv-backend-core"
+    excluidos:
+      - "prosa que MENCIONA o conceito: comentario e docstring nao sao leitura da chave, e a distincao e o achado"
+      - "o merito das proibicoes: se elas DEVEM ser aplicadas e norma, nao leitura"
+    instrumento: "busca por PROIBICOES e por authority_role nos 19 repositorios; e leitura do control plane procurando, para cada proibicao, a recusa que a aplica - mais busca por teto, ceiling, scale_cap e max_scale"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-15-o-contrato-da-testemunha.json
+  location:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_producer_registry.yaml
+    note: "LISTA CHAMADA PROIBICOES SE LE COMO EM VIGOR, por construcao. MEDIDO, uma a uma: 'nunca autoriza' E aplicada, em authority_control_plane.py:273-276, que recusa witness_cannot_authorize quando o papel e WITNESS e o event_type nao comeca por um dos prefixos de WITNESS_ALLOWED_PREFIXES; 'nunca assume o papel da ativa' e aplicada POR CONSEQUENCIA -- o papel vem da identidade autenticada e promote() recusa promotion_target_not_successor --, e nao por regra que a nomeie; e 'nunca estabelece teto' NAO E APLICADA POR NADA: zero ocorrencias de teto, ceiling, scale_cap ou max_scale no control plane inteiro. Ela nao e violada; ela nao e tocada. E A CHAVE PROIBICOES E LIDA POR NADA: nos 19 repositorios, em .py .sh .yml e .yaml, fora do arquivo que a declara, ha DUAS ocorrencias, e as duas sao a MESMA linha de docstring -- liceu_federation_sdk.py:138, 'Ver PROIBICOES em publish()' -- mais sua copia em build/. Prosa que menciona o conceito, nao codigo que leia a chave. PARA COMPARAR, e a comparacao e o que torna o achado nitido: authority_role, no MESMO bloco, e lido por liceu_conformance.py, liceu_registry_check.py, app/main.py e o proprio control plane. ENTAO A APLICACAO DE 'NUNCA AUTORIZA' NAO DERIVA DO REGISTRY: ela vive numa constante Python, e registry e codigo concordam por COINCIDENCIA DE AUTORIA. Se um dia divergirem, nada percebe -- e e exatamente a classe que o C25-06 passou um ciclo eliminando, com a FIT-020 armada para guarda-la. O QUE ESTA PROVA NAO DECIDE: o que fazer com 'nunca estabelece teto'. Ou ela ganha leitor, ou sai do registry por nao ser norma, e e a mesma decisao de classe da UNK-0018 -- que nao foi tomada para este campo."
+
+- id: PRF-0179
+  kind: proof
+  title: "O voto de Raft nunca passa pelo portao, e o mecanismo para a proibicao reger o portao em vez de descreve-lo ja existe no CORE"
+  refutes: [CLM-0149]
+  basis: code_reading
+  date: "2026-10-15"
+  scope:
+    padrao: "o caminho em que a proibicao de autorizar e aplicada, e a fonte de onde a lista de prefixos permitidos vem; mais o que o CORE ja carrega do kit instalado"
+    universo: "authority_control_plane.py e app/services/protocol_kit.py do cv-backend-core; o bloco meta do liceu_producer_registry.yaml; e o campo P1_07B_extracao_fisica da Constituicao 1.18.0"
+    excluidos:
+      - "o protocolo de consenso em si: nao existe codigo de Raft neste ecossistema, e a afirmacao aqui e sobre onde o portao OLHA, nao sobre como o voto funciona"
+      - "decidir aplicar: o rascunho de 09/10 diz que esses arquivos esperam a palavra do titular"
+    instrumento: "leitura de enforce() para estabelecer sobre o que o portao e; leitura de protocol_kit.py para estabelecer o que o CORE ja carrega do kit; e leitura do meta do Producer Registry para o custo de emenda-lo"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-15-o-contrato-da-testemunha.json
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-15-o-contrato-da-testemunha.md
+    note: "EU MESMO TRATEI A SEPARACAO COMO REDACAO QUE 'nao espera mais nada', seguindo o ADR-005, e redacao que nao rege nada nao e contrato. MEDIDO: O VOTO DE RAFT NUNCA PASSA PELO PORTAO. O portao de 'nunca autoriza' confere o event_type de um PUBLISH, dentro de enforce(), no caminho de publicacao de fato; um voto de Raft e trafego do protocolo de consenso e nao fato publicado. ISSO APONTA PARA DOIS LADOS, e os dois importam: a favor de escrever, a separacao NAO exige tocar enforce() -- a tensao que o ADR-003 descreve e normativa e nao mecanica, e o portao nunca veria o voto de qualquer forma; contra escreve-la SOZINHA, justamente porque o portao nao ve o voto, NADA verificaria que o voto nao autorizou, e o texto existiria ao lado de um bloco que ninguem le. A PROPOSTA QUE TORNA ISTO CONTRATO NAO E ESPECULACAO, e e o que esta prova acrescenta ao rascunho de 09/10: mover a lista de prefixos para o Producer Registry e fazer o CORE deriva-la de la. O mecanismo JA EXISTE -- app/services/protocol_kit.py:55 importa KIT_DIR do kit instalado, :90 carrega liceu_producer_registry.yaml, :40 expoe producers. Trocar WITNESS_ALLOWED_PREFIXES por leitura dessa fonte faz tres coisas: 'nunca autoriza' deixa de ser texto nao lido e passa a ser a FONTE do portao; satisfaz a regra de classe que o titular fixou em 2026-10-09, derivavel de outro artefato nao se escreve se deriva, porque hoje a lista esta escrita DUAS vezes; e VOTO_NO_LOG_DE_CONSENSO passa a ser acrescentado a um bloco que E lido. A FIT-020 E O ARGUMENTO E NAO O OBSTACULO: ela esta com gatilho armado e classe viva em ZERO, e escrever declaracao nova sem leitor repoe um membro na classe que acabou de ser zerada. O CUSTO, MEDIDO E NAO ESTIMADO: o Producer Registry e artefato governado pela R13A-D, com constitution_version 1.18.0 e constitution_sha256 29b95fb1...; a Constituicao NAO muda, o registry_version vai de 1.4.0 a 1.5.0, o kit ganha versao e TAG, e sao 8 PRs de pino com 8 merges -- medido quatro vezes nesta semana. O QUE ESTA PROVA NAO DECIDE: aplicar ou nao, e se a emenda vem com o leitor ou sem ele. O rascunho de 09/10 diz que esses arquivos esperam a palavra do titular, e eu nao os toquei. Eu recomendaria COM o leitor, no mesmo kit: sem ele a emenda e mais barata por um PR e repoe um membro na classe zerada."
