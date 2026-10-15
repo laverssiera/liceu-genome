@@ -874,3 +874,8 @@
   kind: claim
   statement: "Com o contrato aplicado, log errado passa a ser detectavel a jusante pela atestacao, e o onus de correcao sob particao cai muito."
   asserted_by: "a PRF-0173, em 2026-10-14, ao estabelecer que o contrato e a montante do mecanismo; e eu, ao repetir isso como razao para o contrato vir primeiro"
+
+- id: CLM-0154
+  kind: claim
+  statement: "A classe dos campos declarativos de estado esta em ZERO membros vivos, e esse zero mede a classe."
+  asserted_by: "eu mesmo, no C25-06, e o portao repete a cada CI: a frase 'a classe chegou a ZERO' e o que armou o gatilho da FIT-020. Zero medido por um instrumento se le como zero da classe"

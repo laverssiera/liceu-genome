@@ -1,0 +1,29 @@
+{
+  "o_furo": "a travessia folhas() rende par (caminho, valor) SO no ramo escalar; lista ela percorre rendendo cada ITEM, e a lista em si nunca e folha. Afirmacao que vive na EXTENSAO de uma lista nao tem folha onde ser vista",
+  "nao_e_declaracao_errada": "o portao nao a classifica errado -- ele nunca chega a classifica-la. E ausencia lida como conformidade",
+  "onde": "liceu-genome/tools/declaracoes_de_estado.py, funcao folhas(), linhas 206-216: o `yield caminho, no` esta no `else`",
+  "o_caso_que_passa": {
+    "construido_sobre": "a LEI REAL (liceu_constitution.yaml 1.18.0), nao sintetica",
+    "a_forma": "a MESMA que o C25-06 apagou de campos_aceitos_pelo_servidor: lista de nomes que DESCREVE o servidor, reposta sem contador",
+    "candidatos_na_lei_hoje": 141,
+    "candidatos_com_a_lista_reposta": 141,
+    "candidatos_novos": [],
+    "a_mesma_afirmacao_como_numero": [
+      [
+        "global.campos_aceitos_pelo_servidor.total",
+        "inteiro"
+      ]
+    ]
+  },
+  "a_consequencia_sobre_um_numero_anunciado": "a classe dos campos declarativos esta em ZERO membros vivos, e o gatilho da FIT-020 esta armado por causa desse zero. Com dois furos de visibilidade medidos, 'zero' e zero DO QUE O PORTAO VE -- nao zero da classe. Guarda armada sobre classe cuja pertinencia e medida por instrumento com ponto cego guarda menos do que parece, e isso precisa estar dito ANTES de a FIT-020 entrar",
+  "a_classe_do_furo_tem_DOIS_membros_medidos": {
+    "1_extensao_de_lista": "este registro: a travessia rende par so no ramo escalar",
+    "2_prosa": "medido no C25-06: a cura do P1_07B virou uma nota de 72 palavras no proprio campo, e ela caiu em PROSA -- saindo da classe. Terceira vez no ciclo em que curar um campo o tornou invisivel"
+  },
+  "o_que_a_correcao_mudaria": "a regra mais estreita que fecha este furo: quando a chave esta em CHAVES_ESTADO e o valor e LISTA, a extensao dela e declaracao de estado. Testavel, e nao exige mexer na travessia",
+  "o_que_a_correcao_NAO_cobre": [
+    "lista cuja chave nao sinaliza estado: o classificador trabalha sobre NOME de chave, e afirmacao de estado sob chave de aparencia neutra segue invisivel",
+    "afirmacao que vive numa RELACAO entre extensoes -- 'estas duas listas tem o mesmo tamanho' -- e nao numa extensao so",
+    "o furo da PROSA, que e o outro membro da classe e precisa de remedio proprio"
+  ]
+}
