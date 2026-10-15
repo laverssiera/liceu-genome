@@ -215,6 +215,49 @@ def folhas(no, caminho: str = ""):
     else:
         yield caminho, no
 
+#: A forma dos candidatos que vivem na EXTENSAO de uma lista, e nao num escalar.
+#: Separada de "inteiro" de proposito: no relatorio, ler "extensao" diz que a
+#: afirmacao nao esta ESCRITA em lugar nenhum -- ela e o tamanho de uma lista.
+EXTENSAO = "extensao"
+
+
+def extensoes_de_estado(no, caminho: str = ""):
+    """Listas sob chave de ESTADO: a EXTENSAO delas e a declaracao.
+
+    O FURO QUE ISTO FECHA, enunciado na PRF-0184 e medido sobre a lei real:
+    ``folhas()`` rende par (caminho, valor) so no ramo escalar. Lista ela
+    percorre pelos ITENS, e a lista em si nunca e folha -- logo uma afirmacao
+    que vive na extensao de uma lista nao tinha folha onde ser vista. O portao
+    nao a classificava errado: nunca chegava a classifica-la.
+
+    A prova de que passava, da PRF-0184: a lei tinha 141 candidatos; repondo em
+    campos_aceitos_pelo_servidor a lista de 16 nomes que o C25-06 apagou, ela
+    seguia com 141 -- ZERO novos. A MESMA afirmacao como ``total: 16``
+    acrescentava UM candidato, classificado ESTADO.
+
+    A REGRA E A MAIS ESTREITA QUE FECHA ESTE FURO, e nao mais que isso: chave em
+    CHAVES_ESTADO com valor LISTA. O que ela NAO cobre esta dito na PRF-0184 --
+    lista sob chave de nome neutro, afirmacao que vive numa RELACAO entre
+    extensoes, e o furo da PROSA, que e o outro membro medido da classe e pede
+    remedio proprio.
+
+    O valor rendido e o COMPRIMENTO, nao a lista: a afirmacao E o tamanho, e
+    manter escalar aqui mantem intacto tudo o que vem depois.
+    """
+    if isinstance(no, dict):
+        for k, v in no.items():
+            if k in EXCLUSAO_DE_SUBARVORE:
+                continue
+            c = f"{caminho}.{k}" if caminho else str(k)
+            if isinstance(v, list) and k in CHAVES_ESTADO:
+                yield c, len(v)
+            yield from extensoes_de_estado(v, c)
+    elif isinstance(no, list):
+        for i, v in enumerate(no):
+            yield from extensoes_de_estado(v, f"{caminho}[{i}]")
+
+
+
 
 def forma_de(valor) -> str | None:
     """A forma do candidato, ou None se nao e candidato."""
@@ -321,6 +364,12 @@ def enumera(kit: pathlib.Path) -> list[Declaracao]:
                 continue
             cat, regra = classifica(caminho, valor, f, historicos)
             achadas.append(Declaracao(curto, caminho, valor, f, cat, regra))
+        # As extensoes entram no MESMO saco que as folhas, e por isso a
+        # classificacao, o mapa de origem e o lacre as alcancam sem mudanca:
+        # para tudo o que vem depois, elas sao candidatas como qualquer outra.
+        for caminho, valor in extensoes_de_estado(dados):
+            cat, regra = classifica(caminho, valor, EXTENSAO, historicos)
+            achadas.append(Declaracao(curto, caminho, valor, EXTENSAO, cat, regra))
     return achadas
 
 
@@ -534,6 +583,9 @@ ISENTOS_DE_DERIVACAO = {
     # os dois campos deixaram de casar qualquer forma do enumerador e nao sao mais
     # declaracao de estado. O LACRE NAO MUDA: LACRE_ISENTOS segue com os quatro, e
     # dois saindo e encolhimento, que e o unico movimento permitido.
+    # ACRESCENTADA A MAO em 2026-10-15, com o furo da EXTENSAO fechado.
+    'constitution:adrs_pendentes': (
+        'derivavel dos ADRs, e a R0G prova o alcance -- mas ela roda do REPOSITORIO. Este portao roda do KIT INSTALADO, e docs/ nao e empacotado: derivar aqui seria FINGIR ALCANCE, que e textualmente a razao das duas isencoes que o lote 2 do C25-06 curou. A derivacao pertence a CI do liceu-protocol, onde ha alcance'),
 }
 
 
@@ -553,14 +605,15 @@ ISENTOS_DE_DERIVACAO = {
 #: SO ENCOLHE: `conferido ⊆ lacrado`. Curar um campo tira-o da lista e o lacre
 #: segue valendo; acrescentar exige editar o lacre, e o sha256 congelado no teste
 #: torna essa edicao visivel em vez de silenciosa.
-LACRE_ISENTOS_SHA256 = "ffd84eeb4c4f577bbb3b8d5792d1275c1e351a02ee3226fe70528e47bcfdcb7b"
-LACRE_SAI_DA_CLASSE_SHA256 = "dafe32819de00f06047b4f197a0eb2b2ff73118a7dc54ec7bf2f125825b09da3"
+LACRE_ISENTOS_SHA256 = "95f0037a92a02b8927ab105e8a70636176a0e48bafb0c12c4c9613b4778de448"
+LACRE_SAI_DA_CLASSE_SHA256 = "ec8160e63f571cbd7845d5663f63cdeedc30583afc5c4d06a7441a9163d3de92"
 
 LACRE_ISENTOS = (
     "constitution:global.campos_aceitos_pelo_servidor.procedencia",
     "constitution:global.campos_aceitos_pelo_servidor.verificado_em",
     "constitution:global.ci_adoption_order.nao_bloqueador",
     "constitution:global.federation_cognition.REGRA_DE_IDENTIDADE.aplica_a",
+    'constitution:adrs_pendentes',
 )
 
 
@@ -653,6 +706,12 @@ LACRE_SAI_DA_CLASSE = (
     "event_reconciliation_ledger:meta.escopo_P2_5B",
     "event_registry:events.authority.human.decision.recorded.implementation_status",
     "event_registry:resumo.IMPLEMENTED_IN_MONOLITH",
+    'constitution:monolitos.archimedes.divida_conhecida',
+    'constitution:monolitos.opera.divida_conhecida',
+    'constitution:monolitos.fornecedores.a_verificar',
+    'constitution:monolitos.cea.divida_conhecida',
+    'constitution:monolitos.juridicotech.divida_conhecida',
+    'constitution:monolitos.academia.divida_conhecida',
 )
 
 
