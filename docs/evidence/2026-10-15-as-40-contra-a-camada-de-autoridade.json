@@ -1,0 +1,146 @@
+{
+  "consulta": "C26-00 do plano do ciclo 26, rodada em 2026-10-15",
+  "o_plano_e_de": "2026-10-13, base medida as 12:00",
+  "instrumento": "leitura dos nos de genome/07-proofs.yaml: INDETERMINADA e prova de basis code_reading ou record_reading SEM scope declarado, que e o que a FIT-019 rebaixa; camada de autoridade e padrao declarado e procurado no NO INTEIRO, nao so no titulo",
+  "padrao_de_autoridade": "(?i)(tres maes|três mães|authority_epoch|authority_state|authority_instance|fencing|attest|testemunha|witness|sucessora|successor|\\bativa\\b|\\bactive\\b|replica|promote|promocao|promoção|epoca|época|control.?plane|CLM-0006|CLM-0007|UNK-0001|mother-)",
+  "indeterminadas": 40,
+  "de_autoridade": 15,
+  "quais": [
+    {
+      "id": "PRF-0006",
+      "basis": "code_reading",
+      "alvo": [
+        "CLM-0006"
+      ],
+      "papel": "refuta",
+      "titulo": "As tres Maes sao linhas da mesma tabela, no mesmo Postgres"
+    },
+    {
+      "id": "PRF-0032",
+      "basis": "record_reading",
+      "alvo": [
+        "CLM-0037"
+      ],
+      "papel": "refuta",
+      "titulo": "Nenhuma das tres topologias dispensa a sonda: sem ela a CLM-0006 continua REFUTED mesmo com a replicacao pronta"
+    },
+    {
+      "id": "PRF-0044",
+      "basis": "code_reading",
+      "alvo": [
+        "CLM-0035"
+      ],
+      "papel": "refuta",
+      "titulo": "Os quatro produtores que faltavam medir nao tem codigo que publique — e o ANCHOR depende de um deles"
+    },
+    {
+      "id": "PRF-0058",
+      "basis": "code_reading",
+      "alvo": [
+        "CLM-0006"
+      ],
+      "papel": "refuta",
+      "titulo": "O veredito deixa de vir do corpo, e ainda assim a Testemunha nao observa de forma independente"
+    },
+    {
+      "id": "PRF-0060",
+      "basis": "code_reading",
+      "alvo": [
+        "CLM-0058"
+      ],
+      "papel": "refuta",
+      "titulo": "A sonda pergunta se a Ativa esta ai, nunca se ela trabalhou: viva e parada e indistinguivel de viva e trabalhando"
+    },
+    {
+      "id": "PRF-0066",
+      "basis": "code_reading",
+      "alvo": [
+        "CLM-0060"
+      ],
+      "papel": "refuta",
+      "titulo": "Nao ha Testemunha no ambiente implantado: uma Ativa, um processo, e os outros dois papeis so em teste"
+    },
+    {
+      "id": "PRF-0067",
+      "basis": "code_reading",
+      "alvo": [
+        "CLM-0061"
+      ],
+      "papel": "refuta",
+      "titulo": "A atestacao da Testemunha nao e contrato do kit: e tabela do CORE, fora do alcance do boundary"
+    },
+    {
+      "id": "PRF-0110",
+      "basis": "code_reading",
+      "alvo": [
+        "CLM-0081"
+      ],
+      "papel": "refuta",
+      "titulo": "O gate de autoridade decide pelo NOME DECLARADO, nunca pelo namespace do evento — e quatro event_types authority. que o CORE emite nao tem dono declarado em lugar nenhum"
+    },
+    {
+      "id": "PRF-0114",
+      "basis": "code_reading",
+      "alvo": [
+        "CLM-0086"
+      ],
+      "papel": "refuta",
+      "titulo": "A atestacao da Testemunha e porta propria no promote(), e o consenso troca a FONTE DA EPOCA sem tocar a porta — logo uma maioria de dois pode promover sem ela"
+    },
+    {
+      "id": "PRF-0115",
+      "basis": "code_reading",
+      "alvo": [
+        "CLM-0087"
+      ],
+      "papel": "refuta",
+      "titulo": "Um arquivo o chama, mas ele grava dez vezes no banco do CORE e LE o event store por SQL — inclusive dois fatos de dominio da cadeia"
+    },
+    {
+      "id": "PRF-0116",
+      "basis": "record_reading",
+      "alvo": [
+        "CLM-0088"
+      ],
+      "papel": "refuta",
+      "titulo": "A proibicao esta no Producer Registry, nao na Constituicao — e sao tres, nao uma"
+    },
+    {
+      "id": "PRF-0119",
+      "basis": "code_reading",
+      "alvo": [
+        "CLM-0090"
+      ],
+      "papel": "refuta",
+      "titulo": "activation_certificate_id tem ZERO ocorrencias no monolito rastreado, e o CONTROL_PLANE_FIELDS carimba quatro dos cinco campos que a Constituicao declara"
+    },
+    {
+      "id": "PRF-0122",
+      "basis": "code_reading",
+      "alvo": [
+        "CLM-0093"
+      ],
+      "papel": "refuta",
+      "titulo": "O monolito pina o kit por TAG, e a v0.24.0 tem ZERO ocorrencias dos quatro contratos — o CORE nao os ve"
+    },
+    {
+      "id": "PRF-0125",
+      "basis": "record_reading",
+      "alvo": [
+        "CLM-0095"
+      ],
+      "papel": "refuta",
+      "titulo": "O P1_07B nomeia a ADR-001, que e sobre onde o KIT vive e foi decidida em 2026-09-18 — o portao esta cumprido e nunca cobriu o control plane"
+    },
+    {
+      "id": "PRF-0127",
+      "basis": "record_reading",
+      "alvo": [
+        "CLM-0096"
+      ],
+      "papel": "refuta",
+      "titulo": "Sao 48 declaracoes de estado, nao seis — e das 11 conferiveis dentro do kit, nove estao certas e as duas falsas fui eu hoje"
+    }
+  ],
+  "claims_que_ficaram_nus": []
+}

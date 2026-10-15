@@ -860,3 +860,8 @@
   kind: claim
   statement: "A proibicao 'nunca autoriza' da Testemunha passa a ser a FONTE do portao que a aplica, e nao mais uma descricao dele: a lista de prefixos vive no Producer Registry e o CORE a deriva, falhando fechado sem ela."
   asserted_by: "ninguem ainda - e o que a decisao do titular de 2026-10-15 manda aplicar, e so vale se for medido em main depois dos cinco movimentos"
+
+- id: CLM-0153
+  kind: claim
+  statement: "Entre as provas de leitura INDETERMINADAS ha alguma que sustentava, como unica base, algo que hoje aparece EM ORDEM na camada de autoridade -- e por isso a contagem de tres bloqueadores da REGIONAL esta subestimada."
+  asserted_by: "o plano do ciclo 26, de 2026-10-13, no item C26-00: 'o que acreditavamos estar EM ORDEM na camada de autoridade pode estar apoiado em leitura que hoje e INDETERMINADA. Se estiver, a contagem de tres esta SUBESTIMADA'"
