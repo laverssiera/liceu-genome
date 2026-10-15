@@ -855,3 +855,8 @@
   kind: claim
   statement: "Escrever a separacao entre votar no log e autorizar atos no Producer Registry basta para o contrato existir: escrita, ela passa a reger o comportamento."
   asserted_by: "eu mesmo, ao listar a separacao como redacao que ja nao espera mais nada, seguindo o paragrafo 5.1 do ADR-005 - e redacao que nao rege nada nao e contrato, e a classe que o C25-06 acabou de zerar"
+
+- id: CLM-0150
+  kind: claim
+  statement: "A proibicao 'nunca autoriza' da Testemunha passa a ser a FONTE do portao que a aplica, e nao mais uma descricao dele: a lista de prefixos vive no Producer Registry e o CORE a deriva, falhando fechado sem ela."
+  asserted_by: "ninguem ainda - e o que a decisao do titular de 2026-10-15 manda aplicar, e so vale se for medido em main depois dos cinco movimentos"
