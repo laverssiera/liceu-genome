@@ -1,0 +1,31 @@
+{
+  "instrumento": "python -m pip index versions, contra o indice de pacotes -- nao pagina de terceiro. A busca na web dava rraft-py em 0.2.2; o indice diz 0.2.27, e quando as duas discordam vale o indice",
+  "consultado_em": "2026-10-14",
+  "ultima_versao_no_indice": {
+    "pysyncobj": "pysyncobj (0.3.17)",
+    "raftify": "raftify (0.1.67)",
+    "rraft-py": "rraft-py (0.2.27)"
+  },
+  "o_que_nao_veio_do_indice": "DATAS. O indice da versoes, nao datas. A busca na web deu 0.3.17 do pysyncobj em 30/08/2026 e 0.1.67 do raftify em 04/08/2024, e eu NAO confirmei nenhuma das duas no indice",
+  "estado_declarado_pelos_proprios_projetos": {
+    "raftify": "descontinuado em Python pelo proprio autor -- reescrito em Rust; a pagina do PyPI avisa 'very experimental stage'",
+    "rraft_py": "binding NAO OFICIAL do tikv/raft-rs, com so o modulo de consenso: transporte e armazenamento sao trabalho de quem usa. A propria pagina dele diz que nao ha biblioteca Raft de fato padrao em Python, e aponta para Raftify ou PySyncObj"
+  },
+  "a_carga_da_camada_A": {
+    "escritas_na_camada_A": {
+      "promote": "authority_control_plane.py:341, commit :418 -- avanco de epoca, raro",
+      "attest": "authority_control_plane.py:495, commit :601 -- atestacao com TTL",
+      "ensure_state": "authority_control_plane.py:132, commit :149 -- semeadura, uma vez"
+    },
+    "fora_da_camada_A": "_audit() e escalate_to_human() escrevem, e sao HISTORICO: o paragrafo 2 do ADR-003 diz que durabilidade basta",
+    "ttl_da_atestacao_segundos": 300,
+    "onde": "app/config.py:86, AUTHORITY_ATTESTATION_TTL_SECONDS",
+    "quem_renova_automaticamente": "NINGUEM -- attest() so e chamado pelo endpoint HTTP em main.py:5799; nao ha scheduler, laco nem daemon, e a sonda nao tem intervalo",
+    "teto_com_renovacao_continua": {
+      "escritas_por_dia": 288,
+      "escritas_por_segundo": 0.0033
+    },
+    "escritas_automaticas_hoje": 0
+  },
+  "o_que_fixa_o_preco_e_disco_e_nao_capacidade": "o ADR-005 mediu em 2026-10-13 a latencia de fsync no nivel barato: mediana entre 0,664 e 0,738 ms e p95 ate 1,53 ms em SEIS amostras, e UMA com p95 de 92,75 ms e maximo de 123,4 ms. Carga baixa nao resolve cauda de disco, e a cauda nao distingue qual implementacao de consenso espera o fsync"
+}
