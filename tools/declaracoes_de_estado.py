@@ -140,6 +140,10 @@ SITUACAO = re.compile(
 FRACAO = re.compile(r"\b\d+\s*/\s*\d+\b")
 NUM_SUBSTANTIVO = re.compile(r"\b\d+\s+[a-zA-ZÀ-ſ]{3,}")
 MARCADOR_DE_CODIGO = "[CODIGO]"
+#: A forma de quem entrou pela CHAVE, e nao pela cara do valor. Separada de
+#: "situacao" de proposito: no relatorio, ler "chave_de_estado" diz que o valor
+#: nao tinha forma nenhuma -- foi a chave da propria lei que o qualificou.
+CHAVE_QUALIFICA = "chave_de_estado"
 
 # ---------------------------------------------------------------------------
 # A ASSIMETRIA DA VARREDURA, e por que ela nao se fecha pelos dois lados
@@ -185,7 +189,21 @@ SUBARVORES_HISTORICAS = (
 #: mais de origem. Acrescentar um item aqui e um ATO que tem de vir com a
 #: medicao de QUEM sai de ESTADO — ha um teste que repete essa medicao a cada
 #: CI exatamente para que esta razao nao envelheca calada.
-SUBARVORES_NORMATIVAS = ()
+#:
+#: DEIXOU DE ESTAR VAZIA EM 2026-10-15, com UMA entrada, e o custo foi medido
+#: antes: ZERO campos saem de ESTADO. `meta.status_semantica` nao declara estado
+#: nenhum -- e o GLOSSARIO, o que cada palavra de status SIGNIFICA ("ACTIVE:
+#: aceita publicacao nova; valida leitura"). O quarto filho dela, `REGRA`, ja ia
+#: para NORMA pela propria folha; os outros tres herdavam a chave de estado do
+#: ancestral e iriam para ESTADO quando a porta abrisse. Definicao classificada
+#: como estado exigiria origem para uma definicao, e isso e inventar divida.
+#:
+#: O QUE ISTO NAO E: nao e povoar a lista com os PREFIXOS de norma. Essa medicao
+#: segue valendo e segue custando DOIS campos `medicao_atual` saindo da classe —
+#: ha um teste que a repete a cada CI.
+SUBARVORES_NORMATIVAS = (
+    "status_semantica",
+)
 
 #: Quantas palavras tornam o campo uma FRASE em vez de uma declaracao.
 PALAVRAS_QUE_FAZEM_PROSA = 10
@@ -338,8 +356,49 @@ def extensoes_de_estado(no, caminho: str = ""):
 
 
 
-def forma_de(valor) -> str | None:
-    """A forma do candidato, ou None se nao e candidato."""
+def tem_chave_de_estado(caminho: str) -> str | None:
+    """O segmento do caminho que declara estado, ou None.
+
+    Mesma leitura que `classifica` faz: QUALQUER segmento, nao so a folha. Esta
+    funcao existe para que a MESMA leitura sirva as duas pontas — a porta e a
+    classificacao — em vez de uma delas ter a sua copia.
+    """
+    for s in (re.sub(r"\[\d+\]$", "", x) for x in caminho.split(".")):
+        if s in CHAVES_ESTADO or s.startswith(PREFIXOS_ESTADO):
+            return s
+    return None
+
+
+def forma_de(valor, caminho: str = "") -> str | None:
+    """A forma do candidato, ou None se nao e candidato.
+
+    O FURO ABAIXO DE PROSA, e e o MESMO DEFEITO DE ORDEM que a PRF-0154 corrigiu
+    um nivel acima: `forma_de` decide quem e CANDIDATO antes de `classifica`
+    decidir a CATEGORIA, e CHAVES_ESTADO/PREFIXOS_ESTADO moravam so em
+    `classifica`. Elas CLASSIFICAVAM mas nao QUALIFICAVAM, e `forma_de` nem
+    recebia o caminho para poder consulta-las.
+
+    O QUE ISSO ESCONDIA, medido em 2026-10-15 sobre a lei real e nao suposto:
+    NOVENTA E DOIS campos cuja chave e literalmente `status`, `estado`,
+    `implementation_status` ou `criterios`, e cujo valor o portao nunca viu --
+    `meta.status: FINAL`, `milestone.M3...status: NOT_STARTED`,
+    `core_dna.fronteira_semantica.estado: JA OBRIGATORIA`,
+    `criterios.SECRET_EXPOSURE_STATUS: KNOWN`. A causa e simples e humilhante: o
+    vocabulario de `SITUACAO` e uma lista FECHADA de 18 palavras, e a lei escreve
+    status com outras — ACTIVE, FINAL, KNOWN, NOT_STARTED, FROZEN, PLANNED,
+    PROTECAO, A_REEXAMINAR, DECLARED_BUT_NOT_IMPLEMENTED.
+
+    E CORRIGE UMA AFIRMACAO MINHA: eu havia registrado este furo como "frase
+    longa SEM numero e SEM palavra de situacao". Medido, o furo e sobretudo de
+    valores CURTOS sob chave de estado. Das 2298 strings-folha fora da porta,
+    286 eram frases longas e abrir para TODAS elas custaria 239 julgamentos de
+    PROSA a mao para comprar 4 estados; abrir pela CHAVE custa ZERO julgamentos
+    novos e rende 92 candidatas, 90 delas ESTADO.
+
+    A PORTA SEGUE SENDO ESTREITA: nenhuma frase entra por ser longa. Entra quem
+    a propria lei marcou -- com `[CODIGO]`, com data, ou com uma chave que ja
+    esta na lista curada de chaves de estado.
+    """
     if isinstance(valor, bool):
         return None                      # bool e decisao, nao contagem
     if isinstance(valor, int):
@@ -364,6 +423,11 @@ def forma_de(valor) -> str | None:
     # verdade para os dez que entravam, falsa para os trinta e cinco que nao.
     if MARCADOR_DE_CODIGO in valor or DATA_NO_MARCADOR.search(valor):
         return "marcador"
+    # A CHAVE QUALIFICA, e por ultimo: as formas acima mantem o nome que tinham,
+    # e so chega aqui o valor que nao tem forma nenhuma. Sem `caminho` esta
+    # porta nao existe, o que mantem `forma_de(valor)` utilizavel sozinho.
+    if caminho and tem_chave_de_estado(caminho):
+        return CHAVE_QUALIFICA
     return None
 
 
@@ -421,10 +485,9 @@ def classifica(caminho: str, valor, forma: str,
                                "sem esta regra o ancestral dizia e ninguem escutava")
         if s in SUBARVORES_NORMATIVAS:
             return NORMA, (f"a subarvore {s!r} e NORMATIVA por declaracao do ancestral")
-    segmentos = [re.sub(r"\[\d+\]$", "", s) for s in caminho.split(".")]
-    for s in segmentos:
-        if s in CHAVES_ESTADO or s.startswith(PREFIXOS_ESTADO):
-            return ESTADO, f"a chave {s!r} declara o que E, e isso vence a regra de prosa"
+    s = tem_chave_de_estado(caminho)
+    if s:
+        return ESTADO, f"a chave {s!r} declara o que E, e isso vence a regra de prosa"
     if isinstance(valor, str) and SO_MARCADORES.match(valor.strip()):
         datada = bool(DATA_NO_MARCADOR.search(valor))
         return PROCEDENCIA, (
@@ -450,7 +513,7 @@ def enumera(kit: pathlib.Path) -> list[Declaracao]:
         curto = nome.removeprefix("liceu_").removesuffix(".yaml")
         historicos = prefixos_de_registro_historico(dados)
         for caminho, valor in folhas(dados):
-            f = forma_de(valor)
+            f = forma_de(valor, caminho)
             if f is None:
                 continue
             cat, regra = classifica(caminho, valor, f, historicos)
@@ -830,7 +893,7 @@ ISENTOS_DE_DERIVACAO = {
 #: segue valendo; acrescentar exige editar o lacre, e o sha256 congelado no teste
 #: torna essa edicao visivel em vez de silenciosa.
 LACRE_ISENTOS_SHA256 = "95f0037a92a02b8927ab105e8a70636176a0e48bafb0c12c4c9613b4778de448"
-LACRE_SAI_DA_CLASSE_SHA256 = "ec8160e63f571cbd7845d5663f63cdeedc30583afc5c4d06a7441a9163d3de92"
+LACRE_SAI_DA_CLASSE_SHA256 = "68728e44a98ce47d93159d27a8129bd3c84e22d887adb99b8b56c6ff0e750966"
 LACRE_PROSA_SHA256 = "2d878b3da0fb90a412615807cc0eef6a42194f1841ff547e12e1176323346557"
 
 LACRE_ISENTOS = (
@@ -866,77 +929,182 @@ LACRE_ISENTOS = (
 #:
 #:   O que o lacre segue proibindo e o que importa: campo NOVO classificado
 #:   SAI_DA_CLASSE sem alguem editar esta lista e mover o sha256.
+#:
+#:   TERCEIRO ATO, DE 70 PARA 156, EM 2026-10-15, e e o maior de todos porque o
+#:   instrumento deixou de ser cego num lugar mais fundo: a CHAVE passou a
+#:   QUALIFICAR e nao so a classificar. Oitenta e sete campos entraram de uma
+#:   vez — 44 `status`, 16 do bloco LIMITE_NAO_DEFINIDO, 12
+#:   `implementation_status` e mais oito familias —, e NENHUM deles e derivavel
+#:   de artefato: sao estado do mundo implantado, julgamento de milestone,
+#:   decisao constitutiva de registro e observacao de codigo noutros
+#:   repositorios. As CATORZE razoes estao escritas uma por familia no
+#:   `origem-das-declaracoes.yaml`.
+#:
+#:   O CRESCIMENTO AQUI NAO MOVE A FIT-020, e isso foi conferido: `classe_viva`
+#:   conta PROPRIO_ARTEFATO e OUTRO_ARTEFATO, e as 87 sao todas SAI_DA_CLASSE.
+#:
+#:   A ARITMETICA E 70 - 1 + 87 = 156, e o -1 importa: a chave
+#:   `monolitos.core.fronteira_fisica.P1_07B_extracao_fisica` estava no lacre
+#:   e NAO estava mais na classe — ela e membro de PROSA, julgada sob
+#:   `prosa_julgada`. Sair daqui e ENCOLHER, que e o movimento permitido, e a
+#:   lista passou a ser GERADA do mapa em vez de transcrita.
 LACRE_SAI_DA_CLASSE = (
-    "constitution:global.antipadroes.antipadrao_1_db_coupling.violacao_conhecida",
-    "constitution:global.antipadroes.antipadrao_2_valor_inventado.violacao_conhecida",
-    "constitution:global.antipadroes.antipadrao_3_fallback_silencioso.referencia_correta",
-    "constitution:global.authority_model.observacao",
-    "constitution:global.campos_aceitos_pelo_servidor.campos_descartados_silenciosamente[0].observacao",
-    "constitution:global.campos_aceitos_pelo_servidor.campos_descartados_silenciosamente[2].observacao",
-    "constitution:global.campos_exigidos_pelo_protocolo.implementation_status",
-    "constitution:global.core_dna.extracao_fisica_do_kernel.estado",
-    "constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.estado",
-    "constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.representacoes",
-    "constitution:global.federation_cognition.REGRA_DE_IDENTIDADE.medicao_atual.geracoes_de_campo_alheio_em_producao",
-    "constitution:global.federation_cognition.REGRA_DE_IDENTIDADE.medicao_atual.reivindicacoes_de_identidade",
-    "constitution:global.internal_reference_implementations.referencias.fail_closed.aplica_a",
-    "constitution:milestone.M2_FEDERATION_PROTOCOL_AND_STATIC_CONVERGENCE.criterios.DIRECT_CROSS_DOMAIN_DB",
-    "constitution:milestone.M2_FEDERATION_PROTOCOL_AND_STATIC_CONVERGENCE.criterios.MINIMUM_THREAD_AUTHORITY_VIOLATIONS",
-    "constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.CORE_ARCHIMEDES_AUTHENTICATED_BOUNDARY",
-    "constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.DURABILITY",
-    "constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.EVENT_DELIVERY",
-    "constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.IDEMPOTENCY",
-    "constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.REPLAY",
-    "constitution:milestone.M4_FIRST_CAUSAL_AUTHORITY_CHAIN.criterios.MINIMUM_CAUSAL_THREAD_LINEAGE",
-    "constitution:milestone.M4_FIRST_CAUSAL_AUTHORITY_CHAIN.criterios.MINIMUM_CAUSAL_THREAD_REPLAY",
-    "constitution:milestone.M4_FIRST_CAUSAL_AUTHORITY_CHAIN.criterios.MINIMUM_CAUSAL_THREAD_RUNTIME",
-    "constitution:monolitos.academia.divida_conhecida[0]",
-    "constitution:monolitos.academia.divida_conhecida[1]",
-    "constitution:monolitos.academia.forbidden[0].violacao",
-    "constitution:monolitos.anchor.forbidden[0].violacao",
-    "constitution:monolitos.anchor.fronteira_de_continuidade.coerencia_com_external_effect",
-    "constitution:monolitos.archimedes.divida_conhecida[0]",
-    "constitution:monolitos.archimedes.divida_conhecida[1]",
-    "constitution:monolitos.archimedes.divida_conhecida[2]",
-    "constitution:monolitos.bim.forbidden[0].violacao",
-    "constitution:monolitos.bim.forbidden[1].violacao",
-    "constitution:monolitos.bim.violacao_critica.descricao",
-    "constitution:monolitos.cea.divida_conhecida[0]",
-    "constitution:monolitos.cea.divida_conhecida[1]",
-    "constitution:monolitos.cea.divida_conhecida[2]",
-    "constitution:monolitos.cea.forbidden[0].violacao",
-    "constitution:monolitos.cefeida.forbidden[0].violacao",
-    "constitution:monolitos.core.forbidden[0].violacao",
-    "constitution:monolitos.core.fronteira_fisica.P1_07A_fronteira_semantica",
-    "constitution:monolitos.core.fronteira_fisica.P1_07B_extracao_fisica",
-    "constitution:monolitos.econotech.bug_conhecido.descricao",
-    "constitution:monolitos.econotech.forbidden[0].violacao",
-    "constitution:monolitos.econotech.forbidden[1].violacao",
-    "constitution:monolitos.fornecedores.a_verificar[0]",
-    "constitution:monolitos.fornecedores.a_verificar[1]",
-    "constitution:monolitos.fornecedores.observacao_positiva",
-    "constitution:monolitos.gamemkt.violacao_critica.descricao",
-    "constitution:monolitos.hub.forbidden[0].violacao",
-    "constitution:monolitos.john.observacao_positiva",
-    "constitution:monolitos.juridicotech.divida_conhecida[0]",
-    "constitution:monolitos.juridicotech.divida_conhecida[1]",
-    "constitution:monolitos.juridicotech.divida_conhecida[2]",
-    "constitution:monolitos.opera.divida_conhecida[0]",
-    "constitution:monolitos.opera.divida_conhecida[1]",
-    "constitution:monolitos.opera.observacao_positiva",
-    "constitution:monolitos.ped.estado.descricao",
-    "constitution:separacao_de_artifacts.razao",
-    "contract_registry:meta.status",
-    "event_reconciliation_ledger:P2_5B_duplicate_authority.federation.runtime.register.hipotese",
-    "event_reconciliation_ledger:meta.escopo_P2_5B",
-    "event_registry:events.authority.human.decision.recorded.implementation_status",
-    "event_registry:resumo.IMPLEMENTED_IN_MONOLITH",
-    'constitution:monolitos.archimedes.divida_conhecida',
-    'constitution:monolitos.opera.divida_conhecida',
-    'constitution:monolitos.fornecedores.a_verificar',
-    'constitution:monolitos.cea.divida_conhecida',
-    'constitution:monolitos.juridicotech.divida_conhecida',
+    'constitution:global.antipadroes.antipadrao_1_db_coupling.violacao_conhecida',
+    'constitution:global.antipadroes.antipadrao_2_valor_inventado.violacao_conhecida',
+    'constitution:global.antipadroes.antipadrao_3_fallback_silencioso.referencia_correta',
+    'constitution:global.authority_model.observacao',
+    'constitution:global.campos_aceitos_pelo_servidor.campos_descartados_silenciosamente[0].observacao',
+    'constitution:global.campos_aceitos_pelo_servidor.campos_descartados_silenciosamente[2].observacao',
+    'constitution:global.campos_exigidos_pelo_protocolo.implementation_status',
+    'constitution:global.core_dna.extracao_fisica_do_kernel.estado',
+    'constitution:global.core_dna.fronteira_semantica.estado',
+    'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.dimensoes_possiveis[0]',
+    'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.dimensoes_possiveis[1]',
+    'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.dimensoes_possiveis[2]',
+    'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.dimensoes_possiveis[3]',
+    'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.dimensoes_possiveis[4]',
+    'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.estado',
+    'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.campo',
+    'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.formas[0]',
+    'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.formas[1]',
+    'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.formas[2]',
+    'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.formas[3]',
+    'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.onde[0]',
+    'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.onde[1]',
+    'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.onde[2]',
+    'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.onde[3]',
+    'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.problema',
+    'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.representacoes',
+    'constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.o_que_falta',
+    'constitution:global.federation_authority.MAE_REDUNDANTE.queda_da_testemunha.testemunha_cai_e_ativa_saudavel.estado',
+    'constitution:global.federation_cognition.REGRA_DE_IDENTIDADE.medicao_atual.geracoes_de_campo_alheio_em_producao',
+    'constitution:global.federation_cognition.REGRA_DE_IDENTIDADE.medicao_atual.reivindicacoes_de_identidade',
+    'constitution:global.internal_reference_implementations.referencias.fail_closed.aplica_a',
+    'constitution:global.security_model.aliases_proibidos.observacao',
+    'constitution:meta.status',
+    'constitution:milestone.M2_FEDERATION_PROTOCOL_AND_STATIC_CONVERGENCE.criterios.CORE_MOCK_PROVENANCE',
+    'constitution:milestone.M2_FEDERATION_PROTOCOL_AND_STATIC_CONVERGENCE.criterios.DIRECT_CROSS_DOMAIN_DB',
+    'constitution:milestone.M2_FEDERATION_PROTOCOL_AND_STATIC_CONVERGENCE.criterios.MINIMUM_THREAD_AUTHORITY_VIOLATIONS',
+    'constitution:milestone.M2_FEDERATION_PROTOCOL_AND_STATIC_CONVERGENCE.criterios.SECRET_EXPOSURE_STATUS',
+    'constitution:milestone.M2_FEDERATION_PROTOCOL_AND_STATIC_CONVERGENCE.status',
+    'constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.CORE_ARCHIMEDES_AUTHENTICATED_BOUNDARY',
+    'constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.DURABILITY',
+    'constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.EVENT_DELIVERY',
+    'constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.IDEMPOTENCY',
+    'constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.criterios.REPLAY',
+    'constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.status',
+    'constitution:milestone.M4_FIRST_CAUSAL_AUTHORITY_CHAIN.criterios.MINIMUM_CAUSAL_THREAD_LINEAGE',
+    'constitution:milestone.M4_FIRST_CAUSAL_AUTHORITY_CHAIN.criterios.MINIMUM_CAUSAL_THREAD_REPLAY',
+    'constitution:milestone.M4_FIRST_CAUSAL_AUTHORITY_CHAIN.criterios.MINIMUM_CAUSAL_THREAD_RUNTIME',
+    'constitution:milestone.M4_FIRST_CAUSAL_AUTHORITY_CHAIN.status',
+    'constitution:milestone.M5_CONTINENTAL_CLOSURE.status',
     'constitution:monolitos.academia.divida_conhecida',
+    'constitution:monolitos.academia.divida_conhecida[0]',
+    'constitution:monolitos.academia.divida_conhecida[1]',
+    'constitution:monolitos.academia.forbidden[0].violacao',
+    'constitution:monolitos.anchor.forbidden[0].violacao',
+    'constitution:monolitos.anchor.fronteira_de_continuidade.coerencia_com_external_effect',
+    'constitution:monolitos.anchor.fronteira_de_continuidade.consequencia_de_codigo.achado_reaberto',
+    'constitution:monolitos.anchor.fronteira_de_continuidade.consequencia_de_codigo.estado',
+    'constitution:monolitos.anchor.fronteira_de_continuidade.consequencia_de_codigo.o_que_muda_em_relacao_a_analise_anterior',
+    'constitution:monolitos.archimedes.divida_conhecida',
+    'constitution:monolitos.archimedes.divida_conhecida[0]',
+    'constitution:monolitos.archimedes.divida_conhecida[1]',
+    'constitution:monolitos.archimedes.divida_conhecida[2]',
+    'constitution:monolitos.archimedes.observacao_positiva',
+    'constitution:monolitos.bim.forbidden[0].violacao',
+    'constitution:monolitos.bim.forbidden[1].violacao',
+    'constitution:monolitos.bim.observacao_positiva',
+    'constitution:monolitos.bim.violacao_critica.arquivo',
+    'constitution:monolitos.bim.violacao_critica.descricao',
+    'constitution:monolitos.cea.divida_conhecida',
+    'constitution:monolitos.cea.divida_conhecida[0]',
+    'constitution:monolitos.cea.divida_conhecida[1]',
+    'constitution:monolitos.cea.divida_conhecida[2]',
+    'constitution:monolitos.cea.forbidden[0].violacao',
+    'constitution:monolitos.cefeida.forbidden[0].violacao',
+    'constitution:monolitos.core.forbidden[0].violacao',
+    'constitution:monolitos.core.fronteira_fisica.P1_07A_fronteira_semantica',
+    'constitution:monolitos.econotech.bug_conhecido.arquivo',
+    'constitution:monolitos.econotech.bug_conhecido.descricao',
+    'constitution:monolitos.econotech.forbidden[0].violacao',
+    'constitution:monolitos.econotech.forbidden[1].violacao',
+    'constitution:monolitos.fornecedores.a_verificar',
+    'constitution:monolitos.fornecedores.a_verificar[0]',
+    'constitution:monolitos.fornecedores.a_verificar[1]',
+    'constitution:monolitos.fornecedores.observacao_positiva',
+    'constitution:monolitos.gamemkt.violacao_critica.a_verificar',
+    'constitution:monolitos.gamemkt.violacao_critica.arquivo',
+    'constitution:monolitos.gamemkt.violacao_critica.descricao',
+    'constitution:monolitos.hub.forbidden[0].violacao',
+    'constitution:monolitos.john.observacao_positiva',
+    'constitution:monolitos.juridicotech.divida_conhecida',
+    'constitution:monolitos.juridicotech.divida_conhecida[0]',
+    'constitution:monolitos.juridicotech.divida_conhecida[1]',
+    'constitution:monolitos.juridicotech.divida_conhecida[2]',
+    'constitution:monolitos.opera.divida_conhecida',
+    'constitution:monolitos.opera.divida_conhecida[0]',
+    'constitution:monolitos.opera.divida_conhecida[1]',
+    'constitution:monolitos.opera.observacao_positiva',
+    'constitution:monolitos.ped.estado.descricao',
+    'constitution:separacao_de_artifacts.razao',
+    'contract_registry:contracts.liceu.anchor.authorization.1.0.0.status',
+    'contract_registry:contracts.liceu.anchor.authorization.1.1.0.status',
+    'contract_registry:contracts.liceu.archimedes.planning-proposal.1.0.0.status',
+    'contract_registry:contracts.liceu.archimedes.planning-state.1.0.0.status',
+    'contract_registry:contracts.liceu.archimedes.planning-state.2.0.0.status',
+    'contract_registry:contracts.liceu.authority.epoch-promoted.1.0.0.status',
+    'contract_registry:contracts.liceu.authority.escalation-requested.1.0.0.status',
+    'contract_registry:contracts.liceu.authority.fencing-rejected.1.0.0.status',
+    'contract_registry:contracts.liceu.authority.human-decision.1.0.0.status',
+    'contract_registry:contracts.liceu.authority.human-decision.2.0.0.status',
+    'contract_registry:contracts.liceu.authority.witness-attested.1.0.0.status',
+    'contract_registry:contracts.liceu.cea.continental-financial-exposure.1.0.0.status',
+    'contract_registry:contracts.liceu.cea.financial-exposure.1.0.0.status',
+    'contract_registry:contracts.liceu.cefeida.evidence.1.0.0.status',
+    'contract_registry:contracts.liceu.cefeida.evidence.2.0.0.status',
+    'contract_registry:contracts.liceu.hub.planning-request.1.0.0.status',
+    'contract_registry:contracts.liceu.john.recommendation.1.0.0.status',
+    'contract_registry:contracts.liceu.john.recommendation.2.0.0.status',
+    'contract_registry:contracts.liceu.john.recommendation.2.1.0.status',
+    'contract_registry:contracts.liceu.legal.admissibility.1.0.0.status',
+    'contract_registry:contracts.liceu.opera.execution.1.0.0.status',
+    'contract_registry:meta.status',
+    'event_reconciliation_ledger:P2_5B_duplicate_authority.federation.runtime.register.hipotese',
+    'event_reconciliation_ledger:meta.escopo_P2_5A',
+    'event_reconciliation_ledger:meta.escopo_P2_5B',
+    'event_registry:events.anchor.authorization.granted.implementation_status',
+    'event_registry:events.archimedes.planning.proposal.published.implementation_status',
+    'event_registry:events.archimedes.planning.state.authoritative.implementation_status',
+    'event_registry:events.authority.epoch.promoted.implementation_status',
+    'event_registry:events.authority.fencing.rejected.implementation_status',
+    'event_registry:events.authority.human.decision.recorded.implementation_status',
+    'event_registry:events.authority.human_escalation.implementation_status',
+    'event_registry:events.authority.witness.attested.implementation_status',
+    'event_registry:events.cefeida.evidence.published.implementation_status',
+    'event_registry:events.hub.planning.requested.implementation_status',
+    'event_registry:events.john.recommendation.generated.implementation_status',
+    'event_registry:events.legal.admissibility.assessed.implementation_status',
+    'event_registry:events.opera.execution.created.implementation_status',
+    'event_registry:resumo.IMPLEMENTED_IN_MONOLITH',
+    'producer_registry:producers.liceu.academy.instances[0].status',
+    'producer_registry:producers.liceu.anchor.instances[0].status',
+    'producer_registry:producers.liceu.archimedes.instances[0].status',
+    'producer_registry:producers.liceu.authority.instances[0].status',
+    'producer_registry:producers.liceu.authority.instances[1].status',
+    'producer_registry:producers.liceu.authority.instances[2].status',
+    'producer_registry:producers.liceu.bim.instances[0].status',
+    'producer_registry:producers.liceu.cea.instances[0].status',
+    'producer_registry:producers.liceu.cefeida.instances[0].status',
+    'producer_registry:producers.liceu.core.instances[0].status',
+    'producer_registry:producers.liceu.econotech.instances[0].status',
+    'producer_registry:producers.liceu.hub.instances[0].status',
+    'producer_registry:producers.liceu.john.instances[0].status',
+    'producer_registry:producers.liceu.legal.instances[0].status',
+    'producer_registry:producers.liceu.market.instances[0].status',
+    'producer_registry:producers.liceu.opera.instances[0].status',
+    'producer_registry:producers.liceu.research.instances[0].status',
+    'producer_registry:producers.liceu.suppliers.instances[0].status',
 )
 
 #: O TERCEIRO LACRE, e o que fecha a saida mais barata de todas.

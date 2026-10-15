@@ -304,6 +304,844 @@ origens:
     classe: OUTRO_ARTEFATO
     fonte: 'docs/ADR-*.md do liceu-protocol, campo Estado'
     razao: 'a EXTENSAO desta lista afirma quantas ADRs estao pendentes, e isso E derivavel: a R0G do registry_check le o campo Estado dos ADRs e segue o campo referencia ate o portao que os exige. Entrou na classe em 2026-10-15, com o furo da EXTENSAO fechado. A lista foi deliberadamente MANTIDA vazia pelo C25-07 porque liceu_boundary_check.py:353 a le'
+  constitution:global.core_dna.fronteira_semantica.estado:
+    classe: SAI_DA_CLASSE
+    fonte: julgamento registrado na lei
+    razao: '`JA OBRIGATORIA` e `PROTECAO` sao julgamento sobre o estado de uma fronteira e de um
+      comportamento de queda, nao contagem e nao derivavel de artefato nenhum. Entrou na classe
+      em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de`
+      nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela
+      pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.dimensoes_possiveis[0]:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'o bloco inteiro registra o que a varredura de codigo achou sobre o teto nao definido
+      — nomes de campo, repositorios onde aparece, formas que assume e dimensoes possiveis. Observacao
+      de codigo noutros repositorios, nao derivavel de artefato nenhum. Entrou na classe em 2026-10-15,
+      quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o
+      caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA
+      E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.dimensoes_possiveis[1]:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'o bloco inteiro registra o que a varredura de codigo achou sobre o teto nao definido
+      — nomes de campo, repositorios onde aparece, formas que assume e dimensoes possiveis. Observacao
+      de codigo noutros repositorios, nao derivavel de artefato nenhum. Entrou na classe em 2026-10-15,
+      quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o
+      caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA
+      E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.dimensoes_possiveis[2]:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'o bloco inteiro registra o que a varredura de codigo achou sobre o teto nao definido
+      — nomes de campo, repositorios onde aparece, formas que assume e dimensoes possiveis. Observacao
+      de codigo noutros repositorios, nao derivavel de artefato nenhum. Entrou na classe em 2026-10-15,
+      quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o
+      caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA
+      E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.dimensoes_possiveis[3]:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'o bloco inteiro registra o que a varredura de codigo achou sobre o teto nao definido
+      — nomes de campo, repositorios onde aparece, formas que assume e dimensoes possiveis. Observacao
+      de codigo noutros repositorios, nao derivavel de artefato nenhum. Entrou na classe em 2026-10-15,
+      quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o
+      caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA
+      E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.dimensoes_possiveis[4]:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'o bloco inteiro registra o que a varredura de codigo achou sobre o teto nao definido
+      — nomes de campo, repositorios onde aparece, formas que assume e dimensoes possiveis. Observacao
+      de codigo noutros repositorios, nao derivavel de artefato nenhum. Entrou na classe em 2026-10-15,
+      quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o
+      caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA
+      E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.campo:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'o bloco inteiro registra o que a varredura de codigo achou sobre o teto nao definido
+      — nomes de campo, repositorios onde aparece, formas que assume e dimensoes possiveis. Observacao
+      de codigo noutros repositorios, nao derivavel de artefato nenhum. Entrou na classe em 2026-10-15,
+      quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o
+      caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA
+      E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.formas[0]:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'o bloco inteiro registra o que a varredura de codigo achou sobre o teto nao definido
+      — nomes de campo, repositorios onde aparece, formas que assume e dimensoes possiveis. Observacao
+      de codigo noutros repositorios, nao derivavel de artefato nenhum. Entrou na classe em 2026-10-15,
+      quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o
+      caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA
+      E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.formas[1]:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'o bloco inteiro registra o que a varredura de codigo achou sobre o teto nao definido
+      — nomes de campo, repositorios onde aparece, formas que assume e dimensoes possiveis. Observacao
+      de codigo noutros repositorios, nao derivavel de artefato nenhum. Entrou na classe em 2026-10-15,
+      quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o
+      caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA
+      E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.formas[2]:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'o bloco inteiro registra o que a varredura de codigo achou sobre o teto nao definido
+      — nomes de campo, repositorios onde aparece, formas que assume e dimensoes possiveis. Observacao
+      de codigo noutros repositorios, nao derivavel de artefato nenhum. Entrou na classe em 2026-10-15,
+      quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o
+      caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA
+      E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.formas[3]:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'o bloco inteiro registra o que a varredura de codigo achou sobre o teto nao definido
+      — nomes de campo, repositorios onde aparece, formas que assume e dimensoes possiveis. Observacao
+      de codigo noutros repositorios, nao derivavel de artefato nenhum. Entrou na classe em 2026-10-15,
+      quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o
+      caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA
+      E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.onde[0]:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'o bloco inteiro registra o que a varredura de codigo achou sobre o teto nao definido
+      — nomes de campo, repositorios onde aparece, formas que assume e dimensoes possiveis. Observacao
+      de codigo noutros repositorios, nao derivavel de artefato nenhum. Entrou na classe em 2026-10-15,
+      quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o
+      caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA
+      E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.onde[1]:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'o bloco inteiro registra o que a varredura de codigo achou sobre o teto nao definido
+      — nomes de campo, repositorios onde aparece, formas que assume e dimensoes possiveis. Observacao
+      de codigo noutros repositorios, nao derivavel de artefato nenhum. Entrou na classe em 2026-10-15,
+      quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o
+      caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA
+      E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.onde[2]:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'o bloco inteiro registra o que a varredura de codigo achou sobre o teto nao definido
+      — nomes de campo, repositorios onde aparece, formas que assume e dimensoes possiveis. Observacao
+      de codigo noutros repositorios, nao derivavel de artefato nenhum. Entrou na classe em 2026-10-15,
+      quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o
+      caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA
+      E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.onde[3]:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'o bloco inteiro registra o que a varredura de codigo achou sobre o teto nao definido
+      — nomes de campo, repositorios onde aparece, formas que assume e dimensoes possiveis. Observacao
+      de codigo noutros repositorios, nao derivavel de artefato nenhum. Entrou na classe em 2026-10-15,
+      quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o
+      caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA
+      E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.no_codigo.problema:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'o bloco inteiro registra o que a varredura de codigo achou sobre o teto nao definido
+      — nomes de campo, repositorios onde aparece, formas que assume e dimensoes possiveis. Observacao
+      de codigo noutros repositorios, nao derivavel de artefato nenhum. Entrou na classe em 2026-10-15,
+      quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o
+      caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA
+      E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:global.federation_authority.LIMITE_NAO_DEFINIDO.o_que_falta:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'o bloco inteiro registra o que a varredura de codigo achou sobre o teto nao definido
+      — nomes de campo, repositorios onde aparece, formas que assume e dimensoes possiveis. Observacao
+      de codigo noutros repositorios, nao derivavel de artefato nenhum. Entrou na classe em 2026-10-15,
+      quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o
+      caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA
+      E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:global.federation_authority.MAE_REDUNDANTE.queda_da_testemunha.testemunha_cai_e_ativa_saudavel.estado:
+    classe: SAI_DA_CLASSE
+    fonte: julgamento registrado na lei
+    razao: '`JA OBRIGATORIA` e `PROTECAO` sao julgamento sobre o estado de uma fronteira e de um
+      comportamento de queda, nao contagem e nao derivavel de artefato nenhum. Entrou na classe
+      em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de`
+      nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela
+      pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:global.security_model.aliases_proibidos.observacao:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'afirma que o ARCHIMEDES aceita aliases proibidos e nenhum outro monolito os reconhece:
+      observacao de codigo em dois repositorios. O precedente ja esta nesta classe (`global.authority_model.observacao`).
+      Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar:
+      antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato.
+      O que ela pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:meta.status:
+    classe: SAI_DA_CLASSE
+    fonte: codigo nao-derivavel
+    razao: '`FINAL` e o estado da PROPRIA Constituicao, declarado por decisao e nao derivavel de
+      artefato nenhum — nao existe fonte acima dela de que se derive. Entrou na classe em 2026-10-15,
+      quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o
+      caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA
+      E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:milestone.M2_FEDERATION_PROTOCOL_AND_STATIC_CONVERGENCE.criterios.CORE_MOCK_PROVENANCE:
+    classe: SAI_DA_CLASSE
+    fonte: julgamento de milestone
+    razao: '`KNOWN` e julgamento sobre um criterio de milestone. Mesma familia do status de milestone,
+      e derivar daqui cai na mesma proibicao de sobrescrever registro historico. Entrou na classe
+      em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de`
+      nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela
+      pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:milestone.M2_FEDERATION_PROTOCOL_AND_STATIC_CONVERGENCE.criterios.SECRET_EXPOSURE_STATUS:
+    classe: SAI_DA_CLASSE
+    fonte: julgamento de milestone
+    razao: '`KNOWN` e julgamento sobre um criterio de milestone. Mesma familia do status de milestone,
+      e derivar daqui cai na mesma proibicao de sobrescrever registro historico. Entrou na classe
+      em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de`
+      nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela
+      pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:milestone.M2_FEDERATION_PROTOCOL_AND_STATIC_CONVERGENCE.status:
+    classe: SAI_DA_CLASSE
+    fonte: julgamento de milestone
+    razao: 'ACTIVE, NOT_STARTED e FROZEN sao JULGAMENTO sobre o andamento, e nao contagem. Derivar
+      daqui seria pior que nao derivar: o modulo ja PROIBE derivar campo de milestone, porque o
+      M1 declara `baseline_constitution_version: 1.0.0` e derivar sobrescreveria historia com o
+      valor corrente. E O PORTAO JA ACUSA A CONTRADICAO destes campos por outro caminho: M3 e M4
+      dizem NOT_STARTED com 5 e 3 criterios em PASS. Entrou na classe em 2026-10-15, quando a CHAVE
+      passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor
+      sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela
+      decisao de classe da UNK-0018, nao derivacao'
+  constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.status:
+    classe: SAI_DA_CLASSE
+    fonte: julgamento de milestone
+    razao: 'ACTIVE, NOT_STARTED e FROZEN sao JULGAMENTO sobre o andamento, e nao contagem. Derivar
+      daqui seria pior que nao derivar: o modulo ja PROIBE derivar campo de milestone, porque o
+      M1 declara `baseline_constitution_version: 1.0.0` e derivar sobrescreveria historia com o
+      valor corrente. E O PORTAO JA ACUSA A CONTRADICAO destes campos por outro caminho: M3 e M4
+      dizem NOT_STARTED com 5 e 3 criterios em PASS. Entrou na classe em 2026-10-15, quando a CHAVE
+      passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor
+      sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela
+      decisao de classe da UNK-0018, nao derivacao'
+  constitution:milestone.M4_FIRST_CAUSAL_AUTHORITY_CHAIN.status:
+    classe: SAI_DA_CLASSE
+    fonte: julgamento de milestone
+    razao: 'ACTIVE, NOT_STARTED e FROZEN sao JULGAMENTO sobre o andamento, e nao contagem. Derivar
+      daqui seria pior que nao derivar: o modulo ja PROIBE derivar campo de milestone, porque o
+      M1 declara `baseline_constitution_version: 1.0.0` e derivar sobrescreveria historia com o
+      valor corrente. E O PORTAO JA ACUSA A CONTRADICAO destes campos por outro caminho: M3 e M4
+      dizem NOT_STARTED com 5 e 3 criterios em PASS. Entrou na classe em 2026-10-15, quando a CHAVE
+      passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor
+      sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela
+      decisao de classe da UNK-0018, nao derivacao'
+  constitution:milestone.M5_CONTINENTAL_CLOSURE.status:
+    classe: SAI_DA_CLASSE
+    fonte: julgamento de milestone
+    razao: 'ACTIVE, NOT_STARTED e FROZEN sao JULGAMENTO sobre o andamento, e nao contagem. Derivar
+      daqui seria pior que nao derivar: o modulo ja PROIBE derivar campo de milestone, porque o
+      M1 declara `baseline_constitution_version: 1.0.0` e derivar sobrescreveria historia com o
+      valor corrente. E O PORTAO JA ACUSA A CONTRADICAO destes campos por outro caminho: M3 e M4
+      dizem NOT_STARTED com 5 e 3 criterios em PASS. Entrou na classe em 2026-10-15, quando a CHAVE
+      passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor
+      sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela
+      decisao de classe da UNK-0018, nao derivacao'
+  constitution:monolitos.anchor.fronteira_de_continuidade.consequencia_de_codigo.achado_reaberto:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'o bloco registra o que mudou na leitura do codigo do ANCHOR e o que ficou para reexame,
+      inclusive `A_REEXAMINAR` como estado do proprio reexame. Observacao de codigo, nao derivavel.
+      Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar:
+      antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato.
+      O que ela pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:monolitos.anchor.fronteira_de_continuidade.consequencia_de_codigo.estado:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'o bloco registra o que mudou na leitura do codigo do ANCHOR e o que ficou para reexame,
+      inclusive `A_REEXAMINAR` como estado do proprio reexame. Observacao de codigo, nao derivavel.
+      Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar:
+      antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato.
+      O que ela pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:monolitos.anchor.fronteira_de_continuidade.consequencia_de_codigo.o_que_muda_em_relacao_a_analise_anterior:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'o bloco registra o que mudou na leitura do codigo do ANCHOR e o que ficou para reexame,
+      inclusive `A_REEXAMINAR` como estado do proprio reexame. Observacao de codigo, nao derivavel.
+      Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar:
+      antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato.
+      O que ela pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:monolitos.archimedes.observacao_positiva:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'os dois carregam `[CERT]` e afirmam o que um monolito fez CERTO no codigo. O precedente
+      ja esta nesta classe desde 2026-10-14 (`monolitos.opera.observacao_positiva`), e estes dois
+      ficavam fora so porque nao tinham digito nem `[CODIGO]`. Entrou na classe em 2026-10-15, quando
+      a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o caminho,
+      e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA
+      pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:monolitos.bim.observacao_positiva:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'os dois carregam `[CERT]` e afirmam o que um monolito fez CERTO no codigo. O precedente
+      ja esta nesta classe desde 2026-10-14 (`monolitos.opera.observacao_positiva`), e estes dois
+      ficavam fora so porque nao tinham digito nem `[CODIGO]`. Entrou na classe em 2026-10-15, quando
+      a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o caminho,
+      e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA
+      pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:monolitos.bim.violacao_critica.arquivo:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'caminho de arquivo em outro repositorio e pergunta aberta sobre rotas: observacao de
+      codigo. O precedente da familia ja esta nesta classe (`monolitos.*.forbidden[0].violacao`).
+      Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar:
+      antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato.
+      O que ela pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:monolitos.econotech.bug_conhecido.arquivo:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'caminho de arquivo em outro repositorio. O irmao `descricao` da MESMA chave ja esta
+      nesta classe desde 2026-10-14 (`monolitos.econotech.bug_conhecido.descricao`), e so o `arquivo`
+      ficava fora porque nao tinha digito. Entrou na classe em 2026-10-15, quando a CHAVE passou
+      a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem
+      forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao
+      de classe da UNK-0018, nao derivacao'
+  constitution:monolitos.gamemkt.violacao_critica.a_verificar:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'caminho de arquivo em outro repositorio e pergunta aberta sobre rotas: observacao de
+      codigo. O precedente da familia ja esta nesta classe (`monolitos.*.forbidden[0].violacao`).
+      Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar:
+      antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato.
+      O que ela pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  constitution:monolitos.gamemkt.violacao_critica.arquivo:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'caminho de arquivo em outro repositorio e pergunta aberta sobre rotas: observacao de
+      codigo. O precedente da familia ja esta nesta classe (`monolitos.*.forbidden[0].violacao`).
+      Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar:
+      antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato.
+      O que ela pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.anchor.authorization.1.0.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.anchor.authorization.1.1.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.archimedes.planning-proposal.1.0.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.archimedes.planning-state.1.0.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.archimedes.planning-state.2.0.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.authority.epoch-promoted.1.0.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.authority.escalation-requested.1.0.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.authority.fencing-rejected.1.0.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.authority.human-decision.1.0.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.authority.human-decision.2.0.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.authority.witness-attested.1.0.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.cea.continental-financial-exposure.1.0.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.cea.financial-exposure.1.0.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.cefeida.evidence.1.0.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.cefeida.evidence.2.0.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.hub.planning-request.1.0.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.john.recommendation.1.0.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.john.recommendation.2.0.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.john.recommendation.2.1.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.legal.admissibility.1.0.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  contract_registry:contracts.liceu.opera.execution.1.0.0.status:
+    classe: SAI_DA_CLASSE
+    fonte: decisao registrada no proprio registro
+    razao: 'ACTIVE, RETIRED e DEPRECATED sao CONSTITUTIVOS: o Contract Registry E a fonte canonica
+      do que esta em vigor, entao o campo nao AFIRMA algo verificavel noutro lugar — ele ESTABELECE.
+      Nao e derivavel nem do proprio artefato: a versao mais alta ser ACTIVE e padrao e nao regra,
+      e a diferenca entre RETIRED e DEPRECATED e decisao (o `meta.status_semantica` a define, e
+      definicao nao e derivacao). Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  event_reconciliation_ledger:meta.escopo_P2_5A:
+    classe: SAI_DA_CLASSE
+    fonte: julgamento registrado na lei
+    razao: 'afirma que a cadeia causal minima bloqueia o M2. O irmao `escopo_P2_5B` ja esta nesta
+      classe desde 2026-10-14, e os dois sao julgamento de escopo. Entrou na classe em 2026-10-15,
+      quando a CHAVE passou a QUALIFICAR e nao so a classificar: antes `forma_de` nem recebia o
+      caminho, e o valor sem forma nenhuma nunca chegava a ser candidato. O que ela pede e DATA
+      E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  event_registry:events.anchor.authorization.granted.implementation_status:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'DECLARED_BUT_NOT_IMPLEMENTED, DECLARED_WRONG_OWNER e EMITIDO_COMO_AUDITORIA_NAO_COMO_FATO
+      afirmam o que existe NO CODIGO de outro repositorio contra o que o registro declara. O precedente
+      ja esta nesta classe desde 2026-10-14: `event_registry:events.authority.human.decision.recorded.implementation_status`.
+      Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar:
+      antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato.
+      O que ela pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  event_registry:events.archimedes.planning.proposal.published.implementation_status:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'DECLARED_BUT_NOT_IMPLEMENTED, DECLARED_WRONG_OWNER e EMITIDO_COMO_AUDITORIA_NAO_COMO_FATO
+      afirmam o que existe NO CODIGO de outro repositorio contra o que o registro declara. O precedente
+      ja esta nesta classe desde 2026-10-14: `event_registry:events.authority.human.decision.recorded.implementation_status`.
+      Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar:
+      antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato.
+      O que ela pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  event_registry:events.archimedes.planning.state.authoritative.implementation_status:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'DECLARED_BUT_NOT_IMPLEMENTED, DECLARED_WRONG_OWNER e EMITIDO_COMO_AUDITORIA_NAO_COMO_FATO
+      afirmam o que existe NO CODIGO de outro repositorio contra o que o registro declara. O precedente
+      ja esta nesta classe desde 2026-10-14: `event_registry:events.authority.human.decision.recorded.implementation_status`.
+      Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar:
+      antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato.
+      O que ela pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  event_registry:events.authority.epoch.promoted.implementation_status:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'DECLARED_BUT_NOT_IMPLEMENTED, DECLARED_WRONG_OWNER e EMITIDO_COMO_AUDITORIA_NAO_COMO_FATO
+      afirmam o que existe NO CODIGO de outro repositorio contra o que o registro declara. O precedente
+      ja esta nesta classe desde 2026-10-14: `event_registry:events.authority.human.decision.recorded.implementation_status`.
+      Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar:
+      antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato.
+      O que ela pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  event_registry:events.authority.fencing.rejected.implementation_status:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'DECLARED_BUT_NOT_IMPLEMENTED, DECLARED_WRONG_OWNER e EMITIDO_COMO_AUDITORIA_NAO_COMO_FATO
+      afirmam o que existe NO CODIGO de outro repositorio contra o que o registro declara. O precedente
+      ja esta nesta classe desde 2026-10-14: `event_registry:events.authority.human.decision.recorded.implementation_status`.
+      Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar:
+      antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato.
+      O que ela pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  event_registry:events.authority.human_escalation.implementation_status:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'DECLARED_BUT_NOT_IMPLEMENTED, DECLARED_WRONG_OWNER e EMITIDO_COMO_AUDITORIA_NAO_COMO_FATO
+      afirmam o que existe NO CODIGO de outro repositorio contra o que o registro declara. O precedente
+      ja esta nesta classe desde 2026-10-14: `event_registry:events.authority.human.decision.recorded.implementation_status`.
+      Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar:
+      antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato.
+      O que ela pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  event_registry:events.authority.witness.attested.implementation_status:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'DECLARED_BUT_NOT_IMPLEMENTED, DECLARED_WRONG_OWNER e EMITIDO_COMO_AUDITORIA_NAO_COMO_FATO
+      afirmam o que existe NO CODIGO de outro repositorio contra o que o registro declara. O precedente
+      ja esta nesta classe desde 2026-10-14: `event_registry:events.authority.human.decision.recorded.implementation_status`.
+      Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar:
+      antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato.
+      O que ela pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  event_registry:events.cefeida.evidence.published.implementation_status:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'DECLARED_BUT_NOT_IMPLEMENTED, DECLARED_WRONG_OWNER e EMITIDO_COMO_AUDITORIA_NAO_COMO_FATO
+      afirmam o que existe NO CODIGO de outro repositorio contra o que o registro declara. O precedente
+      ja esta nesta classe desde 2026-10-14: `event_registry:events.authority.human.decision.recorded.implementation_status`.
+      Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar:
+      antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato.
+      O que ela pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  event_registry:events.hub.planning.requested.implementation_status:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'DECLARED_BUT_NOT_IMPLEMENTED, DECLARED_WRONG_OWNER e EMITIDO_COMO_AUDITORIA_NAO_COMO_FATO
+      afirmam o que existe NO CODIGO de outro repositorio contra o que o registro declara. O precedente
+      ja esta nesta classe desde 2026-10-14: `event_registry:events.authority.human.decision.recorded.implementation_status`.
+      Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar:
+      antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato.
+      O que ela pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  event_registry:events.john.recommendation.generated.implementation_status:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'DECLARED_BUT_NOT_IMPLEMENTED, DECLARED_WRONG_OWNER e EMITIDO_COMO_AUDITORIA_NAO_COMO_FATO
+      afirmam o que existe NO CODIGO de outro repositorio contra o que o registro declara. O precedente
+      ja esta nesta classe desde 2026-10-14: `event_registry:events.authority.human.decision.recorded.implementation_status`.
+      Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar:
+      antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato.
+      O que ela pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  event_registry:events.legal.admissibility.assessed.implementation_status:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'DECLARED_BUT_NOT_IMPLEMENTED, DECLARED_WRONG_OWNER e EMITIDO_COMO_AUDITORIA_NAO_COMO_FATO
+      afirmam o que existe NO CODIGO de outro repositorio contra o que o registro declara. O precedente
+      ja esta nesta classe desde 2026-10-14: `event_registry:events.authority.human.decision.recorded.implementation_status`.
+      Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar:
+      antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato.
+      O que ela pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  event_registry:events.opera.execution.created.implementation_status:
+    classe: SAI_DA_CLASSE
+    fonte: codigo dos 19 repositorios
+    razao: 'DECLARED_BUT_NOT_IMPLEMENTED, DECLARED_WRONG_OWNER e EMITIDO_COMO_AUDITORIA_NAO_COMO_FATO
+      afirmam o que existe NO CODIGO de outro repositorio contra o que o registro declara. O precedente
+      ja esta nesta classe desde 2026-10-14: `event_registry:events.authority.human.decision.recorded.implementation_status`.
+      Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR e nao so a classificar:
+      antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma nunca chegava a ser candidato.
+      O que ela pede e DATA E PROCEDENCIA pela decisao de classe da UNK-0018, nao derivacao'
+  producer_registry:producers.liceu.academy.instances[0].status:
+    classe: SAI_DA_CLASSE
+    fonte: mundo implantado
+    razao: 'ACTIVE e PLANNED afirmam se a INSTANCIA existe rodando, e isso e estado do mundo implantado
+      — nao ha artefato de que se derive, so o mundo. As tres instancias de `liceu.authority` em
+      PLANNED sao a Mae que ainda nao existe, e e justamente por serem afirmacao sobre o mundo que
+      elas pedem procedencia. Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  producer_registry:producers.liceu.anchor.instances[0].status:
+    classe: SAI_DA_CLASSE
+    fonte: mundo implantado
+    razao: 'ACTIVE e PLANNED afirmam se a INSTANCIA existe rodando, e isso e estado do mundo implantado
+      — nao ha artefato de que se derive, so o mundo. As tres instancias de `liceu.authority` em
+      PLANNED sao a Mae que ainda nao existe, e e justamente por serem afirmacao sobre o mundo que
+      elas pedem procedencia. Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  producer_registry:producers.liceu.archimedes.instances[0].status:
+    classe: SAI_DA_CLASSE
+    fonte: mundo implantado
+    razao: 'ACTIVE e PLANNED afirmam se a INSTANCIA existe rodando, e isso e estado do mundo implantado
+      — nao ha artefato de que se derive, so o mundo. As tres instancias de `liceu.authority` em
+      PLANNED sao a Mae que ainda nao existe, e e justamente por serem afirmacao sobre o mundo que
+      elas pedem procedencia. Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  producer_registry:producers.liceu.authority.instances[0].status:
+    classe: SAI_DA_CLASSE
+    fonte: mundo implantado
+    razao: 'ACTIVE e PLANNED afirmam se a INSTANCIA existe rodando, e isso e estado do mundo implantado
+      — nao ha artefato de que se derive, so o mundo. As tres instancias de `liceu.authority` em
+      PLANNED sao a Mae que ainda nao existe, e e justamente por serem afirmacao sobre o mundo que
+      elas pedem procedencia. Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  producer_registry:producers.liceu.authority.instances[1].status:
+    classe: SAI_DA_CLASSE
+    fonte: mundo implantado
+    razao: 'ACTIVE e PLANNED afirmam se a INSTANCIA existe rodando, e isso e estado do mundo implantado
+      — nao ha artefato de que se derive, so o mundo. As tres instancias de `liceu.authority` em
+      PLANNED sao a Mae que ainda nao existe, e e justamente por serem afirmacao sobre o mundo que
+      elas pedem procedencia. Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  producer_registry:producers.liceu.authority.instances[2].status:
+    classe: SAI_DA_CLASSE
+    fonte: mundo implantado
+    razao: 'ACTIVE e PLANNED afirmam se a INSTANCIA existe rodando, e isso e estado do mundo implantado
+      — nao ha artefato de que se derive, so o mundo. As tres instancias de `liceu.authority` em
+      PLANNED sao a Mae que ainda nao existe, e e justamente por serem afirmacao sobre o mundo que
+      elas pedem procedencia. Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  producer_registry:producers.liceu.bim.instances[0].status:
+    classe: SAI_DA_CLASSE
+    fonte: mundo implantado
+    razao: 'ACTIVE e PLANNED afirmam se a INSTANCIA existe rodando, e isso e estado do mundo implantado
+      — nao ha artefato de que se derive, so o mundo. As tres instancias de `liceu.authority` em
+      PLANNED sao a Mae que ainda nao existe, e e justamente por serem afirmacao sobre o mundo que
+      elas pedem procedencia. Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  producer_registry:producers.liceu.cea.instances[0].status:
+    classe: SAI_DA_CLASSE
+    fonte: mundo implantado
+    razao: 'ACTIVE e PLANNED afirmam se a INSTANCIA existe rodando, e isso e estado do mundo implantado
+      — nao ha artefato de que se derive, so o mundo. As tres instancias de `liceu.authority` em
+      PLANNED sao a Mae que ainda nao existe, e e justamente por serem afirmacao sobre o mundo que
+      elas pedem procedencia. Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  producer_registry:producers.liceu.cefeida.instances[0].status:
+    classe: SAI_DA_CLASSE
+    fonte: mundo implantado
+    razao: 'ACTIVE e PLANNED afirmam se a INSTANCIA existe rodando, e isso e estado do mundo implantado
+      — nao ha artefato de que se derive, so o mundo. As tres instancias de `liceu.authority` em
+      PLANNED sao a Mae que ainda nao existe, e e justamente por serem afirmacao sobre o mundo que
+      elas pedem procedencia. Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  producer_registry:producers.liceu.core.instances[0].status:
+    classe: SAI_DA_CLASSE
+    fonte: mundo implantado
+    razao: 'ACTIVE e PLANNED afirmam se a INSTANCIA existe rodando, e isso e estado do mundo implantado
+      — nao ha artefato de que se derive, so o mundo. As tres instancias de `liceu.authority` em
+      PLANNED sao a Mae que ainda nao existe, e e justamente por serem afirmacao sobre o mundo que
+      elas pedem procedencia. Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  producer_registry:producers.liceu.econotech.instances[0].status:
+    classe: SAI_DA_CLASSE
+    fonte: mundo implantado
+    razao: 'ACTIVE e PLANNED afirmam se a INSTANCIA existe rodando, e isso e estado do mundo implantado
+      — nao ha artefato de que se derive, so o mundo. As tres instancias de `liceu.authority` em
+      PLANNED sao a Mae que ainda nao existe, e e justamente por serem afirmacao sobre o mundo que
+      elas pedem procedencia. Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  producer_registry:producers.liceu.hub.instances[0].status:
+    classe: SAI_DA_CLASSE
+    fonte: mundo implantado
+    razao: 'ACTIVE e PLANNED afirmam se a INSTANCIA existe rodando, e isso e estado do mundo implantado
+      — nao ha artefato de que se derive, so o mundo. As tres instancias de `liceu.authority` em
+      PLANNED sao a Mae que ainda nao existe, e e justamente por serem afirmacao sobre o mundo que
+      elas pedem procedencia. Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  producer_registry:producers.liceu.john.instances[0].status:
+    classe: SAI_DA_CLASSE
+    fonte: mundo implantado
+    razao: 'ACTIVE e PLANNED afirmam se a INSTANCIA existe rodando, e isso e estado do mundo implantado
+      — nao ha artefato de que se derive, so o mundo. As tres instancias de `liceu.authority` em
+      PLANNED sao a Mae que ainda nao existe, e e justamente por serem afirmacao sobre o mundo que
+      elas pedem procedencia. Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  producer_registry:producers.liceu.legal.instances[0].status:
+    classe: SAI_DA_CLASSE
+    fonte: mundo implantado
+    razao: 'ACTIVE e PLANNED afirmam se a INSTANCIA existe rodando, e isso e estado do mundo implantado
+      — nao ha artefato de que se derive, so o mundo. As tres instancias de `liceu.authority` em
+      PLANNED sao a Mae que ainda nao existe, e e justamente por serem afirmacao sobre o mundo que
+      elas pedem procedencia. Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  producer_registry:producers.liceu.market.instances[0].status:
+    classe: SAI_DA_CLASSE
+    fonte: mundo implantado
+    razao: 'ACTIVE e PLANNED afirmam se a INSTANCIA existe rodando, e isso e estado do mundo implantado
+      — nao ha artefato de que se derive, so o mundo. As tres instancias de `liceu.authority` em
+      PLANNED sao a Mae que ainda nao existe, e e justamente por serem afirmacao sobre o mundo que
+      elas pedem procedencia. Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  producer_registry:producers.liceu.opera.instances[0].status:
+    classe: SAI_DA_CLASSE
+    fonte: mundo implantado
+    razao: 'ACTIVE e PLANNED afirmam se a INSTANCIA existe rodando, e isso e estado do mundo implantado
+      — nao ha artefato de que se derive, so o mundo. As tres instancias de `liceu.authority` em
+      PLANNED sao a Mae que ainda nao existe, e e justamente por serem afirmacao sobre o mundo que
+      elas pedem procedencia. Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  producer_registry:producers.liceu.research.instances[0].status:
+    classe: SAI_DA_CLASSE
+    fonte: mundo implantado
+    razao: 'ACTIVE e PLANNED afirmam se a INSTANCIA existe rodando, e isso e estado do mundo implantado
+      — nao ha artefato de que se derive, so o mundo. As tres instancias de `liceu.authority` em
+      PLANNED sao a Mae que ainda nao existe, e e justamente por serem afirmacao sobre o mundo que
+      elas pedem procedencia. Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
+  producer_registry:producers.liceu.suppliers.instances[0].status:
+    classe: SAI_DA_CLASSE
+    fonte: mundo implantado
+    razao: 'ACTIVE e PLANNED afirmam se a INSTANCIA existe rodando, e isso e estado do mundo implantado
+      — nao ha artefato de que se derive, so o mundo. As tres instancias de `liceu.authority` em
+      PLANNED sao a Mae que ainda nao existe, e e justamente por serem afirmacao sobre o mundo que
+      elas pedem procedencia. Entrou na classe em 2026-10-15, quando a CHAVE passou a QUALIFICAR
+      e nao so a classificar: antes `forma_de` nem recebia o caminho, e o valor sem forma nenhuma
+      nunca chegava a ser candidato. O que ela pede e DATA E PROCEDENCIA pela decisao de classe
+      da UNK-0018, nao derivacao'
 
 prosa_julgada:
   constitution:global.camadas_transversais.REGRA_UNICA.texto:
