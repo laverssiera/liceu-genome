@@ -1,0 +1,56 @@
+{
+  "o_furo": "PROSA era a UNICA classe do portao em que se entrava SEM ATO. As outras duas saidas -- ISENTOS_DE_DERIVACAO e SAI_DA_CLASSE -- custam editar o mapa ou a lista, editar o lacre e mover o sha256 congelado no teste. Entrar em PROSA custava escrever onze palavras",
+  "a_medicao_que_o_prova": {
+    "metodo": "um campo novo escrito numa COPIA da lei real, nas duas formas, e a sequencia completa de guardas do main() perguntada em cada uma",
+    "curta": {
+      "valor": "11 monolitos migrados",
+      "palavras": 3,
+      "classe": "ESTADO",
+      "portao": "RECUSOU -- 1 ESTADO sem origem declarada"
+    },
+    "acolchoada": {
+      "valor": "11 monolitos migrados ate agora, e o restante segue na fila por decisao de sequencia do titular",
+      "palavras": 17,
+      "classe": "PROSA",
+      "portao_ANTES": "PASSOU",
+      "portao_DEPOIS": "RECUSOU -- 1 membro de PROSA SEM JULGAMENTO"
+    },
+    "o_custo_da_fuga": "catorze palavras"
+  },
+  "a_regra_mais_estreita_que_o_fecha": "todo membro de PROSA tem de estar JULGADO por escrito (afirmacao, natureza, derivavel, razao) e DENTRO de um terceiro lacre por sha256; a guarda falha fechado nas duas direcoes -- membro sem julgamento e julgamento cujo campo deixou de ser PROSA",
+  "o_que_o_julgamento_dos_25_revelou": {
+    "o_achado": "PROSA nao era um saco de argumentos: so 4 dos 25 realmente argumentam",
+    "AFIRMA_ESTADO": 11,
+    "REGISTRO_PASSADO": 6,
+    "ARGUMENTA": 4,
+    "NORMA_NAO_REGISTRADA": 4,
+    "AFIRMACAO_DERIVAVEL": 9,
+    "a_divida": "NOVE afirmacoes deriváveis de artefato presas dentro de frases, onde nenhuma derivacao as alcanca",
+    "o_caso_mais_duro": "contract_registry:meta.escopo abre dizendo 'CONTADO, nao declarado: o numero abaixo e derivado das chaves de contracts' e ainda assim escreve '15 contract_ids, 21 contract_versions' DENTRO da frase"
+  },
+  "derivabilidades_MEDIDAS_em_2026_10_15": {
+    "len(monolitos)": 15,
+    "len(contracts)": 15,
+    "somatorio_de_versoes": 21,
+    "legal_basis_refs_na_1_1_0": true,
+    "external_effect_MISTO": "4 de 16 produtores: bim, suppliers, cea, legal",
+    "455_no_ledger": "ZERO ocorrencias em todos os artefatos governados",
+    "correcao_de_uma_medicao_minha": "contei 0 produtores mistos primeiro, porque procurei external_effect dentro de capabilities, onde ele nao vive -- ele e dicionario capacidade->bool no nivel do produtor"
+  },
+  "o_que_o_remedio_NAO_faz_de_proposito": "nao EXTRAI a afirmacao de dentro da frase. O campo global.federation_cognition.REGRA_UNIVERSAL.o_que_isso_revisa e a razao medida da recusa: ele cita '5 monolitos' de uma versao REVOGADA, e extrair e exigir origem converteria o registro de uma correcao em declaracao sobre o mundo de hoje -- mesma familia do erro que baseline_constitution_version ja corrige. A cura e a que o modulo ja escrevia: a frase deixar de carregar o numero, nao o numero mudar",
+  "o_que_segue_aberto": [
+    "a ASSIMETRIA DA VARREDURA: a regra de ESTADO olha TODOS os segmentos do caminho, as de NORMA e HISTORICO so o ultimo. Por isso monolitos.john.correcao_de_registro.descricao cai em PROSA com correcao_de_registro DENTRO de CHAVES_HISTORICO. MEDIDO: alargar moveria 2 campos para HISTORICO e 6 para NORMA, e DOIS desses seis sao REGRA_DE_IDENTIDADE.medicao_atual.*, que sao estado de verdade e ficariam ESCONDIDOS atras do ancestral normativo -- entao alargar NAO e obviamente certo, e fica nomeado em vez de corrigido",
+    "frase longa SEM numero e SEM palavra de situacao nunca chega a ser candidata, porque forma_de filtra antes da classificacao: furo ABAIXO de PROSA",
+    "curar os NOVE: cada um pede a frase ser reescrita para que a afirmacao vire campo, e isso e decisao do titular, nao leitura minha"
+  ],
+  "a_guarda_foi_MUTADA_para_conferir_que_guarda": {
+    "mutacao": "exige_prosa_julgada voltando a passar sempre (return cedo)",
+    "resultado": "2 testes caem, inclusive test_acolchoar_uma_declaracao_NAO_ESCAPA_mais, que e o que sustenta a classe"
+  },
+  "erro_de_processo_registrado": "a PRIMEIRA medicao do remedio disse PASSOU. A causa era o ARRANJO: meu script chamava so as tres guardas antigas e nao chamava exige_prosa_julgada. O arranjo corrigido LE de main() quais guardas rodar, em vez de as escrever a mao, para nao envelhecer calado de novo",
+  "verde": {
+    "testes_do_portao": 89,
+    "portao": "exit 0",
+    "lacres": "5 + 70 + 25, so encolhem"
+  }
+}

@@ -304,3 +304,209 @@ origens:
     classe: OUTRO_ARTEFATO
     fonte: 'docs/ADR-*.md do liceu-protocol, campo Estado'
     razao: 'a EXTENSAO desta lista afirma quantas ADRs estao pendentes, e isso E derivavel: a R0G do registry_check le o campo Estado dos ADRs e segue o campo referencia ate o portao que os exige. Entrou na classe em 2026-10-15, com o furo da EXTENSAO fechado. A lista foi deliberadamente MANTIDA vazia pelo C25-07 porque liceu_boundary_check.py:353 a le'
+
+prosa_julgada:
+  constitution:global.camadas_transversais.REGRA_UNICA.texto:
+    afirmacao: as camadas transversais servem os 15 monolitos e nenhuma exerce autoridade sobre
+      dominio
+    derivavel: true
+    natureza: NORMA_NAO_REGISTRADA
+    razao: 'o campo e o TEXTO de uma `REGRA_UNICA` — normativo — e caiu em PROSA porque a classificacao
+      de NORMA olha so o ULTIMO segmento do caminho (`texto`), nunca o ancestral `REGRA_UNICA`:
+      e a assimetria da varredura, nomeada no modulo e deliberadamente nao corrigida aqui. O 15
+      embutido e derivavel de len(monolitos), medido em 2026-10-15'
+  constitution:global.federation_authority.CLASSE_DE_AUTORIDADE.NAO_e:
+    afirmacao: existem 15 monolitos soberanos, e a camada de autoridade nao e o 16o
+    derivavel: true
+    natureza: AFIRMA_ESTADO
+    razao: 'medido em 2026-10-15: len(monolitos) no proprio artefato da 15, e hoje a frase esta
+      CERTA. A cura NAO e derivar aqui — derivar de dentro de uma frase exigiria editar texto,
+      e o portao nao edita texto. A cura e a que este modulo ja escreve para os dois casos de
+      prosa com contagem: a frase deixar de carregar o numero'
+  constitution:global.federation_authority.FALLBACK.REQUISITO_NOVO.CONSEQUENCIA_DURA:
+    afirmacao: a cadeia causal esta em 0/5
+    derivavel: true
+    natureza: AFIRMA_ESTADO
+    razao: 'o juiz do genoma DERIVA esse numero e o imprime — e hoje imprime ''REGIONAL bloqueada
+      por 3 item(ns) — 0 elos contam''. Mas o artefato de origem e genome/*.yaml, que NAO esta
+      ao alcance deste portao: ele roda do KIT INSTALADO. Mesma razao da isencao de `adrs_pendentes`,
+      e derivar aqui seria fingir alcance. A cura e a frase deixar de carregar o numero'
+  constitution:global.federation_authority.MAE_REDUNDANTE.TESTEMUNHA.o_que_resolve.quorum:
+    afirmacao: com 3 participantes ha maioria, e a arbitragem deixa de depender de timeout unilateral
+    derivavel: false
+    natureza: ARGUMENTA
+    razao: 'propriedade aritmetica de um DESENHO, nao estado do mundo: o 3 e parametro escolhido
+      e nao contagem de nada que exista. Nao ha artefato de que ''ha maioria'' se derive, e este
+      e o tipo de campo para o qual PROSA e a classificacao HONESTA'
+  constitution:global.federation_authority.delegacao.universalidade:
+    afirmacao: existem 15 monolitos, e o modelo de delegacao vale para todos igualmente
+    derivavel: true
+    natureza: AFIRMA_ESTADO
+    razao: 'medido em 2026-10-15: len(monolitos) no proprio artefato da 15, e hoje a frase esta
+      CERTA. A cura NAO e derivar aqui — derivar de dentro de uma frase exigiria editar texto,
+      e o portao nao edita texto. A cura e a que este modulo ja escreve para os dois casos de
+      prosa com contagem: a frase deixar de carregar o numero'
+  constitution:global.federation_cognition.REGRA_UNIVERSAL.o_que_isso_revisa:
+    afirmacao: a versao 1.6.0 dizia que 5 monolitos nao tinham camada cognitiva, e isso estava
+      errado — todos tem
+    derivavel: false
+    natureza: REGISTRO_PASSADO
+    razao: ESTE CAMPO E A RAZAO MEDIDA PELA QUAL O REMEDIO NAO EXTRAI NUMEROS DE DENTRO DE FRASES.
+      O 5 e CITACAO de uma afirmacao revogada; extrai-lo e exigir origem para ele converteria
+      o registro de uma correcao em declaracao sobre o mundo de hoje — a mesma familia do erro
+      que `baseline_constitution_version` ja corrige neste modulo
+  constitution:global.federation_scale.vocabulario_rejeitado.planetary.evidencia:
+    afirmacao: ha 18 usos de `planetary` no codigo, todos nas waves 78 e 79
+    derivavel: false
+    natureza: AFIRMA_ESTADO
+    razao: 'contagem de varredura de codigo. Nenhum artefato governado a carrega, e a propria
+      chave se chama `evidencia`: e o registro de uma medicao passada, que pede data e procedencia'
+  constitution:global.transport_policy.acao:
+    afirmacao: existem 6 streams NATS a convergir para namespace comum
+    derivavel: false
+    natureza: AFIRMA_ESTADO
+    razao: o numero conta streams NATS configurados no CODIGO dos 19 repositorios, e nenhum artefato
+      governado os enumera. O campo e uma ACAO — diz o que fazer — e a afirmacao esta de passagem
+      dentro dela. Pede data e procedencia pela decisao de classe da UNK-0018
+  constitution:minimum_federated_causal_thread.razao:
+    afirmacao: ha 455 eventos orfaos no ecossistema
+    derivavel: false
+    natureza: AFIRMA_ESTADO
+    razao: 'medido em 2026-10-15: ''455'' tem ZERO ocorrencias em todos os artefatos governados,
+      inclusive no ledger de reconciliacao. E contagem de varredura de codigo e pede data e procedencia
+      — e enquanto nao as tiver, e um numero sem fonte dentro da lei'
+  constitution:monolitos.core.fronteira_fisica.P1_07B_extracao_fisica:
+    afirmacao: a extracao fisica esta CUMPRIDA pela ADR-001, decidida em 2026-09-18, e oito consumidores
+      instalam o kit por tag
+    derivavel: true
+    natureza: AFIRMA_ESTADO
+    razao: 'E O CAMPO QUE A PRF-0184 NOMEOU como o segundo membro medido da classe de omissao,
+      e a frase tem 72 palavras. O estado CUMPRIDO e a decisao da ADR-001 sao derivaveis do campo
+      Estado de docs/ADR-001 — a regra R0G do registry_check JA o le —, mas docs/ nao e empacotado
+      e este portao roda do kit instalado: mesma razao da isencao de `adrs_pendentes`. O ''oito
+      consumidores'' nao e derivavel de artefato governado nenhum'
+  constitution:monolitos.john.correcao_de_registro.descricao:
+    afirmacao: o gate W88A2 registrou acoplamento direto do JOHN e isso se propagou por 3 documentos;
+      a inspecao direta nao encontrou o acoplamento, que e do BIM
+    derivavel: false
+    natureza: REGISTRO_PASSADO
+    razao: 'o campo registra uma correcao, e `correcao_de_registro` ESTA em CHAVES_HISTORICO —
+      ele caiu em PROSA porque a classificacao de HISTORICO olha so o ultimo segmento (`descricao`).
+      Medido em 2026-10-15: varrer todos os segmentos moveria 2 campos para HISTORICO, mas moveria
+      6 para NORMA e DOIS desses seis sao `REGRA_DE_IDENTIDADE.medicao_atual.*`, que sao estado
+      de verdade e ficariam ESCONDIDOS atras do ancestral normativo. Por isso a assimetria fica
+      NOMEADA e nao corrigida'
+  contract_registry:contracts.liceu.anchor.authorization.1.1.0.authority_invariants[4]:
+    afirmacao: a autorizacao carrega a epoca do aceite e nao a da causa, e copiar a epoca da causa
+      e rejeitado com 409 authority_epoch_stale
+    derivavel: false
+    natureza: NORMA_NAO_REGISTRADA
+    razao: '`authority_invariants` e lista de INVARIANTES — normativa por definicao — e nao esta
+      em CHAVES_NORMA; caiu em PROSA pela regra de comprimento. Nenhum digito da frase e contagem:
+      sao numeros de versao e de codigo HTTP'
+  contract_registry:contracts.liceu.authority.human-decision.2.0.0.CORRECAO_DE_DESENHO.por_que_estava_errado:
+    afirmacao: a Constituicao 1.14.0 diz que esses campos vem da identidade autenticada, nunca
+      do payload
+    derivavel: false
+    natureza: REGISTRO_PASSADO
+    razao: o campo explica por que um desenho ANTERIOR estava errado e cita a versao 1.14.0 da
+      Constituicao. O digito e numero de versao CITADA, nao contagem, e a versao citada e a que
+      valia quando a correcao foi feita — derivar a versao corrente aqui falsificaria o registro
+  contract_registry:contracts.liceu.cefeida.evidence.2.0.0.authority_invariants[0]:
+    afirmacao: 'a evidencia amarra a VERSAO do objeto: aprovar a versao 1 nao promove a versao
+      2'
+    derivavel: false
+    natureza: NORMA_NAO_REGISTRADA
+    razao: '`authority_invariants` e lista de INVARIANTES — normativa por definicao — e nao esta
+      em CHAVES_NORMA; caiu em PROSA pela regra de comprimento. Nenhum digito da frase e contagem:
+      sao numeros de versao e de codigo HTTP'
+  contract_registry:contracts.liceu.hub.planning-request.1.0.0.authority_invariants[4]:
+    afirmacao: o elo 1 consome este fato, amarrando planning_request_id e causation_id
+    derivavel: false
+    natureza: NORMA_NAO_REGISTRADA
+    razao: '`authority_invariants` e lista de INVARIANTES — normativa por definicao — e nao esta
+      em CHAVES_NORMA; caiu em PROSA pela regra de comprimento. Nenhum digito da frase e contagem:
+      sao numeros de versao e de codigo HTTP'
+  contract_registry:meta.contagem_removida:
+    afirmacao: os numeros escritos a mao diziam 8/10 e depois 11/17 quando havia outros valores
+    derivavel: false
+    natureza: REGISTRO_PASSADO
+    razao: registra a REMOCAO de numeros escritos a mao e cita os valores ERRADOS que vigoraram,
+      com as versoes em que cada um foi corrigido. Derivar aqui sobrescreveria o registro da correcao
+      com o valor de hoje — mesma familia de `baseline_constitution_version`, e o campo so serve
+      se continuar dizendo o que ERA
+  contract_registry:meta.escopo:
+    afirmacao: ha 15 contract_ids e 21 contract_versions
+    derivavel: true
+    natureza: AFIRMA_ESTADO
+    razao: 'O CASO MAIS DURO DA CLASSE. Medido em 2026-10-15: len(contracts)=15 e o somatorio
+      de versoes=21, do PROPRIO artefato, e hoje a frase esta CERTA. O campo ABRE dizendo ''CONTADO,
+      nao declarado: o numero abaixo e derivado das chaves de contracts'' — e ainda assim escreve
+      os dois numeros dentro da frase, onde nenhuma derivacao os alcanca. Quando `contracts` crescer,
+      esta frase envelhece CALADA, que e exatamente o defeito que a regra do titular de 2026-10-09
+      proibe'
+  contract_registry:meta.nota_legal_coverage:
+    afirmacao: liceu.anchor.authorization 1.1.0 acrescenta legal_basis_refs, e o campo e opcional
+      por decisao
+    derivavel: true
+    natureza: AFIRMA_ESTADO
+    razao: 'medido em 2026-10-15: `legal_basis_refs` esta presente na definicao da 1.1.0 no PROPRIO
+      artefato, entao a primeira metade da frase e derivavel. A segunda metade — ''exigir forcaria
+      preenchimento, e preenchimento sob pressao produz referencia inventada'' — e argumento e
+      nao se deriva de nada; e por isso que o campo inteiro nao pode virar derivacao'
+  event_reconciliation_ledger:P2_5B_missing_producer_amostra.cefeida.causal.analyze.pergunta_aberta:
+    afirmacao: a funcao minima do W90 nao deve construir 6 engines — pergunta aberta
+    derivavel: false
+    natureza: ARGUMENTA
+    razao: o campo e uma PERGUNTA ABERTA — interroga em vez de afirmar —, e o 6 e o numero de
+      um desenho RECUSADO ('nao construir 6 engines'). Tres campos de texto identico em tres caminhos
+      irmaos da amostra do P2_5B; nenhum afirma nada sobre o mundo, e PROSA e a classificacao
+      honesta
+  event_reconciliation_ledger:P2_5B_missing_producer_amostra.cefeida.digital_twin.query.pergunta_aberta:
+    afirmacao: a funcao minima do W90 nao deve construir 6 engines — pergunta aberta
+    derivavel: false
+    natureza: ARGUMENTA
+    razao: o campo e uma PERGUNTA ABERTA — interroga em vez de afirmar —, e o 6 e o numero de
+      um desenho RECUSADO ('nao construir 6 engines'). Tres campos de texto identico em tres caminhos
+      irmaos da amostra do P2_5B; nenhum afirma nada sobre o mundo, e PROSA e a classificacao
+      honesta
+  event_reconciliation_ledger:P2_5B_missing_producer_amostra.cefeida.temporal.predict.pergunta_aberta:
+    afirmacao: a funcao minima do W90 nao deve construir 6 engines — pergunta aberta
+    derivavel: false
+    natureza: ARGUMENTA
+    razao: o campo e uma PERGUNTA ABERTA — interroga em vez de afirmar —, e o 6 e o numero de
+      um desenho RECUSADO ('nao construir 6 engines'). Tres campos de texto identico em tres caminhos
+      irmaos da amostra do P2_5B; nenhum afirma nada sobre o mundo, e PROSA e a classificacao
+      honesta
+  event_registry:events.hub.planning.requested.nota:
+    afirmacao: o HUB emite o pedido de planejamento como fato de interacao, com mandate_ref obrigatorio,
+      pela decisao B2 de 2026-09-19
+    derivavel: false
+    natureza: REGISTRO_PASSADO
+    razao: nota de DECISAO datada, e 'elo 1' e nome do elo e nao contagem. Ela JA carrega data
+      e procedencia na propria frase, que e exatamente a cura que a UNK-0018 escolheu para o grupo
+      nao derivavel — entao este membro esta curado no que lhe cabe, e so falta nao ser prosa
+  event_registry:resumo.contagem_removida:
+    afirmacao: os numeros escritos a mao diziam 8 / 10 / 12 onde havia 9 / 11 / 17
+    derivavel: false
+    natureza: REGISTRO_PASSADO
+    razao: 'irmao do `contract_registry:meta.contagem_removida` e pelo mesmo motivo: cita valores
+      que vigoraram e foram corrigidos. Medido em 2026-10-15: len(events)=13 hoje, entao mesmo
+      o ''9'' citado como correto ja e passado — o que PROVA que o campo e registro e nao estado'
+  producer_registry:meta.external_effect_regra:
+    afirmacao: 4 dos 15 produtores sao mistos em external_effect
+    derivavel: true
+    natureza: AFIRMA_ESTADO
+    razao: 'medido em 2026-10-15: `external_effect` e um dicionario capacidade->bool no nivel
+      do produtor, e exatamente 4 produtores tem True e False juntos — bim, suppliers, cea e legal.
+      A frase esta CERTA hoje e e derivavel do PROPRIO artefato; como as outras, envelhece calada
+      quando a classificacao mudar. CORRECAO DE UMA MEDICAO MINHA: contei 0 primeiro, porque procurei
+      `external_effect` dentro de `capabilities`, onde ele nao vive'
+  producer_registry:producers.liceu.authority.NAO_E_MONOLITO_SOBERANO:
+    afirmacao: os 15 monolitos continuam soberanos dos respectivos dominios, e liceu.authority
+      nao possui estado de dominio
+    derivavel: true
+    natureza: AFIRMA_ESTADO
+    razao: 'medido em 2026-10-15: len(monolitos)=15 na Constituicao e len(producers)=16 aqui —
+      os 15 mais a propria camada de autoridade, que e o que a frase diz. Derivavel de OUTRO artefato
+      governado, e a cura e a mesma: a frase deixar de carregar o numero'
