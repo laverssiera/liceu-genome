@@ -1,0 +1,95 @@
+{
+  "a_decisao": {
+    "quem": "o titular",
+    "quando": "2026-10-15",
+    "o_que": "aplicar o contrato COM O LEITOR"
+  },
+  "os_tres_estados": {
+    "decisao": "TOMADA em 2026-10-15",
+    "execucao": "CONCLUIDA no mesmo dia, em cinco movimentos na ordem que a dependencia impoe",
+    "comprovacao": "a derivacao medida em main, mais os testes e o portao"
+  },
+  "os_cinco_movimentos": [
+    {
+      "1": "kit liceu-protocol#41, merge dc07c55 -- a emenda e a R0H"
+    },
+    {
+      "2": "tag v0.30.0, apontando para dc07c55"
+    },
+    {
+      "3": "CORE#109, merge 7771f2c -- a derivacao e o pino, no MESMO PR"
+    },
+    {
+      "3b": "genoma#117, merge 44ae59c -- as SEIS superficies que a emenda tocou"
+    },
+    {
+      "4": "os oito pinos em v0.30.0, zero v0.29.0 restante"
+    }
+  ],
+  "o_que_mudou_de_lugar": {
+    "antes": "WITNESS_ALLOWED_PREFIXES, constante em cv-backend-core/app/services/authority_control_plane.py:55",
+    "depois": "PUBLICACAO_PERMITIDA.prefixos, no bloco liceu.authority#mother-witness do Producer Registry do kit",
+    "medido_em_main": {
+      "kit": "0.30.0",
+      "registry_version": "1.5.0",
+      "derivado": [
+        "authority.witness.",
+        "authority.human.decision."
+      ],
+      "a_constante_antiga_existe": false
+    }
+  },
+  "o_fail_closed_esta_na_NORMA": "PUBLICACAO_PERMITIDA.fail_closed declara o que acontece na ausencia da chave. Ausente, a derivacao devolve tupla VAZIA; tupla vazia nao casa com nada, porque str.startswith(()) e False. NAO ha lista de reserva, e um teste le o corpo da propria funcao e falha se um literal de prefixo aparecer la dentro",
+  "a_recusa_nova": {
+    "codigo": "witness_prefixes_source_missing",
+    "status": 403,
+    "porque_motivo_proprio": "cair na recusa generica confundiria 'o registry nao declara a lista' -- defeito de PACOTE -- com 'a Testemunha tentou algo indevido', e mandaria consertar a pessoa errada",
+    "o_portao_nao_a_cobraria": "ele conta OPERACOES, e esta e uma recusa dentro de uma operacao que ja existia. O teste foi escrito mesmo assim",
+    "e_ele_achou_um_defeito_meu": "na primeira execucao eu passava um context inventado e o entity_id da auditoria saiu NULO -- auditoria sem sujeito. Corrigido usando o mesmo context das recusas vizinhas"
+  },
+  "a_R0H": {
+    "o_que_guarda": "a FORMA da fonte: tres proibicoes presentes, prefixos nao vazios e terminados em ponto, fail_closed declarado, e a permissao de voto repetindo as tres proibicoes",
+    "o_que_NAO_faz": "julgar se um prefixo autoriza. Isso e semantica, nao forma, e regra que finge decidir semantica seria a proxima declaracao que ninguem le",
+    "casos": 10,
+    "recusas": 8,
+    "vive_num_auxiliar": "_r0h_falhas, para ser exercitada sem Constituicao sintetica -- a armadilha que o C25-06 pagou com oito testes mortos de uma vez"
+  },
+  "as_seis_superficies": {
+    "acusadas": [
+      "PRF-0057",
+      "PRF-0058",
+      "PRF-0066",
+      "PRF-0118",
+      "PRF-0138",
+      "PRF-0177"
+    ],
+    "a_pergunta_foi_respondida_uma_por_uma": "nenhuma das seis depende de ONDE a lista vive; a emenda move a FONTE e acrescenta recusa que so dispara quando a fonte falta",
+    "mesmo_assim_o_hash_foi_movido": "hash velho faz o guarda PARAR DE GUARDAR: seis provas com hash defasado seriam seis superficies sem vigia, com a aparencia de seis vigiadas",
+    "os_hashes_vieram_do_proprio_guarda": "transcrever sha256 a mao e a forma mais barata de errar sem perceber"
+  },
+  "verde": {
+    "portao_do_control_plane": "ABERTO, 19/19 caracterizaveis, 4 sem efeito observavel confirmadas",
+    "testes": {
+      "authority_control_plane": 20,
+      "authority_witness": 20,
+      "boundary_conformance": 16,
+      "witness_prefixes_derivados": 9,
+      "prova_de_sucessao": 18,
+      "cv_backend_core_completo": 396
+    },
+    "kit": {
+      "MANIFEST": "10 OK, 0 FAILED",
+      "registry_check": "0 erros",
+      "conformance": "106/106",
+      "federation_sdk": "32/32"
+    },
+    "superficies": "exit 0 nas seis",
+    "pinos": "oito em v0.30.0, zero v0.29.0 restante"
+  },
+  "nao_corrigido_e_nomeado": "ProtocolKit.scale_order, a propriedade VIZINHA da que foi criada, tem reserva embutida -- 'so usada se a Constituicao nao a trouxer'. E a MESMA classe de falha-aberta que este movimento removeu da lista da Testemunha, a poucas linhas dela. Fora do escopo, e fica dito",
+  "o_que_segue_do_titular": [
+    "nunca estabelece teto: nao e aplicada por nada, e e a mesma decisao de classe da UNK-0018 -- ganha leitor ou sai do registry",
+    "o nome do quarto evento e o rotulo do implementation_status",
+    "etcd ou PySyncObj, agora que o contrato esta aplicado"
+  ]
+}
