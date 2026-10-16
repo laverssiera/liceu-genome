@@ -158,9 +158,22 @@ class Mutacoes(unittest.TestCase):
         self.assertEqual(m["claims"]["CLM-0023"]["status"], "PROVEN")
         self.assertEqual([p["status"] for p in m["predictions"] if p["id"] == "CLM-0023"], ["PROVEN"])
 
-    def test_59_o_registro_de_comparacao_conta_as_quatro_previsoes(self):
+    def test_59_o_registro_de_comparacao_conta_as_CINCO_previsoes(self):
+        """QUATRO viraram CINCO em 2026-10-15, e subir aqui e um ATO.
+
+        As quatro originais sao de 2026-09-22 e todas sobre MECANICA DE
+        PROCESSO -- nenhuma moveu a contagem substantiva. A quinta,
+        CLM-0159, e de outra classe: previsao de EXIGENCIA, derivada de
+        julgamento de engenharia sobre o documento protocolado, que declara
+        ausencia de associacao condominial e e carimbado pelo departamento
+        de analises do proprio condominio.
+
+        Este numero e congelado de proposito: acrescentar previsao tem de
+        ser visivel, pela mesma razao que o lacre das listas de isencao
+        existe. Se mudar de novo, a razao vem junto.
+        """
         j, m = judge(base())
-        self.assertEqual(len(m["predictions"]), 4, [p["id"] for p in m["predictions"]])
+        self.assertEqual(len(m["predictions"]), 5, [p["id"] for p in m["predictions"]])
         self.assertTrue(all(p["status"] not in ("PROVEN", "REFUTED") for p in m["predictions"]))
 
     # U3 — o PFC do mundo real: o teste mora em outro repositório
