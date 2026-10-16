@@ -894,3 +894,24 @@
   kind: claim
   statement: "A assimetria da varredura esta fechada pelo lado que nao abre: a subarvore declarada passa a classificar, depois da procedencia, e os campos de estado sob ancestral normativo continuam na classe medida."
   asserted_by: "ninguem ainda - e o que a decisao do titular de 2026-10-15 manda aplicar, e so vale se o campo do ancestral historico virar HISTORICO sem que ESTADO, NORMA ou PROCEDENCIA se movam"
+
+- id: CLM-0159
+  kind: claim
+  statement: "A exigencia ou o parecer da Prefeitura sobre o projeto P-001 mencionara a declaracao de ausencia de associacao condominial."
+  asserted_by: "juridicotech.previsao-de-exigencia/0.1, 2026-10-15 — pre-registro ANTES de a Prefeitura responder"
+  prediction:
+    registered_at: "2026-10-15"
+    method: juridicotech.previsao-de-exigencia
+    method_version: "0.1"
+    basis: "leitura de engenharia sobre a prancha protocolada: ela declara que o loteamento NAO possui associacao condominial obrigatoria, e quem carimba a declaracao e o departamento de analises do PROPRIO condominio — o orgao que chancela e a entidade cuja existencia a declaracao nega"
+    settled_by: "o parecer, a exigencia ou o alvara emitidos pela Prefeitura sobre o projeto P-001"
+
+- id: CLM-0160
+  kind: claim
+  statement: "A CLM-0026 resolve por um unico relogio: a assinatura das 4 vias e o e-mail de liberacao do condominio sao atos adjacentes do processo."
+  asserted_by: "implicita no pre-registro da CLM-0026 em 2026-09-22: o resolvedor nomeia os dois atos juntos, como se um unico relogio os medisse"
+
+- id: CLM-0161
+  kind: claim
+  statement: "A guia do numero oficial do projeto P-001 esta vencida ha onze dias e sem comprovante no acervo, e o silencio da Prefeitura pode ter causa interna."
+  asserted_by: "claude (2026-10-15, no relatorio do acervo) - afirmada a partir de leitura INCOMPLETA: as nove imagens foram lidas, os PDFs da mesma pasta nao, e a ausencia de comprovante foi tratada como fato"
