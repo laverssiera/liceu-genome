@@ -235,20 +235,43 @@ class ADerivacaoAcusa(unittest.TestCase):
                           f"{[x['chave'] for x in falsos]} — isto e achado, nao falha do teste")
 
     def test_DERIVACOES_vazio_e_o_RESULTADO_do_lote_1_e_nao_uma_lacuna(self):
-        """Cinco derivacoes sairam porque os cinco CAMPOS sairam da lei.
+        """QUATRO derivacoes sairam porque os quatro CAMPOS sairam da lei.
 
-        Campo que nao existe nao precisa ser derivado: "nao se escreve, se
-        deriva", e apagar e a forma mais forte de nao escrever. Este teste
-        existe para que o vazio seja uma AFIRMACAO e nao um esquecimento.
+        CORRECAO DE UMA AFIRMACAO FALSA DESTE PROPRIO TESTE, 2026-10-15: ele
+        dizia CINCO, e o quinto nunca saiu. `meta.escopo_P2_5A` segue na lei com
+        o valor "cadeia causal minima — bloqueia M2" -- o que saiu dele foi o
+        NUMERO, nao o campo. O teste confundia "deixou de ser candidato" com
+        "saiu da lei", e nada o pegou porque as duas coisas tinham o mesmo
+        efeito enquanto a porta exigia forma numerica. A porta da CHAVE
+        (2026-10-15) tornou a diferenca visivel, e a diferenca importa: APAGAR e
+        a forma mais forte de nao escrever, mas TIRAR O NUMERO nao apaga a
+        declaracao -- so a torna incontavel.
+
+        Agora o teste confere o que cada caso realmente e, contra a LEI e nao
+        contra a lista de candidatos.
         """
         self.assertEqual(len(de.DERIVACOES), 0)
-        instalado = {d.chave for d in self.achadas}
-        for curado in ("constitution:meta.pendencias_abertas",
-                       "constitution:meta.adrs_pendentes",
-                       "constitution:global.identidade_semantica_de_replay.total",
-                       "constitution:global.campos_exigidos_pelo_protocolo.total",
-                       "event_reconciliation_ledger:meta.escopo_P2_5A"):
-            self.assertNotIn(curado, instalado, f"{curado} voltou a lei")
+        bruto = {}
+        for nome in de.ARTEFATOS:
+            dados = yaml.safe_load((self.kit / nome).read_text(encoding="utf-8"))
+            curto = nome.removeprefix("liceu_").removesuffix(".yaml")
+            for c, _v in de.folhas(dados):
+                bruto[f"{curto}:{c}"] = True
+        for apagado in ("constitution:meta.pendencias_abertas",
+                        "constitution:meta.adrs_pendentes",
+                        "constitution:global.identidade_semantica_de_replay.total",
+                        "constitution:global.campos_exigidos_pelo_protocolo.total"):
+            self.assertNotIn(apagado, bruto, f"{apagado} voltou a lei")
+
+        # O quinto: FICOU na lei, perdeu o numero, e desde 2026-10-15 volta a
+        # ser candidato pela CHAVE (`escopo_P` esta em PREFIXOS_ESTADO), com
+        # origem declarada. Nao e regressao da cura: e a cura medida pelo que
+        # ela foi.
+        ficou = "event_reconciliation_ledger:meta.escopo_P2_5A"
+        self.assertIn(ficou, bruto, "este campo NUNCA saiu da lei")
+        por = {d.chave: d for d in self.achadas}
+        self.assertEqual(por[ficou].forma, de.CHAVE_QUALIFICA)
+        self.assertEqual(de.carrega_mapa()[ficou].classe, de.SAI_DA_CLASSE)
 
     def test_a_LISTA_de_topo_adrs_pendentes_FICA_e_agora_esta_VAZIA(self):
         """O estopim disparou um dia depois, e a mensagem dele previu isso.
@@ -581,9 +604,16 @@ class OLacreDasDuasListasDeIsencao(unittest.TestCase):
         # escritas no modulo, e os dois sha256 foram movidos a mao.
         self.assertEqual(len(de.LACRE_ISENTOS), 5,
                          "4 -> 5 em 2026-10-15, com o furo da extensao fechado")
-        self.assertEqual(len(de.LACRE_SAI_DA_CLASSE), 70,
-                         "41 -> 64 em 2026-10-14, e 64 -> 70 em 2026-10-15; se mudou "
-                         "de novo, a razao tem de estar no modulo e o sha256 aqui")
+        # TERCEIRO ATO, 70 -> 156 em 2026-10-15, e o maior de todos: a CHAVE
+        # passou a QUALIFICAR e nao so a classificar, e 87 campos entraram de
+        # uma vez. A aritmetica e 70 - 1 + 87 = 156, e o -1 e a chave do
+        # P1_07B_extracao_fisica, que estava no lacre e nao estava mais na
+        # classe -- ela e membro de PROSA. As catorze razoes, uma por familia,
+        # estao no origem-das-declaracoes.yaml.
+        self.assertEqual(len(de.LACRE_SAI_DA_CLASSE), 156,
+                         "41 -> 64 em 2026-10-14, 64 -> 70 e 70 -> 156 em 2026-10-15; "
+                         "se mudou de novo, a razao tem de estar no modulo e o sha256 "
+                         "aqui")
         self.assertTrue(set(de.ISENTOS_DE_DERIVACAO) <= set(de.LACRE_ISENTOS),
                         "isencao viva fora do lacre")
         self.assertTrue(set(de.sai_da_classe_de(self.mapa)) <= set(de.LACRE_SAI_DA_CLASSE))
@@ -1129,9 +1159,20 @@ class AAssimetriaDaVarreduraEstaFechada(unittest.TestCase):
                          "a medicao mudou: recalcule o custo antes de povoar "
                          "SUBARVORES_NORMATIVAS")
 
-    def test_a_lista_NORMATIVA_esta_vazia_POR_DECISAO(self):
-        """Vazia com razao escrita, e crescer e um ATO que pede a medicao acima."""
-        self.assertEqual(de.SUBARVORES_NORMATIVAS, ())
+    def test_a_lista_NORMATIVA_tem_UMA_entrada_e_e_o_GLOSSARIO(self):
+        """Nasceu vazia e cresceu no mesmo dia -- e o custo foi medido ANTES.
+
+        `meta.status_semantica` nao declara estado nenhum: e o GLOSSARIO, o que
+        cada palavra de status SIGNIFICA. Os filhos dela herdavam a chave de
+        estado do ancestral e iriam para ESTADO quando a porta da chave abrisse,
+        e definicao classificada como estado exigiria origem para uma definicao.
+
+        MEDIDO ANTES DE CRESCER: ZERO campos saem de ESTADO com esta entrada,
+        porque os tres filhos nao eram candidatos antes da porta abrir. Isto NAO
+        e povoar a lista com os PREFIXOS de norma -- essa medicao segue valendo e
+        segue custando DOIS campos, e o teste ao lado a repete.
+        """
+        self.assertEqual(de.SUBARVORES_NORMATIVAS, ("status_semantica",))
         self.assertEqual(de.SUBARVORES_HISTORICAS, ("correcao_de_registro",))
 
     # -------------------------------------------- a direcao, que e o invariante
@@ -1160,6 +1201,128 @@ class AAssimetriaDaVarreduraEstaFechada(unittest.TestCase):
                          julg)
         self.assertEqual(len(de.LACRE_PROSA), 24)
         de.exige_prosa_julgada(self.achadas, julg)
+
+
+class OFuroAbaixoDaProsaEstaFechado(unittest.TestCase):
+    """A CHAVE passa a QUALIFICAR, e nao so a classificar.
+
+    O teste que sustenta esta classe e
+    `test_a_lei_declarava_status_que_o_portao_NUNCA_viu`: ele nao confere a
+    regra, nomeia o que estava escondido. `meta.status: FINAL`,
+    `milestone.M3...status: NOT_STARTED` e
+    `criterios.SECRET_EXPOSURE_STATUS: KNOWN` estavam na lei desde sempre, com a
+    chave dizendo `status`, e o portao nunca os viu.
+
+    E O MESMO DEFEITO DE ORDEM da PRF-0154, um nivel mais fundo: `forma_de`
+    decide quem e CANDIDATO antes de `classifica` decidir a CATEGORIA, e
+    CHAVES_ESTADO morava so em `classifica`.
+    """
+
+    def setUp(self):
+        self.kit = de.kit_instalado()
+        self.achadas = de.enumera(self.kit)
+        self.por = {d.chave: d for d in self.achadas}
+        self.mapa = de.carrega_mapa()
+
+    # ------------------------------------------------------- o que estava oculto
+    def test_a_lei_declarava_status_que_o_portao_NUNCA_viu(self):
+        casos = {
+            "constitution:meta.status": "FINAL",
+            "constitution:milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.status":
+                "NOT_STARTED",
+            "constitution:milestone.M5_CONTINENTAL_CLOSURE.status": "FROZEN",
+            "constitution:global.core_dna.fronteira_semantica.estado": "JA OBRIGATORIA",
+            "constitution:milestone.M2_FEDERATION_PROTOCOL_AND_STATIC_CONVERGENCE."
+            "criterios.SECRET_EXPOSURE_STATUS": "KNOWN",
+            "producer_registry:producers.liceu.authority.instances[0].status": "PLANNED",
+        }
+        for chave, valor in casos.items():
+            self.assertIn(chave, self.por, f"{chave} tem de ser candidato")
+            self.assertEqual(self.por[chave].valor, valor)
+            self.assertEqual(self.por[chave].categoria, de.ESTADO)
+            self.assertIn(chave, self.mapa, "e todo ESTADO tem de ter origem")
+
+    def test_a_CAUSA_era_o_vocabulario_FECHADO_de_situacao(self):
+        """Por que o portao nao os via: SITUACAO e uma lista de 18 palavras.
+
+        A lei escreve status com outras palavras, e nenhuma destas esta lá.
+        Este teste e a MEDICAO da causa, nao a opiniao sobre ela.
+        """
+        for palavra in ("ACTIVE", "FINAL", "KNOWN", "NOT_STARTED", "FROZEN",
+                        "PLANNED", "PROTECAO", "A_REEXAMINAR",
+                        "DECLARED_BUT_NOT_IMPLEMENTED"):
+            self.assertIsNone(de.SITUACAO.match(palavra),
+                              f"{palavra} nao esta no vocabulario fechado")
+            self.assertIsNone(de.forma_de(palavra),
+                              f"{palavra} sozinho nao tem forma nenhuma")
+            self.assertEqual(de.forma_de(palavra, "global.alguma_coisa.status"),
+                             de.CHAVE_QUALIFICA,
+                             "mas sob chave de estado ela passa a ser candidata")
+
+    # ----------------------------------------------- a porta continua ESTREITA
+    def test_a_porta_NAO_abriu_para_frase_longa(self):
+        """A contrapartida, e e o que mantem a regra estreita.
+
+        Medido em 2026-10-15: abrir para TODA frase longa renderia 286
+        candidatas e custaria 239 julgamentos de PROSA a mao para comprar 4
+        estados. A porta abriu para a CHAVE, nao para o comprimento.
+        """
+        longa = ("esta frase tem muito mais de dez palavras e fala do mundo sem "
+                 "numero nenhum e sem marcador nenhum")
+        self.assertIsNone(de.forma_de(longa))
+        self.assertIsNone(de.forma_de(longa, "global.bloco.explicacao_qualquer"))
+
+    def test_forma_de_SEM_caminho_continua_funcionando(self):
+        """O caminho e opcional: sem ele a porta da chave simplesmente nao existe."""
+        self.assertEqual(de.forma_de("3 arquivos"), "numero+substantivo")
+        self.assertEqual(de.forma_de("ABERTA"), "situacao")
+        self.assertIsNone(de.forma_de("qualquer coisa sem forma"))
+
+    def test_a_forma_DIZ_que_foi_a_chave(self):
+        """No relatorio, `chave_de_estado` diz que o valor nao tinha forma."""
+        d = self.por["constitution:meta.status"]
+        self.assertEqual(d.forma, de.CHAVE_QUALIFICA)
+        self.assertEqual(de.CHAVE_QUALIFICA, "chave_de_estado")
+
+    # ------------------------------------------------------------- o custo real
+    def test_PROSA_nao_cresceu_NENHUM_membro(self):
+        """O argumento do custo, conferido: zero julgamentos novos a mao."""
+        self.assertEqual(len(de.prosa(self.achadas)), 24)
+        self.assertEqual(len(de.carrega_julgamento_da_prosa()), 24)
+
+    def test_o_GLOSSARIO_nao_virou_estado(self):
+        """`status_semantica.*` e definicao, e definicao nao pede origem."""
+        for filho in ("ACTIVE", "DEPRECATED", "RETIRED", "REGRA"):
+            d = self.por[f"contract_registry:meta.status_semantica.{filho}"]
+            self.assertEqual(d.categoria, de.NORMA, filho)
+            self.assertNotIn(d.chave, self.mapa)
+
+    def test_as_87_tem_origem_e_NENHUMA_e_derivavel(self):
+        """E por isso a FIT-020 nao se move: classe_viva nao conta SAI_DA_CLASSE."""
+        novas = [d for d in self.achadas
+                 if d.forma == de.CHAVE_QUALIFICA and d.categoria == de.ESTADO]
+        self.assertEqual(len(novas), 87)
+        for d in novas:
+            self.assertIn(d.chave, self.mapa, f"{d.chave} sem origem")
+            self.assertEqual(self.mapa[d.chave].classe, de.SAI_DA_CLASSE, d.chave)
+            self.assertTrue(self.mapa[d.chave].razao.strip(), d.chave)
+
+    def test_a_FIT_020_NAO_se_moveu(self):
+        vivos = de.classe_viva(self.mapa)
+        self.assertEqual(vivos, ["constitution:adrs_pendentes"])
+        armado, razao = de.gatilho_fit_020(self.mapa)
+        self.assertFalse(armado)
+        self.assertIn("1", razao)
+
+    def test_as_CATORZE_familias_tem_razao_escrita_uma_por_uma(self):
+        """Razao por FAMILIA, e nao uma razao so para 87 campos."""
+        novas = [d for d in self.achadas
+                 if d.forma == de.CHAVE_QUALIFICA and d.categoria == de.ESTADO]
+        razoes = {self.mapa[d.chave].razao for d in novas}
+        self.assertEqual(len(razoes), 14,
+                         "catorze familias, catorze razoes escritas a mao")
+        for r in razoes:
+            self.assertIn("2026-10-15", r, "cada razao diz QUANDO entrou na classe")
 
 
 if __name__ == "__main__":
