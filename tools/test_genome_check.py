@@ -158,7 +158,7 @@ class Mutacoes(unittest.TestCase):
         self.assertEqual(m["claims"]["CLM-0023"]["status"], "PROVEN")
         self.assertEqual([p["status"] for p in m["predictions"] if p["id"] == "CLM-0023"], ["PROVEN"])
 
-    def test_59_o_registro_de_comparacao_conta_as_CINCO_previsoes(self):
+    def test_59_o_registro_de_comparacao_conta_as_QUATRO_previsoes(self):
         """QUATRO viraram CINCO em 2026-10-15, e subir aqui e um ATO.
 
         As quatro originais sao de 2026-09-22 e todas sobre MECANICA DE
@@ -173,7 +173,13 @@ class Mutacoes(unittest.TestCase):
         existe. Se mudar de novo, a razao vem junto.
         """
         j, m = judge(base())
-        self.assertEqual(len(m["predictions"]), 5, [p["id"] for p in m["predictions"]])
+        # E VOLTOU A QUATRO EM 2026-10-19, e descer tambem e um ATO. A
+        # CLM-0159 perdeu o bloco `prediction`: a exigencia que a
+        # resolveria foi emitida as 10:47 do mesmo dia em que ela foi
+        # registrada, a noite. Pre-registro invalido nao se julga por
+        # acerto, e previsao que nunca pode resolver infla o denominador
+        # com item morto. Ver PRF-0193.
+        self.assertEqual(len(m["predictions"]), 4, [p["id"] for p in m["predictions"]])
         self.assertTrue(all(p["status"] not in ("PROVEN", "REFUTED") for p in m["predictions"]))
 
     # U3 — o PFC do mundo real: o teste mora em outro repositório

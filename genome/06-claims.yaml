@@ -902,14 +902,7 @@
 - id: CLM-0159
   kind: claim
   statement: "A exigencia ou o parecer da Prefeitura sobre o projeto P-001 mencionara a declaracao de ausencia de associacao condominial."
-  asserted_by: "juridicotech.previsao-de-exigencia/0.1, 2026-10-15 — pre-registro ANTES de a Prefeitura responder"
-  prediction:
-    registered_at: "2026-10-15"
-    method: juridicotech.previsao-de-exigencia
-    method_version: "0.1"
-    basis: "leitura de engenharia sobre a prancha protocolada: ela declara que o loteamento NAO possui associacao condominial obrigatoria, e quem carimba a declaracao e o departamento de analises do PROPRIO condominio — o orgao que chancela e a entidade cuja existencia a declaracao nega"
-    settled_by: "o parecer, a exigencia ou o alvara emitidos pela Prefeitura sobre o projeto P-001"
-
+  asserted_by: "claude (2026-10-15) - PRE-REGISTRO INVALIDO E RETIRADO DO MODO SOMBRA em 2026-10-19: a exigencia que a resolveria foi emitida as 10:47 do MESMO dia, de manha, e ela foi registrada a noite. Prova anterior ao registro nao confirma previsao, e a regra vale contra quem a escreveu. A claim fica como registro; o bloco prediction saiu porque previsao que nunca pode resolver infla o denominador com item morto. Ver PRF-0193"
 - id: CLM-0160
   kind: claim
   statement: "A CLM-0026 resolve por um unico relogio: a assinatura das 4 vias e o e-mail de liberacao do condominio sao atos adjacentes do processo."
@@ -919,3 +912,18 @@
   kind: claim
   statement: "A guia do numero oficial do projeto P-001 esta vencida ha onze dias e sem comprovante no acervo, e o silencio da Prefeitura pode ter causa interna."
   asserted_by: "claude (2026-10-15, no relatorio do acervo) - afirmada a partir de leitura INCOMPLETA: as nove imagens foram lidas, os PDFs da mesma pasta nao, e a ausencia de comprovante foi tratada como fato"
+
+- id: CLM-0162
+  kind: claim
+  statement: "A primeira exigencia emitida pela Prefeitura sobre o projeto P-001 pede documentos do proprietario — ART assinada e matricula atualizada — e nao menciona coeficiente de aproveitamento, taxa de ocupacao nem taxa permeavel."
+  asserted_by: "observacao do comunique-se emitido em 2026-10-15 as 10:47 pelo Departamento de Habitacao e Aprovacao de Projetos"
+
+- id: CLM-0163
+  kind: claim
+  statement: "O pre-registro da CLM-0159 e valido: a previsao foi registrada antes do fato que a resolveria."
+  asserted_by: "claude (2026-10-15, ao registrar a CLM-0159) - afirmado sem medir o canal por onde a resposta chegaria, que era o e-mail do titular e nao o acervo"
+
+- id: CLM-0164
+  kind: claim
+  statement: "O prazo de aceitacao da certidao de matricula pelo DHAP e derivavel dos documentos que o municipio publica."
+  asserted_by: "claude (2026-10-19) - implicito ao tratar os 30 dias declarados pelo cartorio como o prazo exigido pela Prefeitura"
