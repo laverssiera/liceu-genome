@@ -1,0 +1,102 @@
+{
+  "ciclo": "C29-03",
+  "data": "2026-10-19",
+  "pergunta": "onde esta o espaco do disco, e a suite E2E tem culpa nisso",
+  "resposta_curta": "a E2E deixa 1 KiB; o custo da CI vem de uma dependencia transitiva que a intencao de CPU do proprio arquivo nao alcanca; e a varredura do disco NAO responde a pergunta, porque leu incompleto",
+  "a_e2e": {
+    "claim": "CLM-0176",
+    "prova": "PRF-0206",
+    "veredito": "REFUTADA",
+    "repo": "John-Brasileiro-",
+    "commit": "710c4c1",
+    "config": "frontend/playwright.config.js",
+    "linhas_que_decidem": {
+      "retries": 0,
+      "trace": "on-first-retry",
+      "consequencia_do_par": "o trace NUNCA grava: nao existe primeira repeticao quando retries e zero. Config MORTA, nao config caro.",
+      "video": "retain-on-failure",
+      "consequencia_do_video": "grava para todo teste e APAGA os que passam; o custo e pico transitorio, nao acumulo",
+      "fullyParallel": false,
+      "specs": 2
+    },
+    "o_que_ficou_em_disco": {
+      "test-results": "1 arquivo, 1 KiB",
+      "playwright-report": "AUSENTE",
+      "blob-report": "AUSENTE"
+    },
+    "licao": "eu nomeei como suspeito o que estava VISIVEL na configuracao, e aparecer escrito nao e pesar"
+  },
+  "o_custo_da_ci": {
+    "claim": "CLM-0177",
+    "prova": "PRF-0207",
+    "veredito": "REFUTADA",
+    "a_vizinhanca_de_duas_linhas": {
+      "linha_31": "faiss-cpu==1.8.0",
+      "linha_32": "sentence-transformers==2.7.0",
+      "o_que_isso_mostra": "quem escreveu o arquivo SABIA escolher variante sem GPU, e escolheu para o faiss; a linha abaixo arrasta a pilha CUDA"
+    },
+    "torch": "NAO aparece em nenhum dos 25 pinos: entra como dependencia TRANSITIVA, e transitiva nao passa pela revisao de quem le a lista",
+    "direcionamento_de_indice": {
+      "index-url": 0,
+      "extra-index-url": 0,
+      "find-links": 0,
+      "pip.conf_ou_pip.ini": "nenhum na arvore",
+      "consequencia": "pip usa o PyPI padrao, e a roda padrao do torch embute as bibliotecas CUDA"
+    },
+    "quantas_vezes_por_push": {
+      "total": 3,
+      "jobs": [
+        "frontend-e2e.yml :: backend-tests (linha 21)",
+        "frontend-e2e.yml :: playwright (linha 73)",
+        "platform-validation.yml (linha 48)"
+      ],
+      "runners": "os seis workflows declaram runs-on ubuntu-latest; nenhum tem GPU"
+    },
+    "o_conserto": "uma linha de direcionamento de indice para a roda CPU-only. NAO E ATO MEU: outro repositorio, outro dominio, e quem decide pino alheio e quem responde por ele."
+  },
+  "o_disco": {
+    "claim": "CLM-0178",
+    "prova": "PRF-0208",
+    "veredito": "REFUTADA \u2014 e refuta a minha propria medicao",
+    "volume_C": {
+      "total_GB": 223,
+      "livre_GB": 5.56,
+      "usado_GB": 217.4
+    },
+    "atribuicao": {
+      "soma_por_pasta_GB": 121.16,
+      "nao_atribuido_GB": 96.24,
+      "erros_de_acesso": 191,
+      "onde_mais_negou": {
+        "ProgramData": 78,
+        "Windows": 47,
+        "Program Files": 37,
+        "Users": 11,
+        "$Recycle.Bin": 10
+      },
+      "veredito_do_instrumento": "leitura incompleta e resultado INVALIDO, nao resultado baixo: a lista por pasta NAO responde onde liberar espaco",
+      "o_que_nao_e_negacao": "Length nao e tamanho alocado; hardlink (WinSxS), arquivo esparso e metadado de NTFS contam diferente. Quanto do vao e negacao e quanto e estrutura, este instrumento NAO separa.",
+      "maiores_atribuidos_como_limite_inferior_GB": {
+        "Windows": 42.44,
+        "Program Files": 30.23,
+        "Users": 23.38,
+        "Program Files (x86)": 10.41,
+        "CYPE Ingenieros": 9.04,
+        "ProgramData": 3.54,
+        "SQL2025": 1.36
+      }
+    },
+    "o_que_a_varredura_mediu_bem_zero_negacoes": {
+      "19_repositorios_GB": 0.63,
+      "node_modules_GB": 0.4,
+      "node_modules_pastas": 11,
+      "git_GB": 0.14,
+      "git_pastas": 19,
+      "venv_GB": 0.05,
+      "TEMP_do_usuario_GB": 0.52,
+      "consequencia": "o dominio inteiro do trabalho do LICEU cabe em 0,63 GB de um disco a que faltam 96; apagar tudo o que produzi aqui nao resolveria nem um por cento do aperto"
+    },
+    "nada_foi_apagado": "regra de parada do ciclo: se liberar espaco exigir apagar coisa cuja natureza eu nao conheco, PARE e pergunte. Nada se apaga por aperto.",
+    "um_numero_que_nao_se_repetiu": "a medicao anterior disse 6,6 GB livres; esta diz 5,56. Nao sei se caiu no intervalo ou se o primeiro estava errado, e por isso vale o medido com data e nao o lembrado."
+  }
+}
