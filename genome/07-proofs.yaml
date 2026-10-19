@@ -4367,3 +4367,67 @@
     repo: liceu-genome
     path: schema/genome.schema.json
     note: "TRES RAZOES, E NENHUMA E FALTA DE VONTADE. PRIMEIRA, A FORMA DA PERGUNTA: 'despacho, habite-se, ou NUNCA' tem um ramo que nenhuma observacao finita refuta. Previsao com ramo nao falsificavel nao e previsao, e o proprio schema diz que sem oraculo declarado a previsao nao se refuta e nao vale. SEGUNDA, O METODO SERIA LITERAL: `prediction` exige registered_at, method, method_version e settled_by, e as quatro previsoes vivas citam dois metodos que EXISTEM como modulo — juridicotech.conformidade-urbanistica/0.1 e juridicotech.condominio-l0/0.1, os dois em JURIDICO-TECH, cada um com a constante METODO no arquivo. O juiz NAO valida o campo contra a realidade, so o imprime — e e justamente por isso que inventar um nome aqui seria escrever literal onde a regra exige metodo com versao declarada. Nenhum dos dois produz previsao sobre conduta institucional: o conformidade_urbanistica deriva indices da Tabela I, e o condominio_l0 modela a cadeia de dependencia do CONDOMINIO, com a regra de retorno para exigencia que afete o projeto aprovado. TERCEIRA, E E A QUE NAO SE CONSERTA ESCREVENDO CODIGO: a base nao existe. Pela PRF-0223, a declaracao condominial e autodeclaracao da planta e nao item de lista, entao nao ha norma publicada de onde derivar a fase; e a unica outra base possivel seria conduta observada, de que o grafo tem DOIS atos de terceiro — o comunique-se de 15/10 e a resposta de balcao de 19/10. Duas observacoes nao sao base para prever conduta, e um metodo que dissesse derivar disso estaria declarando base que nao tem. O QUE ISTO CUSTA, e o custo e real: a janela de pre-registro antes do despacho fica sem previsao nova, e depois do despacho ela vale zero. Registrar com metodo inventado custaria mais — seria o unico pre-registro do grafo cuja base ninguem pode conferir, dentro de um ecossistema que passou tres semanas tornando conferivel tudo o que afirma. HA UMA PREVISAO VIZINHA QUE SERIA REGISTRAVEL, e ela nao foi registrada porque nao e a pergunta pedida e pre-registro e compromisso: a exigencia de 15/10 pediu DOCUMENTOS e nao alteracao de projeto, e a regra de retorno do grafo L0 dispara com exigencia que AFETE o projeto aprovado — donde se preveria que nenhuma nova analise condominial sera exigida antes da assinatura das 4 vias, com metodo juridicotech.condominio-l0/0.1, base no grafo L0 mais a PRF-0192, e oraculo na propria assinatura. Fica enunciada aqui, com data, para que registra-la depois nao se confunda com registra-la agora."
+
+- id: PRF-0225
+  kind: proof
+  title: "O Art. 13 da LC 097/2020 resolve a UNK-0009: a area minima de lote NAO alcanca a unidade, e os demais indices da Tabela 1 ALCANCAM"
+  refutes: [CLM-0033]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "leitura visual integral da LC 097/2020, pagina por pagina, dos artigos 1o ao 23, procurando toda disposicao que relacione a unidade autonoma do Condominio de Lotes com a Tabela I da LC 30/2007"
+    universo: "as NOVE paginas do PDF da LC 097/2020 de Vargem Grande Paulista, baixado de siscam.com.br/arquivo?Id=29211 em 2026-10-19, sha256 3e33b94903a0df5043e14f6a7eda51126b9f866dd509052774e3b5c997ff946b — o MESMO sha que o genoma registrara em 2026-09-23, conferido byte a byte"
+    excluidos:
+      - "o texto da propria LC 30/2007: esta prova le o que a LC 097 DIZ sobre a Tabela I, e nao a Tabela I; a cota minima do art. 4o paragrafo 1o da LC 30 NAO foi medida"
+      - "se a unidade da P-001 ATENDE as cotas e indices que o Art. 13 manda observar — isso e a CLM-0019 e segue UNPROVEN"
+      - "jurisprudencia e interpretacao doutrinaria: esta prova le o dispositivo, nao o aplica"
+    instrumento: "curl do PDF, sha256sum conferido contra o registrado; pypdf confirmando 9 paginas com ZERO objetos /Font e ZERO caracteres extraiveis — e digitalizacao; extracao das imagens TIFF por pagina, conversao para PNG em escala 2x, e leitura VISUAL de todas as nove"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-artigo-13.json
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-artigo-13.json
+    note: "A LEI DIZ, E DIZ EM UM ARTIGO QUE A LEITURA ANTERIOR NAO ALCANCOU. O Art. 13 estabelece, com estas palavras: 'Fica estabelecida como quota minima da propriedade exclusiva no Condominio de Lotes, aquela fixada como cota minima para unidade autonoma horizontal de casas geminadas previstas no art. 4o, paragrafo 1o da Lei Complementar no 30, de 13 de Dezembro de 2007, observando-se os indices urbanisticos e restricoes de ocupacao utilizado na Zona Mista, previstos na Tabela 1 da mesma Lei, excluindo-se a area minima de lote ja definida neste artigo.' ENTAO A RESPOSTA TEM DUAS METADES E ELAS VAO EM DIRECOES OPOSTAS: a AREA MINIMA DE LOTE da Tabela I NAO alcanca a unidade — esta excluida pela letra do artigo, e substituida pela cota de casas geminadas do art. 4o paragrafo 1o da LC 30; e os INDICES URBANISTICOS E RESTRICOES DE OCUPACAO da Tabela 1, na ZONA MISTA, ALCANCAM — isto e, taxa de ocupacao, coeficiente de aproveitamento e taxa permeavel seguem valendo para a unidade. A CLM-0033 CAI POR DUAS RAZOES, E A SEGUNDA E PIOR QUE A PRIMEIRA. A conclusao dela — 'os limites de parcelamento da Tabela I nao alcancam a unidade' — e meia verdade: vale para a area minima e NAO vale para os indices. E o CAMINHO dela esta errado mesmo onde a conclusao chega perto: ela deriva do Art. 3o I, o condominio de lotes nao se caracteriza como parcelamento; a lei nao resolve por ai, resolve por SUBSTITUICAO EXPRESSA no Art. 13. Conclusao quase certa por raciocinio errado e pior que conclusao errada, porque sobrevive ao primeiro teste e quebra no segundo. O QUE MAIS A LEITURA INTEGRAL TROUXE, e nada disso estava na leitura sem escopo: o Art. 2o define o CL como 'especie de condominio edilicio', o que desfaz a dicotomia 'lotes OU edilicio' que o genoma registrava como aberta; o Art. 6o manda observar os artigos 84, 85, 114 e 118 da LC 30 — referencia CIRURGICA, nao remissao em bloco; o Art. 11 exige que toda obra individual nas unidades autonomas seja previamente submetida a aprovacao do setor competente, que e o caminho que a P-001 pratica; o Art. 8o paragrafo unico diz que a aprovacao das edificacoes de cada propriedade exclusiva tem carater INDIVIDUAL; e o Art. 14 paragrafo unico separa o HABITE-SE das areas comuns do HABITE-SE das propriedades exclusivas. DOIS DEFEITOS DO PROPRIO TEXTO DA LEI, registrados porque quem for aplica-la tropeca neles: a LC 30 aparece datada de '24 de junho de 2007' no Art. 4o VI e de '13 de Dezembro de 2007' nos Arts. 6o, 13 e 22 — duas datas para a mesma lei, dentro da mesma lei; e o Art. 9o enumera as etapas como I, II, III, V, VI, VII, sem IV. O QUE ESTA PROVA NAO MEDIU, e e o que separa responder a estrutura de fechar a incognita: a COTA MINIMA do art. 4o paragrafo 1o da LC 30 nao foi lida, porque a LC 30 nao esta nesta prova. Sabe-se QUAL regra vale; nao se sabe o VALOR que ela fixa."
+
+- id: PRF-0226
+  kind: proof
+  title: "A lei DIZ qual prevalece: a leitura sem escopo parou nos artigos 3o e 4o e concluiu silencio onde havia regra"
+  refutes: [CLM-0194]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "comparacao entre o que a nota da PRF-0028 afirma sobre a LC 097/2020 e o que a leitura integral dos 23 artigos encontra, com atencao ao Art. 13"
+    universo: "a nota da PRF-0028 em genome/07-proofs.yaml, e as nove paginas da LC 097/2020 no mesmo sha256 que aquela prova registrou"
+    excluidos:
+      - "o merito de quem redigiu a PRF-0028: isto mede o ALCANCE da leitura, nao a boa-fe dela"
+      - "as demais provas de leitura sem escopo das 40 INDETERMINADAS, que nao foram reabertas aqui"
+    instrumento: "leitura da nota da PRF-0028; e a leitura visual integral descrita na PRF-0225"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-artigo-13.json
+  location:
+    repo: liceu-genome
+    path: genome/07-proofs.yaml
+    note: "ESTE E O FIT-019 NA SUA FORMA MAIS PURA, E A VITIMA FUI EU. A nota da PRF-0028 afirma: 'Os dois dispositivos convivem, e a lei nao diz qual prevalece para a unidade.' E FALSO. A lei diz, no Art. 13, por substituicao expressa — e a afirmacao de silencio so pode ter sido feita porque a leitura parou nos artigos 3o e 4o, que e exatamente o que a AUSENCIA DE ESCOPO permite: sem declarar onde se buscou, 'a lei nao diz' significa 'eu nao achei', e os dois sao indistinguiveis no texto. A FIT-019 foi escrita para isto com estas palavras — afirmacao negativa so vale com o escopo que ACHARIA o contrario. A PRF-0028 nao tinha escopo, caiu entre as 40 INDETERMINADAS em 2026-10-12, e a CLM-0033 virou STALE. STALE dizia 'prove de novo', e provar de novo com escopo completo nao confirmou a leitura antiga: REFUTOU a afirmacao que ela carregava. O QUE ISSO SUGERE SOBRE AS OUTRAS TRINTA E NOVE, e e sugestao e nao medicao: a lista das INDETERMINADAS esta sendo tratada como divida de FORMA — falta declarar o escopo. Este caso mostra que ao menos uma delas tinha divida de CONTEUDO: o escopo que faltava teria mudado a conclusao. Quantas mais estao nessa situacao e NAO MENSURAVEL sem reabrir uma por uma, e esta prova nao as reabriu."
+
+- id: PRF-0227
+  kind: proof
+  title: "Os trinta dias da certidao estao em lei municipal publicada, e o universo da PRF-0194 nao a continha"
+  refutes: [CLM-0195]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "busca por prazo de validade da certidao de matricula no texto integral da LC 097/2020, confrontada com o universo que a PRF-0194 declarou ter varrido"
+    universo: "as nove paginas da LC 097/2020 (sha256 conferido); e o campo scope.universo da PRF-0194 em genome/07-proofs.yaml"
+    excluidos:
+      - "as demais leis municipais, que nao foram varridas: esta prova mostra que o universo da PRF-0194 era mais estreito que a claim, e nao que ja se varreu tudo"
+      - "se o DHAP aplica o Art. 10 I ao protocolo de Construcao Residencial: o artigo esta no capitulo da aprovacao do CL, e e outro ato"
+    instrumento: "leitura visual da pagina 5 da LC 097/2020, Art. 10, inciso I; e leitura do campo scope da PRF-0194"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-artigo-13.json
+  location:
+    repo: liceu-genome
+    path: genome/07-proofs.yaml
+    note: "O ART. 10, I DA LC 097/2020 PEDE 'copia da certidao da matricula emitida ha menos de trinta dias'. Os trinta dias estao em LEI MUNICIPAL PUBLICADA, e a CLM-0164 dizia que o prazo e derivavel 'dos documentos que o municipio publica'. A PRF-0194 refutou essa claim com universo declarado nas DUAS RELACOES de documentos — a do Departamento de Engenharia, com 39 itens, e a do DHAP, com 11 — e uma lei complementar nao estava la. ENTAO A PRF-0194 CONTINUA VALIDA DENTRO DO ESCOPO QUE DECLAROU, e e por ter declarado que se pode dizer isto com precisao: ela mediu que as duas RELACOES nao fixam prazo, e isso segue verdadeiro. O que ela nao mediu — e nao disse ter medido — e a legislacao municipal. A claim era mais larga que o universo, e e a claim que se corrige, nao a prova. O QUE ISTO NAO ESTABELECE, e a distincao e a mesma que a PRF-0194 ensinou: o Art. 10 esta no Capitulo II, 'DO PROCESSO DE APROVACAO DO PROJETO DE CL', e pede a certidao para o REQUERIMENTO DE APROVACAO DO CONDOMINIO. A P-001 e obra individual em unidade autonoma, pelo Art. 11, e e outro ato. Entao os trinta dias do Art. 10 I NAO sao, por este texto, o prazo que o DHAP aplica a Construcao Residencial — sao os trinta dias que o municipio escreve para certidao de matricula em lei, no ato vizinho. Coincidir nao e derivar, e foi essa mesma frase que a PRF-0204 teve de dizer sobre o decreto notarial. A CLM-0174 segue PROVEN por observacao externa, e agora tem uma vizinhanca documental que ela nao tinha."
