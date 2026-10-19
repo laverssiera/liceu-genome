@@ -1,0 +1,41 @@
+{
+  "parte_A_o_escopo": {
+    "a_prova_que_refutou_a_CLM_0007": "PRF-0144, basis code_reading, 2026-10-13",
+    "o_scope_esta_completo": "SIM, os quatro campos preenchidos e substantivos",
+    "a_conta": "69 provas de leitura vigentes, 29 com scope completo, 40 sem. A PRF-0144 esta entre as 29",
+    "conclusao": "mudanca de estado de bloqueador do REGIONAL apoiada em INDETERMINADA NAO e o caso aqui. A falha do FIT-019 nao ocorreu nesta instancia"
+  },
+  "parte_B_o_diagnostico": {
+    "nao_e_uma_das_tres_opcoes_e_sim_DUAS": "(i) nao implementada E (iii) claim mal escrita — e e a (iii) que decide o trabalho",
+    "i_nao_implementada": {
+      "medido_em_2026_10_13": "replica 0, replication 0, etcd 0, quorum 0, consensus 0, streaming 0, standby 0",
+      "a_armadilha_resolvida": "raft deu 2 e lease deu 7, e os nove eram 'draft' e 'release'. Zero mecanismo, com os falsos positivos de substring resolvidos em vez de somados",
+      "de_onde_vem_a_epoca": "enforce() faz state = ensure_state(db, federation_id) e current_epoch = state.authority_epoch — UMA LINHA de UMA TABELA no banco local. Sem segunda fonte, sem lease, sem termo de cluster"
+    },
+    "iii_claim_mal_escrita_E_O_ACHADO_MAIOR": {
+      "o_que_a_medicao_diz": "a INSTANCIA nao e o PROCESSO. A identidade vem do cabecalho do CHAMADOR, resolvida por hmac.compare_digest contra os segredos de instancia. Um processo serve QUALQUER Mae que apresente o segredo dela",
+      "o_que_a_Sucessora_e_de_fato": "uma linha em authority_instances mais um segredo no ambiente da PROPRIA Ativa",
+      "a_consequencia": "a CLM-0007 predica replicacao de algo que NAO e entidade replicante. Nao se constroi replicacao para uma linha de tabela — entao CONSTRUIR nao torna a claim verdadeira",
+      "o_que_isso_faz_com_o_C26_05": "ele nao esta escrito para um sistema com defeito desconhecido: esta escrito para uma entidade que nao existe na forma que a claim pressupoe",
+      "e_o_cruzamento": "se e (iii), o model check e onde a claim correta nasce — o C29-02 passa a ser o centro por necessidade e nao por elegancia"
+    }
+  },
+  "parte_C_o_enquadramento": {
+    "CLM-0006": "refutada TRES vezes (PRF-0006 em 21/09, PRF-0015 em 22/09, PRF-0058 em 30/09) e hoje esta STALE",
+    "CLM-0007": "REFUTED por UMA prova com scope completo",
+    "UNK-0001": "UNKNOWN",
+    "o_que_o_indicador_esconde": "'bloqueada por 3' trata as tres como a mesma coisa, e elas estao em estagios diferentes de tratabilidade. REFUTED e MAIS tratavel que UNPROVEN: nao-provado e ignorancia, refutado e diagnostico"
+  },
+  "A_CORRECAO_DA_DIRECAO_DA_TRANSFERENCIA": {
+    "a_hipotese": "que a retencao do GIL, por ser propriedade do codigo e nao da maquina, teria o alvo de deploy dentro do escopo — e por isso poderia fechar o UNK-0001 por medicao",
+    "o_que_e_verdade_nela": "o caminho de codigo e o mesmo onde quer que rode",
+    "o_que_a_derruba": "os limiares sao ABSOLUTOS em milissegundos, e a mesma secao segurando o GIL leva MAIS tempo num processador mais lento. A forma da distribuicao transfere; os milissegundos nao",
+    "a_direcao_e_oposta_entre_as_duas_medicoes": {
+      "cauda_de_fsync": "LIMITE SUPERIOR — o instrumento e mais forte que fdatasync, entao se passa aqui passa la",
+      "retencao_do_GIL": "LIMITE INFERIOR — num alvo mais lento a parada e MAIOR, entao os 154,7 ms sao o melhor caso"
+    },
+    "a_consequencia_para_o_UNK_0001": "a medicao NAO pode fecha-lo mostrando p99 acima de 400, porque o p99 e 50 ms. E tambem NAO libera o PySyncObj: os 338 ms da composicao sao o melhor caso e CRESCEM em direcao aos 400 num alvo mais lento",
+    "por_que_nao_estendo_o_escopo": "estender o escopo da PRF-0196 para incluir o alvo seria afirmar o que nao foi medido — exatamente o FIT-019"
+  },
+  "o_que_o_C29_00_NAO_fecha": "nenhum dos tres bloqueadores do REGIONAL. Ele diz em que estagio cada um esta e qual trabalho cada um pede"
+}

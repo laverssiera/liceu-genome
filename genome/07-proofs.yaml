@@ -3741,3 +3741,87 @@
     repo: liceu-genome
     path: tools/medicoes/gil_concorrente.py
     note: "O GATILHO DA EMENDA AO CICLO 28 NAO DISPAROU, e registrar isso e o ponto. A emenda dizia: 'se o p99 ja passa de 400 ms, a eleicao espuria sob PySyncObj nao e risco — e consequencia, e a decisao de mecanismo deixa de ter duas opcoes'. MEDIDO: o p99 de retencao observada do GIL, sob 12 threads concorrentes nas 8 rotas de maior CPU, e de 50,081 ms. Nao passa de 400 — passa de 400 por uma margem de oito vezes PARA BAIXO. A DECISAO CONTINUA COM DUAS OPCOES, e esse e o resultado honesto: o contrario do que a emenda esperava, e o contrario do que teria sido conveniente. O QUE ISSO NAO SIGNIFICA: nao significa que o PySyncObj esteja liberado. A composicao das duas medicoes do dia — pior parada de GIL de 154,7 ms mais pior fsync de 183,1 — da 338 ms contra os 400 do raftMinTimeout, com folga de 62 ms, numa maquina que nao e o alvo e sob carga que nao e producao. Nem excluido nem liberado: a medicao estreita a decisao e nao a resolve, e resolve-la segue dependendo dos hosts do C28-01, que dependem da palavra do titular e da fatura."
+
+- id: PRF-0198
+  kind: proof
+  title: "A refutacao da CLM-0007 esta entre as 29 com scope completo, nao entre as 40 indeterminadas"
+  refutes: [CLM-0168]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "a prova que refuta a CLM-0007, seus quatro campos de scope, e a reparticao das provas de leitura vigentes entre completas e incompletas"
+    universo: "genome/06-claims.yaml e genome/07-proofs.yaml em main 3cc5b93"
+    excluidos:
+      - "provas aposentadas por supersedes: o juiz conta provas de leitura VIGENTES"
+      - "o merito do conteudo da PRF-0144: esta prova afere o ESCOPO dela, nao o achado"
+    instrumento: "leitura do grafo com o mesmo criterio da FIT-019 — os quatro campos de scope preenchidos e nao vazios — aplicado as 69 provas de leitura vigentes"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-escopo-e-o-diagnostico-da-sucessora.json
+  location:
+    repo: liceu-genome
+    path: genome/07-proofs.yaml
+    note: "A PERGUNTA DO C29-00 ERA SE A REFUTACAO DE UM BLOQUEADOR DO REGIONAL REPOUSA EM PROVA INDETERMINADA, e a resposta medida e NAO. A CLM-0007 foi refutada pela PRF-0144, de basis code_reading e data 2026-10-13, cujo scope tem os QUATRO campos preenchidos e substantivos: o padrao nomeia os termos buscados, o universo e cv-backend-core/app/**/*.py, os excluidos sao tres e cada um com razao — tests/ e docs/ porque teste e documento afirmam e nao implementam, docker-compose e overlays, e os outros 18 repositorios porque a camada A vive no CORE pelo ADR-003 §1.1 — e o instrumento descreve a busca E a conferencia um por um dos positivos. A CONTA QUE FECHA A PERGUNTA: 69 provas de leitura vigentes, 29 com scope completo e 40 sem; a PRF-0144 esta entre as 29. A falha do FIT-019 que o C26-00 perguntava em abstrato NAO ocorreu nesta instancia concreta. O QUE ISSO NAO DIZ: nao diz nada sobre as outras duas pernas do bloqueio. A CLM-0006 foi refutada TRES vezes, por PRF-0006, PRF-0015 e PRF-0058, todas de code_reading, e hoje esta STALE — e a UNK-0001 segue UNKNOWN."
+
+- id: PRF-0199
+  kind: proof
+  title: "A Sucessora nao e um processo: construir replicacao nao tornaria a CLM-0007 verdadeira, porque a claim predica replicacao de uma linha de tabela"
+  refutes: [CLM-0169]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "o que a PRF-0144 mediu sobre a origem da epoca e sobre a resolucao de identidade de instancia no CORE"
+    universo: "a PRF-0144 e o codigo que ela cita: enforce(), ensure_state() e a resolucao de matched_instance em cv-backend-core"
+    excluidos:
+      - "o desenho de uma replicacao futura: esta prova diz que a claim atual nao se satisfaz construindo, nao diz como deveria ser escrita"
+      - "o compose e os overlays, pelo mesmo motivo que a PRF-0144 os excluiu"
+    instrumento: "leitura da PRF-0144 e dos trechos de codigo que ela nomeia, confrontados com o enunciado da CLM-0007"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-escopo-e-o-diagnostico-da-sucessora.json
+  location:
+    repo: liceu-genome
+    path: genome/07-proofs.yaml
+    note: "A HIPOTESE DE QUE CONSTRUIR RESOLVERIA CAI, E E ESTE O ACHADO DO C29-00. A CLM-0007 e falsa por DUAS razoes e nao por uma, e a segunda muda o trabalho. A PRIMEIRA e que a capacidade nao esta implementada, medido em 2026-10-13: replica 0, replication 0, etcd 0, quorum 0, consensus 0, streaming 0, standby 0 — com a armadilha resolvida em vez de somada, porque raft deu 2 e lease deu 7 e os nove eram 'draft' e 'release'. A epoca vem de UMA LINHA de UMA TABELA no banco local: enforce() faz state = ensure_state(db, federation_id) e current_epoch = state.authority_epoch, sem segunda fonte, sem lease, sem termo de cluster. A SEGUNDA RAZAO E A QUE DECIDE: a INSTANCIA NAO E O PROCESSO. A identidade vem do cabecalho do CHAMADOR, resolvida por hmac.compare_digest contra os segredos de instancia, e um processo serve QUALQUER Mae que apresente o segredo dela. 'A Sucessora' nao e um processo que mantem replica: e uma linha em authority_instances mais um segredo no ambiente DA PROPRIA ATIVA. ENTAO A CLM-0007 PREDICA REPLICACAO DE ALGO QUE NAO E ENTIDADE REPLICANTE, e construir replicacao nao a tornaria verdadeira — nao se replica uma linha de tabela em nome de um processo que nao existe. O DIAGNOSTICO E (i) E (iii) JUNTOS, nas tres opcoes que o C29-00 oferecia: nao implementada E mal escrita. E A CONSEQUENCIA PARA O PLANO: o C26-05 nao esta escrito para um sistema cujo defeito se desconhece — esta escrito para uma entidade que nao existe na forma que a claim pressupoe. O model check deixa de ser o centro do ciclo por elegancia e passa a se-lo por necessidade: e onde a claim correta da Sucessora nasce."
+
+- id: PRF-0200
+  kind: proof
+  title: "A medicao do GIL e LIMITE INFERIOR para um alvo mais lento, e por isso nao decide o UNK-0001 em nenhuma das duas direcoes"
+  refutes: [CLM-0170]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "o escopo declarado das duas medicoes do C28-01 e a direcao em que cada uma transfere para um alvo diferente"
+    universo: "PRF-0195 e PRF-0196, e os limiares de 100 e 400 ms lidos do pysyncobj 0.3.17"
+    excluidos:
+      - "o alvo de deploy em si, que NAO foi medido e continua fora do escopo das duas"
+      - "a magnitude do agravamento num alvo mais lento: sabe-se a direcao, nao o fator"
+    instrumento: "leitura do campo observed e da nota das duas provas de medicao, com os limiares absolutos confrontados contra a natureza de cada instrumento"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-escopo-e-o-diagnostico-da-sucessora.json
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-as-medicoes-do-eixo-continental.json
+    note: "A DIRECAO DA TRANSFERENCIA E OPOSTA ENTRE AS DUAS MEDICOES DO C28-01, e confundi-las faria a medicao do GIL decidir o que ela nao pode. A hipotese era: retencao do GIL e propriedade do CODIGO e nao da maquina, logo o alvo de deploy estaria dentro do escopo e o UNK-0001 poderia fechar por medicao. O QUE E VERDADE NELA: o caminho de codigo e o mesmo onde quer que rode. O QUE A DERRUBA: os limiares sao ABSOLUTOS em milissegundos — 100 ms para o heartbeat e 400 para a eleicao —, e a mesma secao segurando o GIL leva MAIS tempo num processador mais lento. A FORMA da distribuicao transfere; os MILISSEGUNDOS nao. E dai sai a assimetria que importa: a cauda de fsync e LIMITE SUPERIOR, porque o instrumento (os.fsync, que no Windows e FlushFileBuffers) e mais forte que fdatasync — se passa aqui, passa la. A retencao do GIL e LIMITE INFERIOR, porque num alvo mais lento a parada e MAIOR — os 154,7 ms medidos sao o MELHOR caso. A CONSEQUENCIA PARA O UNK-0001 E DUPLA E NAO AJUDA DOS DOIS LADOS: a medicao nao pode fecha-lo mostrando p99 acima de 400, porque o p99 e 50 ms; e tambem nao LIBERA o PySyncObj, porque os 338 ms da composicao sao o melhor caso e crescem em direcao aos 400 num alvo mais lento. POR QUE NAO ESTENDO O ESCOPO DA PRF-0196: estende-lo para incluir o alvo seria afirmar o que nao foi medido, que e exatamente o FIT-019 — e e o mesmo erro, na mesma semana, que usou a cauda de disco para sustentar conclusao sobre um alvo que o proprio escopo dela exclui."
+
+- id: PRF-0201
+  kind: proof
+  title: "Tres estados diferentes atras de um numero: CLM-0006 STALE apos tres refutacoes, CLM-0007 REFUTED com escopo completo, UNK-0001 UNKNOWN"
+  refutes: [CLM-0171]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "o estado de cada um dos tres itens que o juiz lista como bloqueadores do REGIONAL, e as provas que o produziram"
+    universo: "as claims CLM-0006 e CLM-0007, a unknown UNK-0001, e as provas que as refutam"
+    excluidos:
+      - "o que fazer com cada um: esta prova mede o ESTAGIO, nao prescreve o trabalho"
+      - "as outras claims do grafo que nao bloqueiam o REGIONAL"
+    instrumento: "leitura das arestas de refutacao no grafo e do estado que o juiz imprime para cada um dos tres"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-escopo-e-o-diagnostico-da-sucessora.json
+  location:
+    repo: liceu-genome
+    path: genome/06-claims.yaml
+    note: "OS TRES BLOQUEADORES DO REGIONAL NAO ESTAO NO MESMO ESTAGIO, e o indicador 'bloqueada por 3' esconde isso. A CLM-0006 — 'A Testemunha observa a Ativa de forma independente' — foi refutada TRES vezes, por PRF-0006 em 2026-09-21, PRF-0015 em 22/09 e PRF-0058 em 30/09, todas de code_reading, e hoje esta STALE. A CLM-0007 esta REFUTED por UMA prova com scope completo. A UNK-0001 esta UNKNOWN. SAO TRES ESTADOS DIFERENTES E TRES TRABALHOS DIFERENTES, e o numero 3 os achata num so. REFUTADO E MAIS TRATAVEL QUE NAO-PROVADO: nao-provado e ignorancia, e nao diz por onde comecar; refutado e diagnostico, e diz. Registrar a distincao importa porque, sem ela, o progresso real fica invisivel no indicador — um bloqueador pode mudar de natureza sem que a contagem se mova, e foi o que aconteceu entre 13/10 e hoje."

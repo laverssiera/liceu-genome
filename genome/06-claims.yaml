@@ -942,3 +942,23 @@
   kind: claim
   statement: "O p99 de retencao do GIL nas rotas do CORE, sob carga, passa de 400 ms, e por isso a escolha entre etcd e PySyncObj deixa de ter duas opcoes."
   asserted_by: "hipotese do gatilho da emenda ao Ciclo 28, de 2026-10-15, que tornaria a decisao de mecanismo uma inferencia em vez de uma escolha"
+
+- id: CLM-0168
+  kind: claim
+  statement: "A prova que refutou a CLM-0007 esta entre as provas de leitura INDETERMINADAS, e por isso a mudanca de estado de um bloqueador do REGIONAL repousa em escopo nao declarado."
+  asserted_by: "hipotese do C29-00 Parte A, de 2026-10-19, enunciada para ser medida: a instancia concreta da pergunta que o C26-00 fazia em abstrato"
+
+- id: CLM-0169
+  kind: claim
+  statement: "A CLM-0007 e falsa apenas porque a capacidade de replicacao nao esta implementada, e construi-la tornaria a claim verdadeira."
+  asserted_by: "hipotese (i) das tres que o C29-00 Parte B oferecia, enunciada para ser medida"
+
+- id: CLM-0170
+  kind: claim
+  statement: "A medicao de retencao do GIL tem o alvo de deploy dentro do escopo, porque a retencao e propriedade do codigo e nao da maquina, e por isso pode decidir o UNK-0001 por medicao."
+  asserted_by: "hipotese do C29-01, de 2026-10-19"
+
+- id: CLM-0171
+  kind: claim
+  statement: "Os tres itens que bloqueiam o REGIONAL estao no mesmo estagio de tratabilidade, e por isso a contagem de tres os representa bem."
+  asserted_by: "implicito no indicador do juiz, que imprime bloqueada por 3 sem distinguir os estados"
