@@ -60,6 +60,12 @@ import re
 import sys
 
 VIVO = "VIVO"
+# DENTRO de VIVO ha duas naturezas, e conta-las juntas convida a somar
+# coisas diferentes. As duas sao conferidas contra a fonte -- a distincao e
+# de CONTAGEM e de leitura, nao de tratamento.
+PINO = "PINO"            #: arquivo que uma FERRAMENTA le para instalar
+INSTRUCAO = "INSTRUCAO"  #: comando que um HUMANO le e executa
+FONTE = "FONTE"          #: a propria fonte unica
 HISTORIA = "HISTORIA"
 NAO_MENSURAVEL = "NAO_MENSURAVEL"
 
@@ -153,8 +159,24 @@ def blocos_com_data(texto: str) -> list[tuple[int, int]]:
     return fora
 
 
+def forma_viva(rel: str) -> str | None:
+    """Qual das tres naturezas de VIVO, ou None se nao for viva.
+
+    A nona citacao viva do ecossistema e o `pip install` do README do kit, e
+    nao um pino: nenhuma ferramenta a le. Ela afirma o agora e por isso e
+    conferida; mas chamar as nove de "pinos" soma coisas diferentes.
+    """
+    if INSTALACAO.search(rel):
+        return PINO
+    if FONTE_UNICA.search(rel):
+        return FONTE
+    if README_DO_KIT.search(rel):
+        return INSTRUCAO
+    return None
+
+
 def classifica(rel: str, num: int, datados: list[tuple[int, int]]) -> str:
-    if INSTALACAO.search(rel) or FONTE_UNICA.search(rel) or README_DO_KIT.search(rel):
+    if forma_viva(rel):
         return VIVO
     if NOME_DATADO.search(rel):
         return HISTORIA
@@ -193,7 +215,8 @@ def varre(raiz: pathlib.Path, fonte: dict[str, str]) -> dict:
             if eh_readme_do_kit:
                 for m in ATRIBUI_COMPONENTE.finditer(linha):
                     achados.append({
-                        "natureza": VIVO, "caminho": rel, "linha": num,
+                        "natureza": VIVO, "forma": forma_viva(rel),
+                        "caminho": rel, "linha": num,
                         # 1|3 e 2|4: a alternativa de package_date traz os grupos 3 e 4
                         "versao": m.group(2) or m.group(4),
                         "componente": m.group(1) or m.group(3),
@@ -204,6 +227,7 @@ def varre(raiz: pathlib.Path, fonte: dict[str, str]) -> dict:
             for m in VERSAO.finditer(linha):
                 achados.append({
                     "natureza": classifica(rel, num, datados),
+                    "forma": forma_viva(rel),
                     "caminho": rel, "linha": num, "versao": m.group(1),
                     "componente": "conformance_kit",
                     "texto": linha.strip()[:120],
@@ -230,7 +254,20 @@ def imprime(r: dict) -> int:
     print(f"  componentes na fonte: "
           f"{', '.join(f'{k}={v}' for k, v in r['fonte'].items() if k != 'source')}")
     print()
+    por_forma = {}
+    for a in r["vivos"]:
+        por_forma.setdefault(a.get("forma") or "(sem forma)", []).append(a)
     print(f"  {VIVO:16} {len(r['vivos']):4}   afirmam o agora; conferidos contra a fonte")
+    for f in (PINO, INSTRUCAO, FONTE):
+        if f in por_forma:
+            explica = {PINO: "arquivo que uma FERRAMENTA le para instalar",
+                       INSTRUCAO: "comando que um HUMANO le e executa",
+                       FONTE: "a propria fonte unica"}[f]
+            print(f"    {f:14} {len(por_forma[f]):4}   {explica}")
+    if PINO in por_forma and INSTRUCAO in por_forma:
+        print("    Os dois numeros NAO se somam num so rotulo: 'pinos' sao os")
+        print(f"    {len(por_forma[PINO])}, e a instrucao e outra coisa. As duas sao conferidas")
+        print("    contra a fonte, e e so a CONTAGEM que se separa.")
     print(f"  {HISTORIA:16} {len(r['historia']):4}   trazem a propria data; NAO julgados")
     print(f"  {NAO_MENSURAVEL:16} {len(r['indecisos']):4}   a ferramenta nao decide; nomeados abaixo")
     print()

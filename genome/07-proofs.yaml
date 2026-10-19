@@ -4431,3 +4431,52 @@
     repo: liceu-genome
     path: genome/07-proofs.yaml
     note: "O ART. 10, I DA LC 097/2020 PEDE 'copia da certidao da matricula emitida ha menos de trinta dias'. Os trinta dias estao em LEI MUNICIPAL PUBLICADA, e a CLM-0164 dizia que o prazo e derivavel 'dos documentos que o municipio publica'. A PRF-0194 refutou essa claim com universo declarado nas DUAS RELACOES de documentos — a do Departamento de Engenharia, com 39 itens, e a do DHAP, com 11 — e uma lei complementar nao estava la. ENTAO A PRF-0194 CONTINUA VALIDA DENTRO DO ESCOPO QUE DECLAROU, e e por ter declarado que se pode dizer isto com precisao: ela mediu que as duas RELACOES nao fixam prazo, e isso segue verdadeiro. O que ela nao mediu — e nao disse ter medido — e a legislacao municipal. A claim era mais larga que o universo, e e a claim que se corrige, nao a prova. O QUE ISTO NAO ESTABELECE, e a distincao e a mesma que a PRF-0194 ensinou: o Art. 10 esta no Capitulo II, 'DO PROCESSO DE APROVACAO DO PROJETO DE CL', e pede a certidao para o REQUERIMENTO DE APROVACAO DO CONDOMINIO. A P-001 e obra individual em unidade autonoma, pelo Art. 11, e e outro ato. Entao os trinta dias do Art. 10 I NAO sao, por este texto, o prazo que o DHAP aplica a Construcao Residencial — sao os trinta dias que o municipio escreve para certidao de matricula em lei, no ato vizinho. Coincidir nao e derivar, e foi essa mesma frase que a PRF-0204 teve de dizer sobre o decreto notarial. A CLM-0174 segue PROVEN por observacao externa, e agora tem uma vizinhanca documental que ela nao tinha."
+
+- id: PRF-0228
+  kind: proof
+  title: "A nona viva e o pip install do README do kit: oito pinos e uma instrucao, e nao nove pinos"
+  refutes: [CLM-0196]
+  basis: code_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "enumeracao das nove citacoes classificadas como VIVAS, uma a uma, com caminho e linha, e leitura do que cada arquivo E - se uma ferramenta o le para instalar, ou se um humano o le e executa"
+    universo: "as nove citacoes vivas que tools/genome_pino_check.py devolve sobre os 19 repositorios rastreados, em 626b2d7"
+    excluidos:
+      - "as 57 historicas e as 0 indecisas, que nao sao conferidas contra a fonte e nao entram nesta contagem"
+      - "se os pinos estao na versao CERTA: isso a guarda ja conferia e continua conferindo; esta prova mede o que eles SAO"
+    instrumento: "tools/genome_pino_check.py, campo `vivos`, impresso com caminho, linha e texto de cada ocorrencia"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-a-nona-citacao-viva.json
+  location:
+    repo: liceu-genome
+    path: tools/genome_pino_check.py
+    note: "A NONA E liceu-protocol/README.md:23 — o comando `pip install` do README do proprio kit. As outras oito sao pinos em arquivo de instalacao, nos consumidores e no proprio genoma. DUAS COISAS DENTRO DA MESMA CATEGORIA: oito sao PINO, que uma FERRAMENTA le para instalar; uma e INSTRUCAO, que um HUMANO le e executa. Nenhuma ferramenta le o README para instalar nada. O ERRO FOI MEU E ESTA NO RELATORIO DO ECOSSISTEMA: escrevi 'oito pinos de consumidor, todos v0.30.0' e, uma linha depois, 'o detector de pino varre 66 citacoes e separa as 9 vivas das 57 historicas'. As duas frases estao CERTAS, e juntas convidam a somar coisas diferentes — e o leitor que somar conclui que ha nove pinos, o que e falso. E A MESMA CLASSE DE ERRO QUE ESTE DETECTOR EXISTE PARA RESOLVER, UM NIVEL ACIMA: o C29-04 separou VIVO de HISTORIA porque o texto nao as distinguia; dentro de VIVO sobrou a mesma indistincao, entre o que uma maquina le e o que uma pessoa le. E e tambem a mesma do C29-05, duas quantidades com nome parecido impressas sem a distincao que as separa. O QUE O CONSERTO NAO PODE SER, e isto e o centro: tirar a instrucao do VIVO. Foi JUSTAMENTE aquele comando que esteve quinze tags atras, mandando instalar v0.15.0 enquanto os oito pinos usavam v0.30.0 — e foi o C29-04 que o pegou. Tira-lo da guarda para arrumar a contagem reabriria o furo que a contagem denunciou. Entao as duas seguem conferidas contra a fonte, e e so a CONTAGEM que se separa."
+
+- id: PRF-0229
+  kind: proof
+  title: "PINO e INSTRUCAO contados em separado, os dois sob a guarda - e a ancora em prosa segue viva"
+  proves: [CLM-0197, CLM-0182]
+  basis: test
+  supersedes: [PRF-0212]
+  date: "2026-10-19"
+  test:
+    repo: liceu-genome
+    path: tools/test_genome_pino_check.py
+    name: PinoNaoEInstrucao
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/genome_pino_check.py
+      - tools/test_genome_pino_check.py
+    content_hash: e05939a5899535da93ca996844f84bfd265ebf73eee68148455f0f2f6bf3d9ad
+    commit: 626b2d7
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-a-nona-citacao-viva.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/genome_pino_check.py
+    note: "OS TESTES NAO FIXAM 8 NEM 1, e essa foi a decisao de desenho que mais importou. Literal apodrece — este mesmo arquivo de teste ja tinha a licao escrita, de quando um 40 e um 0 literais caducaram no mesmo PR em que foram escritos. Um repositorio a mais ou a menos mudaria a contagem, e o teste passaria a medir o calendario. O que se afirma e a RELACAO: toda citacao viva tem forma e tem exatamente uma; as formas PARTICIONAM os vivos; e os pinos sao MENOS que os vivos — uma desigualdade, nao um numero. Se um dia pinos == vivos, ou a instrucao sumiu do README e o furo reabriu, ou alguem a reclassificou como pino. O TESTE QUE IMPEDE O CONSERTO DE VIRAR REGRESSAO: com a fonte alterada de proposito, a INSTRUCAO tem de aparecer entre as divergentes. Se a separacao a tirasse da conferencia, o C30-05 teria reaberto o furo do C29-04 enquanto arrumava a contagem dele. A MUTACAO: reclassificada a instrucao como PINO, QUATRO dos oito casos falham. E ESTA PROVA SUPERSEDE A PRF-0212 porque a superficie mudou: o detector e o teste foram ambos tocados, o genome_surface_check acusou com os dois hashes lado a lado, e a lei deste schema manda prova nova em vez de edicao da antiga. O comportamento que a PRF-0212 provava CONTINUA valendo e foi rodado de novo: as 14 afirmacoes originais passam, entre elas a que diz que nao ha caractere de controle na regex de ancora — a que existe porque uma barra-b num heredoc virou BACKSPACE e matou a regra em silencio. Sao 22 casos agora, e os 22 passam. UM DEFEITO DO MEU PROPRIO TESTE, achado ao roda-lo e registrado porque custou tempo: cada caso varria os 19 repositorios de novo, e a classe estourava os 600 segundos. Com a varredura em cache, 33 segundos. Era defeito do TESTE e nao do detector, e a diferenca importa — um teste lento nao se deixa rodar, e teste que nao roda nao guarda nada."

@@ -12,6 +12,7 @@ A licao e sobre o tipo de teste: nao basta testar o veredito final da varredura,
 porque ele era plausivel com a regra morta. O que pega isto e afirmar, FORMA POR
 FORMA, que cada ancora casa o seu caso e recusa o que nao e dela.
 """
+import functools
 import importlib.util
 import pathlib
 import unittest
@@ -21,6 +22,28 @@ _spec = importlib.util.spec_from_file_location(
     "pino", _raiz / "genome_pino_check.py")
 pino = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(pino)
+
+
+def _raiz_do_ecossistema() -> pathlib.Path:
+    """A pasta que CONTEM os repositorios, derivada do caminho deste arquivo."""
+    # _raiz e tools/; dois niveis acima e a pasta que CONTEM os repositorios
+    return _raiz.parent.parent
+
+
+@functools.lru_cache(maxsize=None)
+def _fonte() -> dict:
+    return pino.le_fonte(_raiz_do_ecossistema() / "liceu-protocol"
+                         / "liceu_protocol" / "VERSION")
+
+
+@functools.lru_cache(maxsize=None)
+def _varre_o_ecossistema() -> dict:
+    """UMA varredura para todos os casos.
+
+    Sem o cache, cada teste varria os 19 repositorios de novo e a classe
+    estourava o tempo -- defeito do teste, nao do detector.
+    """
+    return pino.varre(_raiz_do_ecossistema(), _fonte())
 
 
 class AncoraDeTempo(unittest.TestCase):
@@ -124,6 +147,101 @@ class FonteUnica(unittest.TestCase):
                 pino.le_fonte(caminho)
         finally:
             caminho.unlink()
+
+
+class PinoNaoEInstrucao(unittest.TestCase):
+    """C30-05: dentro de VIVO ainda havia duas coisas, e a nona citacao mostrou.
+
+    PINO      arquivo que uma FERRAMENTA le para instalar.
+    INSTRUCAO comando que um HUMANO le e executa -- o `pip install` do README
+              do proprio kit.
+
+    AS DUAS SAO VIVAS no sentido que importa para a guarda: afirmam o estado de
+    agora e tem de concordar com a fonte. Tirar a instrucao do VIVO abriria de
+    volta o furo que o conserto do README fechou, porque foi justamente aquele
+    comando que estava quinze tags atras.
+
+    O defeito era de CONTAGEM, e foi meu: no relatorio do ecossistema escrevi
+    "8 pinos de consumidor" e, uma linha depois, "o detector separa as 9 vivas
+    das 57 historicas". As duas frases estao certas, e juntas convidam a somar
+    coisas diferentes -- a MESMA classe de erro que este detector existe para
+    resolver, um nivel acima.
+
+    OS TESTES NAO FIXAM 8 NEM 1. Literal apodrece: um repositorio a mais ou a
+    menos mudaria o numero e o teste passaria a medir o calendario. O que se
+    afirma e a RELACAO -- disjuncao, soma e pertinencia --, que nao muda.
+    """
+
+    def test_arquivo_de_instalacao_e_PINO(self):
+        for rel in ("backend/requirements.txt", "requirements-dev.txt",
+                    "pyproject.toml", "constraints.txt"):
+            self.assertEqual(pino.forma_viva(rel), pino.PINO, rel)
+
+    def test_o_README_do_kit_e_INSTRUCAO_e_nao_PINO(self):
+        """O coracao do C30-05: nenhuma ferramenta le o README para instalar."""
+        self.assertEqual(pino.forma_viva("README.md"), pino.INSTRUCAO)
+        self.assertNotEqual(pino.forma_viva("README.md"), pino.PINO)
+
+    def test_a_fonte_unica_tem_forma_propria(self):
+        self.assertEqual(pino.forma_viva("liceu_protocol/VERSION"), pino.FONTE)
+
+    def test_o_que_nao_e_vivo_nao_tem_forma(self):
+        for rel in (".github/workflows/ci.yml", "genome/07-proofs.yaml",
+                    "docs/evidence/2026-09-20-x.md"):
+            self.assertIsNone(pino.forma_viva(rel), rel)
+
+    def test_as_formas_particionam_os_vivos(self):
+        """Toda citacao viva tem forma, e cada uma tem exatamente uma.
+
+        Derivado, nao fixado: se amanha houver 12 pinos, isto continua valendo.
+        """
+        r = _varre_o_ecossistema()
+        formas = [a.get("forma") for a in r["vivos"]]
+        self.assertNotIn(None, formas, "ha citacao viva sem forma")
+        por = {}
+        for a in r["vivos"]:
+            por.setdefault(a["forma"], []).append(a)
+        self.assertEqual(sum(len(v) for v in por.values()), len(r["vivos"]))
+        self.assertTrue(set(por) <= {pino.PINO, pino.INSTRUCAO, pino.FONTE})
+
+    def test_os_pinos_sao_MENOS_que_os_vivos(self):
+        """A afirmacao central, e ela e uma desigualdade e nao um numero.
+
+        Se um dia pinos == vivos, ou a instrucao sumiu do README -- e o furo
+        reabriu -- ou alguem a reclassificou como pino.
+        """
+        r = _varre_o_ecossistema()
+        pinos = [a for a in r["vivos"] if a["forma"] == pino.PINO]
+        instr = [a for a in r["vivos"] if a["forma"] == pino.INSTRUCAO]
+        self.assertTrue(instr, "a instrucao do README sumiu da contagem viva")
+        self.assertLess(len(pinos), len(r["vivos"]),
+                        "chamar todos os vivos de 'pinos' soma coisas diferentes")
+
+    def test_o_relatorio_separa_as_duas_e_avisa_que_nao_se_somam(self):
+        r = _varre_o_ecossistema()
+        import io
+        import contextlib
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            pino.imprime(r)
+        saida = buf.getvalue()
+        self.assertIn(pino.PINO, saida)
+        self.assertIn(pino.INSTRUCAO, saida)
+        self.assertIn("NAO se somam", saida)
+
+    def test_a_instrucao_continua_sendo_CONFERIDA_contra_a_fonte(self):
+        """O que a separacao NAO pode fazer: deixar a instrucao de fora da guarda.
+
+        Foi o comando do README que esteve quinze tags atras. Se a separacao o
+        tirasse da conferencia, o C30-05 teria reaberto o furo do C29-04.
+        """
+        fonte = dict(_fonte(), conformance_kit="9.99.9")
+        r = pino.varre(_raiz_do_ecossistema(), fonte)
+        divergentes_instrucao = [a for a in r["divergentes"]
+                                 if a.get("forma") == pino.INSTRUCAO]
+        self.assertTrue(divergentes_instrucao,
+                        "com a fonte mudada, a instrucao do README tinha de "
+                        "divergir -- ela continua sob a guarda")
 
 
 if __name__ == "__main__":

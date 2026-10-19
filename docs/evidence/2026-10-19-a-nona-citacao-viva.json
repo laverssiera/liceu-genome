@@ -1,0 +1,55 @@
+{
+  "ciclo": "C30-05",
+  "data": "2026-10-19",
+  "pergunta": "a tabela diz 8 pinos; o detector diz 9 vivas. Qual e a nona?",
+  "resposta": "liceu-protocol/README.md:23 -- o comando `pip install` do README do proprio kit",
+  "as_duas_naturezas_dentro_de_VIVO": {
+    "PINO": {
+      "quantas": 8,
+      "o_que_e": "arquivo que uma FERRAMENTA le para instalar"
+    },
+    "INSTRUCAO": {
+      "quantas": 1,
+      "o_que_e": "comando que um HUMANO le e executa"
+    }
+  },
+  "o_erro_foi_meu": {
+    "claim": "CLM-0196",
+    "prova": "PRF-0228",
+    "veredito": "REFUTADA",
+    "onde": "no relatorio do ecossistema",
+    "frase_1": "oito pinos de consumidor, todos v0.30.0",
+    "frase_2": "o detector varre 66 citacoes e separa as 9 vivas das 57 historicas",
+    "as_duas_estao_certas": true,
+    "o_problema": "juntas convidam a somar coisas diferentes, e quem somar conclui que ha nove pinos",
+    "a_mesma_classe_um_nivel_acima": "o C29-04 separou VIVO de HISTORIA porque o texto nao as distinguia; dentro de VIVO sobrou a mesma indistincao, entre o que uma maquina le e o que uma pessoa le"
+  },
+  "o_que_o_conserto_NAO_pode_ser": {
+    "tirar_a_instrucao_do_VIVO": false,
+    "por_que": "foi JUSTAMENTE aquele comando que esteve quinze tags atras, mandando instalar v0.15.0 enquanto os oito pinos usavam v0.30.0. Tira-lo da guarda para arrumar a contagem reabriria o furo que a contagem denunciou",
+    "o_que_se_separa": "so a CONTAGEM; as duas seguem conferidas contra a fonte"
+  },
+  "o_instrumento": {
+    "claim": "CLM-0197",
+    "prova": "PRF-0229",
+    "veredito": "PROVEN (test)",
+    "os_testes_nao_fixam_8_nem_1": "literal apodrece; afirma-se a RELACAO -- particao, soma e desigualdade",
+    "a_afirmacao_central": "os pinos sao MENOS que os vivos",
+    "o_teste_antirregressao": "com a fonte alterada, a INSTRUCAO tem de aparecer entre as divergentes",
+    "mutacao": "reclassificada a instrucao como PINO, 4 dos 8 casos falham",
+    "casos": 22
+  },
+  "a_prova_rodada_de_novo": {
+    "nova": "PRF-0229",
+    "supersede": "PRF-0212",
+    "por_que": "a superficie mudou: detector e teste foram ambos tocados",
+    "o_comportamento_mudou": false,
+    "inclui": "a afirmacao de que nao ha caractere de controle na regex de ancora -- a que existe porque uma barra-b num heredoc virou BACKSPACE e matou a regra em silencio"
+  },
+  "um_defeito_do_proprio_teste": {
+    "o_que": "cada caso varria os 19 repositorios de novo",
+    "custo": "a classe estourava os 600 segundos",
+    "conserto": "varredura em cache -- 33 segundos",
+    "a_licao": "era defeito do TESTE e nao do detector: teste lento nao se deixa rodar, e teste que nao roda nao guarda nada"
+  }
+}
