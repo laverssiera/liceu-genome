@@ -1,0 +1,102 @@
+{
+  "o_furo": "e o MESMO DEFEITO DE ORDEM da PRF-0154, um nivel mais fundo: `forma_de` decide quem e CANDIDATO antes de `classifica` decidir a CATEGORIA, e CHAVES_ESTADO/PREFIXOS_ESTADO moravam so em `classifica`. Elas CLASSIFICAVAM mas nao QUALIFICAVAM, e `forma_de` nem recebia o caminho",
+  "o_que_estava_escondido": {
+    "quantos": 92,
+    "amostra": {
+      "constitution:meta.status": "FINAL",
+      "milestone.M3_AUTHENTICATED_RUNTIME_CONFORMANCE.status": "NOT_STARTED",
+      "milestone.M5_CONTINENTAL_CLOSURE.status": "FROZEN",
+      "global.core_dna.fronteira_semantica.estado": "JA OBRIGATORIA",
+      "milestone.M2...criterios.SECRET_EXPOSURE_STATUS": "KNOWN",
+      "producers.liceu.authority.instances[*].status": "PLANNED"
+    },
+    "a_causa": "`SITUACAO` e uma lista FECHADA de 18 palavras, e a lei escreve status com outras: ACTIVE, FINAL, KNOWN, NOT_STARTED, FROZEN, PLANNED, PROTECAO, A_REEXAMINAR, DECLARED_BUT_NOT_IMPLEMENTED"
+  },
+  "CORRECAO_DE_UMA_AFIRMACAO_MINHA": "eu havia registrado este furo como 'frase longa SEM numero e SEM palavra de situacao'. MEDIDO, o furo e sobretudo de valores CURTOS sob chave de estado. A caracterizacao estava errada no que importava, e a medicao a corrigiu antes de virar desenho",
+  "as_tres_portas_medidas_antes_de_escolher": {
+    "todas_as_strings": {
+      "novas": 2298,
+      "ESTADO": 1862,
+      "veredito": "inviavel -- ESTADO e o ramo 'o que sobra', entao fragmento curto de prosa vira estado"
+    },
+    "so_as_frases_longas": {
+      "novas": 286,
+      "ESTADO": 4,
+      "PROSA": 239,
+      "veredito": "239 julgamentos a mao para comprar 4 estados, e guarda que pede 239 textos vira formalidade"
+    },
+    "a_CHAVE": {
+      "novas": 92,
+      "ESTADO": 87,
+      "PROSA": 0,
+      "veredito": "ESCOLHIDA -- zero julgamentos novos, e tem precedente no proprio modulo"
+    }
+  },
+  "a_porta_segue_estreita": "nenhuma frase entra por ser longa. Entra quem a propria lei marcou: com [CODIGO], com data, ou com uma chave que ja esta na lista curada de chaves de estado",
+  "as_87_origens": {
+    "catorze_razoes_uma_por_familia": {
+      "contract_registry/contracts (status)": 21,
+      "producer_registry/instances (status)": 18,
+      "LIMITE_NAO_DEFINIDO": 16,
+      "implementation_status": 12,
+      "constitution/milestone (status)": 4,
+      "consequencia_de_codigo": 3,
+      "violacao_critica": 3,
+      "estado": 2,
+      "observacao_positiva": 2,
+      "criterios": 2,
+      "constitution/meta (status)": 1,
+      "observacao": 1,
+      "bug_conhecido": 1,
+      "escopo_P2_5A": 1
+    },
+    "todas_SAI_DA_CLASSE": "nenhuma e derivavel de artefato: sao estado do mundo implantado, julgamento de milestone, decisao constitutiva de registro e observacao de codigo noutros repositorios",
+    "e_por_isso_a_FIT_020_NAO_se_move": "classe_viva conta PROPRIO_ARTEFATO e OUTRO_ARTEFATO, e segue com 1 membro vivo"
+  },
+  "o_lacre": {
+    "de": 70,
+    "para": 156,
+    "aritmetica": "70 - 1 + 87 = 156, e o -1 e a chave do P1_07B_extracao_fisica, que estava no lacre e nao estava mais na classe -- ela e membro de PROSA",
+    "mudanca_de_metodo": "a lista passou a ser GERADA do mapa em vez de transcrita"
+  },
+  "SUBARVORES_NORMATIVAS_deixou_de_estar_vazia": {
+    "entrada": "status_semantica",
+    "porque": "e o GLOSSARIO -- o que cada palavra de status SIGNIFICA --, e os filhos herdariam a chave de estado do ancestral. Definicao classificada como estado exigiria origem para uma definicao",
+    "custo_medido_ANTES": "ZERO campos saem de ESTADO",
+    "o_que_isto_NAO_e": "nao e povoar a lista com os PREFIXOS de norma: essa medicao segue valendo e segue custando DOIS campos medicao_atual, e o teste da PRF-0187 a repete a cada CI"
+  },
+  "UM_TESTE_DIZIA_UMA_COISA_FALSA_e_a_porta_revelou": {
+    "o_que_ele_dizia": "que os CINCO campos curados no lote 1 'sairam da lei'",
+    "o_que_e_verdade": "quatro sairam; o quinto, event_reconciliation_ledger:meta.escopo_P2_5A, NUNCA saiu -- segue na lei com 'cadeia causal minima — bloqueia M2'. O que saiu dele foi o NUMERO",
+    "por_que_nao_foi_pego": "o teste confundia 'deixou de ser candidato' com 'saiu da lei', e as duas coisas tinham o mesmo efeito enquanto a porta exigia forma numerica",
+    "a_licao": "APAGAR e a forma mais forte de nao escrever, mas TIRAR O NUMERO nao apaga a declaracao -- so a torna incontavel. Corrigido para conferir contra a LEI em vez de contra a lista de candidatos"
+  },
+  "medido": {
+    "candidatos": "209 -> 301",
+    "ESTADO": "70 -> 157",
+    "PROSA": "24, inalterada",
+    "ESTADO_sem_origem": 0,
+    "funcoes_alteradas": [
+      "classifica",
+      "enumera",
+      "forma_de"
+    ],
+    "funcoes_novas": [
+      "tem_chave_de_estado"
+    ],
+    "funcoes_removidas": [],
+    "CODIGO_ainda_45": true,
+    "extensoes_ainda_7": true
+  },
+  "mutacao": "com a chave voltando a nao qualificar, 13 testes caem",
+  "o_que_segue_aberto": [
+    "A2, o SEGUNDO alargamento da porta, medido e NAO aplicado: admitir qualquer marcador [MAIUSCULO] no valor, e nao so [CODIGO] e data, renderia 7 candidatas novas -- 4 ESTADO, 1 PROCEDENCIA e 2 JULGAMENTOS de PROSA. E outra diagnose e fica para outro PR",
+    "curar os NOVE de afirmacao derivavel presa em frase, que e decisao de classe do titular pela UNK-0018",
+    "as 87 novas pedem DATA E PROCEDENCIA pela mesma decisao de classe, e nenhuma a tem hoje"
+  ],
+  "verde": {
+    "testes_do_portao": 106,
+    "portao": "exit 0",
+    "lacres": "5 + 156 + 24, so encolhem"
+  }
+}
