@@ -982,3 +982,18 @@
   kind: claim
   statement: "O instrumento de mandato emitido em 2026-10-19 amarra o proprietario ao mandato da colaboradora, e por isso a cadeia de representacao alcanca o imovel da P-001."
   asserted_by: "claude (2026-10-19) - implicito ao ler os dois instrumentos como o mesmo mandato ampliado, e nao como dois elos distintos de uma cadeia"
+
+- id: CLM-0176
+  kind: claim
+  statement: "A suite E2E e o que consome o disco da maquina de desenvolvimento, e por isso desligar video e trace libera espaco."
+  asserted_by: "hipotese do C29-03, de 2026-10-19, enunciada para ser medida a partir da configuracao que grava video e trace"
+
+- id: CLM-0177
+  kind: claim
+  statement: "A escolha de rodas sem CUDA esta feita nos pinos do consumidor que instala o maior deles, e por isso o custo de instalacao da CI esta contido."
+  asserted_by: "claude (2026-10-19) - implicito ao tratar faiss-cpu como sinal de que a variante sem GPU havia sido escolhida no arquivo"
+
+- id: CLM-0178
+  kind: claim
+  statement: "A varredura por pasta atribui o que ocupa o disco da maquina de desenvolvimento, e por isso responde onde liberar espaco."
+  asserted_by: "claude (2026-10-19) - implicito ao apresentar a soma por pasta como resposta a pergunta do C29-03 sobre o disco"

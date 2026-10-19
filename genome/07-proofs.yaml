@@ -3919,3 +3919,69 @@
     repo: liceu-genome
     path: docs/evidence/2026-10-19-o-prazo-e-a-cadeia.json
     note: "EU LI OS DOIS INSTRUMENTOS COMO UM SO, AMPLIADO, E SAO DOIS ELOS DIFERENTES. O de 2026-09-24 e o PROPRIETARIO nomeando o procurador; o de 2026-10-19 e o PROCURADOR nomeando a colaboradora. O que me fez supor ampliacao foi a clausula de poderes ser quase identica — e o alinhamento palavra a palavra mostrou que o que muda sao as PARTES, nao o alcance. A DOBRADICA EXISTE, e e a melhor noticia da leitura: o instrumento de 2026-09-24 traz, com a palavra escrita, podendo para tanto, substabelecer. Entao passar poder adiante e possivel, e a cadeia nao esta impedida na origem. DUAS COISAS NA FORMA DO SEGUNDO, as duas medidas no texto e nenhuma delas de merito. PRIMEIRA: ele nao amarra o proprietario. O cabecalho poe o procurador como outorgante EM NOME PROPRIO, a clausula diz representar a Outorgante — e nesse documento a Outorgante e ele —, o titulo e PROCURACAO e nao SUBSTABELECIMENTO, e a busca dirigida no texto inteiro devolve AUSENTE para o nome do proprietario, para a matricula, para a palavra proprietario e para a palavra substabelecimento. Lido ao pe da letra, ele da a colaboradora poder de representar o PROCURADOR, e o que o comunique-se cobra e vinculo com o PROPRIETARIO. SEGUNDA: ele concede o que nao recebeu. O de 2026-09-24 da preencher e assinar REQUERIMENTOS, mais protocolar documentos em geral; o de 2026-10-19 da protocolar E ASSINAR documentos em geral. As duas palavras entraram onde o mandato de origem nao as tinha, e ninguem substabelece poder que nao detem. O CONSERTO E DE REDACAO E NAO DE MERITO: titular o segundo como SUBSTABELECIMENTO, citar no cabecalho o mandato de origem e o proprietario por ele representado, e copiar a lista de poderes sem acrescentar. O QUE NAO MEDI, e nao finjo ter medido: se as rubricas apostas sao de quem o texto diz, e se o merito se sustenta. Dois reparos menores que a leitura pegou de passagem no instrumento de 2026-09-24, que e o que esta no processo: o fecho rotula como CNPJ um numero de onze digitos que o cabecalho corretamente chama de CPF, e a concordancia de genero esta trocada em dois pontos. Nenhum invalida nada por si, e os dois sao do tipo que um analista circula a lapis e devolve."
+
+- id: PRF-0206
+  kind: proof
+  title: "A E2E deixa 1 KiB em disco: o trace NUNCA grava, porque on-first-retry com retries zero nao tem primeira repeticao"
+  refutes: [CLM-0176]
+  basis: code_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "leitura integral de playwright.config.js e contagem dos arquivos *.spec.* sob o testDir declarado; depois medicao do que a suite deixou em disco em test-results, playwright-report e blob-report"
+    universo: "os 19 repositorios rastreados, varridos por playwright.config.* em profundidade 4 excluindo node_modules; o unico achado e frontend/playwright.config.js do John-Brasileiro-, em 710c4c1"
+    excluidos:
+      - "o pico TRANSITORIO durante a execucao: video retain-on-failure grava para todo teste e apaga os que passam, e esta leitura mede o que FICA, nao o que passa pelo disco no meio"
+      - "o cache de navegador do Playwright fora da arvore do repositorio, que nao e artefato de suite"
+      - "a CI, onde o artefato e publicado e nao acumula na maquina"
+    instrumento: "leitura do arquivo de configuracao; find sob frontend excluindo node_modules para contar specs; contagem de arquivos e du -sk nas tres pastas de saida"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-disco-e-o-instrumento.json
+  location:
+    repo: John-Brasileiro-
+    path: frontend/playwright.config.js
+    note: "A HIPOTESE MORRE POR TRES LEITURAS E UMA MEDICAO. PRIMEIRA: retries e ZERO e trace e on-first-retry — nao existe primeira repeticao, entao o trace NUNCA e gravado, e desligar o trace nao libera byte nenhum. E config MORTA, nao config caro. SEGUNDA: video e retain-on-failure, que grava para todo teste e APAGA os que passam; com a suite passando o que fica e nada, e o custo e pico transitorio e nao acumulo. TERCEIRA: fullyParallel e false e ha DOIS arquivos de spec — o paralelismo que multiplicaria gravacao simultanea esta desligado, sobre dois arquivos. E A MEDICAO: as tres pastas de saida somam UM arquivo e UM KiB, com playwright-report e blob-report AUSENTES. Um KiB. O QUE ISTO ENSINA SOBRE A PERGUNTA, e e o que me interessa guardar: eu havia nomeado como suspeito o que estava VISIVEL na configuracao — video e trace aparecem escritos, e aparecer escrito nao e pesar. A pergunta do C29-03 era onde esta o espaco, e a resposta nao estava no arquivo que eu sabia ler; estava onde a PRF-0208 mostra que meu instrumento nao alcanca."
+
+- id: PRF-0207
+  kind: proof
+  title: "faiss-cpu na linha 31 e sentence-transformers na 32: a escolha sem GPU existe uma linha acima e nao alcanca o torch"
+  refutes: [CLM-0177]
+  basis: code_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "busca por torch, sentence-transformers, index-url, extra-index-url, find-links e cpu nos pinos e nos arquivos de workflow; e por pip.conf e pip.ini na arvore"
+    universo: "o repositorio John-Brasileiro- em 710c4c1: backend/requirements.txt, com 25 pinos, e os seis arquivos de .github/workflows"
+    excluidos:
+      - "o tamanho real das rodas baixadas, que exigiria resolver a arvore de dependencias contra o indice e nao foi feito aqui: esta prova mede a AUSENCIA de direcionamento de indice, nao o numero de bytes"
+      - "o tempo de job observado na CI, que nao foi lido nesta prova"
+      - "outros consumidores do ecossistema, que nao instalam este arquivo"
+    instrumento: "grep -n sobre backend/requirements.txt e sobre .github/workflows, mais find por pip.conf e pip.ini; grep -c para a contagem de pinos"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-disco-e-o-instrumento.json
+  location:
+    repo: John-Brasileiro-
+    path: backend/requirements.txt
+    note: "O ACHADO ESTA NA VIZINHANCA DE DUAS LINHAS, e e por isso que ele vale: a linha 31 e faiss-cpu==1.8.0 e a linha 32 e sentence-transformers==2.7.0. Quem escreveu este arquivo SABIA escolher variante sem GPU — escolheu para o faiss, explicitamente, no nome do pacote. E a linha imediatamente abaixo arrasta a pilha CUDA inteira, porque o torch NAO APARECE em nenhum dos 25 pinos: ele entra como dependencia TRANSITIVA do sentence-transformers, e dependencia transitiva nao passa pela revisao de quem le a lista. A INTENCAO DE CPU EXISTE NO ARQUIVO E NAO ALCANCA O MAIOR PACOTE DELE. O que faltaria para alcancar nao esta em lugar nenhum: zero ocorrencias de index-url, extra-index-url e find-links nos pinos e nos seis workflows, e nenhum pip.conf ou pip.ini na arvore — entao o pip usa o PyPI padrao, e a roda padrao do torch e a que embute as bibliotecas CUDA. E ISSO ACONTECE TRES VEZES POR PUSH, em tres jobs distintos que instalam o MESMO arquivo: backend-tests e playwright, os dois no frontend-e2e.yml, e o job do platform-validation.yml. Os seis workflows declaram runs-on ubuntu-latest, e nenhum deles tem GPU. O CONSERTO E UMA LINHA, e NAO E ATO MEU: este e outro repositorio e outro dominio, e quem decide pino de dependencia alheia e quem responde por ele. Registro medido e paro aqui."
+
+- id: PRF-0208
+  kind: proof
+  title: "96 GB nao atribuidos e 191 acessos negados: a varredura por pasta nao responde o disco, e leitura incompleta e resultado INVALIDO"
+  refutes: [CLM-0178]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "soma de Length por arquivo, recursiva e com -Force, em cada diretorio de primeiro nivel de C:, contando os erros de acesso por diretorio; confrontada com Used e Free do volume lidos em Get-PSDrive"
+    universo: "o volume C: da maquina de desenvolvimento, 223 GB, em 2026-10-19; mais a pasta dos 19 repositorios e o TEMP do usuario, medidos a parte"
+    excluidos:
+      - "o que o processo nao tem permissao de ler, que e justamente o que esta prova MEDE e nomeia: 191 erros de acesso em 26 diretorios de primeiro nivel"
+      - "tamanho ALOCADO versus Length: hardlink, arquivo esparso e metadado de NTFS contam diferente, e parte do vao e estrutural e nao negacao"
+      - "outros volumes, que nao foram varridos"
+    instrumento: "Get-ChildItem -Recurse -File -Force com ErrorVariable para contar negacoes, e Get-PSDrive para Used e Free; os dois no mesmo instante"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-disco-e-o-instrumento.json
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-disco-e-o-instrumento.json
+    note: "ESTA PROVA REFUTA A MINHA PROPRIA MEDICAO, e e o resultado mais util do C29-03. A soma por pasta atribuiu 121,16 GB; o volume declara 217,40 GB usados. SAO 96,24 GB QUE A VARREDURA NAO EXPLICA, com 191 erros de acesso espalhados por 26 diretorios de primeiro nivel — 78 em ProgramData, 47 em Windows, 37 em Program Files. E A REGRA JA ESTAVA ESCRITA ANTES DE EU PRECISAR DELA: leitura incompleta e resultado INVALIDO, nao resultado baixo. Entao a lista por pasta NAO responde onde liberar espaco, e apresenta-la como resposta seria convidar a apagar pelo maior numero visivel em vez de pelo maior numero real. PARTE DO VAO NAO E NEGACAO E EU NAO ATRIBUO TUDO A ELA: Length nao e tamanho alocado, e hardlink — de que o WinSxS e cheio —, arquivo esparso e metadado de NTFS contam diferente; quanto do vao e negacao e quanto e estrutura, este instrumento nao separa, e dizer que separa seria inventar. O QUE A MESMA VARREDURA MEDIU BEM, porque teve ZERO negacoes: os 19 repositorios somam 0,63 GB — node_modules 0,40 em 11 pastas, .git 0,14 em 19, .venv 0,05 em uma —, e o TEMP do usuario 0,52 GB. ENTAO O DOMINIO INTEIRO DO TRABALHO DO LICEU CABE EM 0,63 GB de um disco a que faltam 96, e apagar tudo o que eu produzi aqui nao resolveria nem um por cento do aperto. O que a varredura ATRIBUIU, e vale como limite inferior e nao como resposta: Windows 42,44 GB, Program Files 30,23, Users 23,38, Program Files (x86) 10,41, CYPE 9,04, ProgramData 3,54. Os maiores nomeados sao sistema operacional e software de engenharia, que nao e coisa minha para tocar. NADA FOI APAGADO, e a regra de parada do ciclo e a razao: se liberar espaco exigir apagar coisa cuja natureza eu nao conheco, PARE e pergunte — nada se apaga por aperto. Um numero da medicao anterior nao se repetiu: eu havia dito 6,6 GB livres, e agora o volume declara 5,56. Nao sei se caiu no intervalo ou se o primeiro estava errado, e por isso vale o medido com data e nao o lembrado."
