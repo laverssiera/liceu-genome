@@ -1,0 +1,59 @@
+{
+  "ciclo": "C30-03",
+  "data": "2026-10-19",
+  "pedido": "re-provar a CLM-0033, que esta STALE",
+  "a_fonte": {
+    "lei": "LC 097/2020 de Vargem Grande Paulista",
+    "url": "siscam.com.br/arquivo?Id=29211",
+    "sha256": "3e33b94903a0df5043e14f6a7eda51126b9f866dd509052774e3b5c997ff946b",
+    "conferido_contra": "o mesmo sha registrado pelo genoma em 2026-09-23",
+    "bate_byte_a_byte": true,
+    "natureza": "digitalizacao: 9 paginas, ZERO objetos /Font, ZERO caracteres extraiveis",
+    "metodo_de_leitura": "imagens TIFF extraidas por pagina, convertidas para PNG em escala 2x, lidas VISUALMENTE, todas as nove",
+    "a_regra_de_parada_nao_disparou": "a norma esta acessivel e o hash confere"
+  },
+  "o_achado": {
+    "artigo": "Art. 13",
+    "o_que_diz": "a quota minima da propriedade exclusiva no CL e a de unidade autonoma horizontal de casas geminadas do art. 4o paragrafo 1o da LC 30, observando-se os indices urbanisticos e restricoes de ocupacao da Zona Mista previstos na Tabela 1 da mesma Lei, EXCLUINDO-SE a area minima de lote",
+    "as_duas_metades": {
+      "area_minima_de_lote_da_Tabela_I": "NAO alcanca a unidade (excluida expressamente)",
+      "indices_urbanisticos_e_restricoes_de_ocupacao": "ALCANCAM (T.O., C.A., T.P.)"
+    }
+  },
+  "por_que_a_CLM_0033_cai": {
+    "a_conclusao": "meia verdade: vale para a area minima, nao vale para os indices",
+    "o_caminho": "errado mesmo onde a conclusao chega perto -- ela deriva do Art. 3o I (nao e parcelamento), e a lei resolve por SUBSTITUICAO EXPRESSA no Art. 13",
+    "a_licao": "conclusao quase certa por raciocinio errado e pior que conclusao errada: sobrevive ao primeiro teste e quebra no segundo"
+  },
+  "o_FIT_019_na_forma_mais_pura": {
+    "claim": "CLM-0194",
+    "prova": "PRF-0226",
+    "a_nota_antiga_afirmava": "os dois dispositivos convivem, e a lei nao diz qual prevalece",
+    "e_falso": true,
+    "por_que_foi_afirmado": "a leitura parou nos artigos 3o e 4o, e sem escopo declarado 'a lei nao diz' e 'eu nao achei' sao indistinguiveis no texto",
+    "o_que_isso_sugere_sobre_as_outras_39": "as INDETERMINADAS vinham sendo tratadas como divida de FORMA; esta tinha divida de CONTEUDO. Quantas mais e NAO MENSURAVEL sem reabrir uma por uma, e esta prova nao as reabriu"
+  },
+  "o_achado_lateral_dos_trinta_dias": {
+    "claim": "CLM-0195",
+    "prova": "PRF-0227",
+    "Art_10_I": "copia da certidao da matricula emitida ha menos de trinta dias",
+    "a_PRF_0194_continua_valida": "dentro do universo que DECLAROU -- as duas relacoes --, e e por ter declarado que se pode dizer isto com precisao",
+    "o_que_se_corrige": "a claim, que era mais larga que o universo; nao a prova",
+    "mas_e_outro_ato": "o Art. 10 esta no capitulo da aprovacao do CL; a P-001 e obra individual em unidade autonoma, pelo Art. 11. Coincidir nao e derivar."
+  },
+  "o_que_mais_a_leitura_integral_trouxe": {
+    "Art_2o": "define o CL como 'especie de condominio edilicio' -- desfaz a dicotomia 'lotes OU edilicio' que o genoma registrava como aberta",
+    "Art_6o": "manda observar os arts. 84, 85, 114 e 118 da LC 30 -- referencia CIRURGICA",
+    "Art_8o_paragrafo_unico": "a aprovacao das edificacoes de cada lote tem carater INDIVIDUAL",
+    "Art_11": "toda obra individual nas unidades autonomas e previamente submetida a aprovacao do setor competente -- o caminho que a P-001 pratica",
+    "Art_14_paragrafo_unico": "o HABITE-SE das areas comuns nao esta condicionado ao das propriedades exclusivas"
+  },
+  "dois_defeitos_do_proprio_texto_da_lei": [
+    "a LC 30 aparece datada de '24 de junho de 2007' no Art. 4o VI e de '13 de Dezembro de 2007' nos Arts. 6o, 13 e 22",
+    "o Art. 9o enumera as etapas como I, II, III, V, VI, VII -- sem IV"
+  ],
+  "o_que_NAO_foi_medido": {
+    "a_cota_minima_do_art_4o_paragrafo_1o_da_LC_30": "NAO lida: a LC 30 nao esta nesta prova. Sabe-se QUAL regra vale; nao se sabe o VALOR que ela fixa",
+    "se_a_unidade_da_P_001_ATENDE": "e a CLM-0019, e segue UNPROVEN"
+  }
+}

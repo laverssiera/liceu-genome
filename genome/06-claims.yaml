@@ -1083,3 +1083,15 @@
   kind: claim
   statement: "A previsao do C30-04 - em que fase a declaracao condominial e verificada, despacho, habite-se ou nunca - e registravel hoje como previsao pre-registrada, com metodo e base declarados."
   asserted_by: "premissa do C30-04 ao mandar registrar antes do despacho, enunciada para ser medida contra o que o schema exige e contra o que existe de metodo e de base"
+
+- id: CLM-0194
+  kind: claim
+  classe: NORMA
+  statement: "A LC 097/2020 nao estabelece qual norma prevalece para a unidade autonoma, e por isso a questao da area minima e dos indices fica em aberto no texto da lei."
+  asserted_by: "claude (2026-09-23, na nota da PRF-0028) - afirmada a partir de leitura SEM escopo declarado, que parou nos artigos 3o e 4o"
+
+- id: CLM-0195
+  kind: claim
+  classe: NORMA
+  statement: "O universo declarado pela PRF-0194 - as duas relacoes de documentos do municipio - cobre o que a CLM-0164 chama de os documentos que o municipio publica."
+  asserted_by: "implicito na PRF-0194 ao refutar a CLM-0164 com universo nas duas relacoes, sem incluir a legislacao municipal publicada"
