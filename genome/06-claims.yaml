@@ -962,3 +962,13 @@
   kind: claim
   statement: "Os tres itens que bloqueiam o REGIONAL estao no mesmo estagio de tratabilidade, e por isso a contagem de tres os representa bem."
   asserted_by: "implicito no indicador do juiz, que imprime bloqueada por 3 sem distinguir os estados"
+
+- id: CLM-0172
+  kind: claim
+  statement: "As cinco propriedades do log bastam para que os cinco invariantes do protocolo de autoridade valham, e por isso escolher o mecanismo de log fecha o fencing de epoca revogada."
+  asserted_by: "premissa do C29-02 ao enunciar que a saida do model check seria a lista de propriedades exigidas DO LOG"
+
+- id: CLM-0173
+  kind: claim
+  statement: "Os invariantes que o log alcanca exigem dele P4 e P5 isoladamente, e P2 em conjunto com P5; o fencing nao exige nada do log e o progresso nao e expressavel por verificacao de seguranca."
+  asserted_by: "ninguem ainda - e o que o model check do C29-02 produz, e so vale se o verificador acusar as mutacoes que lhe sao aplicadas"
