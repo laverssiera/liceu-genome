@@ -52,6 +52,12 @@ import varredura
 #: um de recibo. A guarda rodava verde sobre eles havia dias, porque o que ela
 #: procurava era outra coisa.
 #:
+#: MEDIDO ANTES DE ACRESCENTAR, e por isso sao QUATRO e nao seis: o padrao
+#: `matricula/inscricao imobiliaria`, que JA existia, cobre matricula E
+#: inscricao cadastral. Na primeira versao eu acrescentei os dois assim
+#: mesmo, sem conferir o que havia, e eram duplicatas puras -- o teste da
+#: mascara e que pegou, exigindo amostra para cada padrao.
+#:
 #: O VALOR NUNCA E IMPRESSO, pela mesma razao que vale para os outros: o log da
 #: CI tambem e publico.
 PADROES = {
@@ -59,8 +65,6 @@ PADROES = {
         r"(?i)\b(?:contador|protocolo)\D{0,12}\d{5,8}\b"),
     "numero de guia municipal": re.compile(r"(?i)\bguia\s+n?o?\s*\d{2,6}\b"),
     "numero de recibo": re.compile(r"(?i)\brecibo\s+n?o?\s*\d{3,}\b"),
-    "matricula de imovel": re.compile(r"(?i)\bmatricula\D{0,6}[\d.]{6,}"),
-    "inscricao cadastral": re.compile(r"(?i)\binscricao\s+cadastral\D{0,6}[\d.]{6,}"),
     "ART/RRT": re.compile(r"(?i)\b(?:art|rrt)\D{0,6}\d{10,}\b"),
     "CPF": re.compile(r"\b\d{3}\.\d{3}\.\d{3}-\d{2}\b"),
     "CPF sem pontuacao": re.compile(r"(?i)\bcpf\D{0,10}\d{11}\b"),
