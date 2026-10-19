@@ -3684,3 +3684,60 @@
     repo: liceu-genome
     path: docs/evidence/2026-10-19-o-mundo-respondeu.json
     note: "O PRAZO DE ACEITACAO DA CERTIDAO NAO E DERIVAVEL DO QUE O MUNICIPIO PUBLICA, e isso foi medido e nao suposto. A certidao declara-se VALIDA POR 30 DIAS a contar da emissao, citando o Decreto Federal 93.240/86 e as Normas de Servico da Corregedoria Geral da Justica de SP. MAS ESSE DECRETO REGULAMENTA A LEI 7.433/85, QUE DISPOE SOBRE REQUISITOS PARA LAVRATURA DE ESCRITURAS PUBLICAS: o inciso IV fixa os 30 dias 'para este fim', e o fim e a escritura, nao a aprovacao de projeto. O que o cartorio declara e o prazo do ato NOTARIAL. O QUE O MUNICIPIO PUBLICA E OUTRA COISA: a relacao de documentos do Departamento de Engenharia tem 39 itens e pede, no item 35, 'Titulo de propriedade do imovel (Certidao de matricula atualizada)'. A palavra 'dias' aparece ZERO VEZES no documento inteiro. A outra lista municipal, a do DHAP, exige 11 itens para Construcao Residencial e tambem nao fixa prazo. A QUALIDADE E EXIGIDA NOS DOIS; O PRAZO NAO EXISTE EM NENHUM. Entao o que a Prefeitura aceita e NAO-MENSURAVEL por via documental, com as fontes nomeadas, e o que resolveria e resposta de balcao — que entrara como observacao externa quando houver. E ISTO CORRIGE UMA FRASE MINHA: eu escrevi 'a certidao esta vencida ha 33 dias'. Para o fim NOTARIAL, esta. Para o fim que importa aqui, ainda e indeterminado, e tratar o prazo declarado pelo cartorio como prazo exigido pela Prefeitura foi a mesma confusao que me fez ler 'sem comprovante no acervo' como 'nao paga'. A distincao entre o que um documento DECLARA e o que um orgao EXIGE e a mesma entre ausencia de registro e ausencia de fato."
+
+- id: PRF-0195
+  kind: proof
+  title: "C28-01a: tres p99 de 2,663, 2,710 e 3,265 ms contra os 10 do etcd — e o maximo em 183 ms, que ja passa do periodo de heartbeat"
+  proves: [CLM-0165]
+  basis: external_observation
+  external_observation:
+    instrument: "tools/medicoes/cauda_de_fsync.py — escrita sequencial de 22 MiB em blocos de 2300 bytes com os.fsync apos cada bloco, cronometrado isoladamente, tres execucoes. NAO e o fio, que nao esta instalado; no Windows os.fsync e FlushFileBuffers, mais forte que fdatasync, logo o resultado e LIMITE SUPERIOR"
+    observed: "p99 de 2,663, 2,710 e 3,265 ms em tres execucoes de 10029 blocos; p999 de 94,9, 94,1 e 12,0; maximos de 100,8, 183,1 e 97,3. Disco SanDisk SDSSDA240G SATA sem DRAM, a 96,3% de ocupacao"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-as-medicoes-do-eixo-continental.json
+  environment: local
+  scale: LOCAL
+  date: "2026-10-19"
+  location:
+    repo: liceu-genome
+    path: tools/medicoes/cauda_de_fsync.py
+    note: "O INSTRUMENTO NAO E O FIO, E ISSO VAI NA FRENTE DO NUMERO. O fio nao esta instalado nesta maquina e baixar e executar binario de fora nao e ato meu, entao o que rodou foi a receita reimplementada: escrita sequencial de 22 MiB em blocos de 2300 bytes, com os.fsync APOS CADA BLOCO, cronometrado isoladamente, tres execucoes porque a cauda e o objeto e uma execucao nao tem cauda. POR QUE A INFERENCIA AINDA VALE: no Windows os.fsync chama FlushFileBuffers, que desce metadados tambem e e MAIS FORTE que fdatasync — logo esta medicao e um LIMITE SUPERIOR. Se o p99 daqui esta dentro dos 10 ms, a cauda real de fdatasync tambem esta; se estivesse fora, nada se concluiria sobre fdatasync, e dizer isso e parte do resultado. OS TRES p99: 2,663, 2,710 e 3,265 ms, contra os 10 ms da orientacao do etcd — DENTRO. O QUE O p99 ESCONDE, e e o que importa para a decisao: o p999 bate em cerca de 94 ms em DUAS das tres execucoes e o maximo em 183 ms. O appendEntriesPeriod do PySyncObj e 100 ms, entao um fsync isolado ja ultrapassa o periodo de heartbeat nesta maquina. A MAQUINA E PARTE DO RESULTADO: SanDisk SDSSDA240G, SATA, sem DRAM, a 96,3% de ocupacao com 8,33 GiB livres de 223 — disco cheio tem cauda pior, e a ocupacao vai junto com o numero em vez de ser descontada como ruido. O QUE ESTA PROVA NAO DESCREVE: o nivel barato de nuvem, que e o alvo real do C28-01. Ela descreve ESTA maquina, e dizer qual foi medida e metade do item."
+
+- id: PRF-0196
+  kind: proof
+  title: "C28-01b: o p99 do GIL sobe 40x com concorrencia, cruza os 100 ms do heartbeat cinco vezes em 60 s e nao chega perto dos 400 da eleicao"
+  proves: [CLM-0166]
+  basis: external_observation
+  external_observation:
+    instrument: "tools/medicoes/gil_sequencial.py e tools/medicoes/gil_concorrente.py — thread canario com tique de 5 ms cujo atraso mede a retencao observada, com o app exercitado em processo pelo TestClient. Limiares de 100 e 400 ms lidos do sdist do pysyncobj 0.3.17, nunca executado"
+    observed: "sequencial, 23549 amostras: p50 0,212, p95 1,020, p99 1,210, p999 10,251, max 70,353, zero acima de 100 ms. Concorrente, 12 threads sobre as 8 rotas de maior CPU, 8940 amostras: p50 0,996, p95 3,831, p99 50,081, p999 89,855, max 154,684, CINCO amostras acima de 100 ms e ZERO acima de 400"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-as-medicoes-do-eixo-continental.json
+  environment: local
+  scale: LOCAL
+  date: "2026-10-19"
+  location:
+    repo: liceu-genome
+    path: tools/medicoes/gil_concorrente.py
+    note: "O QUE SE MEDE E RETENCAO OBSERVADA, NAO TEMPO DE CPU. Uma thread canario acorda a cada 5 ms e cronometra o proprio atraso; o atraso dela E o tempo em que ela nao conseguiu o GIL, que e exatamente o que faz um heartbeat ser perdido. A DIFERENCA ENTRE AS DUAS GRANDEZAS E DE 40x E FOI MEDIDA: a rota mais cara queimou 2875 ms de CPU e o canario sequencial viu 70 ms — o handler solta o GIL com frequencia. CPU alta nao e retencao longa, e medir CPU teria dado a resposta errada. A CONCORRENCIA E A CONDICAO EM QUE O FENOMENO EXISTE: sequencial, 23549 amostras, p99 1,210 ms e max 70,4, com ZERO acima de 100 ms; concorrente, com 12 threads sobre as 8 rotas mais caras, 8940 amostras, p99 50,081 ms e max 154,7, com CINCO amostras acima de 100 ms (101, 105, 123, 132 e 155) e ZERO acima de 400. O p99 sobe 40x, e medir so a sequencial seria medir a condicao em que o fenomeno nao ocorre. O GATILHO DA EMENDA NAO DISPAROU: ela dizia que se o p99 ja passasse de 400 ms a decisao de mecanismo deixaria de ter duas opcoes. O p99 e 50 ms. A decisao CONTINUA com duas opcoes, e esse e o resultado — o contrario do que a emenda esperava. A COMPOSICAO E ONDE FICA APERTADO: pior parada de GIL 154,7 ms mais pior fsync 183,1 ms da 338 ms contra os 400 do raftMinTimeout. Nao cruza, e a folga e de 62 ms numa maquina que nao e o alvo e sob carga que nao e producao. UMA RESSALVA QUE PODE INVALIDAR A SELECAO: as 8 rotas escolhidas por maior CPU eram caras PORQUE FALHAVAM — 40 das 128 devolveram 502 queimando cerca de 900 ms de CPU contra upstreams inalcancaveis, e a carga rendeu 133 requisicoes em 60 segundos, ~2,2 req/s, dominada por proxy em timeout. ESCOPO: 128 das 317 rotas; o plano falava em 321 e o medido e 317, porque um router nao carrega por falta de numpy_financial. Fora: POST, PATCH, DELETE e rotas com parametro. RECOMENDACAO, agora pelo motivo medido em vez do argumento: etcd — nao porque o PySyncObj falhe, mas porque a margem que o protege e fina e foi medida no cenario mais gentil disponivel."
+
+- id: PRF-0197
+  kind: proof
+  title: "O gatilho da emenda nao disparou: o p99 do GIL e 50 ms, nao mais de 400, e a decisao de mecanismo continua com duas opcoes"
+  refutes: [CLM-0167]
+  basis: external_observation
+  external_observation:
+    instrument: "a mesma medicao da PRF-0196: tools/medicoes/gil_concorrente.py, thread canario de tique de 5 ms, 12 threads sobre as 8 rotas de maior CPU, janela de 60 s"
+    observed: "p99 de 50,081 ms e maximo de 154,684 ms; cinco amostras acima de 100 ms e ZERO acima de 400, em 8940 amostras"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-as-medicoes-do-eixo-continental.json
+  environment: local
+  scale: LOCAL
+  date: "2026-10-19"
+  location:
+    repo: liceu-genome
+    path: tools/medicoes/gil_concorrente.py
+    note: "O GATILHO DA EMENDA AO CICLO 28 NAO DISPAROU, e registrar isso e o ponto. A emenda dizia: 'se o p99 ja passa de 400 ms, a eleicao espuria sob PySyncObj nao e risco — e consequencia, e a decisao de mecanismo deixa de ter duas opcoes'. MEDIDO: o p99 de retencao observada do GIL, sob 12 threads concorrentes nas 8 rotas de maior CPU, e de 50,081 ms. Nao passa de 400 — passa de 400 por uma margem de oito vezes PARA BAIXO. A DECISAO CONTINUA COM DUAS OPCOES, e esse e o resultado honesto: o contrario do que a emenda esperava, e o contrario do que teria sido conveniente. O QUE ISSO NAO SIGNIFICA: nao significa que o PySyncObj esteja liberado. A composicao das duas medicoes do dia — pior parada de GIL de 154,7 ms mais pior fsync de 183,1 — da 338 ms contra os 400 do raftMinTimeout, com folga de 62 ms, numa maquina que nao e o alvo e sob carga que nao e producao. Nem excluido nem liberado: a medicao estreita a decisao e nao a resolve, e resolve-la segue dependendo dos hosts do C28-01, que dependem da palavra do titular e da fatura."

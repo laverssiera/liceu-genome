@@ -1,0 +1,109 @@
+{
+  "o_que_o_C28_01_pedia": "provisionar 5 a 7 hosts e medir. As duas medicoes abaixo foram DESEMPACOTADAS do item porque nao precisam de host nem da decisao de mecanismo -- so os limiares de leitura dependem dela",
+  "a_maquina_medida": {
+    "disco": "SanDisk SDSSDA240G, SATA, sem DRAM",
+    "ocupacao_no_momento": "96,3% — 8,33 GiB livres de 223 GiB",
+    "por_que_isso_e_resultado_e_nao_ruido": "disco cheio tem cauda pior, e a ocupacao vai junto com o numero"
+  },
+  "C28_01a_cauda_de_fsync": {
+    "o_que_a_receita_do_etcd_pede": "fio --rw=write --ioengine=sync --fdatasync=1 --size=22m --bs=2300",
+    "o_instrumento_NAO_E_O_FIO": "o fio nao esta instalado nesta maquina, e baixar e executar binario de fora nao e ato meu. O que rodou foi escrita sequencial de 22 MiB em blocos de 2300 bytes com os.fsync APOS CADA BLOCO, cronometrado isoladamente",
+    "por_que_isso_e_LIMITE_SUPERIOR": "no Windows os.fsync chama FlushFileBuffers, que desce metadados tambem e e MAIS FORTE que fdatasync. Se o p99 daqui esta dentro, a cauda real de fdatasync tambem esta; se estivesse fora, nada se concluiria",
+    "tres_execucoes": [
+      {
+        "n": 10029,
+        "mediana_ms": 1.484,
+        "p95": 1.953,
+        "p99": 2.663,
+        "p999": 94.853,
+        "max": 100.819
+      },
+      {
+        "n": 10029,
+        "mediana_ms": 1.14,
+        "p95": 1.684,
+        "p99": 2.71,
+        "p999": 94.092,
+        "max": 183.053
+      },
+      {
+        "n": 10029,
+        "mediana_ms": 1.174,
+        "p95": 1.999,
+        "p99": 3.265,
+        "p999": 12.034,
+        "max": 97.273
+      }
+    ],
+    "pior_p99_ms": 3.265,
+    "referencia_do_etcd_ms": 10,
+    "veredito": "DENTRO do envelope, e por limite superior",
+    "o_que_o_p99_esconde": "o p999 bate em ~94 ms em DUAS das tres execucoes e o maximo em 183 ms. O appendEntriesPeriod do PySyncObj e 100 ms: um fsync isolado ja ultrapassa o periodo de heartbeat nesta maquina"
+  },
+  "C28_01b_retencao_do_GIL": {
+    "o_que_se_mede": "uma thread CANARIO acorda a cada 5 ms e cronometra o proprio atraso. O atraso dela E o tempo em que ela nao conseguiu o GIL — que e o que faz um heartbeat ser perdido. NAO se mede quanto o handler trabalha",
+    "limiares": {
+      "100 ms": "appendEntriesPeriod — primeiro heartbeat perdido",
+      "400 ms": "raftMinTimeout — eleicao possivel",
+      "fonte": "pysyncobj 0.3.17, lido do sdist, nunca executado"
+    },
+    "rotas_do_CORE": {
+      "pares_metodo_caminho_unicos": 317,
+      "nota": "o plano falava em 321; um router nao carrega por falta de numpy_financial, e o medido e 317",
+      "exercitadas": "as 128 GET sem parametro de caminho"
+    },
+    "sequencial": {
+      "amostras": 23549,
+      "p50": 0.212,
+      "p95": 1.02,
+      "p99": 1.21,
+      "p999": 10.251,
+      "max": 70.353,
+      "acima_de_100ms": 0,
+      "acima_de_400ms": 0
+    },
+    "concorrente": {
+      "carga": "as 8 rotas de maior CPU, 12 threads, janela de 60 s",
+      "requisicoes": 133,
+      "amostras": 8940,
+      "p50": 0.996,
+      "p95": 3.831,
+      "p99": 50.081,
+      "p999": 89.855,
+      "max": 154.684,
+      "acima_de_100ms": 5,
+      "acima_de_400ms": 0,
+      "maiores_ms": [
+        101,
+        105,
+        123,
+        132,
+        155
+      ]
+    },
+    "o_que_a_concorrencia_mostra": "o p99 sobe 40x da sequencial para a concorrente. Medir so a sequencial seria medir a condicao em que o fenomeno NAO ocorre",
+    "CPU_alta_nao_e_retencao_longa": "a rota mais cara queimou 2875 ms de CPU e o canario sequencial viu 70 ms: o handler solta o GIL com frequencia. As duas grandezas divergem por 40x",
+    "a_selecao_pode_ter_escolhido_errado": "as 8 rotas mais caras em CPU eram caras PORQUE FALHAVAM — 40 das 128 devolveram 502 queimando ~900 ms de CPU contra upstreams inalcancaveis. A carga rendeu 133 requisicoes em 60 s, ~2,2 req/s, dominada por proxy em timeout"
+  },
+  "A_COMPOSICAO_E_ONDE_FICA_APERTADO": {
+    "pior_parada_de_GIL_ms": 154.7,
+    "pior_fsync_ms": 183.1,
+    "soma_ms": 338,
+    "raftMinTimeout_ms": 400,
+    "folga_ms": 62,
+    "leitura": "nao cruza, mas a folga e de 62 ms numa maquina que NAO e o alvo e sob carga que NAO e producao"
+  },
+  "O_GATILHO_DA_EMENDA_NAO_DISPAROU": "a emenda ao Ciclo 28 dizia: 'se o p99 ja passa de 400 ms, a eleicao espuria nao e risco, e consequencia, e a decisao deixa de ter duas opcoes'. O p99 concorrente e 50 ms. O gatilho NAO dispara e a decisao CONTINUA com duas opcoes",
+  "o_que_NAO_foi_medido": [
+    "o nivel barato de nuvem, que e o alvo real do C28-01",
+    "POST, PATCH e DELETE, e as rotas com parametro de caminho: 128 das 317",
+    "carga de producao: a que rodou e dominada por proxy em timeout",
+    "particao entre dominios, que precisa de tres hosts e nao de um"
+  ],
+  "recomendacao": "etcd, e agora pelo motivo MEDIDO em vez do argumento: nao e que o PySyncObj falhe — e que a margem que o protege e fina e foi medida no cenario mais gentil disponivel",
+  "os_instrumentos_estao_no_repo": [
+    "tools/medicoes/cauda_de_fsync.py",
+    "tools/medicoes/gil_sequencial.py",
+    "tools/medicoes/gil_concorrente.py"
+  ]
+}
