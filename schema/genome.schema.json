@@ -735,6 +735,11 @@
             },
             "observed": {
               "type": "string"
+            },
+            "ato_de_terceiro": {
+              "type": "string",
+              "minLength": 1,
+              "description": "QUEM praticou o ato, e quando \u2014 preenchido SO quando a observacao registra ato de terceiro que nos apenas RECEBEMOS, e nao instrumento nosso rodado contra sistema externo. A distincao nao e derivavel e foi medida: das 42 provas por observacao externa, 8 tem environment=durable e so DUAS sao o mundo agindo; as outras seis somos nos rodando conector do Drive, gh api, sonda HTTP ou lendo documentacao. Por isso o campo e STRING e nao booleano: `true` nao diz quem nem quando, e a UNK-0018 exige data e procedencia de todo registro nao derivavel. PARA QUE SERVE: separar 'ato de terceiro RECEBIDO' de 'previsao pre-registrada RESPONDIDA'. Sao quantidades diferentes e foram colapsadas uma vez, no corpo do PR 129 \u2014 a secao chamava-se 'A primeira resposta do mundo real ao modo sombra' e o rodape dizia '4 previsoes / 4 sem resposta'. O mundo agir NAO move o modo sombra; so o ato que a previsao declara em settled_by move."
             }
           }
         },

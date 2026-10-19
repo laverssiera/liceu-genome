@@ -1,0 +1,73 @@
+{
+  "ciclo": "C29-05",
+  "data": "2026-10-19",
+  "pergunta": "'resposta externa recebida' e 'previsao pre-registrada respondida' sao a mesma coisa?",
+  "resposta": "nao, e foram colapsadas por mim no corpo do PR 129 e pelo proprio juiz, numa frase que lida solta soava global",
+  "o_colapso": {
+    "claim": "CLM-0183",
+    "prova": "PRF-0213",
+    "veredito": "REFUTADA",
+    "no_PR_129": {
+      "titulo_da_secao": "A primeira resposta do mundo real ao modo sombra",
+      "rodape_do_mesmo_PR": "modo sombra 4 previsoes / 4 sem resposta",
+      "a_prosa_dizia_certo": "As tres seguem sem resposta",
+      "o_problema": "titulo e o que fica"
+    },
+    "no_juiz": {
+      "frase": "O mundo real ainda nao respondeu nenhuma.",
+      "por_que_estava_certa": "gramaticalmente, 'nenhuma' sao as previsoes",
+      "por_que_enganava": "solta num paragrafo, lia como afirmacao GLOBAL -- e o mundo respondeu em 15/10 e em 19/10"
+    },
+    "a_correcao": "imprimir as duas contagens LADO A LADO, para que colapsa-las exija ignorar as duas ao mesmo tempo",
+    "o_fecho_novo": "o mundo agiu 2x e nenhum desses atos resolveu previsao -- e o mundo ja ter agido NAO afrouxa a proibicao, APERTA: houve ocasiao",
+    "o_PR_129_nao_foi_reescrito": "recebeu correcao ANEXADA; apagar o escrito seria reescrever o registro, a mesma razao por que prova superseded fica no grafo"
+  },
+  "nao_e_derivavel": {
+    "claim": "CLM-0184",
+    "prova": "PRF-0214",
+    "veredito": "REFUTADA",
+    "por_basis": {
+      "external_observation": 42,
+      "quantas_sao_ato_de_terceiro": 2
+    },
+    "por_environment": {
+      "local": 25,
+      "durable": 8,
+      "ci": 5,
+      "ephemeral": 4
+    },
+    "as_oito_durable": {
+      "ato_de_terceiro": [
+        "PRF-0192 (DHAP emitiu o comunique-se)",
+        "PRF-0204 (a Prefeitura respondeu sobre o prazo)"
+      ],
+      "instrumento_nosso": [
+        "PRF-0091 conector do Drive",
+        "PRF-0100 gh api",
+        "PRF-0101 sonda de revogacao",
+        "PRF-0108 sonda de revogacao",
+        "PRF-0112 sonda nas tres chaves",
+        "PRF-0120 leitura da documentacao do etcd"
+      ]
+    },
+    "conclusao": "o que varia e QUEM praticou, e isso nao esta em campo nenhum -- entao o campo se escreve, como STRING com quem e quando, porque `true` nao carrega procedencia",
+    "o_custo_nomeado": "campo escrito pode faltar numa prova futura, e ato nao marcado nao entra na contagem. Falha para BAIXO, e essa direcao e a certa: o erro caro seria anunciar que o mundo respondeu quando nao respondeu"
+  },
+  "o_instrumento": {
+    "claim": "CLM-0185",
+    "prova": "PRF-0215",
+    "veredito": "PROVEN (test)",
+    "mutacoes_aplicadas": {
+      "A_presumir_o_campo_pelo_basis": "ACUSADA (contaria 42 em vez de 2)",
+      "B_ressuscitar_a_frase_global": "ACUSADA"
+    },
+    "os_quatro_casos": [
+      "ato de terceiro e contado E nao mexe em status de previsao",
+      "observacao externa sem o campo nao entra: os marcados sao subconjunto PROPRIO das externas",
+      "o relatorio diz o ocorrido e NAO a frase antiga (ausencia textual)",
+      "ato de terceiro NAO move o teto do modo sombra, que e 3/5 por desenho"
+    ],
+    "corrigido_nos_dois_relatorios": "texto e HTML -- consertar so um deixaria a outra verdade envelhecer calada",
+    "testes_do_juiz": "93, contra 89 antes"
+  }
+}
