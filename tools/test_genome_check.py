@@ -1030,5 +1030,80 @@ class IsencaoNaoEscondeRegressao(unittest.TestCase):
         self.assertIn("continua", aviso[0])
 
 
+class AtoDeTerceiroNaoEPrevisaoRespondida(unittest.TestCase):
+    """C29-05: duas quantidades que foram colapsadas uma vez, e nao devem ser.
+
+    O corpo do PR 129 chamava a secao de "A primeira resposta do mundo real ao
+    modo sombra" e o rodape dizia "modo sombra 4 previsoes / 4 sem resposta".
+    Quem le reconcilia como se algo tivesse avancado. Nada avancou: o mundo agiu
+    e nenhum ato resolveu previsao.
+
+    E o furo nao era so da minha prosa -- o juiz imprimia, em paragrafo proprio,
+    "O mundo real ainda nao respondeu nenhuma". Gramaticalmente o "nenhuma" sao
+    as previsoes e a frase estava certa; solta, lia como afirmacao GLOBAL, e
+    nessa leitura era falsa, porque o mundo respondeu em 15/10 e em 19/10.
+    """
+
+    def test_ato_de_terceiro_e_contado_e_nao_responde_previsao(self):
+        """A afirmacao central: o mundo agir nao move o modo sombra."""
+        _, m = judge(base())
+        atos = m.get("atos_de_terceiro") or []
+        self.assertTrue(atos, "o grafo real tem ato de terceiro registrado")
+        respondidas = [p for p in m["predictions"]
+                       if p["status"] in ("PROVEN", "REFUTED")]
+        self.assertEqual(
+            respondidas, [],
+            "nenhuma previsao foi respondida, e ter ato de terceiro nao muda isso")
+        self.assertTrue(m["predictions"], "ha previsoes pre-registradas")
+
+    def test_observacao_externa_sem_o_campo_nao_entra_na_contagem(self):
+        """O campo nao se presume: instrumento NOSSO contra sistema externo fica fora.
+
+        Foi medido antes de existir: das 42 provas por observacao externa, 8 tem
+        environment=durable e so DUAS sao o mundo agindo -- as outras seis somos
+        nos rodando conector do Drive, gh api, sonda HTTP ou lendo documentacao.
+        Se o campo fosse presumido por `basis` ou por `environment`, a contagem
+        subiria de 2 para 42 ou para 8, e nenhuma das duas diria a verdade.
+        """
+        _, m = judge(base())
+        marcados = {a["id"] for a in (m.get("atos_de_terceiro") or [])}
+        externas = {p["id"] for p in m["proofs"]
+                    if p["basis"] == "external_observation"}
+        self.assertTrue(marcados < externas,
+                        "os atos de terceiro sao um subconjunto PROPRIO das "
+                        "observacoes externas")
+        self.assertGreater(len(externas - marcados), 0,
+                           "ha observacao externa que NAO e ato de terceiro, e "
+                           "ela nao pode entrar na contagem")
+
+    def test_o_relatorio_diz_que_o_mundo_agiu_e_nao_a_frase_antiga(self):
+        """A frase que soava global sai; a que diz o ocorrido entra."""
+        j, m = judge(base())
+        texto = gc.text_report(m, j)
+        self.assertIn("ATOS DE TERCEIRO recebidos", texto)
+        self.assertIn("PREVIS", texto)
+        self.assertIn("O MUNDO AGIU", texto,
+                      "com ato recebido e previsao sem resposta, o relatorio "
+                      "tem de dizer as duas coisas na mesma frase")
+        self.assertNotIn(
+            "O mundo real ainda não respondeu nenhuma", texto,
+            "a frase antiga, lida solta, afirmava que o mundo nao havia "
+            "respondido -- e o mundo havia")
+
+    def test_ato_de_terceiro_nao_move_o_teto_do_modo_sombra(self):
+        """O teto e 3/5 por desenho, e nao por falta de ato do mundo.
+
+        Os elos 4 e 5 nao sao atos do LICEU. Se ato de terceiro recebido
+        passasse a contar como elo, o teto subiria sem que o LICEU tivesse
+        praticado nada -- que e o oposto do que o modo sombra existe para dizer.
+        """
+        _, m = judge(base())
+        c = m["chain"]
+        self.assertTrue(m.get("atos_de_terceiro"))
+        self.assertLessEqual(c["structural"], c.get("shadow_ceiling") or c["positions"])
+        self.assertEqual(c["substantive"], 0,
+                         "nenhum elo substantivo, mesmo com ato do mundo recebido")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

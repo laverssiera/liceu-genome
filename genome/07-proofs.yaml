@@ -3631,6 +3631,7 @@
   basis: external_observation
   external_observation:
     instrument: "leitura do comunique-se emitido pelo Departamento de Habitacao e Aprovacao de Projetos, recebido por e-mail pelo titular e apresentado em 2026-10-19"
+    ato_de_terceiro: "Departamento de Habitacao e Aprovacao de Projetos (DHAP) da Prefeitura, que emitiu o comunique-se em 2026-10-15 as 10:47; recebido por e-mail pelo titular e apresentado em 2026-10-19"
     observed: "exigencia de duas pecas — ART assinada pelo proprietario e matricula atualizada — com a nota de que o atendimento e somente presencial; nenhuma mencao a coeficiente de aproveitamento, taxa de ocupacao ou taxa permeavel"
   evidence_artifact:
     repo: liceu-genome
@@ -3886,6 +3887,7 @@
   date: "2026-10-19"
   external_observation:
     instrument: "consulta do titular a Prefeitura sobre a validade aceita da certidao de matricula, relatada em 2026-10-19. O INSTRUMENTO E O RELATO DE RESPOSTA DE ORGAO, e nao documento publicado: nao ha, nesta prova, texto municipal escrito fixando o prazo, porque a PRF-0194 mediu que ele nao existe em nenhuma das duas relacoes de documentos"
+    ato_de_terceiro: "a Prefeitura, que respondeu a consulta do titular sobre a validade aceita da certidao, em 2026-10-19; o ato e a resposta de balcao, e o que esta prova tem dela e o relato"
     observed: "sao trinta dias, e nao noventa; o titular acrescenta que em ocasioes anteriores valiam noventa, e por isso a pergunta existia"
   evidence_artifact:
     repo: liceu-genome
@@ -4076,3 +4078,72 @@
     repo: liceu-genome
     path: tools/test_genome_pino_check.py
     note: "SEM ESTE TESTE O INSTRUMENTO TERIA SIDO ENTREGUE COM UMA REGRA MORTA, e o numero que ele imprimia era plausivel. A alternativa de ancora em prosa foi escrita com uma barra-b dentro de um heredoc e chegou ao modulo como BACKSPACE, 0x08: a regex passou a exigir um byte de controle em volta da data e NUNCA casou. E o MODO DE FALHAR e o que importa — ela falhava ABERTA e em silencio, porque regra que nao casa nao reclama. Historia legitima caiu em NAO_MENSURAVEL; com as alternativas em outra ordem, um pino VIVO teria caido em HISTORIA e deixado de ser conferido. Foi a oitava vez nesta sessao que barra invertida em heredoc me mordeu, e a primeira em que produziu regra morta em vez de erro de sintaxe — por isso a regra de escrever patch em ARQUIVO passa a valer tambem para regex, e nao so para codigo. O SEGUNDO DEFEITO FOI ACHADO PELO TESTE QUE EU ESCREVI POR CAUSA DO PRIMEIRO: blocos_com_data comparava indice 0-based com numero de linha 1-based, e a ULTIMA linha de todo bloco ancorado ficava de fora — tambem falha aberta. Conferi qual lado estava errado antes de mexer, e corrigi o CODIGO e nao a expectativa. A LICAO E SOBRE O TIPO DE TESTE: nao bastava testar o veredito final da varredura, que era plausivel com a regra morta. O que pega isto e afirmar FORMA POR FORMA que cada ancora casa o seu caso e recusa o que nao e dela — e um dos 14 casos afirma diretamente que nao ha caractere de controle na regex, que e a causa raiz e nao o sintoma. 14 de 14 passam."
+
+- id: PRF-0213
+  kind: proof
+  title: "O mundo agiu 2x e nenhuma previsao foi respondida: as duas contagens coexistiam no mesmo documento"
+  refutes: [CLM-0183]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "leitura do corpo do PR 129 por gh pr view, e da saida do proprio juiz em main, confrontando o titulo da secao com o rodape e com os contadores do modo sombra"
+    universo: "o PR 129 do liceu-genome, mergeado em 2026-10-19T11:40:06Z; e o relatorio do juiz sobre genome/ em de22c36"
+    excluidos:
+      - "os demais PRs do ciclo, que nao foram relidos por esta prova"
+      - "se as previsoes estao CERTAS: esta prova mede se foram RESPONDIDAS, que e outra pergunta"
+    instrumento: "gh pr view 129 --json body; e python tools/genome_check.py, bloco MODO SOMBRA"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-ato-de-terceiro.json
+  location:
+    repo: liceu-genome
+    path: tools/genome_check.py
+    note: "O COLAPSO ESTAVA NO MESMO DOCUMENTO, DUAS VEZES, E EU ASSINEI OS DOIS. A secao do PR 129 chamava-se 'A primeira resposta do mundo real ao modo sombra' e o rodape do mesmo PR dizia 'modo sombra 4 previsoes / 4 sem resposta'. Quem le reconcilia como se algo tivesse avancado; nada avancou. A prosa do PR dizia certo — 'As tres seguem sem resposta' — e o TITULO dizia outra coisa, e titulo e o que fica. MAS O FURO NAO ERA SO DA MINHA PROSA, e e por isso que esta prova aponta para o juiz: ele imprimia, em paragrafo proprio, 'O mundo real ainda nao respondeu nenhuma'. Gramaticalmente o nenhuma sao as previsoes e a frase estava CERTA; solta num paragrafo, lia como afirmacao GLOBAL, e nessa leitura era FALSA — o mundo respondeu em 2026-10-15, quando o DHAP emitiu o comunique-se, e em 2026-10-19, quando a Prefeitura respondeu sobre o prazo. DUAS QUANTIDADES COM NOME PARECIDO SAO UMA ARMADILHA DE CONTABILIDADE, e a correcao nao e escrever melhor: e imprimir as duas LADO A LADO, para que colapsa-las exija ignorar as duas ao mesmo tempo. O juiz passa a dizer 'ATOS DE TERCEIRO recebidos 2' e 'PREVISOES pre-registradas 4, respondidas 0', e, quando ha ato sem previsao respondida, a frase que fecha e: o mundo agiu 2x e nenhum desses atos resolveu previsao — e o mundo ja ter agido NAO afrouxa a proibicao de conduzir processo, APERTA, porque houve ocasiao e ela nao foi aproveitada. O corpo do PR 129 nao foi reescrito: recebeu uma correcao ANEXADA, porque apagar o que estava escrito seria reescrever o registro, que e a mesma razao pela qual prova superseded fica no grafo."
+
+- id: PRF-0214
+  kind: proof
+  title: "Nao e derivavel: das 42 observacoes externas, 8 sao durable e so DUAS sao o mundo agindo"
+  refutes: [CLM-0184]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "contagem das provas por basis external_observation, agrupadas por environment, e leitura do campo instrument de cada uma das de environment durable para identificar QUEM praticou o ato"
+    universo: "as 210 provas de genome/07-proofs.yaml em de22c36"
+    excluidos:
+      - "as provas de outras bases, que nao registram observacao externa"
+      - "o juizo sobre se o ato de terceiro foi bem registrado: esta prova mede se a NATUREZA e derivavel, nao a qualidade do registro"
+    instrumento: "leitura de genome/07-proofs.yaml por yaml.safe_load, filtro por basis e agrupamento por environment, com impressao do instrument de cada durable"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-ato-de-terceiro.json
+  location:
+    repo: liceu-genome
+    path: genome/07-proofs.yaml
+    note: "EU TENTEI DERIVAR E MEDI QUE NAO DA, e medir primeiro foi o que impediu um contador falso. Por BASIS seriam 42, e 40 delas somos nos rodando instrumento. Por ENVIRONMENT=durable seriam 8 — e essa era a minha hipotese, porque durable e como eu vinha marcando fato do mundo. A LEITURA DAS OITO DESFEZ A HIPOTESE: so DUAS sao terceiro agindo (a PRF-0192, o DHAP emitindo o comunique-se, e a PRF-0204, a Prefeitura respondendo sobre o prazo). As outras SEIS somos nos: conector do Drive lendo a pasta do acervo, gh api sobre o repositorio, sonda HTTP de revogacao duas vezes, sonda detalhada nas tres chaves, e leitura da documentacao do etcd. Todas observam coisa durable e NENHUMA e ato de terceiro — o que varia e QUEM praticou, e isso nao esta em campo nenhum. ENTAO O CAMPO SE ESCREVE, pela regra de classe: derivavel se deriva, nao derivavel se escreve com data e procedencia. E ele e STRING e nao booleano, porque `true` nao diz quem nem quando e a UNK-0018 exige as duas — escrito assim, a contagem de 2 e auditavel por LEITURA e nao por confianca no classificador. O CUSTO DESTA ESCOLHA, nomeado: campo escrito pode faltar numa prova futura, e ato de terceiro nao marcado nao entra na contagem. E falha para BAIXO — subestima o que o mundo fez, nunca superestima — e essa direcao e a certa aqui, porque o erro caro seria anunciar que o mundo respondeu quando nao respondeu."
+
+- id: PRF-0215
+  kind: proof
+  title: "As duas mutacoes foram acusadas: presumir o campo pelo basis, e ressuscitar a frase que soava global"
+  proves: [CLM-0185]
+  basis: test
+  date: "2026-10-19"
+  test:
+    repo: liceu-genome
+    path: tools/test_genome_check.py
+    name: AtoDeTerceiroNaoEPrevisaoRespondida
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/genome_check.py
+      - tools/test_genome_check.py
+    content_hash: 2a05e8bac87f9ca4a486bb0081ea48450f8ad739b9063325e2241b9809938f6e
+    commit: de22c36
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-ato-de-terceiro.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/test_genome_check.py
+    note: "TESTE QUE NUNCA FALHA E DECORACAO, e por isso as duas formas plausiveis de colapso foram APLICADAS ao juiz e o teste teve de acusar as duas. MUTACAO A, presumir o campo: tirei a exigencia de ato_de_terceiro e o contador passou a contar toda observacao externa, 42 em vez de 2 — era exatamente o contador que eu quase escrevi antes de medir. ACUSADA. MUTACAO B, ressuscitar a frase: troquei o fecho por 'O mundo real ainda nao respondeu nenhuma', mesmo havendo ato recebido. ACUSADA, pelo test_o_relatorio_diz_que_o_mundo_agiu_e_nao_a_frase_antiga. O JUIZ FOI RESTAURADO DE BACKUP depois de cada mutacao, e o diff final confere com a mudanca pretendida. OS QUATRO CASOS, e cada um nega uma forma de colapsar: ato de terceiro e contado E nao mexe em status de previsao nenhuma; observacao externa SEM o campo nao entra, e o teste afirma que os marcados sao subconjunto PROPRIO das externas, o que falha se alguem presumir o campo; com ato recebido e previsao sem resposta o relatorio diz o ocorrido e NAO a frase antiga, afirmada por ausencia textual; e ato de terceiro NAO move o teto do modo sombra, que e 3/5 por desenho — se ato recebido passasse a contar como elo, o teto subiria sem o LICEU ter praticado nada, que e o oposto do que o modo sombra existe para dizer. A CORRECAO FOI FEITA NOS DOIS RELATORIOS, texto e HTML: consertar so um deixaria a outra verdade envelhecer calada, que e a objecao que o genome_surface_check ja tinha escrito sobre duas ferramentas lendo o mesmo grafo com regras diferentes. 93 testes do juiz passam, contra 89 antes."

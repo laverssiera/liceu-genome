@@ -1104,6 +1104,18 @@ class Judge:
                  "settled_by": c["prediction"]["settled_by"],
                  "status": self.status[c["id"]]}
                 for c in self.kind["claim"] if c.get("prediction")],
+            # ATO DE TERCEIRO nao e PREVISAO RESPONDIDA, e foram colapsados uma
+            # vez: o corpo do PR 129 chamava a secao de "A primeira resposta do
+            # mundo real ao modo sombra" e o rodape dizia "4 previsoes / 4 sem
+            # resposta". O mundo agir NAO move o modo sombra -- so move o ato que
+            # a previsao declara em settled_by. As duas quantidades passam a ser
+            # impressas LADO A LADO, para que colapsa-las exija ignorar as duas.
+            "atos_de_terceiro": [
+                {"id": p["id"], "date": p["date"],
+                 "quem": p["external_observation"]["ato_de_terceiro"]}
+                for p in sorted(self.kind["proof"], key=lambda x: x["id"])
+                if isinstance(p.get("external_observation"), dict)
+                and p["external_observation"].get("ato_de_terceiro")],
             "proofs": [
                 {"id": p["id"], "title": p["title"], "basis": p["basis"],
                  "date": p["date"], "scale": p.get("scale"),
@@ -1288,18 +1300,32 @@ def text_report(m: dict, j: Judge) -> str:
         refu = [p for p in m["predictions"] if p["status"] == "REFUTED"]
         aberto = [p for p in m["predictions"] if p["status"] not in ("PROVEN", "REFUTED")]
         L.append("")
-        L.append("MODO SOMBRA — previsões pré-registradas e o que o mundo respondeu")
-        L.append(f"  previsões pré-registradas .............. {len(m['predictions'])}")
-        L.append(f"  confirmadas pelo mundo real ............ {len(conf)}")
-        L.append(f"  refutadas pelo mundo real .............. {len(refu)}")
-        L.append(f"  ainda sem resposta ..................... {len(aberto)}")
+        atos = m.get("atos_de_terceiro") or []
+        L.append("MODO SOMBRA — e as duas contagens que não se confundem")
+        L.append(f"  ATOS DE TERCEIRO recebidos ............. {len(atos)}"
+                 f"   (o mundo agiu)")
+        L.append(f"  PREVISÕES pré-registradas .............. {len(m['predictions'])}")
+        L.append(f"    confirmadas por ato do mundo ......... {len(conf)}")
+        L.append(f"    refutadas por ato do mundo ........... {len(refu)}")
+        L.append(f"    ainda sem resposta ................... {len(aberto)}")
+        for a in atos:
+            L.append(f"    [ATO ] {a['id']}  ({a['date']})  {a['quem']}")
         for p in m["predictions"]:
             L.append(f"    [{p['status']:<9}] {p['id']}  ({p['registered_at']}, {p['method']})")
             L.append(f"                  {p['statement']}")
             L.append(f"                  resolve: {p['settled_by']}")
         if not conf and not refu:
-            L.append("  O mundo real ainda não respondeu nenhuma. Enquanto este histórico não")
-            L.append("  existir, o LICEU não deve conduzir processo algum.")
+            if atos:
+                L.append(f"  O MUNDO AGIU {len(atos)}x E NENHUM DESSES ATOS RESOLVEU PREVISÃO.")
+                L.append("  As duas contagens são quantidades diferentes, e ato recebido não")
+                L.append("  é previsão respondida: só resolve a previsão o ato que ela nomeia")
+                L.append("  em `settled_by`. Enquanto o histórico de previsão respondida não")
+                L.append("  existir, o LICEU não deve conduzir processo algum — e o fato de o")
+                L.append("  mundo já ter agido não afrouxa isso, aperta: houve ocasião.")
+            else:
+                L.append("  Nenhuma previsão foi respondida, e nenhum ato de terceiro foi")
+                L.append("  recebido. Enquanto este histórico não existir, o LICEU não deve")
+                L.append("  conduzir processo algum.")
     if m.get("growth_warning"):
         g = m["growth_warning"]
         L.append(f"  AVISO: a maquinaria cresceu em três merges seguidos "
@@ -1410,9 +1436,27 @@ def html_report(m: dict, j: Judge, *, fragment: bool = False) -> str:
             f'<div class="dim m">registrada {esc(x["registered_at"])} · {esc(x["method"])}</div>'
             f'<div class="dim">resolve: {esc(x["settled_by"])}</div></td></tr>'
             for x in m["predictions"])
-        aviso = ("" if conf or refu else
-                 '<p class="aviso">O mundo real ainda nao respondeu nenhuma. Enquanto este '
-                 'historico nao existir, o LICEU nao deve conduzir processo algum.</p>')
+        atos = m.get("atos_de_terceiro") or []
+        # a MESMA correcao do relatorio de texto: consertar so um dos dois
+        # deixaria a outra verdade envelhecer calada.
+        if conf or refu:
+            aviso = ""
+        elif atos:
+            aviso = (f'<p class="aviso"><b>O mundo agiu {len(atos)}x e nenhum desses atos '
+                     f'resolveu previsao.</b> Ato de terceiro RECEBIDO e previsao '
+                     f'pre-registrada RESPONDIDA sao quantidades diferentes: so resolve a '
+                     f'previsao o ato que ela nomeia em <code>settled_by</code>. Enquanto o '
+                     f'historico de previsao respondida nao existir, o LICEU nao deve '
+                     f'conduzir processo algum &mdash; e o mundo ja ter agido nao afrouxa '
+                     f'isso, aperta: houve ocasiao.</p>')
+        else:
+            aviso = ('<p class="aviso">Nenhuma previsao foi respondida, e nenhum ato de '
+                     'terceiro foi recebido. Enquanto este historico nao existir, o LICEU '
+                     'nao deve conduzir processo algum.</p>')
+        if atos:
+            aviso += ('<p class="dim">Atos de terceiro recebidos: '
+                      + "; ".join(f'{esc(a["id"])} ({esc(a["date"])}) {esc(a["quem"])}'
+                                  for a in atos) + "</p>")
         prev = secao(
             "Modo sombra — o que foi previsto antes de o mundo responder",
             f'<div class="chain"><div class="stat"><b>{len(m["predictions"])}</b>'

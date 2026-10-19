@@ -1017,3 +1017,18 @@
   kind: claim
   statement: "O detector de pino separa pino vivo de citacao historica e nomeia o que nao classifica, e acusa quando a sua propria regra de ancora esta morta."
   asserted_by: "ninguem ainda - e o que o instrumento do C29-04 produz, e so vale se o teste acusar a regra morta que de fato existiu nele"
+
+- id: CLM-0183
+  kind: claim
+  statement: "Resposta externa recebida e previsao pre-registrada respondida sao a mesma quantidade, e por isso uma secao intitulada a primeira resposta do mundo real ao modo sombra descreve o estado do modo sombra."
+  asserted_by: "claude (2026-10-19, no corpo do PR 129) - implicito no titulo da secao, que convive no mesmo documento com o rodape dizendo modo sombra 4 previsoes / 4 sem resposta"
+
+- id: CLM-0184
+  kind: claim
+  statement: "A distincao entre ato de terceiro e instrumento nosso rodado contra sistema externo e derivavel do que o grafo ja registra, pelo basis ou pelo environment da prova."
+  asserted_by: "hipotese minha ao desenhar o contador do C29-05, enunciada para ser medida antes de escrever campo novo"
+
+- id: CLM-0185
+  kind: claim
+  statement: "O juiz imprime as duas contagens lado a lado e acusa quando elas sao colapsadas, tanto no relatorio de texto quanto no HTML."
+  asserted_by: "ninguem ainda - e o que o C29-05 produz, e so vale se o teste acusar as duas formas plausiveis de colapso"
