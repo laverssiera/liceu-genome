@@ -408,6 +408,43 @@ class Judge:
                     self.errors.append(f"{p['id']}: supersede a si mesma")
                 else:
                     self.ref(p["id"], s, ("proof",))
+            # ------------------------------------------------ C30-02: o portao
+            # da nao-propagacao entre NORMA e VERIFICACAO.
+            #
+            # NORMA e o que a norma EXIGE; VERIFICACAO e o que a instituicao DE
+            # FATO verifica. Uma prova que toca as duas na mesma respiracao faz
+            # a evidencia de uma atravessar para a outra, e e sempre a mesma
+            # travessia que interessa a quem quer economizar esforco: "o orgao
+            # nao exigiu, logo o item nao se aplica".
+            #
+            # POR QUE LINT DE GRAFO E NAO GUARDA DE DERIVACAO: foi MEDIDO que o
+            # juiz nao propaga estado entre claims -- `blocks` aponta so para
+            # escala e incognita. O vetor e humano: alguem escreve UMA prova e
+            # aponta o proves/refutes dela para as duas classes. Chamar isto de
+            # guarda de derivacao seria inventar mecanismo que nao existe.
+            #
+            # NOS DOIS SENTIDOS, E EM QUALQUER ESTADO: o ciclo pediu que
+            # VERIFICACAO em REFUTED nao movesse NORMA, mas a direcao viva e a
+            # CONFIRMADA -- "a Prefeitura nao fara exigencia sobre C.A." se
+            # confirmando e sendo lida como "os indices atendem". Ausencia de
+            # exigencia nao e evidencia de conformidade.
+            tocadas = p.get("proves", []) + p.get("refutes", [])
+            classes = {}
+            for cid in tocadas:
+                alvo = self.by_id.get(cid) or {}
+                cl = alvo.get("classe")
+                if cl:
+                    classes.setdefault(cl, []).append(cid)
+            if len(classes) > 1:
+                desc = "; ".join(f"{k}: {', '.join(v)}" for k, v in sorted(classes.items()))
+                self.errors.append(
+                    f"{p['id']}: uma prova so nao toca NORMA e VERIFICACAO ao mesmo tempo "
+                    f"({desc}). O que a norma EXIGE resolve-se lendo a norma; o que a "
+                    f"instituicao VERIFICA resolve-se por observacao externa. Prova que "
+                    f"atravessa as duas faz a evidencia de uma valer pela outra, e a "
+                    f"travessia que interessa e sempre a mesma: 'o orgao nao exigiu, logo "
+                    f"o item nao se aplica'. Ausencia de exigencia nao e evidencia de "
+                    f"conformidade. Separe em duas provas.")
         # ciclo de supersessão: A supersede B, B supersede A (ou mais longo) —
         # nenhuma das duas seria vigente e nenhuma seria história. Recusado.
         succ = {p["id"]: [s for s in p.get("supersedes", []) if s in self.by_id] for p in self.kind["proof"]}
@@ -1110,6 +1147,16 @@ class Judge:
             # resposta". O mundo agir NAO move o modo sombra -- so move o ato que
             # a previsao declara em settled_by. As duas quantidades passam a ser
             # impressas LADO A LADO, para que colapsa-las exija ignorar as duas.
+            # C30-02: as classes, e a contagem das SEM classe -- que e
+            # insuficiencia declarada e nao ma-formacao.
+            "classes_de_claim": {
+                "NORMA": [c["id"] for c in self.kind["claim"]
+                          if c.get("classe") == "NORMA"],
+                "VERIFICACAO": [c["id"] for c in self.kind["claim"]
+                                if c.get("classe") == "VERIFICACAO"],
+                "sem_classe": [c["id"] for c in self.kind["claim"]
+                               if not c.get("classe")],
+            },
             "atos_de_terceiro": [
                 {"id": p["id"], "date": p["date"],
                  "quem": p["external_observation"]["ato_de_terceiro"]}
@@ -1244,6 +1291,19 @@ def text_report(m: dict, j: Judge) -> str:
             L.append(f"    STALE  {cid:9} perdeu {', '.join(quais)}")
         L.append("  STALE é 'prove de novo', nunca 'é falsa': a prova fica no grafo como")
         L.append("  história, e o que falta é o escopo da busca, não a medição.")
+        L.append("")
+    cl = m.get("classes_de_claim") or {}
+    if cl:
+        L.append("CLASSE DA AFIRMAÇÃO (C30-02) — NORMA × VERIFICAÇÃO")
+        L.append(f"  NORMA        — o que a norma EXIGE ............ {len(cl['NORMA'])}")
+        L.append(f"  VERIFICAÇÃO  — o que a instituição VERIFICA ... {len(cl['VERIFICACAO'])}")
+        L.append(f"  sem classe declarada ......................... {len(cl['sem_classe'])}")
+        L.append("  Sem classe é INSUFICIÊNCIA DECLARADA, não má-formação: a claim fica")
+        L.append("  FORA do portão da não-propagação, e por isso a contagem aparece aqui")
+        L.append("  em vez de a ausência passar calada.")
+        for nome in ("NORMA", "VERIFICACAO"):
+            for cid in cl[nome]:
+                L.append(f"    [{nome:11}] {cid}")
         L.append("")
     L.append("AFIRMAÇÕES")
     for cid, v in m["claims"].items():

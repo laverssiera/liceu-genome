@@ -120,6 +120,7 @@
 
 - id: CLM-0019
   kind: claim
+  classe: NORMA
   statement: "Os indices urbanisticos da Casa P-001 atendem a LC 030/2007 na zona ZM."
   asserted_by: "titular (RT), 2026-09-22 — a pergunta da U2 ao entrar com o caso real"
 
@@ -149,6 +150,7 @@
 
 - id: CLM-0023
   kind: claim
+  classe: VERIFICACAO
   statement: "A Prefeitura nao fara exigencia sobre Coeficiente de Aproveitamento (C.A) no projeto P-001."
   asserted_by: "juridicotech.previsao-do-processo/0.1, 2026-09-22 — pre-registro ANTES do protocolo na Prefeitura"
   prediction:
@@ -161,6 +163,7 @@
 
 - id: CLM-0024
   kind: claim
+  classe: VERIFICACAO
   statement: "A Prefeitura nao fara exigencia sobre Taxa de Ocupacao (T.O) no projeto P-001."
   asserted_by: "juridicotech.previsao-do-processo/0.1, 2026-09-22 — pre-registro ANTES do protocolo na Prefeitura"
   prediction:
@@ -173,6 +176,7 @@
 
 - id: CLM-0025
   kind: claim
+  classe: VERIFICACAO
   statement: "A Prefeitura nao fara exigencia sobre Taxa Permeavel (T.P) no projeto P-001."
   asserted_by: "juridicotech.previsao-do-processo/0.1, 2026-09-22 — pre-registro ANTES do protocolo na Prefeitura"
   prediction:
@@ -185,6 +189,7 @@
 
 - id: CLM-0026
   kind: claim
+  classe: VERIFICACAO
   statement: "O proximo ato do processo sera assinatura_4_vias, praticado pelo CONDOMINIO; nenhuma etapa posterior ocorrera antes dela."
   asserted_by: "juridicotech.previsao-do-processo/0.1, 2026-09-22 — pre-registro ANTES do protocolo na Prefeitura"
   prediction:
@@ -238,6 +243,7 @@
 
 - id: CLM-0033
   kind: claim
+  classe: NORMA
   statement: "A LC 097/2020 fecha a UNK-0009: como o condominio de lotes nao e parcelamento de solo, os limites de parcelamento da Tabela I nao alcancam a unidade."
   asserted_by: "sessao da A1, 2026-09-23 — hipotese ao abrir a LC 097/2020 procurando fechar a incognita sem depender da prefeitura"
 
@@ -901,6 +907,7 @@
   asserted_by: "ninguem ainda - e o que a decisao do titular de 2026-10-15 manda aplicar, e so vale se os status da lei virarem candidatos COM origem declarada sem que a classe PROSA cresca e sem que a FIT-020 se mova"
 - id: CLM-0159
   kind: claim
+  classe: VERIFICACAO
   statement: "A exigencia ou o parecer da Prefeitura sobre o projeto P-001 mencionara a declaracao de ausencia de associacao condominial."
   asserted_by: "claude (2026-10-15) - PRE-REGISTRO INVALIDO E RETIRADO DO MODO SOMBRA em 2026-10-19: a exigencia que a resolveria foi emitida as 10:47 do MESMO dia, de manha, e ela foi registrada a noite. Prova anterior ao registro nao confirma previsao, e a regra vale contra quem a escreveu. A claim fica como registro; o bloco prediction saiu porque previsao que nunca pode resolver infla o denominador com item morto. Ver PRF-0193"
 - id: CLM-0160
@@ -915,6 +922,7 @@
 
 - id: CLM-0162
   kind: claim
+  classe: VERIFICACAO
   statement: "A primeira exigencia emitida pela Prefeitura sobre o projeto P-001 pede documentos do proprietario — ART assinada e matricula atualizada — e nao menciona coeficiente de aproveitamento, taxa de ocupacao nem taxa permeavel."
   asserted_by: "observacao do comunique-se emitido em 2026-10-15 as 10:47 pelo Departamento de Habitacao e Aprovacao de Projetos"
 
@@ -925,6 +933,7 @@
 
 - id: CLM-0164
   kind: claim
+  classe: NORMA
   statement: "O prazo de aceitacao da certidao de matricula pelo DHAP e derivavel dos documentos que o municipio publica."
   asserted_by: "claude (2026-10-19) - implicito ao tratar os 30 dias declarados pelo cartorio como o prazo exigido pela Prefeitura"
 
@@ -975,6 +984,7 @@
 
 - id: CLM-0174
   kind: claim
+  classe: VERIFICACAO
   statement: "O prazo de trinta dias que a certidao de matricula declara de si e o prazo que a Prefeitura aplica ao aceita-la na aprovacao de projeto."
   asserted_by: "o titular, em 2026-10-19, depois de consultar a Prefeitura - a consulta que a PRF-0194 nomeou como o unico caminho que resolveria, por nao ser derivavel do que o municipio publica"
 
@@ -1047,3 +1057,18 @@
   kind: claim
   statement: "A imposicao recusa ato de epoca revogada nas tres ordens adversas - em voo, duplicado e reordenado - e denuncia a remocao da propria verificacao, sem mecanismo de log nenhum."
   asserted_by: "ninguem ainda - e o que o C30-01 produz, e so vale se a variante que confere na admissao FALHAR no mesmo ensaio"
+
+- id: CLM-0189
+  kind: claim
+  statement: "A classe NORMA que o portao C25-06 ja separa e a classe de claim que a nao-propagacao precisa, e por isso basta acrescentar a classe par VERIFICACAO."
+  asserted_by: "premissa do C30-02 ao enunciar que o portao ja separa NORMA com 44 candidatos, tratando-os como classe de claim"
+
+- id: CLM-0190
+  kind: claim
+  statement: "O juiz propaga estado entre claims, e por isso uma claim de classe VERIFICACAO em REFUTED pode alterar por derivacao o estado de uma claim de classe NORMA."
+  asserted_by: "premissa do C30-02 ao pedir uma REGRA que impeca a propagacao, enunciada para ser medida antes de construir guarda contra mecanismo que talvez nao exista"
+
+- id: CLM-0191
+  kind: claim
+  statement: "Uma prova so nao toca NORMA e VERIFICACAO ao mesmo tempo: o portao recusa a travessia nos dois sentidos, passa a prova que fica em uma classe, e tolera claim sem classe contando-a em vez de calar."
+  asserted_by: "ninguem ainda - e o que o C30-02 produz, e so vale se o portao desligado fizer o teste falhar"

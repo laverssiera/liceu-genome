@@ -654,6 +654,13 @@
               "description": "O ato real que a confirma ou refuta. Sem oraculo declarado, a previsao nao se refuta — e nao vale."
             }
           }
+        },
+        "classe": {
+          "enum": [
+            "NORMA",
+            "VERIFICACAO"
+          ],
+          "description": "A CLASSE DA AFIRMACAO, e ela decide o que RESOLVE a claim. NORMA: o que a norma EXIGE -- resolve-se lendo a norma, e o orgao nao tem voto sobre isso. VERIFICACAO: o que a instituicao DE FATO verifica -- resolve-se por observacao externa, e a norma nao tem voto sobre isso. POR QUE O CAMPO EXISTE: em 2026-10-19 a primeira exigencia da Prefeitura sobre a P-001 pediu duas pecas e nao mencionou nem os indices urbanisticos nem a declaracao condominial. A tentacao que isso cria e precisa -- na proxima vez, nao apontar o que o orgao nao aponta, calibrando o metodo pela diligencia de quem fiscaliza. Ausencia de exigencia NAO e evidencia de conformidade. O QUE O CAMPO NAO E: nao e a classe NORMA do portao C25-06, que classifica CHAVES de declaracao em artefatos governados e tem 44 membros. Esta classifica CLAIMS, e as duas listas nao se tocam. AUSENTE E INSUFICIENCIA DECLARADA, nao ma-formacao: claim sem classe fica fora do portao da nao-propagacao, e o juiz CONTA e NOMEIA quantas sao, pela mesma razao por que o `scope` ausente vira INDETERMINADO em vez de matar a validacao."
         }
       }
     },
@@ -739,7 +746,7 @@
             "ato_de_terceiro": {
               "type": "string",
               "minLength": 1,
-              "description": "QUEM praticou o ato, e quando \u2014 preenchido SO quando a observacao registra ato de terceiro que nos apenas RECEBEMOS, e nao instrumento nosso rodado contra sistema externo. A distincao nao e derivavel e foi medida: das 42 provas por observacao externa, 8 tem environment=durable e so DUAS sao o mundo agindo; as outras seis somos nos rodando conector do Drive, gh api, sonda HTTP ou lendo documentacao. Por isso o campo e STRING e nao booleano: `true` nao diz quem nem quando, e a UNK-0018 exige data e procedencia de todo registro nao derivavel. PARA QUE SERVE: separar 'ato de terceiro RECEBIDO' de 'previsao pre-registrada RESPONDIDA'. Sao quantidades diferentes e foram colapsadas uma vez, no corpo do PR 129 \u2014 a secao chamava-se 'A primeira resposta do mundo real ao modo sombra' e o rodape dizia '4 previsoes / 4 sem resposta'. O mundo agir NAO move o modo sombra; so o ato que a previsao declara em settled_by move."
+              "description": "QUEM praticou o ato, e quando — preenchido SO quando a observacao registra ato de terceiro que nos apenas RECEBEMOS, e nao instrumento nosso rodado contra sistema externo. A distincao nao e derivavel e foi medida: das 42 provas por observacao externa, 8 tem environment=durable e so DUAS sao o mundo agindo; as outras seis somos nos rodando conector do Drive, gh api, sonda HTTP ou lendo documentacao. Por isso o campo e STRING e nao booleano: `true` nao diz quem nem quando, e a UNK-0018 exige data e procedencia de todo registro nao derivavel. PARA QUE SERVE: separar 'ato de terceiro RECEBIDO' de 'previsao pre-registrada RESPONDIDA'. Sao quantidades diferentes e foram colapsadas uma vez, no corpo do PR 129 — a secao chamava-se 'A primeira resposta do mundo real ao modo sombra' e o rodape dizia '4 previsoes / 4 sem resposta'. O mundo agir NAO move o modo sombra; so o ato que a previsao declara em settled_by move."
             }
           }
         },
