@@ -1,0 +1,120 @@
+{
+  "ciclo": "C29-04",
+  "data": "2026-10-19",
+  "pergunta": "uma varredura por versao do kit distingue PINO VIVO de CITACAO HISTORICA?",
+  "resposta": "nao pelo TEXTO, que e identico nos dois. Pelo MODO: o que o artefato e, e se ele carrega a propria data",
+  "a_frase_que_comecou_isto": {
+    "claim": "CLM-0179",
+    "prova": "PRF-0209",
+    "veredito": "REFUTADA",
+    "o_que_eu_disse": "8 pinos, todos v0.30.0",
+    "por_que_era_verdade": "o instrumento era um grep restrito a requirements e pyproject",
+    "o_que_a_varredura_larga_acha": {
+      "ocorrencias": 65,
+      "versoes_distintas": 12,
+      "em_arquivo_de_instalacao": 8,
+      "fora_dele": 57
+    },
+    "a_licao": "numero anunciado sem universo anunciado mede o que o autor olhou, nao o que existe -- e isso vale para RELATORIO, nao so para prova de leitura"
+  },
+  "a_distincao": {
+    "claim": "CLM-0180",
+    "prova": "PRF-0210",
+    "veredito": "REFUTADA",
+    "VIVO": {
+      "quantos": 14,
+      "o_que_e": "arquivo que uma ferramenta le para instalar, a fonte unica, o comando do README",
+      "tratamento": "conferido contra a fonte"
+    },
+    "HISTORIA": {
+      "quantos": 49,
+      "o_que_e": "bloco com ancora de tempo: campo date, pr, ou data ISO em prosa",
+      "tratamento": "NAO julgado"
+    },
+    "NAO_MENSURAVEL": {
+      "quantos": 2,
+      "o_que_e": "nem um nem outro",
+      "tratamento": "nomeado, e exit 1"
+    },
+    "escolha_de_desenho_declarada": {
+      "alternativa_recusada": "lista lacrada dos 9 indecisos, como o portao C25-06",
+      "por_que": "lista guarda numero de LINHA e linha se move; e com ela o estado zero-indecisos fica inalcancavel, entao o terceiro estado vira encolher de ombros permanente",
+      "risco_da_regra_escolhida": "bloco que ganhe um `pr` tira suas citacoes do julgamento; contido porque `pr` vive em campos que o schema valida"
+    }
+  },
+  "o_readme_do_kit": {
+    "claim": "CLM-0181",
+    "prova": "PRF-0211",
+    "veredito": "REFUTADA",
+    "comparacao": {
+      "constitution": {
+        "fonte": "1.18.0",
+        "readme": "1.15.0",
+        "ok": false
+      },
+      "conformance_kit": {
+        "fonte": "0.30.0",
+        "readme": "0.15.0",
+        "ok": false
+      },
+      "registry_checker": {
+        "fonte": "1.8.0",
+        "readme": "1.4.0",
+        "ok": false
+      },
+      "federation_sdk": {
+        "fonte": "0.5.0",
+        "readme": "0.5.0",
+        "ok": true
+      },
+      "boundary_checker": {
+        "fonte": "1.1.0",
+        "readme": "1.1.0",
+        "ok": true
+      },
+      "package_date": {
+        "fonte": "2026-10-15",
+        "readme": "2026-09-18",
+        "ok": false
+      },
+      "comando_pip_install": {
+        "fonte": "v0.30.0",
+        "readme": "v0.15.0",
+        "ok": false
+      }
+    },
+    "o_agravante": "o README manda, uma linha acima do comando: 'Fixe a versao. As tres Maes validam sob a mesma lei so se as tres fixarem a mesma'",
+    "o_conserto_tem_duas_formas": {
+      "bloco_de_versoes": "APAGADO e virou ponteiro -- derivavel nao se escreve",
+      "comando_de_instalacao": "continua ESCRITO, porque precisa de alvo concreto e Markdown nao deriva; passa a ser CONFERIDO pela CI daquele repositorio"
+    },
+    "medido_depois": {
+      "VIVO": "7 -> 1",
+      "divergencias": "5 -> 0",
+      "exit": "1 -> 0"
+    }
+  },
+  "os_dois_defeitos_do_instrumento": {
+    "claim": "CLM-0182",
+    "prova": "PRF-0212",
+    "veredito": "PROVEN (test)",
+    "primeiro": {
+      "o_que": "a ancora em prosa chegou ao modulo como BACKSPACE (0x08)",
+      "causa": "barra-b escrita dentro de um heredoc",
+      "modo_de_falhar": "ABERTA e em silencio: regra que nao casa nao reclama. Historia virou NAO_MENSURAVEL; noutra ordem de alternativas, um pino VIVO viraria HISTORIA e deixaria de ser conferido",
+      "quantas_vezes_nesta_sessao": 8
+    },
+    "segundo": {
+      "o_que": "blocos_com_data comparava indice 0-based com linha 1-based: a ULTIMA linha de todo bloco ancorado ficava fora",
+      "como_apareceu": "pelo teste que escrevi por causa do primeiro",
+      "o_que_fiz": "corrigi o CODIGO, nao a expectativa, depois de medir qual lado errava"
+    },
+    "a_licao_sobre_o_tipo_de_teste": "nao bastava testar o veredito final, que era plausivel com a regra morta; o que pega e afirmar FORMA POR FORMA, e um dos casos afirma a causa raiz: nenhum caractere de controle na regex",
+    "testes": "14 de 14"
+  },
+  "os_tres_PRs_do_conserto": {
+    "liceu-genome": "o detector e o teste",
+    "liceu-protocol": "o bloco apagado, o comando corrigido, e a CI que confere",
+    "John-Brasileiro-": "o comentario que copiava o pino e ficou 18 versoes atras"
+  }
+}
