@@ -1095,3 +1095,13 @@
   classe: NORMA
   statement: "O universo declarado pela PRF-0194 - as duas relacoes de documentos do municipio - cobre o que a CLM-0164 chama de os documentos que o municipio publica."
   asserted_by: "implicito na PRF-0194 ao refutar a CLM-0164 com universo nas duas relacoes, sem incluir a legislacao municipal publicada"
+
+- id: CLM-0196
+  kind: claim
+  statement: "As nove citacoes que o detector conta como VIVAS sao nove pinos de consumidor do kit."
+  asserted_by: "claude (2026-10-19, no relatorio do ecossistema) - implicito ao escrever oito pinos de consumidor e, uma linha depois, o detector separa as nove vivas das cinquenta e sete historicas"
+
+- id: CLM-0197
+  kind: claim
+  statement: "O detector separa, dentro de VIVO, o pino que uma ferramenta le do comando que um humano executa, conta os dois em separado, e mantem os dois sob a guarda da fonte."
+  asserted_by: "ninguem ainda - e o que o C30-05 produz, e so vale se reclassificar a instrucao como pino fizer o teste falhar"
