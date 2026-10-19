@@ -3623,3 +3623,64 @@
     repo: liceu-genome
     path: docs/evidence/2026-10-02-o-protocolo-ocorreu.md
     note: "UM ERRO MEU, REGISTRADO PORQUE ELE PASSARIA. No relatorio do acervo eu afirmei que a guia do numero oficial estava VENCIDA HA ONZE DIAS e SEM COMPROVANTE no acervo, e levantei a hipotese de que o silencio da prefeitura tivesse causa interna -- uma parada autoinfligida. E FALSO. A guia FOI PAGA em 2026-10-02, dois dias antes do vencimento, e o comprovante estava no acervo o tempo todo, como um PDF de 11 KB cuja linha de codigo de barras bate com a da guia. A CAUSA: eu li as nove imagens, vi os PDFs na listagem da pasta, DEDUZI pelos metadados que aquele arquivo era a guia e NAO O ABRI -- e entao afirmei ausencia a partir de leitura incompleta. A REGRA QUE ISSO VIOLA ESTA ESCRITA NESTA CASA: leitura incompleta e resultado INVALIDO, nao resultado baixo. E ha uma segunda camada: eu mesmo escrevi que 'sem comprovante no acervo' nao e 'nao paga', e mesmo tendo escrito a distincao tratei a ausencia como fato na frase seguinte. Escrever a ressalva nao substitui obedece-la. O QUE FICA CERTO: a PRF-0091 NAO esta mal rotulada -- ela amarra o valor a um pagamento real de 2026-10-02 e ja distinguia o segundo valor no mesmo no, e foi ela que permitiu achar o meu erro em duas leituras."
+
+- id: PRF-0192
+  kind: proof
+  title: "O mundo respondeu em 2026-10-15: a primeira exigencia pede documentos do proprietario e nao toca nenhum indice urbanistico"
+  proves: [CLM-0162]
+  basis: external_observation
+  external_observation:
+    instrument: "leitura do comunique-se emitido pelo Departamento de Habitacao e Aprovacao de Projetos, recebido por e-mail pelo titular e apresentado em 2026-10-19"
+    observed: "exigencia de duas pecas — ART assinada pelo proprietario e matricula atualizada — com a nota de que o atendimento e somente presencial; nenhuma mencao a coeficiente de aproveitamento, taxa de ocupacao ou taxa permeavel"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-mundo-respondeu.json
+  environment: durable
+  scale: LOCAL
+  date: "2026-10-15"
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-mundo-respondeu.json
+    note: "A PRIMEIRA RESPOSTA DO MUNDO REAL AO MODO SOMBRA, e ela chegou treze dias depois do protocolo. Em 2026-10-15 as 10:47 o Departamento de Habitacao e Aprovacao de Projetos emitiu um comunique-se pedindo DUAS coisas: ART's assinadas pelo proprietario, e matricula atualizada. O atendimento e, pelo texto do proprio comunique-se, SOMENTE PRESENCIAL, e o titular o atendeu em 2026-10-19. O QUE A EXIGENCIA NAO MENCIONA E O PONTO: nem coeficiente de aproveitamento, nem taxa de ocupacao, nem taxa permeavel. Os tres indices sobre os quais ha previsao pre-registrada ficaram de fora da primeira exigencia emitida. O QUE ESTA PROVA NAO FAZ, E E O CUIDADO QUE IMPORTA: ela NAO resolve as tres previsoes. Elas afirmam que a Prefeitura NAO FARA exigencia sobre esses indices, e o que se observou e uma exigencia INTERMEDIARIA que nao os menciona — evidencia na direcao delas, nao fechamento, porque nada impede uma segunda exigencia depois do atendimento. As tres seguem SEM RESPOSTA, e dizer isso e a diferenca entre registrar o que se viu e registrar o que se queria ver. E HA UM ACHADO LATERAL: a relacao de documentos do Departamento de Engenharia ja exigia, no item 5, 'Copia da ART ou RRT assinada pelo proprietario(a) e profissional e quitada'. O comunique-se nao inventou exigencia nova: repetiu um item que a lista publicada ja trazia."
+
+- id: PRF-0193
+  kind: proof
+  title: "A CLM-0159 nunca foi pre-registro valido: o fato que a resolveria e da manha do dia em que ela foi registrada a noite"
+  refutes: [CLM-0163]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "a hora de emissao do comunique-se confrontada com a data de registro declarada no bloco prediction da CLM-0159"
+    universo: "as previsoes pre-registradas do modo sombra"
+    excluidos:
+      - "as outras quatro previsoes, todas de 2026-09-22, que precedem o protocolo e cujo pre-registro nao esta em questao"
+      - "o acerto ou erro do conteudo da CLM-0159: pre-registro invalido nao se julga por acerto"
+    instrumento: "leitura do cabecalho do comunique-se e do bloco prediction no grafo"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-mundo-respondeu.json
+  location:
+    repo: liceu-genome
+    path: genome/06-claims.yaml
+    note: "A CLM-0159 PERDE O BLOCO DE PREVISAO, E A REGRA QUE A DERRUBA E DO PROPRIO GENOMA. Ela foi pre-registrada na NOITE de 2026-10-15, prevendo que a exigencia ou o parecer mencionaria a declaracao de ausencia de associacao condominial. A exigencia que a resolveria e das 10:47 da MANHA DO MESMO DIA: o fato PRECEDE o registro. 'Prova anterior ao registro nao confirma previsao' esta escrita no juiz e tem teste de mutacao proprio, e vale contra quem a escreveu. E EU MESMO ESCREVI A SENTENCA no no da CLM-0159: 'depois da resposta valeria zero'. O QUE SE FAZ E O QUE NAO SE FAZ: o bloco `prediction` SAI e a claim FICA, com a razao — manter o bloco deixaria no denominador do modo sombra uma previsao que NUNCA poderia resolver, e denominador inflado com item morto e pior que denominador menor. O denominador volta de 5 para 4, e o teste congelado volta junto com a razao escrita, que e a mesma catraca que pegou a subida. O QUE NAO SE CONCLUI: nao se conclui que a previsao estava ERRADA. A exigencia de fato nao menciona a declaracao, mas isso e irrelevante — ela nunca foi uma previsao valida, e julgar o acerto de um pre-registro invalido seria dar-lhe um credito que a regra nega. O QUE FICA DE LICAO, e e de processo: eu li o acervo do Drive e nao o e-mail do titular. O canal por onde o mundo responde nao estava no meu universo declarado, e por isso o genoma passou QUATRO DIAS dizendo 'sem resposta' sobre um fato que ja existia."
+
+- id: PRF-0194
+  kind: proof
+  title: "A palavra dias aparece ZERO vezes em 39 itens: o prazo da certidao nao e derivavel do que o municipio publica"
+  refutes: [CLM-0164]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "varredura das duas relacoes de documentos publicadas pelo municipio, por regex sobre prazo, validade e dias, e leitura do texto de validade impresso na propria certidao"
+    universo: "os documentos que o municipio publica sobre aprovacao de projeto: a relacao do Departamento de Engenharia, com 39 itens, e a do DHAP, com 11 itens para Construcao Residencial"
+    excluidos:
+      - "o que a Prefeitura ACEITA de fato: isso e juizo de balcao e so resposta direta resolve"
+      - "identificadores do imovel e do processo, pela FIT-014, e todo dado pessoal pela regra de minimizacao"
+    instrumento: "extracao de texto dos PDFs e busca por regex; a relacao do Departamento de Engenharia e de 2018"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-mundo-respondeu.json
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-mundo-respondeu.json
+    note: "O PRAZO DE ACEITACAO DA CERTIDAO NAO E DERIVAVEL DO QUE O MUNICIPIO PUBLICA, e isso foi medido e nao suposto. A certidao declara-se VALIDA POR 30 DIAS a contar da emissao, citando o Decreto Federal 93.240/86 e as Normas de Servico da Corregedoria Geral da Justica de SP. MAS ESSE DECRETO REGULAMENTA A LEI 7.433/85, QUE DISPOE SOBRE REQUISITOS PARA LAVRATURA DE ESCRITURAS PUBLICAS: o inciso IV fixa os 30 dias 'para este fim', e o fim e a escritura, nao a aprovacao de projeto. O que o cartorio declara e o prazo do ato NOTARIAL. O QUE O MUNICIPIO PUBLICA E OUTRA COISA: a relacao de documentos do Departamento de Engenharia tem 39 itens e pede, no item 35, 'Titulo de propriedade do imovel (Certidao de matricula atualizada)'. A palavra 'dias' aparece ZERO VEZES no documento inteiro. A outra lista municipal, a do DHAP, exige 11 itens para Construcao Residencial e tambem nao fixa prazo. A QUALIDADE E EXIGIDA NOS DOIS; O PRAZO NAO EXISTE EM NENHUM. Entao o que a Prefeitura aceita e NAO-MENSURAVEL por via documental, com as fontes nomeadas, e o que resolveria e resposta de balcao — que entrara como observacao externa quando houver. E ISTO CORRIGE UMA FRASE MINHA: eu escrevi 'a certidao esta vencida ha 33 dias'. Para o fim NOTARIAL, esta. Para o fim que importa aqui, ainda e indeterminado, e tratar o prazo declarado pelo cartorio como prazo exigido pela Prefeitura foi a mesma confusao que me fez ler 'sem comprovante no acervo' como 'nao paga'. A distincao entre o que um documento DECLARA e o que um orgao EXIGE e a mesma entre ausencia de registro e ausencia de fato."

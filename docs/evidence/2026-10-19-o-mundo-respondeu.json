@@ -1,0 +1,34 @@
+{
+  "o_fato": "em 2026-10-15 as 10:47 o Departamento de Habitacao e Aprovacao de Projetos emitiu um comunique-se sobre o projeto P-001. E a PRIMEIRA resposta do mundo real ao modo sombra do genoma",
+  "o_que_a_exigencia_pede": [
+    "ART's assinadas pelo proprietario",
+    "matricula atualizada"
+  ],
+  "o_que_ela_NAO_menciona": "coeficiente de aproveitamento, taxa de ocupacao e taxa permeavel — nenhum dos tres indices urbanisticos sobre os quais ha previsao pre-registrada",
+  "o_que_isso_NAO_resolve": "as tres previsoes de indice urbanistico seguem SEM RESPOSTA. Elas afirmam que a Prefeitura NAO fara exigencia sobre C.A., T.O. e T.P.; uma exigencia INTERMEDIARIA que nao os menciona e evidencia na direcao delas, nao fechamento. Nada impede uma segunda exigencia",
+  "o_atendimento": {
+    "modalidade": "somente presencial, pelo texto do proprio comunique-se",
+    "feito_pelo_titular_em": "2026-10-19",
+    "o_que_foi_entregue": "certidao de matricula em inteiro teor, procuracao com poderes de atender exigencias, e ART assinada pelo procurador em nome do proprietario"
+  },
+  "A_PREVISAO_QUE_CAI_POR_REGRA_PROPRIA": {
+    "qual": "CLM-0159",
+    "o_que_ela_previa": "que a exigencia ou o parecer mencionaria a declaracao de ausencia de associacao condominial",
+    "por_que_cai": "ela foi pre-registrada na NOITE de 2026-10-15, e a exigencia que a resolveria e das 10:47 da MANHA do mesmo dia. O fato precede o registro",
+    "a_regra": "prova anterior ao registro nao confirma previsao — esta escrita no juiz e tem teste de mutacao proprio (test_57)",
+    "e_eu_mesmo_escrevi": "no proprio no da CLM-0159 esta a frase 'depois da resposta valeria zero'. Valeu contra mim",
+    "o_que_se_faz": "o bloco `prediction` SAI e a claim FICA, com a razao. Mante-lo deixaria no denominador do modo sombra uma previsao que nunca poderia resolver — pior que retirar, porque inflaria o denominador com algo morto",
+    "o_denominador": "volta de 5 para 4, e o teste congelado volta junto, com a razao escrita",
+    "o_que_NAO_se_conclui": "nao se conclui que a previsao estava errada. A exigencia de fato nao menciona a declaracao — mas isso e irrelevante, porque a previsao nunca foi valida"
+  },
+  "O_PRAZO_DA_CERTIDAO_NAO_E_DERIVAVEL": {
+    "o_que_a_certidao_declara": "valida por 30 dias a contar da emissao, citando o Decreto Federal 93.240/86 e as Normas de Servico da Corregedoria Geral da Justica de SP",
+    "o_que_esse_decreto_e": "ele regulamenta a Lei 7.433/85, que dispoe sobre requisitos para LAVRATURA DE ESCRITURAS PUBLICAS. O inciso IV fixa os 30 dias 'para este fim' — e o fim e a escritura, nao a aprovacao de projeto",
+    "o_que_o_municipio_publica": "a relacao de documentos do Departamento de Engenharia tem 39 itens e pede 'Titulo de propriedade do imovel (Certidao de matricula atualizada)'. A palavra 'dias' aparece ZERO vezes no documento inteiro",
+    "e_a_relacao_do_DHAP": "a outra lista municipal, a do DHAP, exige 11 itens para Construcao Residencial e tambem nao fixa prazo",
+    "conclusao": "a qualidade e exigida nos dois documentos municipais; o PRAZO nao existe em nenhum. O que a Prefeitura aceita nao e derivavel do que ela publica — e NAO-MENSURAVEL por via documental, com as fontes nomeadas",
+    "o_que_resolveria": "resposta do balcao, que entra como observacao externa"
+  },
+  "um_achado_lateral_do_mesmo_documento": "o item 5 da relacao municipal exige 'Copia da ART ou RRT assinada pelo proprietario(a) e profissional e quitada'. O comunique-se nao inventou exigencia: repetiu o item 5. E o item 1 preve expressamente requerente por procuracao — o que cobre o requerimento, e nao diz se cobre a assinatura do item 5",
+  "o_que_segue_sem_resposta": "quatro previsoes, todas de 2026-09-22, todas sobre mecanica de processo ou indice urbanistico. O mundo respondeu uma vez, e a resposta nao tocou nenhuma delas"
+}
