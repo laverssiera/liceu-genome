@@ -997,3 +997,23 @@
   kind: claim
   statement: "A varredura por pasta atribui o que ocupa o disco da maquina de desenvolvimento, e por isso responde onde liberar espaco."
   asserted_by: "claude (2026-10-19) - implicito ao apresentar a soma por pasta como resposta a pergunta do C29-03 sobre o disco"
+
+- id: CLM-0179
+  kind: claim
+  statement: "A contagem de oito pinos em v0.30.0, anunciada no relatorio do ecossistema, mede o estado dos pinos do ecossistema."
+  asserted_by: "claude (2026-10-19, no relatorio do ecossistema) - afirmada a partir de um grep restrito a requirements e pyproject, com o universo NAO declarado na frase"
+
+- id: CLM-0180
+  kind: claim
+  statement: "Pino vivo e citacao historica se distinguem pela forma textual da versao, e por isso uma varredura por texto pode julgar os dois com a mesma regra."
+  asserted_by: "premissa silenciosa do C29-04 ao enunciar que citacao historica tem a mesma forma de pino vivo, como se a forma fosse o que os separa"
+
+- id: CLM-0181
+  kind: claim
+  statement: "O README do liceu-protocol, que se intitula fonte unica do protocolo, declara as versoes dos componentes de acordo com a fonte unica que vive no mesmo diretorio."
+  asserted_by: "ninguem explicitamente - e o que um leitor do repositorio PUBLICO conclui ao ler o titulo e o bloco de versoes, e o que o proprio README manda fazer uma linha acima do comando"
+
+- id: CLM-0182
+  kind: claim
+  statement: "O detector de pino separa pino vivo de citacao historica e nomeia o que nao classifica, e acusa quando a sua propria regra de ancora esta morta."
+  asserted_by: "ninguem ainda - e o que o instrumento do C29-04 produz, e so vale se o teste acusar a regra morta que de fato existiu nele"
