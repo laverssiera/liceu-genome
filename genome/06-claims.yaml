@@ -1032,3 +1032,18 @@
   kind: claim
   statement: "O juiz imprime as duas contagens lado a lado e acusa quando elas sao colapsadas, tanto no relatorio de texto quanto no HTML."
   asserted_by: "ninguem ainda - e o que o C29-05 produz, e so vale se o teste acusar as duas formas plausiveis de colapso"
+
+- id: CLM-0186
+  kind: claim
+  statement: "Conferir a epoca na admissao do ato basta para impor a revogacao: superada a epoca N, nenhum ato sob N e aceito em nenhuma ordem de entrega."
+  asserted_by: "a leitura natural da regra 2 do desenho do C30-01, enunciada para ser medida contra as tres ordens adversas"
+
+- id: CLM-0187
+  kind: claim
+  statement: "A imposicao do fencing validada no momento do efeito satisfaz o I3 como a PRF-0202 o escreve, e por isso o C30-01 fecha o I3."
+  asserted_by: "expectativa do C30-01 e minha ao desenha-lo - o paragrafo 9 do ciclo diz pode fechar o I3, e eu fui escrever acreditando nisso"
+
+- id: CLM-0188
+  kind: claim
+  statement: "A imposicao recusa ato de epoca revogada nas tres ordens adversas - em voo, duplicado e reordenado - e denuncia a remocao da propria verificacao, sem mecanismo de log nenhum."
+  asserted_by: "ninguem ainda - e o que o C30-01 produz, e so vale se a variante que confere na admissao FALHAR no mesmo ensaio"

@@ -4147,3 +4147,84 @@
     repo: liceu-genome
     path: tools/test_genome_check.py
     note: "TESTE QUE NUNCA FALHA E DECORACAO, e por isso as duas formas plausiveis de colapso foram APLICADAS ao juiz e o teste teve de acusar as duas. MUTACAO A, presumir o campo: tirei a exigencia de ato_de_terceiro e o contador passou a contar toda observacao externa, 42 em vez de 2 — era exatamente o contador que eu quase escrevi antes de medir. ACUSADA. MUTACAO B, ressuscitar a frase: troquei o fecho por 'O mundo real ainda nao respondeu nenhuma', mesmo havendo ato recebido. ACUSADA, pelo test_o_relatorio_diz_que_o_mundo_agiu_e_nao_a_frase_antiga. O JUIZ FOI RESTAURADO DE BACKUP depois de cada mutacao, e o diff final confere com a mudanca pretendida. OS QUATRO CASOS, e cada um nega uma forma de colapsar: ato de terceiro e contado E nao mexe em status de previsao nenhuma; observacao externa SEM o campo nao entra, e o teste afirma que os marcados sao subconjunto PROPRIO das externas, o que falha se alguem presumir o campo; com ato recebido e previsao sem resposta o relatorio diz o ocorrido e NAO a frase antiga, afirmada por ausencia textual; e ato de terceiro NAO move o teto do modo sombra, que e 3/5 por desenho — se ato recebido passasse a contar como elo, o teto subiria sem o LICEU ter praticado nada, que e o oposto do que o modo sombra existe para dizer. A CORRECAO FOI FEITA NOS DOIS RELATORIOS, texto e HTML: consertar so um deixaria a outra verdade envelhecer calada, que e a objecao que o genome_surface_check ja tinha escrito sobre duas ferramentas lendo o mesmo grafo com regras diferentes. 93 testes do juiz passam, contra 89 antes."
+
+- id: PRF-0216
+  kind: proof
+  title: "Conferir na admissao deixa passar o que esta em voo e o reordenado: as duas, e so as duas"
+  refutes: [CLM-0186]
+  basis: test
+  date: "2026-10-19"
+  test:
+    repo: liceu-genome
+    path: tools/modelo/test_fencing.py
+    name: AVarianteInsuficiente
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/modelo/fencing.py
+      - tools/modelo/test_fencing.py
+    content_hash: adc5021601ac8ff7f8d6eca049720e2a4cd3f1cdd9d3b085d34dc9e573f9207a
+    commit: ef2fe2a
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-a-imposicao-do-fencing.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/modelo/fencing.py
+    note: "O ACHADO DO C29-02 DEIXOU DE SER CITACAO E PASSOU A SER EXECUCAO, e e por isso que a variante insuficiente ficou NO CODIGO em vez de ser descrita na prosa. O mesmo ensaio roda duas vezes, mudando um parametro: conferindo no EFEITO e conferindo so na ADMISSAO. Na admissao, duas das seis exigencias falham — 5a, o ato admitido sob a epoca 1 e efetivado depois da transicao, e 5c, o ato reordenado que chega por ultimo. AS DUAS, E SO AS DUAS, e o teste afirma a lista exata e nao apenas que houve falha: a contagem de faltantes e comparada com ['5a', '5c'], e por isso uma falha a mais ou a menos reprova. A DISTINCAO QUE ISSO REVELA e mais fina do que eu esperava: o DUPLICADO que CHEGA depois da transicao e recusado mesmo na admissao, porque ele e admitido de novo e a admissao ja ve a epoca nova. O que a admissao perde e so o que ja estava DENTRO quando a epoca virou. Entao 'conferir na admissao' nao e errado por descuido — e insuficiente por uma razao estrutural, e a razao e a janela entre admitir e efetivar. QUATRO COISAS FORAM ENSAIADAS ALEM DISSO, e a quarta e a que da confianca no resto: o ato apresentado depois da transicao e o MESMO byte a byte, conferido por impressao canonica e com dataclass congelado, senao o passo 3 estaria medindo outro ato; o receptor LE o log, conferido por contador de leituras, senao estaria acreditando no que o ato alega; a epoca FUTURA tambem e recusada, que e mais estrito que o I3 e vai declarado com o custo nomeado — receptor atrasado recusa ato legitimo, perda de disponibilidade para ganho de seguranca; e removida a verificacao de epoca, o que era recusado passa a ser ACEITO, porque portao que nao denuncia a propria remocao nao e portao."
+
+- id: PRF-0217
+  kind: proof
+  title: "A imposicao NAO fecha o I3 como escrito: ele proibe o ESTADO em voo, e so o dreno o satisfaz"
+  refutes: [CLM-0187]
+  basis: test
+  date: "2026-10-19"
+  test:
+    repo: liceu-genome
+    path: tools/modelo/test_fencing.py
+    name: OI3ComoEstaEscrito
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/modelo/fencing.py
+      - tools/modelo/test_fencing.py
+    content_hash: adc5021601ac8ff7f8d6eca049720e2a4cd3f1cdd9d3b085d34dc9e573f9207a
+    commit: ef2fe2a
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-a-imposicao-do-fencing.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/modelo/fencing.py
+    note: "ESTE E O RESULTADO DO CICLO, E ELE CONTRARIA O QUE O CICLO ESPERAVA. O paragrafo 9 do C30 dizia 'pode fechar o I3' e eu fui escrever acreditando nisso. O I3, como a PRF-0202 o escreve, e `all(ep >= corrente for _, ep in servindo)`: ele fala do que esta EM VOO, e proibe a ENTRADA sob epoca revogada — nao o EFEITO dela. Recusar no efeito, que e o que a imposicao faz e o que o ensaio prova, NAO remove a entrada de `servindo`. MEDIDO POR BUSCA EXAUSTIVA sobre o estado minimo que a pergunta exige — a epoca comprometida e o conjunto de epocas em voo, porque o I3 olha so a epoca carimbada: a correcao A, validar na escrita, percorre 5 estados e VIOLA, com contraexemplo de dois passos, admitir seguido de promover, chegando em comprometida=2 com em voo=[1]; a correcao B, drenar antes de comprometer, percorre 4 estados e NAO viola. AS DUAS SAO AS QUE A PRF-0202 JA HAVIA NOMEADO, e o teste afirma que sao duas e nao tres, para que nao haja uma terceira medida em silencio. O QUE A IMPOSICAO FECHA, ENTAO, e a propriedade de SEGURANCA que o I3 existe para proteger: nenhum ato sob epoca revogada toma efeito. O que o I3 ESCRITO exige e mais do que isso, e so o dreno entrega. A CONSEQUENCIA PARA O CICLO E DIRETA E NAO E DERROTA: o C30-01 entrega a imposicao, a prova dela e as tres ordens adversas, e NAO autoriza marcar o I3 como PROVEN. O que falta e DECISAO DE DESENHO e nao medicao — ou o I3 se divide em dois invariantes, 'nada sob epoca revogada toma efeito' e 'nada sob epoca revogada permanece em voo', ou se acrescenta o dreno. Eu nao decido isso: a primeira muda o enunciado de um invariante do protocolo, e a segunda acrescenta mecanismo. E O QUE NAO MUDOU: a escolha entre etcd e PySyncObj continua nao fechando nenhuma das duas, porque nem a validacao no efeito nem o dreno sao propriedade de log."
+
+- id: PRF-0218
+  kind: proof
+  title: "A imposicao recusa nas tres ordens adversas, com log de mentira e sem mecanismo nenhum"
+  proves: [CLM-0188]
+  basis: test
+  date: "2026-10-19"
+  test:
+    repo: liceu-genome
+    path: tools/modelo/test_fencing.py
+    name: AImposicao
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/modelo/fencing.py
+      - tools/modelo/test_fencing.py
+    content_hash: adc5021601ac8ff7f8d6eca049720e2a4cd3f1cdd9d3b085d34dc9e573f9207a
+    commit: ef2fe2a
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-a-imposicao-do-fencing.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/modelo/fencing.py
+    note: "A IMPOSICAO EXISTE E NAO ESPEROU NADA: nem etcd, nem PySyncObj, nem host, nem fatura, nem decisao do titular. O unico item do desenho que toca o log e 'vigente vem do LOG, nunca da alegacao do remetente', e para ENSAIAR a imposicao isso e um stub que responde 'a epoca vigente e N'. O I3 nao mede se o log esta certo; mede se a APLICACAO recusa. Trocar o stub por mecanismo real nao altera uma regra deste arquivo, e e esse o ponto. OS CINCO PASSOS, na ordem que o C30-01 pediu, no modelo da PRF-0108 com o 'antes' GRAVADO: 1, ato sob a epoca vigente e ACEITO, e a linha de base e registrada porque sem ela 'foi recusado' nao distingue imposicao de quebra; 2 e 3, forcada a transicao para 2, o MESMO ato — identico por impressao canonica, com dataclass congelado para que 'o mesmo' seja afirmavel — e RECUSADO; 4, removida a verificacao de epoca, a mesma cena passa a ACEITAR; 5, as tres ordens adversas, todas RECUSADAS: em voo (admitido sob 1, efetivado apos a transicao), duplicado (uma copia antes, aceita, e uma depois, recusada) e reordenado (dois atos admitidos sob 1, o segundo efetivado antes da transicao e o primeiro depois). VEREDITO SUFICIENTE, e ele e DERIVADO das seis exigencias e nao declarado — o codigo monta a lista de faltantes e o veredito sai dela, entao nao ha como anunciar suficiente com exigencia faltando. DUAS ESCOLHAS DE DESENHO VAO DECLARADAS NO ARQUIVO: a conferencia e no momento do EFEITO e nao da admissao, pela razao que a PRF-0216 mede; e a regra 2 e `!=` e nao `>=`, portanto mais estrita que o I3 — ato de epoca FUTURA tambem e recusado, porque alegar epoca que o log nao comprometeu e alegacao do remetente, e a regra 3 proibe acreditar nela. O CUSTO DESSA SEGUNDA ESCOLHA, nomeado e nao escondido: um receptor atrasado recusa ato legitimo do lider, o que e perda de DISPONIBILIDADE para ganho de SEGURANCA. A direcao esta certa nesta camada; noutra poderia nao estar, e ai a escolha se refaz. E O QUE ISTO NAO PROVA, para nao ser lido por mais do que e: nao prova que um log real responde a epoca certa, nao mede cauda de fsync, custo nem jitter — isso e propriedade de dispositivo e de rede e segue no C28-01 — e NAO fecha o I3 como ele esta escrito, que e o que a PRF-0217 mede."

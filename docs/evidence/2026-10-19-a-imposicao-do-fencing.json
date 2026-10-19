@@ -1,0 +1,72 @@
+{
+  "ciclo": "C30-01",
+  "data": "2026-10-19",
+  "objetivo": "fechar o I3 no protocolo, antes de existir mecanismo",
+  "resultado_curto": "a imposicao existe e esta provada, e ela NAO fecha o I3 como ele esta escrito -- o I3 proibe o ESTADO em voo, e so o dreno o satisfaz",
+  "o_que_nao_esperou": [
+    "etcd",
+    "PySyncObj",
+    "host",
+    "fatura",
+    "decisao do titular"
+  ],
+  "o_log_de_mentira": "um stub que responde 'a epoca vigente e N'. O I3 nao mede se o log esta certo; mede se a APLICACAO recusa. Trocar o stub por mecanismo real nao altera uma regra.",
+  "as_quatro_regras": [
+    "todo ato que carrega autoridade carrega a sua EPOCA",
+    "o receptor recusa ato cuja epoca nao seja a vigente",
+    "vigente vem do LOG, nunca da alegacao do remetente",
+    "revogacao e definitiva, em NENHUMA ordem de entrega"
+  ],
+  "os_cinco_passos": {
+    "1_o_antes_gravado": "ato sob a epoca vigente: ACEITO",
+    "3_o_mesmo_ato_apos_a_transicao": "RECUSADO (identico por impressao canonica)",
+    "4_mutacao_sem_a_verificacao": "ACEITO -- a remocao e denunciada",
+    "5a_em_voo": "RECUSADO",
+    "5b_duplicado_depois": "RECUSADO",
+    "5c_reordenado_depois": "RECUSADO",
+    "veredito": "SUFICIENTE (derivado das seis exigencias, nao declarado)"
+  },
+  "a_variante_insuficiente": {
+    "claim": "CLM-0186",
+    "prova": "PRF-0216",
+    "veredito": "REFUTADA",
+    "conferindo_so_na_admissao": {
+      "faltam": [
+        "5a em voo",
+        "5c reordenado"
+      ]
+    },
+    "as_duas_e_so_as_duas": "o teste compara a lista de faltantes com ['5a','5c']: uma a mais ou a menos reprova",
+    "a_distincao_fina": "o DUPLICADO que CHEGA depois e recusado mesmo na admissao, porque e admitido de novo. O que a admissao perde e so o que ja estava DENTRO quando a epoca virou"
+  },
+  "o_I3_como_esta_escrito": {
+    "claim": "CLM-0187",
+    "prova": "PRF-0217",
+    "veredito": "REFUTADA",
+    "o_enunciado": "all(ep >= corrente for _, ep in servindo)",
+    "o_que_ele_proibe": "a ENTRADA em voo sob epoca revogada, nao o EFEITO dela",
+    "A_valida_na_escrita": {
+      "estados": 5,
+      "viola": true,
+      "contraexemplo": "admitir -> promover, comprometida=2, em voo=[1]"
+    },
+    "B_drena_antes_de_comprometer": {
+      "estados": 4,
+      "viola": false
+    },
+    "o_que_a_imposicao_fecha": "a propriedade de SEGURANCA: nenhum ato sob epoca revogada toma efeito",
+    "o_que_falta": "DECISAO DE DESENHO, nao medicao: ou o I3 se divide em dois invariantes, ou se acrescenta o dreno",
+    "o_que_nao_mudou": "etcd e PySyncObj continuam nao fechando nenhuma das duas, porque nem a validacao no efeito nem o dreno sao propriedade de log"
+  },
+  "escolhas_declaradas": {
+    "momento_da_conferencia": "EFEITO, nao admissao",
+    "a_regra_2_e_diferente_do_I3": "`!=` e nao `>=`: ato de epoca FUTURA tambem e recusado, porque alegar epoca que o log nao comprometeu e alegacao",
+    "o_custo_nomeado": "receptor atrasado recusa ato legitimo do lider -- perda de DISPONIBILIDADE para ganho de SEGURANCA"
+  },
+  "o_que_isto_NAO_prova": [
+    "que um log real responde a epoca certa",
+    "cauda de fsync, custo e jitter (C28-01, depende de host e fatura)",
+    "o I3 como ele esta escrito"
+  ],
+  "testes": "12, OK"
+}
