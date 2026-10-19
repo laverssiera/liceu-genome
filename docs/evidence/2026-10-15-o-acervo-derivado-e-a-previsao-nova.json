@@ -1,0 +1,50 @@
+{
+  "o_que_foi_lido": "o acervo da P-001, derivado e nao afirmado: nove imagens e os documentos de procedimento ao lado delas",
+  "a_restricao_que_passou_a_ser_DOCUMENTADA": {
+    "fonte": "procedimento escrito do condominio, 2 paginas",
+    "a_ordem": [
+      "1. aprovacao do projeto pelo condominio",
+      "2. assinatura do projeto aprovado: 4 vias entregues na recepcao, retirada em ate 5 dias uteis, 1 via fisica fica com a administracao",
+      "3. protocolo do projeto na prefeitura municipal",
+      "4. entrega da documentacao aprovada pela prefeitura",
+      "5. e-mail de Liberacao de Obra, emitido SO apos aprovacao do condominio E da prefeitura E conferencia da documentacao"
+    ],
+    "o_que_ela_fecha": "nenhum ato posterior a liberacao pode existir hoje, porque a prefeitura nao aprovou. A hipotese de que o acervo conteria tal ato esta fechada POR DOCUMENTO, nao por ausencia de evidencia"
+  },
+  "o_defeito_de_desenho_da_CLM_0026": {
+    "o_que_e": "o resolvedor nomeia DOIS atos que o procedimento poe em pontas opostas: a assinatura das 4 vias e o passo 2, e o e-mail de liberacao e o passo 5, depois de toda a aprovacao municipal",
+    "consequencia": "a previsao tem dois relogios e nao resolve limpo",
+    "a_particao": "duas metades, e a CATRACA e o que impede que partir vire o jeito de nunca errar"
+  },
+  "a_catraca_da_particao": [
+    "as duas metades conservam a DATA DE PRE-REGISTRO ORIGINAL, 2026-09-22",
+    "nenhuma das duas fica mais facil de confirmar que a original",
+    "o denominador do modo sombra sobe de 5 para 6, DECLARADAMENTE"
+  ],
+  "o_padrao_nas_quatro": "dois defeitos de desenho em quatro previsoes, achados no mesmo dia: TRES resolvem por ARTEFATO e nao por data (logo prazo nao as falsifica), e UMA tem dois relogios. Nao e azar: as quatro foram escritas antes de existir portao de admissao para previsao",
+  "a_previsao_NOVA_e_por_que_ela_e_de_outra_classe": {
+    "enunciado": "a exigencia ou o parecer da prefeitura mencionara a declaracao de ausencia de associacao condominial",
+    "de_onde_vem": "o documento protocolado declara que o loteamento NAO possui associacao condominial obrigatoria, e quem carimba a declaracao e o departamento de analises do PROPRIO condominio. O orgao que chancela e a entidade cuja existencia a declaracao nega",
+    "por_que_e_de_outra_classe": "as quatro previsoes atuais sao sobre MECANICA DE PROCESSO. Esta e previsao de EXIGENCIA derivada de julgamento de engenharia sobre documento real -- exatamente a classe que esta em 0/5",
+    "falsificavel_por": "o parecer, a exigencia ou o alvara emitidos pela prefeitura",
+    "pre_registrada_em": "2026-10-15, ANTES da resposta. Depois da resposta valeria zero"
+  },
+  "o_FC_006_em_TRES_estados_separados": {
+    "o_ecossistema_nao_afirmou": "VERDADEIRO -- e o que o FC-006 ja registra",
+    "esta_no_documento_protocolado": "VERDADEIRO -- a declaracao esta impressa na prancha que foi protocolada",
+    "foi_co_chancelado_por_quem_ela_contradiz": "VERDADEIRO, e e o unico dos tres com CONSEQUENCIA: e dele que sai a previsao nova"
+  },
+  "UM_ERRO_MEU_NO_MESMO_RELATORIO": {
+    "o_que_eu_afirmei": "que a guia do numero oficial estava vencida ha onze dias e sem comprovante no acervo -- e chamei isso de possivel parada autoinfligida do processo",
+    "o_que_e_verdade": "a guia FOI PAGA em 2026-10-02, dois dias antes do vencimento. O comprovante estava no acervo o tempo todo, como PDF de 11 KB, e a linha de codigo de barras dele bate com a da guia",
+    "a_causa": "li as nove imagens, vi os PDFs na listagem, DEDUZI dos metadados que aquele era a guia e NAO O ABRI. Depois afirmei ausencia a partir de leitura incompleta",
+    "a_regra_que_isso_viola": "leitura incompleta e resultado INVALIDO, nao resultado baixo. E 'sem comprovante no acervo' nao e 'nao paga' -- eu mesmo escrevi a distincao e mesmo assim tratei a ausencia como fato",
+    "o_que_fica_certo": "a PRF-0091 NAO esta mal rotulada: ela amarra os R$ 38,55 a um pagamento real de 2026-10-02, e ja distinguia o segundo valor no mesmo no"
+  },
+  "o_que_NAO_foi_medido": [
+    "se a assinatura das 4 vias ocorreu: o acervo nao tem recibo de entrega na recepcao nem registro de retirada. E o dado NOMEADO que falta",
+    "se a guia da aprovacao consta como QUITADA: ha comprovante de pagamento, mas a guia foi emitida por um centavo a mais que o valor pago, e so o portal municipal diz. Consultar o portal pede CPF, e digitar CPF em formulario nao e ato meu",
+    "o campo 'inicio da execucao' da caderneta precisa de rotulo explicito antes de entrar no genoma: inicio do CONTRATO DE SERVICOS ou inicio da OBRA? A diferenca muda o que o genoma guarda, e adjacencia nao anotada depois se le como achado"
+  ],
+  "a_contagem": "NAO saiu de 0/5. A aposta do ciclo nao pagou, e dizer isso de frente vale mais que meio ponto"
+}

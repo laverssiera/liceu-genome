@@ -59,6 +59,13 @@ def _amostra(nome: str) -> str:
         "telefone BR": "(" + "11" + ") " + "98765" + "-" + "4321",
         "matricula/inscricao imobiliaria": "matr" + "icula " + "123456",
         "CEP": "06730" + "-" + "000",
+        # Os quatro de identificador MUNICIPAL, de 2026-10-19. Partidos no
+        # fonte pela MESMA razao do CPF acima: juntos, este arquivo casaria
+        # com o proprio padrao.
+        "contador de protocolo municipal": "proto" + "colo " + "0064" + "59",
+        "numero de guia municipal": "gu" + "ia " + "23" + "34",
+        "numero de recibo": "rec" + "ibo no " + "56" + "53",
+        "ART/RRT": "A" + "RT " + "26202629" + "45286",
     }[nome]
 
 

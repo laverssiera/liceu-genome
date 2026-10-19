@@ -39,7 +39,33 @@ from pathlib import Path
 
 import varredura
 
+#: IDENTIFICADOR DE PROCESSO MUNICIPAL, acrescentado em 2026-10-15.
+#:
+#: A guarda procurava CPF, CNPJ, telefone e e-mail, e deixava passar contador de
+#: protocolo, numero de guia e numero de recibo. Eles AMARRAM IMOVEL E
+#: PROPRIETARIO pelo sistema da Prefeitura tao bem quanto um CPF: com o contador
+#: do protocolo e o municipio, qualquer um consulta o processo. A FIT-014 vale
+#: para eles.
+#:
+#: MEDIDO NO DIA EM QUE ESTA REGRA NASCEU: o genoma PUBLICO carregava CINCO
+#: deles numa unica nota -- dois contadores de protocolo, dois numeros de guia e
+#: um de recibo. A guarda rodava verde sobre eles havia dias, porque o que ela
+#: procurava era outra coisa.
+#:
+#: MEDIDO ANTES DE ACRESCENTAR, e por isso sao QUATRO e nao seis: o padrao
+#: `matricula/inscricao imobiliaria`, que JA existia, cobre matricula E
+#: inscricao cadastral. Na primeira versao eu acrescentei os dois assim
+#: mesmo, sem conferir o que havia, e eram duplicatas puras -- o teste da
+#: mascara e que pegou, exigindo amostra para cada padrao.
+#:
+#: O VALOR NUNCA E IMPRESSO, pela mesma razao que vale para os outros: o log da
+#: CI tambem e publico.
 PADROES = {
+    "contador de protocolo municipal": re.compile(
+        r"(?i)\b(?:contador|protocolo)\D{0,12}\d{5,8}\b"),
+    "numero de guia municipal": re.compile(r"(?i)\bguia\s+n?o?\s*\d{2,6}\b"),
+    "numero de recibo": re.compile(r"(?i)\brecibo\s+n?o?\s*\d{3,}\b"),
+    "ART/RRT": re.compile(r"(?i)\b(?:art|rrt)\D{0,6}\d{10,}\b"),
     "CPF": re.compile(r"\b\d{3}\.\d{3}\.\d{3}-\d{2}\b"),
     "CPF sem pontuacao": re.compile(r"(?i)\bcpf\D{0,10}\d{11}\b"),
     "CNPJ": re.compile(r"\b\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}\b"),
