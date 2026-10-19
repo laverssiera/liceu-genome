@@ -1,0 +1,58 @@
+{
+  "o_instrumento_NAO_e_TLC_nem_Alloy": {
+    "por_que": "nao ha Java nesta maquina, e baixar e executar binario de fora nao e ato meu",
+    "o_que_rodou": "verificador de estados EXPLICITO escrito no proprio repo: busca exaustiva em largura, invariantes de seguranca conferidos em CADA estado alcancavel",
+    "o_que_ele_nao_da": "a confianca de ferramenta revisada por terceiros. Essa diferenca fica declarada e nao compensada",
+    "por_que_ainda_vale": "a pergunta do C29-02 nao e 'o protocolo e correto' e sim 'que propriedades o log precisa oferecer'. Isso se responde ligando e desligando cada propriedade e vendo qual invariante quebra",
+    "e_por_que_confiar_nele_um_pouco": "self-test de MUTACAO, 8 de 8: servir sem conferir fencing e pego, Testemunha inventando transicao e pega, desligar P4 quebra, desligar P5 quebra. Verificador que nao acusa mutacao nao esta olhando"
+  },
+  "O_ACHADO_QUE_NAO_ESTAVA_NA_LISTA": {
+    "o_que": "com as CINCO propriedades ligadas, o I3 ainda viola",
+    "contraexemplo": "3 passos: promover(ativa,e1) -> servir(ativa,e1) -> promover(ativa,e2)",
+    "a_leitura": "uma requisicao ADMITIDA sob a epoca 1 segue em voo quando a epoca vira 2. E nao e corrida de failover: e o avanco NORMAL, pela propria ativa",
+    "a_prova_de_que_nao_e_do_log": "o I3 viola nos 32 subconjuntos das cinco propriedades. Nenhuma combinacao conserta",
+    "o_que_isso_exige": "ou o recurso a jusante validar o token de fencing no momento da ESCRITA, ou a camada de autoridade DRENAR o que esta em voo antes de comprometer a epoca nova. Nenhuma das duas e coisa que etcd ou PySyncObj entregue",
+    "a_consequencia_para_a_decisao": "a escolha entre etcd e PySyncObj NAO fecha o I3, qualquer que seja. O mecanismo decide I1, I2 e I4; o I3 e desenho do protocolo",
+    "um_artefato_de_medicao_que_tive_de_remover": "mantido na matriz, o I3 aparecia em TODA linha e fazia as cinco propriedades parecerem necessarias. Tirei-o, e a razao esta na saida do proprio verificador"
+  },
+  "A_LISTA_DE_PROPRIEDADES_EXIGIDAS_DO_LOG": {
+    "I1_uma_instancia_por_epoca": "P4 durabilidade, P5 lider unico por epoca",
+    "I2_epoca_monotonica": "P2 OU P5 — condicional, nenhuma das duas sozinha",
+    "I4_testemunha_nao_inventa": "P4 durabilidade",
+    "I3_fencing": "NENHUMA — nao e propriedade do log",
+    "I5_progresso": "NAO EXPRESSAVEL: e vivacidade, nao se confere estado a estado",
+    "necessarias_isoladamente": [
+      "P4_durabilidade",
+      "P5_lider_unico_por_epoca"
+    ],
+    "necessarias_em_conjunto": [
+      "P2_monotonia",
+      "P5_lider_unico_por_epoca"
+    ],
+    "nao_exigidas_NESTE_MODELO": [
+      "P1_unicidade_por_indice",
+      "P3_leitura_linearizavel"
+    ],
+    "o_que_isso_NAO_significa": "nao significa que P1 e P3 sejam dispensaveis. O modelo nao exercita conflito por indice nem leitura obsoleta que leve a violacao de seguranca. E limite DO MODELO, e concluir 'nao precisa' daqui seria o FIT-019"
+  },
+  "o_escopo_do_modelo": {
+    "instancias": 2,
+    "epocas_ate": 2,
+    "estados_com_log_completo": 387,
+    "maior_espaco_percorrido": "180375 estados, sem P4",
+    "o_que_o_modelo_ABSTRAI": [
+      "fsync e a cauda do dispositivo: nao e evento do modelo",
+      "particao assimetrica: a perda de visao e modelada como leitura obsoleta, nao como particao com direcao",
+      "pausa de processo: modelada como queda e volta, sem duracao"
+    ],
+    "reducoes_do_INSTRUMENTO_declaradas": [
+      "o laco de pares roda so para invariantes SEM exigencia isolada, que neste modelo e so o I2",
+      "e so nos pares que nao incluem P4, porque sem P4 o espaco passa de 180 mil estados e o par chega ao teto"
+    ]
+  },
+  "duas_expectativas_minhas_que_o_verificador_derrubou": {
+    "primeira": "escrevi o self-test esperando 'nenhuma violacao com o log completo'. Falso: o I3 viola, e e o achado",
+    "segunda": "escrevi 'sem P2 a monotonia quebra'. Falso: o P5 a mascara, e a necessidade do P2 e condicional",
+    "o_que_fiz": "corrigi as EXPECTATIVAS pelo medido, nao o modelo pela expectativa"
+  }
+}

@@ -3825,3 +3825,55 @@
     repo: liceu-genome
     path: genome/06-claims.yaml
     note: "OS TRES BLOQUEADORES DO REGIONAL NAO ESTAO NO MESMO ESTAGIO, e o indicador 'bloqueada por 3' esconde isso. A CLM-0006 — 'A Testemunha observa a Ativa de forma independente' — foi refutada TRES vezes, por PRF-0006 em 2026-09-21, PRF-0015 em 22/09 e PRF-0058 em 30/09, todas de code_reading, e hoje esta STALE. A CLM-0007 esta REFUTED por UMA prova com scope completo. A UNK-0001 esta UNKNOWN. SAO TRES ESTADOS DIFERENTES E TRES TRABALHOS DIFERENTES, e o numero 3 os achata num so. REFUTADO E MAIS TRATAVEL QUE NAO-PROVADO: nao-provado e ignorancia, e nao diz por onde comecar; refutado e diagnostico, e diz. Registrar a distincao importa porque, sem ela, o progresso real fica invisivel no indicador — um bloqueador pode mudar de natureza sem que a contagem se mova, e foi o que aconteceu entre 13/10 e hoje."
+
+- id: PRF-0202
+  kind: proof
+  title: "O log nao basta: o I3 viola nos 32 subconjuntos das cinco propriedades, e o contraexemplo tem tres passos"
+  refutes: [CLM-0172]
+  basis: test
+  date: "2026-10-19"
+  test:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    name: self_test
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/modelo/autoridade.py
+    content_hash: 642da647deddd1bbb2430fb4e92de8039d0a59f4eec4829c599bdd3db7f4c623
+    commit: d42aedc
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-model-check-da-autoridade.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    note: "O ACHADO E QUE O LOG NAO BASTA, e ele nao estava na lista do C29-02. Com as CINCO propriedades ligadas, o I3 ainda viola, e o contraexemplo tem TRES PASSOS: promover(ativa,e1), servir(ativa,e1), promover(ativa,e2). Uma requisicao ADMITIDA sob a epoca 1 segue em voo quando a epoca vira 2 — e nao e corrida de failover, e o avanco NORMAL, praticado pela propria ativa. A PROVA DE QUE ISSO NAO E PROPRIEDADE DO LOG: o I3 viola nos 32 subconjuntos das cinco propriedades. Nenhuma combinacao conserta, porque validar na ADMISSAO nao impede CONCLUSAO depois da revogacao. O QUE ELE EXIGE, e nenhuma das duas vem de um log: ou o recurso a jusante valida o token de fencing no momento da ESCRITA, ou a camada de autoridade DRENA o que esta em voo antes de comprometer a epoca nova. A CONSEQUENCIA PARA A DECISAO DO TITULAR E DIRETA: a escolha entre etcd e PySyncObj NAO fecha o I3, qualquer que seja. O mecanismo decide I1, I2 e I4; o I3 e desenho do protocolo, e continuaria aberto com qualquer dos dois. UM ARTEFATO DE MEDICAO QUE TIVE DE REMOVER, e registro porque enganaria: mantido na matriz, o I3 aparecia em TODA linha e fazia as cinco propriedades parecerem necessarias. O INSTRUMENTO NAO E TLC NEM ALLOY: nao ha Java nesta maquina e baixar binario de fora nao e ato meu. E um verificador de estados explicito escrito no repo, exaustivo sobre espaco pequeno, e o que ele NAO da e a confianca de ferramenta revisada por terceiros — diferenca declarada, nao compensada. O QUE FAZ CONFIAR NELE UM POUCO e o self-test de MUTACAO, 8 de 8: servir sem conferir fencing e pego, Testemunha inventando transicao e pega, desligar P4 quebra, desligar P5 quebra. E DUAS EXPECTATIVAS MINHAS FORAM DERRUBADAS POR ELE: eu havia escrito que o log completo nao violaria nada, e que sem P2 a monotonia quebraria. As duas falsas. Corrigi as EXPECTATIVAS pelo medido, e nao o modelo pela expectativa."
+
+- id: PRF-0203
+  kind: proof
+  title: "A lista de propriedades exigidas do log: P4 e P5 isoladamente, P2 em conjunto com P5, e o que o modelo NAO exercita"
+  proves: [CLM-0173]
+  basis: test
+  date: "2026-10-19"
+  test:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    name: matriz
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/modelo/autoridade.py
+    content_hash: 642da647deddd1bbb2430fb4e92de8039d0a59f4eec4829c599bdd3db7f4c623
+    commit: d42aedc
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-model-check-da-autoridade.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    note: "A LISTA DE PROPRIEDADES EXIGIDAS DO LOG, que e a saida que o C29-02 pedia, e ela transforma a decisao de mecanismo de preferencia em comparacao por evidencia. I1, uma instancia por epoca, exige P4 (durabilidade) e P5 (lider unico por epoca). I4, a Testemunha nao inventa transicao, exige P4. I2, epoca monotonica, exige P2 OU P5 — e esta e CONDICIONAL: tirando so o P2 a monotonia NAO quebra, porque o P5 ja recusa epoca repetida; tirando as DUAS, quebra. O I3 nao exige nada do log porque nao e propriedade do log, e o I5 e vivacidade e fica NAO EXPRESSAVEL neste verificador, que confere seguranca estado a estado. ENTAO AS NECESSARIAS SAO P4 E P5 isoladamente, mais P2 em conjunto com P5. E O QUE MAIS IMPORTA DIZER E O QUE ISSO NAO SIGNIFICA: P1 (unicidade por indice) e P3 (leitura linearizavel) NAO foram exigidas NESTE MODELO, e isso NAO as torna dispensaveis. O modelo nao exercita conflito por indice nem leitura obsoleta que leve a violacao de SEGURANCA; e limitacao do modelo e nao propriedade do protocolo, e concluir 'nao precisa' a partir daqui seria exatamente o FIT-019 que este genoma passou duas semanas aprendendo a evitar. O ESCOPO DO MODELO, declarado: duas instancias, epocas ate 2, 387 estados com o log completo e 180375 no maior percurso. ELE ABSTRAI: fsync e a cauda do dispositivo, que nao sao evento do modelo; particao ASSIMETRICA, porque a perda de visao esta modelada como leitura obsoleta e nao como particao com direcao; e pausa de processo, modelada como queda e volta sem duracao. E DUAS REDUCOES DO INSTRUMENTO: o laco de pares roda so para invariantes sem exigencia isolada — neste modelo, so o I2 — e so nos pares que nao incluem P4, porque sem P4 o espaco passa de 180 mil estados e o par chega ao teto."
