@@ -1072,3 +1072,14 @@
   kind: claim
   statement: "Uma prova so nao toca NORMA e VERIFICACAO ao mesmo tempo: o portao recusa a travessia nos dois sentidos, passa a prova que fica em uma classe, e tolera claim sem classe contando-a em vez de calar."
   asserted_by: "ninguem ainda - e o que o C30-02 produz, e so vale se o portao desligado fizer o teste falhar"
+
+- id: CLM-0192
+  kind: claim
+  classe: VERIFICACAO
+  statement: "A declaracao de ausencia de associacao condominial e um dos onze itens que a relacao do DHAP exige para Construcao Residencial, e por isso a fase em que ela e verificada deriva da relacao."
+  asserted_by: "premissa minha ao desenhar a previsao do C30-04, enunciada para ser medida antes de escrever metodo que derivasse fase de uma lista"
+
+- id: CLM-0193
+  kind: claim
+  statement: "A previsao do C30-04 - em que fase a declaracao condominial e verificada, despacho, habite-se ou nunca - e registravel hoje como previsao pre-registrada, com metodo e base declarados."
+  asserted_by: "premissa do C30-04 ao mandar registrar antes do despacho, enunciada para ser medida contra o que o schema exige e contra o que existe de metodo e de base"
