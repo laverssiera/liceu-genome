@@ -3877,3 +3877,45 @@
     repo: liceu-genome
     path: tools/modelo/autoridade.py
     note: "A LISTA DE PROPRIEDADES EXIGIDAS DO LOG, que e a saida que o C29-02 pedia, e ela transforma a decisao de mecanismo de preferencia em comparacao por evidencia. I1, uma instancia por epoca, exige P4 (durabilidade) e P5 (lider unico por epoca). I4, a Testemunha nao inventa transicao, exige P4. I2, epoca monotonica, exige P2 OU P5 — e esta e CONDICIONAL: tirando so o P2 a monotonia NAO quebra, porque o P5 ja recusa epoca repetida; tirando as DUAS, quebra. O I3 nao exige nada do log porque nao e propriedade do log, e o I5 e vivacidade e fica NAO EXPRESSAVEL neste verificador, que confere seguranca estado a estado. ENTAO AS NECESSARIAS SAO P4 E P5 isoladamente, mais P2 em conjunto com P5. E O QUE MAIS IMPORTA DIZER E O QUE ISSO NAO SIGNIFICA: P1 (unicidade por indice) e P3 (leitura linearizavel) NAO foram exigidas NESTE MODELO, e isso NAO as torna dispensaveis. O modelo nao exercita conflito por indice nem leitura obsoleta que leve a violacao de SEGURANCA; e limitacao do modelo e nao propriedade do protocolo, e concluir 'nao precisa' a partir daqui seria exatamente o FIT-019 que este genoma passou duas semanas aprendendo a evitar. O ESCOPO DO MODELO, declarado: duas instancias, epocas ate 2, 387 estados com o log completo e 180375 no maior percurso. ELE ABSTRAI: fsync e a cauda do dispositivo, que nao sao evento do modelo; particao ASSIMETRICA, porque a perda de visao esta modelada como leitura obsoleta e nao como particao com direcao; e pausa de processo, modelada como queda e volta sem duracao. E DUAS REDUCOES DO INSTRUMENTO: o laco de pares roda so para invariantes sem exigencia isolada — neste modelo, so o I2 — e so nos pares que nao incluem P4, porque sem P4 o espaco passa de 180 mil estados e o par chega ao teto."
+
+- id: PRF-0204
+  kind: proof
+  title: "O mundo respondeu o que o documento nao derivava: sao trinta dias, e a via foi a que a PRF-0194 pre-anunciou"
+  proves: [CLM-0174]
+  basis: external_observation
+  date: "2026-10-19"
+  external_observation:
+    instrument: "consulta do titular a Prefeitura sobre a validade aceita da certidao de matricula, relatada em 2026-10-19. O INSTRUMENTO E O RELATO DE RESPOSTA DE ORGAO, e nao documento publicado: nao ha, nesta prova, texto municipal escrito fixando o prazo, porque a PRF-0194 mediu que ele nao existe em nenhuma das duas relacoes de documentos"
+    observed: "sao trinta dias, e nao noventa; o titular acrescenta que em ocasioes anteriores valiam noventa, e por isso a pergunta existia"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-prazo-e-a-cadeia.json
+  environment: durable
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-prazo-e-a-cadeia.json
+    note: "ESTA PROVA FECHA PELO OUTRO LADO O QUE A PRF-0194 DEIXOU ABERTO, e e importante que ela NAO contradiga aquela. A PRF-0194 mediu que a palavra dias aparece ZERO vezes nas duas relacoes de documentos do municipio, e concluiu NAO-MENSURAVEL POR VIA DOCUMENTAL, escrevendo no proprio texto que o que resolveria e resposta de balcao, que entraria como observacao externa quando houvesse. HOUVE. As duas provas convivem: nao derivavel de documento publicado CONTINUA verdadeiro, e o prazo aplicado passa a ser conhecido por outra via. A DISTINCAO QUE EU HAVIA CONFUNDIDO FICA DESFEITA NOS DOIS SENTIDOS: eu tratei o prazo NOTARIAL do Decreto 93.240/86 — que regulamenta a Lei 7.433/85, sobre lavratura de escritura publica — como se fosse o prazo municipal, e a PRF-0194 me corrigiu; agora sabe-se que o numero coincide, e COINCIDIR NAO E DERIVAR: se a Prefeitura mudasse de pratica amanha o decreto notarial nao mudaria, e por isso a CLM-0164 segue refutada. O QUE ESTA PROVA NAO SUSTENTA, e declaro para nao ser lida por mais do que e: nao ha documento municipal escrito nas maos; o instrumento e relato de consulta, e qualquer texto publicado que fixe prazo diferente SUPERSEDE esta prova em vez de conflitar com ela. E UM EFEITO PRATICO MEDIDO POR LEITURA, nao por relato: a certidao de inteiro teor trazida em 2026-10-19 declara-se valida por trinta dias a contar da emissao, e a emissao e do proprio dia 19 — conferida tambem no metadado de criacao do arquivo, que concorda com o texto impresso. Entao a peca do conjunto esta dentro do prazo ate 2026-11-18, e o que vence nao e o documento: e a janela."
+
+- id: PRF-0205
+  kind: proof
+  title: "Dois instrumentos, dois elos: a dobradica do substabelecimento existe, e a forma do segundo nao a usa"
+  refutes: [CLM-0175]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "extracao de texto dos dois instrumentos de mandato, comparacao palavra a palavra por alinhamento de sequencia, e busca dirigida no segundo pelos termos que amarrariam o proprietario e o imovel"
+    universo: "os dois instrumentos de mandato do processo da P-001 apresentados pelo titular: o de 2026-09-24 e o de 2026-10-19"
+    excluidos:
+      - "o merito juridico: se a assinatura de uma peca tecnica por procurador se sustenta sob poder de representar na obtencao de licenca e juizo de quem tem inscricao na ordem, e nao de quem mede texto"
+      - "o que a Prefeitura vai aceitar de fato, que so o despacho responde"
+      - "nome, CPF, RG, endereco, matricula e numero de protocolo, de guia ou de recibo, pela regra de minimizacao e pela FIT-014"
+      - "a ASSINATURA: esta prova le o TEXTO do instrumento, e se a rubrica aposta e de quem o texto diz ser ela nao mede"
+    instrumento: "extracao de texto por biblioteca de PDF e difflib.SequenceMatcher sobre os tokens; identificadores mascarados por regex ANTES de qualquer impressao"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-prazo-e-a-cadeia.json
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-o-prazo-e-a-cadeia.json
+    note: "EU LI OS DOIS INSTRUMENTOS COMO UM SO, AMPLIADO, E SAO DOIS ELOS DIFERENTES. O de 2026-09-24 e o PROPRIETARIO nomeando o procurador; o de 2026-10-19 e o PROCURADOR nomeando a colaboradora. O que me fez supor ampliacao foi a clausula de poderes ser quase identica — e o alinhamento palavra a palavra mostrou que o que muda sao as PARTES, nao o alcance. A DOBRADICA EXISTE, e e a melhor noticia da leitura: o instrumento de 2026-09-24 traz, com a palavra escrita, podendo para tanto, substabelecer. Entao passar poder adiante e possivel, e a cadeia nao esta impedida na origem. DUAS COISAS NA FORMA DO SEGUNDO, as duas medidas no texto e nenhuma delas de merito. PRIMEIRA: ele nao amarra o proprietario. O cabecalho poe o procurador como outorgante EM NOME PROPRIO, a clausula diz representar a Outorgante — e nesse documento a Outorgante e ele —, o titulo e PROCURACAO e nao SUBSTABELECIMENTO, e a busca dirigida no texto inteiro devolve AUSENTE para o nome do proprietario, para a matricula, para a palavra proprietario e para a palavra substabelecimento. Lido ao pe da letra, ele da a colaboradora poder de representar o PROCURADOR, e o que o comunique-se cobra e vinculo com o PROPRIETARIO. SEGUNDA: ele concede o que nao recebeu. O de 2026-09-24 da preencher e assinar REQUERIMENTOS, mais protocolar documentos em geral; o de 2026-10-19 da protocolar E ASSINAR documentos em geral. As duas palavras entraram onde o mandato de origem nao as tinha, e ninguem substabelece poder que nao detem. O CONSERTO E DE REDACAO E NAO DE MERITO: titular o segundo como SUBSTABELECIMENTO, citar no cabecalho o mandato de origem e o proprietario por ele representado, e copiar a lista de poderes sem acrescentar. O QUE NAO MEDI, e nao finjo ter medido: se as rubricas apostas sao de quem o texto diz, e se o merito se sustenta. Dois reparos menores que a leitura pegou de passagem no instrumento de 2026-09-24, que e o que esta no processo: o fecho rotula como CNPJ um numero de onze digitos que o cabecalho corretamente chama de CPF, e a concordancia de genero esta trocada em dois pontos. Nenhum invalida nada por si, e os dois sao do tipo que um analista circula a lapis e devolve."

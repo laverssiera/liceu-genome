@@ -1,0 +1,68 @@
+{
+  "ciclo": "C29 \u2014 fim",
+  "data": "2026-10-19",
+  "o_que_isto_e": "Duas medicoes sobre o processo da P-001: o prazo que o mundo respondeu, e a forma dos dois instrumentos de mandato.",
+  "privacidade": "Nenhum nome, CPF, RG, endereco, matricula, numero de protocolo, de guia ou de recibo entra neste arquivo. Papeis e datas, e nada mais. Identificadores foram mascarados por regex ANTES de qualquer impressao, e a regra de minimizacao vale aqui como vale na FIT-014.",
+  "o_prazo": {
+    "claim": "CLM-0174",
+    "prova": "PRF-0204",
+    "base": "external_observation",
+    "instrumento": "consulta do titular a Prefeitura, relatada em 2026-10-19; o instrumento e o RELATO, e nao documento publicado",
+    "observado": "trinta dias, e nao noventa",
+    "por_que_isto_nao_contradiz_a_PRF_0194": "a PRF-0194 mediu que o prazo NAO E DERIVAVEL do que o municipio publica, e escreveu que resposta de balcao entraria como observacao externa quando houvesse. Houve. Nao derivavel de documento continua verdadeiro.",
+    "o_que_a_leitura_acrescenta_por_conta_propria": {
+      "tipo_da_certidao": "inteiro teor",
+      "emissao": "2026-10-19",
+      "validade_declarada_no_proprio_texto": "30 dias a contar da emissao",
+      "metadado_de_criacao_do_arquivo": "concorda com o texto impresso",
+      "janela_resultante": "ate 2026-11-18"
+    },
+    "o_que_isto_nao_sustenta": [
+      "nao ha documento municipal escrito fixando o prazo",
+      "texto publicado com prazo diferente SUPERSEDE esta prova",
+      "coincidir com o prazo notarial do Decreto 93.240/86 nao e derivar dele"
+    ]
+  },
+  "a_cadeia_de_mandato": {
+    "claim": "CLM-0175",
+    "prova": "PRF-0205",
+    "base": "record_reading",
+    "o_erro_que_esta_prova_refuta": "eu li os dois instrumentos como um so, ampliado; sao dois elos distintos de uma cadeia",
+    "elo_1": {
+      "data": "2026-09-24",
+      "outorgante": "o proprietario",
+      "outorgado": "o procurador",
+      "substabelecer": "SIM, com a palavra escrita",
+      "assinar": "requerimentos; e protocolar documentos em geral"
+    },
+    "elo_2": {
+      "data": "2026-10-19",
+      "outorgante": "o procurador, EM NOME PROPRIO",
+      "outorgado": "a colaboradora",
+      "substabelecer": "SIM",
+      "assinar": "protocolar E ASSINAR documentos em geral"
+    },
+    "busca_dirigida_no_elo_2": {
+      "nome_do_proprietario": "AUSENTE",
+      "matricula": "AUSENTE",
+      "palavra_proprietario": "AUSENTE",
+      "palavra_substabelecimento": "AUSENTE",
+      "titulo_do_documento": "PROCURACAO"
+    },
+    "os_dois_achados_de_forma": [
+      "o elo 2 nao amarra o proprietario: lido ao pe da letra, da poder de representar o PROCURADOR, e o comunique-se cobra vinculo com o PROPRIETARIO",
+      "o elo 2 concede o que nao recebeu: as palavras E ASSINAR documentos em geral entraram onde o mandato de origem nao as tinha"
+    ],
+    "o_conserto": "titular o elo 2 como SUBSTABELECIMENTO, citar no cabecalho o mandato de origem e o proprietario por ele representado, e copiar a lista de poderes sem acrescentar",
+    "o_que_nao_foi_medido": [
+      "se as rubricas apostas sao de quem o texto diz",
+      "o merito juridico da assinatura por procurador",
+      "o que a Prefeitura vai aceitar de fato"
+    ],
+    "reparos_menores_no_elo_1_que_esta_no_processo": [
+      "o fecho rotula como CNPJ um numero de onze digitos que o cabecalho chama corretamente de CPF",
+      "concordancia de genero trocada em dois pontos"
+    ]
+  },
+  "o_que_segue_aberto": "o despacho da Prefeitura sobre o atendimento do comunique-se. Que a colaboradora juntou as pecas ao processo e relato do titular e nao observacao minha: nao entra como prova de atendimento, e o modo sombra nao sobe por isso."
+}

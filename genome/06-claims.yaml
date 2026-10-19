@@ -972,3 +972,13 @@
   kind: claim
   statement: "Os invariantes que o log alcanca exigem dele P4 e P5 isoladamente, e P2 em conjunto com P5; o fencing nao exige nada do log e o progresso nao e expressavel por verificacao de seguranca."
   asserted_by: "ninguem ainda - e o que o model check do C29-02 produz, e so vale se o verificador acusar as mutacoes que lhe sao aplicadas"
+
+- id: CLM-0174
+  kind: claim
+  statement: "O prazo de trinta dias que a certidao de matricula declara de si e o prazo que a Prefeitura aplica ao aceita-la na aprovacao de projeto."
+  asserted_by: "o titular, em 2026-10-19, depois de consultar a Prefeitura - a consulta que a PRF-0194 nomeou como o unico caminho que resolveria, por nao ser derivavel do que o municipio publica"
+
+- id: CLM-0175
+  kind: claim
+  statement: "O instrumento de mandato emitido em 2026-10-19 amarra o proprietario ao mandato da colaboradora, e por isso a cadeia de representacao alcanca o imovel da P-001."
+  asserted_by: "claude (2026-10-19) - implicito ao ler os dois instrumentos como o mesmo mandato ampliado, e nao como dois elos distintos de uma cadeia"
