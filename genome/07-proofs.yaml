@@ -4325,3 +4325,45 @@
     repo: liceu-genome
     path: tools/genome_check.py
     note: "RODADO DE NOVO PORQUE A 2d3f6a9e88b40123f65b86d713a139f7ce621e52f060ec112d72cfd777ca5821 MUDOU, e nao porque alguem desconfiou. A PRF-0215 declarava superficie sobre tools/genome_check.py e tools/test_genome_check.py; o portao da nao-propagacao mexeu nos dois, e o genome_surface_check acusou com o hash velho e o novo lado a lado. Isso e o mecanismo trabalhando: prova que cobre arquivo reescrito deixa de valer, e a lei deste schema diz que a prova nova SUPERSEDE a antiga em vez de apaga-la -- prova apagada e historia reescrita. O COMPORTAMENTO NAO MUDOU, e isso foi medido e nao suposto: os quatro casos da AtoDeTerceiroNaoEPrevisaoRespondida passam sobre a superficie nova. Ato de terceiro continua contado sem mexer em status de previsao; observacao externa sem o campo continua fora da contagem, com os marcados sendo subconjunto PROPRIO das externas; o relatorio continua dizendo o que ocorreu e nao a frase antiga; e ato de terceiro continua nao movendo o teto do modo sombra. A ALTERNATIVA QUE EU NAO ESCOLHI, e vale dizer por que: eu poderia ter estreitado os `paths` da PRF-0215 para parar de cobrir o juiz. Seria editar a prova velha para calar a guarda -- exatamente o que a propria guarda foi escrita para impedir, e esta anotado no codigo dela que a unica forma de cala-la seria editar o content_hash da prova antiga."
+
+- id: PRF-0223
+  kind: proof
+  title: "A declaracao condominial nao e item da relacao: e declaracao que a planta faz SOBRE SI, e e a FC-006"
+  refutes: [CLM-0192]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "busca por condominial, associacao, declaracao de ausencia e FC-006 nos cinco arquivos do grafo que registram os itens exigidos e as falsificacoes conhecidas"
+    universo: "genome/04-knowledge.yaml, genome/06-claims.yaml, genome/07-proofs.yaml, genome/09-unknowns.yaml e genome/11-pfc.yaml em 11c3e69"
+    excluidos:
+      - "os PDFs das duas relacoes municipais, que NAO estao mais em disco nesta maquina: o que esta prova le e o REGISTRO que o grafo fez deles, nao os documentos"
+      - "a relacao do Departamento de Engenharia, de 39 itens, cujo item 35 pede titulo de propriedade e nao foi varrido item por item aqui"
+    instrumento: "grep -o sobre genome/*.yaml pelos quatro termos, com leitura do contexto de cada achado"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-a-previsao-que-nao-se-registra.json
+  location:
+    repo: liceu-genome
+    path: genome/11-pfc.yaml
+    note: "EU IA DERIVAR FASE DE UMA LISTA ONDE O ITEM NAO ESTA. A declaracao de ausencia de associacao condominial aparece no grafo em 11-pfc.yaml, como a FC-006 — a falsificacao conhecida 'A declaracao da planta que negava o condominio, num projeto em condominio'. Ela e declaracao que o PROJETO faz SOBRE SI MESMO, e nao peca que a relacao do DHAP pede: os onze itens de Construcao Residencial estao registrados em 04-knowledge.yaml e a PRF-0045 ja havia medido que nenhum deles e certidao; a declaracao condominial nao esta entre eles por outra razao, que e nao ser documento a entregar. A CONSEQUENCIA MUDA A NATUREZA DA PERGUNTA DO C30-04: 'em que fase a declaracao condominial e verificada' nao e 'em que fase o municipio confere o item N da lista' — e 'quando, se alguma vez, o municipio audita uma autodeclaracao falsa da planta'. A primeira poderia derivar de documento publicado; a segunda e conduta institucional pura, e nao ha fonte publicada que diga quando um orgao audita autodeclaracao. E O QUE ESTA PROVA NAO MEDIU, declarado: os PDFs das duas relacoes nao estao mais nesta maquina, entao se elas trazem linguagem de FASE continua NAO MEDIDO — nao ausente. A PRF-0194 mediu que elas nao fixam PRAZO; fase e outra palavra e outra busca, e tratar o medido de uma como medido da outra foi exatamente o erro que a PRF-0194 corrigiu em mim."
+
+- id: PRF-0224
+  kind: proof
+  title: "A previsao do C30-04 nao se registra hoje: o ramo nunca nao e falsificavel, o metodo seria literal e a base nao existe"
+  refutes: [CLM-0193]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "leitura dos campos exigidos de `prediction` no schema; leitura do METODO declarado nos dois modulos que as quatro previsoes vivas citam; e contagem dos atos de terceiro registrados, que seriam a unica base de conduta"
+    universo: "schema/genome.schema.json e genome/06-claims.yaml em 11c3e69; JURIDICO-TECH/backend/juridicotech/modules/condominio_l0.py e conformidade_urbanistica.py; e o bloco de atos de terceiro do juiz"
+    excluidos:
+      - "escrever o modulo que faltaria: isto mede se ele PODE ser escrito com base declarada, nao o tenta"
+      - "a decisao do titular de adotar ou nao as cinco condicoes do portao de admissao, que seguem pendentes e por isso nao foram rodadas como portao"
+    instrumento: "json.loads do schema lendo $defs.claim.properties.prediction.required; leitura de METODO em cada modulo; e python tools/genome_check.py, bloco de atos de terceiro"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-a-previsao-que-nao-se-registra.json
+  location:
+    repo: liceu-genome
+    path: schema/genome.schema.json
+    note: "TRES RAZOES, E NENHUMA E FALTA DE VONTADE. PRIMEIRA, A FORMA DA PERGUNTA: 'despacho, habite-se, ou NUNCA' tem um ramo que nenhuma observacao finita refuta. Previsao com ramo nao falsificavel nao e previsao, e o proprio schema diz que sem oraculo declarado a previsao nao se refuta e nao vale. SEGUNDA, O METODO SERIA LITERAL: `prediction` exige registered_at, method, method_version e settled_by, e as quatro previsoes vivas citam dois metodos que EXISTEM como modulo — juridicotech.conformidade-urbanistica/0.1 e juridicotech.condominio-l0/0.1, os dois em JURIDICO-TECH, cada um com a constante METODO no arquivo. O juiz NAO valida o campo contra a realidade, so o imprime — e e justamente por isso que inventar um nome aqui seria escrever literal onde a regra exige metodo com versao declarada. Nenhum dos dois produz previsao sobre conduta institucional: o conformidade_urbanistica deriva indices da Tabela I, e o condominio_l0 modela a cadeia de dependencia do CONDOMINIO, com a regra de retorno para exigencia que afete o projeto aprovado. TERCEIRA, E E A QUE NAO SE CONSERTA ESCREVENDO CODIGO: a base nao existe. Pela PRF-0223, a declaracao condominial e autodeclaracao da planta e nao item de lista, entao nao ha norma publicada de onde derivar a fase; e a unica outra base possivel seria conduta observada, de que o grafo tem DOIS atos de terceiro — o comunique-se de 15/10 e a resposta de balcao de 19/10. Duas observacoes nao sao base para prever conduta, e um metodo que dissesse derivar disso estaria declarando base que nao tem. O QUE ISTO CUSTA, e o custo e real: a janela de pre-registro antes do despacho fica sem previsao nova, e depois do despacho ela vale zero. Registrar com metodo inventado custaria mais — seria o unico pre-registro do grafo cuja base ninguem pode conferir, dentro de um ecossistema que passou tres semanas tornando conferivel tudo o que afirma. HA UMA PREVISAO VIZINHA QUE SERIA REGISTRAVEL, e ela nao foi registrada porque nao e a pergunta pedida e pre-registro e compromisso: a exigencia de 15/10 pediu DOCUMENTOS e nao alteracao de projeto, e a regra de retorno do grafo L0 dispara com exigencia que AFETE o projeto aprovado — donde se preveria que nenhuma nova analise condominial sera exigida antes da assinatura das 4 vias, com metodo juridicotech.condominio-l0/0.1, base no grafo L0 mais a PRF-0192, e oraculo na propria assinatura. Fica enunciada aqui, com data, para que registra-la depois nao se confunda com registra-la agora."

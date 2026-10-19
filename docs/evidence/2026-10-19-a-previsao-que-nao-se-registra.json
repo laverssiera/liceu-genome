@@ -1,0 +1,52 @@
+{
+  "ciclo": "C30-04",
+  "data": "2026-10-19",
+  "pedido": "registrar, ANTES do despacho, a previsao: em que fase a declaracao condominial e verificada -- despacho, habite-se, ou nunca?",
+  "resultado": "NAO REGISTRAVEL hoje, por tres razoes medidas",
+  "1_a_forma_da_pergunta": {
+    "o_problema": "o ramo 'ou NUNCA' nao e refutavel por nenhuma observacao finita",
+    "a_lei_do_schema": "sem oraculo declarado a previsao nao se refuta -- e nao vale"
+  },
+  "2_o_metodo_seria_literal": {
+    "claim": "CLM-0193",
+    "prova": "PRF-0224",
+    "prediction_required": [
+      "registered_at",
+      "method",
+      "method_version",
+      "settled_by"
+    ],
+    "os_metodos_que_existem": {
+      "juridicotech.conformidade-urbanistica/0.1": "deriva indices da Tabela I -- nao preve conduta",
+      "juridicotech.condominio-l0/0.1": "modela a cadeia de dependencia do CONDOMINIO -- nao preve conduta municipal"
+    },
+    "o_juiz_valida_o_campo": false,
+    "por_que_isso_agrava": "justamente porque nao valida, inventar um nome seria escrever literal onde a regra exige metodo com versao declarada"
+  },
+  "3_a_base_nao_existe": {
+    "claim": "CLM-0192",
+    "prova": "PRF-0223",
+    "a_declaracao_condominial_e": "autodeclaracao da PLANTA sobre si mesma -- a FC-006 --, nao item da relacao do DHAP",
+    "consequencia": "a pergunta nao e 'em que fase o municipio confere o item N', e 'quando, se alguma vez, o municipio audita uma autodeclaracao falsa'",
+    "base_normativa": "nao existe fonte publicada sobre auditoria de autodeclaracao",
+    "base_de_conduta_observada": {
+      "atos_de_terceiro_no_grafo": 2
+    },
+    "duas_observacoes_nao_sao_base": true
+  },
+  "o_que_NAO_foi_medido": {
+    "linguagem_de_FASE_nas_relacoes": "NAO MEDIDO, nao ausente: os PDFs nao estao mais nesta maquina",
+    "a_PRF_0194_mediu_PRAZO": "fase e outra palavra e outra busca; tratar o medido de uma como medido da outra foi o erro que a PRF-0194 corrigiu em mim"
+  },
+  "as_cinco_condicoes_do_portao_de_admissao": "NAO rodadas como portao: seguem pendentes de decisao do titular, e o proprio ciclo condicionou o uso delas a isso",
+  "o_custo_de_nao_registrar": "a janela antes do despacho fica sem previsao nova, e depois vale zero. Registrar com metodo inventado custaria mais: seria o unico pre-registro cuja base ninguem pode conferir",
+  "a_previsao_vizinha_QUE_SERIA_registravel": {
+    "enunciado": "nenhuma nova analise condominial sera exigida antes da assinatura das 4 vias",
+    "por_que_tem_base": "a exigencia de 15/10 pediu DOCUMENTOS e nao alteracao de projeto, e a regra de retorno do grafo L0 dispara com exigencia que AFETE o projeto aprovado",
+    "method": "juridicotech.condominio-l0/0.1",
+    "basis": "o grafo L0 mais a PRF-0192",
+    "settled_by": "a propria assinatura das 4 vias, ou a nova analise exigida",
+    "foi_registrada": false,
+    "por_que_nao": "nao e a pergunta pedida, e pre-registro e compromisso. Fica enunciada com data, para que registra-la depois nao se confunda com registra-la agora."
+  }
+}
