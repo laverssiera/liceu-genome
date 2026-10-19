@@ -4228,3 +4228,100 @@
     repo: liceu-genome
     path: tools/modelo/fencing.py
     note: "A IMPOSICAO EXISTE E NAO ESPEROU NADA: nem etcd, nem PySyncObj, nem host, nem fatura, nem decisao do titular. O unico item do desenho que toca o log e 'vigente vem do LOG, nunca da alegacao do remetente', e para ENSAIAR a imposicao isso e um stub que responde 'a epoca vigente e N'. O I3 nao mede se o log esta certo; mede se a APLICACAO recusa. Trocar o stub por mecanismo real nao altera uma regra deste arquivo, e e esse o ponto. OS CINCO PASSOS, na ordem que o C30-01 pediu, no modelo da PRF-0108 com o 'antes' GRAVADO: 1, ato sob a epoca vigente e ACEITO, e a linha de base e registrada porque sem ela 'foi recusado' nao distingue imposicao de quebra; 2 e 3, forcada a transicao para 2, o MESMO ato — identico por impressao canonica, com dataclass congelado para que 'o mesmo' seja afirmavel — e RECUSADO; 4, removida a verificacao de epoca, a mesma cena passa a ACEITAR; 5, as tres ordens adversas, todas RECUSADAS: em voo (admitido sob 1, efetivado apos a transicao), duplicado (uma copia antes, aceita, e uma depois, recusada) e reordenado (dois atos admitidos sob 1, o segundo efetivado antes da transicao e o primeiro depois). VEREDITO SUFICIENTE, e ele e DERIVADO das seis exigencias e nao declarado — o codigo monta a lista de faltantes e o veredito sai dela, entao nao ha como anunciar suficiente com exigencia faltando. DUAS ESCOLHAS DE DESENHO VAO DECLARADAS NO ARQUIVO: a conferencia e no momento do EFEITO e nao da admissao, pela razao que a PRF-0216 mede; e a regra 2 e `!=` e nao `>=`, portanto mais estrita que o I3 — ato de epoca FUTURA tambem e recusado, porque alegar epoca que o log nao comprometeu e alegacao do remetente, e a regra 3 proibe acreditar nela. O CUSTO DESSA SEGUNDA ESCOLHA, nomeado e nao escondido: um receptor atrasado recusa ato legitimo do lider, o que e perda de DISPONIBILIDADE para ganho de SEGURANCA. A direcao esta certa nesta camada; noutra poderia nao estar, e ai a escolha se refaz. E O QUE ISTO NAO PROVA, para nao ser lido por mais do que e: nao prova que um log real responde a epoca certa, nao mede cauda de fsync, custo nem jitter — isso e propriedade de dispositivo e de rede e segue no C28-01 — e NAO fecha o I3 como ele esta escrito, que e o que a PRF-0217 mede."
+
+- id: PRF-0219
+  kind: proof
+  title: "Os 44 NORMA sao CHAVES de declaracao, nao claims: claim nao tinha campo de classe nenhum"
+  refutes: [CLM-0189]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "leitura da saida do portao C25-06 por classe, e leitura das propriedades declaradas de `claim` no schema do genoma"
+    universo: "tools/declaracoes_de_estado.py rodado sobre os artefatos governados em 9df5cb5, e schema/genome.schema.json no mesmo commit"
+    excluidos:
+      - "os outros tipos de no do schema, que nao foram varridos por esta prova"
+      - "o juizo sobre se as 44 chaves estao bem classificadas: isto mede o que ELAS SAO, nao se a classificacao delas acerta"
+    instrumento: "python tools/declaracoes_de_estado.py, bloco de contagem por classe; e json.loads do schema lendo $defs.claim.properties"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-norma-e-verificacao.json
+  location:
+    repo: liceu-genome
+    path: tools/declaracoes_de_estado.py
+    note: "DUAS LISTAS COM O MESMO NOME, E ELAS NAO SE TOCAM. O portao C25-06 classifica 301 CANDIDATOS -- que sao CHAVES DE DECLARACAO em artefatos governados -- em ESTADO 157, NORMA 44, HISTORICO, PROSA e PROCEDENCIA. Aquele NORMA quer dizer 'esta chave ordena, posiciona ou exige', e a classificacao e da CHAVE, nao de afirmacao nenhuma. O C30-02 precisa de classe de CLAIM, e `claim` no schema tinha exatamente estas propriedades e nada mais: asserted_by, blocks, chain_link, id, kind, prediction, statement, com additionalProperties false. ENTAO NAO ERA 'ACRESCENTAR A CLASSE PAR': era criar as duas, e o campo `classe` nasce neste PR. O QUE A CONFUSAO CUSTARIA se nao tivesse sido medida: eu teria procurado onde pendurar VERIFICACAO ao lado de um NORMA que nao existe para claims, e no melhor caso perderia tempo -- no pior, penduraria a classe de claim na arvore de chaves e o portao C25-06, que mede 301 chaves, passaria a medir coisa de outra natureza. DOIS NOMES IGUAIS EM CAMADAS DIFERENTES SAO UMA ARMADILHA DE PROJETO, e a descricao do campo novo diz, no proprio schema, que ele NAO e a classe do C25-06."
+
+- id: PRF-0220
+  kind: proof
+  title: "Nao ha propagacao entre claims: o vetor da contaminacao e humano, e por isso o portao e lint de grafo"
+  refutes: [CLM-0190]
+  basis: code_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "busca por `blocks` em tools/genome_check.py e leitura de cada ocorrencia, para saber se o estado de uma claim chega a outra; e leitura da derivacao de status, para saber de onde o status vem"
+    universo: "tools/genome_check.py em 9df5cb5, as 8 ocorrencias de `blocks`; e o schema de claim no mesmo commit"
+    excluidos:
+      - "a FIT-019, que RETIRA sustentacao de claim por falta de escopo -- isso muda status, mas por propriedade da PROVA e nao por estado de outra claim"
+      - "a supersessao entre provas, que tambem muda status sem passar por claim"
+    instrumento: "grep -n blocks tools/genome_check.py, com leitura das 8 linhas; e leitura das propriedades de claim no schema"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-norma-e-verificacao.json
+  location:
+    repo: liceu-genome
+    path: tools/genome_check.py
+    note: "EU IA CONSTRUIR GUARDA CONTRA MECANISMO QUE NAO EXISTE, e medir primeiro mudou o que o portao E. O ciclo pediu uma REGRA que impedisse 'claim de classe VERIFICACAO em REFUTED alterar o estado de claim de classe NORMA'. Isso pressupoe propagacao. As oito ocorrencias de `blocks` apontam para ESCALA (scale:REGIONAL) e para INCOGNITA, e nenhuma faz o estado de uma claim derivar do estado de outra. O status de uma claim vem das PROVAS que a provam ou refutam, e de nada mais. ENTAO O VETOR E HUMANO, e e preciso nomea-lo com exatidao: alguem escreve UMA prova e aponta o proves ou o refutes dela para as duas classes. A evidencia de uma atravessa para a outra pela mao de quem escreve, nao pela derivacao. O PORTAO, POR ISSO, E LINT DE GRAFO e nao guarda de derivacao -- e chamar de guarda de derivacao seria inventar mecanismo, que e o defeito que este genoma passou tres semanas aprendendo a evitar. UMA FINEZA QUE A LEITURA DEU DE GRACA: o schema diz `proves` XOR `refutes`, nunca os dois. Entao a travessia so pode acontecer DENTRO de uma das duas listas, e o portao confere a uniao delas -- o que cobre os dois campos sem precisar de regra por campo. E O QUE FICA FORA DESTE ESCOPO, declarado: a FIT-019 retira sustentacao de claim e muda status, e a supersessao de prova tambem -- as duas por propriedade da PROVA, nao por estado de outra claim. Nao sao propagacao entre claims, e nao foram medidas aqui."
+
+- id: PRF-0221
+  kind: proof
+  title: "O portao recusa a travessia nos dois sentidos, passa quem fica numa classe, e conta as sem classe"
+  proves: [CLM-0191]
+  basis: test
+  date: "2026-10-19"
+  test:
+    repo: liceu-genome
+    path: tools/test_genome_check.py
+    name: PortaoDaNaoPropagacao
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/genome_check.py
+      - tools/test_genome_check.py
+    content_hash: 2d3f6a9e88b40123f65b86d713a139f7ce621e52f060ec112d72cfd777ca5821
+    commit: 9df5cb5
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-norma-e-verificacao.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/genome_check.py
+    note: "O CASO QUE O CICLO PEDIU, NA FORMA EXATA DO VICIO: uma observacao externa da conduta do orgao -- instrumento 'leitura da exigencia emitida', observado 'a exigencia nao menciona o item' -- apontando o proves ao mesmo tempo para a VERIFICACAO, onde ela pertence, e para a NORMA, onde ela nao tem voto. RECUSADA, e a mensagem do portao traz a frase que importa: ausencia de exigencia nao e evidencia de conformidade. A DIRECAO FOI CORRIGIDA EM RELACAO AO PEDIDO, e a correcao vale mais que o pedido. O ciclo pediu para barrar VERIFICACAO em REFUTED movendo NORMA. A direcao VIVA e a CONFIRMADA: a CLM-0023 diz que a Prefeitura nao fara exigencia sobre C.A.; se ela se CONFIRMAR, a tentacao e ler isso como 'os indices atendem', que e a CLM-0019, NORMA. Entao o portao barra o CRUZAMENTO, nos dois sentidos e em qualquer estado -- e nao a travessia a partir de um estado. OS SETE CASOS: as duas classes existem no grafo real (controle, sem o qual os outros nao medem nada); o grafo real NAO atravessa as classes hoje, e por isso o portao e PREVENTIVO e isso esta medido; a prova que toca as duas por `proves` e recusada; a que toca as duas por `refutes` tambem, porque o schema diz proves XOR refutes e a travessia so cabe dentro de uma lista; a MESMA prova apontando para UMA classe PASSA, e este controle impede o portao de virar bloqueio geral contra observacao externa provar VERIFICACAO, que e justamente o que ela deve provar; claim SEM classe nao dispara o portao; e as sem classe sao CONTADAS no relatorio. A MUTACAO: desligado o portao, DOIS dos sete testes falham -- os dois da travessia. Portao que nao denuncia a propria remocao nao e portao. O PRECO DA TOLERANCIA, declarado e nao escondido: 181 das 191 claims nao tem classe e ficam FORA do portao. Exigir classe de todas mataria a validacao antes de qualquer veredito, que e a mesma objecao que fez o `scope` virar INDETERMINADO em vez de erro duro -- e por isso a contagem das sem classe aparece no relatorio, com a frase de que ausente e insuficiencia DECLARADA. A classe se povoa por uso, e a fila fica visivel."
+
+- id: PRF-0222
+  kind: proof
+  title: "As duas contagens do modo sombra seguem separadas depois do portao novo - rodado de novo sobre a superficie alterada"
+  proves: [CLM-0185]
+  basis: test
+  supersedes: [PRF-0215]
+  date: "2026-10-19"
+  test:
+    repo: liceu-genome
+    path: tools/test_genome_check.py
+    name: AtoDeTerceiroNaoEPrevisaoRespondida
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/genome_check.py
+      - tools/test_genome_check.py
+    content_hash: 2d3f6a9e88b40123f65b86d713a139f7ce621e52f060ec112d72cfd777ca5821
+    commit: 9df5cb5
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-norma-e-verificacao.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/genome_check.py
+    note: "RODADO DE NOVO PORQUE A 2d3f6a9e88b40123f65b86d713a139f7ce621e52f060ec112d72cfd777ca5821 MUDOU, e nao porque alguem desconfiou. A PRF-0215 declarava superficie sobre tools/genome_check.py e tools/test_genome_check.py; o portao da nao-propagacao mexeu nos dois, e o genome_surface_check acusou com o hash velho e o novo lado a lado. Isso e o mecanismo trabalhando: prova que cobre arquivo reescrito deixa de valer, e a lei deste schema diz que a prova nova SUPERSEDE a antiga em vez de apaga-la -- prova apagada e historia reescrita. O COMPORTAMENTO NAO MUDOU, e isso foi medido e nao suposto: os quatro casos da AtoDeTerceiroNaoEPrevisaoRespondida passam sobre a superficie nova. Ato de terceiro continua contado sem mexer em status de previsao; observacao externa sem o campo continua fora da contagem, com os marcados sendo subconjunto PROPRIO das externas; o relatorio continua dizendo o que ocorreu e nao a frase antiga; e ato de terceiro continua nao movendo o teto do modo sombra. A ALTERNATIVA QUE EU NAO ESCOLHI, e vale dizer por que: eu poderia ter estreitado os `paths` da PRF-0215 para parar de cobrir o juiz. Seria editar a prova velha para calar a guarda -- exatamente o que a propria guarda foi escrita para impedir, e esta anotado no codigo dela que a unica forma de cala-la seria editar o content_hash da prova antiga."

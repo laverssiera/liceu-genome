@@ -1105,5 +1105,137 @@ class AtoDeTerceiroNaoEPrevisaoRespondida(unittest.TestCase):
                          "nenhum elo substantivo, mesmo com ato do mundo recebido")
 
 
+def observacao_da_instituicao(pid, prova):
+    """Uma observacao externa da conduta do orgao, provando o que `prova` diz.
+
+    E a forma exata do vicio: o instrumento e "o orgao nao exigiu", e o
+    `proves` aponta para onde o autor quer que isso valha.
+    """
+    return {"id": pid, "kind": "proof",
+            "title": f"fixture {pid}: o orgao nao exigiu o item",
+            "proves": list(prova), "basis": "external_observation",
+            "date": "2026-10-19",
+            "external_observation": {
+                "instrument": "leitura da exigencia emitida pelo orgao",
+                "observed": "a exigencia nao menciona o item"},
+            "evidence_artifact": {"repo": "liceu-genome",
+                                  "path": "docs/evidence/fixture.json"},
+            "environment": "durable"}
+
+
+class PortaoDaNaoPropagacao(unittest.TestCase):
+    """C30-02: NORMA e VERIFICACAO nao se tocam na mesma prova.
+
+    NORMA e o que a norma EXIGE -- resolve-se lendo a norma, e o orgao nao tem
+    voto. VERIFICACAO e o que a instituicao DE FATO verifica -- resolve-se por
+    observacao externa, e a norma nao tem voto.
+
+    TRES COISAS FORAM MEDIDAS ANTES DE ESTE PORTAO EXISTIR, e cada uma mudou o
+    que ele e:
+
+    1. os 44 NORMA do portao C25-06 sao CHAVES de declaracao em artefatos
+       governados, nao claims. As duas listas nao se tocam;
+    2. o juiz NAO propaga estado entre claims -- `blocks` aponta so para escala
+       e incognita. Entao o vetor e HUMANO: uma prova so apontando para as duas
+       classes. Isto e lint de GRAFO, e chamar de guarda de derivacao seria
+       inventar mecanismo que nao existe;
+    3. nenhuma prova do grafo real atravessa as classes hoje. O portao e
+       PREVENTIVO, nao corretivo, e isso esta medido e nao suposto.
+
+    E A DIRECAO FOI CORRIGIDA: o pedido era barrar VERIFICACAO em REFUTED
+    movendo NORMA. A direcao viva e a CONFIRMADA -- "a Prefeitura nao fara
+    exigencia sobre C.A." se confirmando e sendo lida como "os indices
+    atendem". Ausencia de exigencia nao e evidencia de conformidade. O portao
+    barra o CRUZAMENTO, nos dois sentidos e em qualquer estado.
+    """
+
+    # CLM-0019 e NORMA (os indices atendem a LC 030/2007);
+    # CLM-0174 e VERIFICACAO (o prazo que a Prefeitura APLICA).
+    NORMA = "CLM-0019"
+    VERIF = "CLM-0174"
+
+    def _classes(self, files):
+        por = {c["id"]: c.get("classe") for c in files["06-claims.yaml"]}
+        return por
+
+    def test_as_duas_classes_existem_no_grafo_real(self):
+        """Controle: sem isto, os testes abaixo nao mediriam nada."""
+        por = self._classes(base())
+        self.assertEqual(por[self.NORMA], "NORMA")
+        self.assertEqual(por[self.VERIF], "VERIFICACAO")
+
+    def test_o_grafo_real_nao_atravessa_as_classes(self):
+        """O portao e PREVENTIVO: medido, nao suposto."""
+        j, _ = judge(base())
+        self.assertEqual([e for e in j.errors if "NORMA e VERIFICACAO" in e], [],
+                         j.errors)
+
+    def test_uma_prova_que_toca_as_DUAS_e_RECUSADA(self):
+        """O caso que o ciclo pediu, na forma exata do vicio.
+
+        Uma observacao externa da conduta do orgao -- "a exigencia nao menciona
+        o item" -- apontando ao mesmo tempo para a VERIFICACAO, onde ela
+        pertence, e para a NORMA, onde ela nao tem voto.
+        """
+        files = base()
+        add(files, "07-proofs.yaml",
+            observacao_da_instituicao("PRF-9101", [self.VERIF, self.NORMA]))
+        j, _ = judge(files)
+        acusa = [e for e in j.errors if "PRF-9101" in e and "NORMA e VERIFICACAO" in e]
+        self.assertTrue(acusa, f"o portao nao acusou. errors: {j.errors}")
+        self.assertIn("nao e evidencia de conformidade", acusa[0])
+
+    def test_recusa_tambem_quando_a_travessia_e_por_REFUTES(self):
+        """A mesma travessia pelo outro campo.
+
+        O schema diz `proves` XOR `refutes`, nunca os dois -- entao a travessia
+        so pode acontecer DENTRO de uma das listas, e as duas sao conferidas.
+        """
+        files = base()
+        n = observacao_da_instituicao("PRF-9102", [])
+        del n["proves"]
+        n["refutes"] = [self.VERIF, self.NORMA]
+        add(files, "07-proofs.yaml", n)
+        j, _ = judge(files)
+        self.assertTrue([e for e in j.errors
+                         if "PRF-9102" in e and "NORMA e VERIFICACAO" in e], j.errors)
+
+    def test_a_MESMA_prova_apontando_para_UMA_classe_passa(self):
+        """Controle que impede o portao de ser um bloqueio geral.
+
+        Se este caso tambem reprovasse, o portao estaria proibindo observacao
+        externa de provar VERIFICACAO -- que e exatamente o que ela deve provar.
+        """
+        files = base()
+        add(files, "07-proofs.yaml",
+            observacao_da_instituicao("PRF-9103", [self.VERIF]))
+        j, _ = judge(files)
+        self.assertEqual([e for e in j.errors if "PRF-9103" in e], [], j.errors)
+
+    def test_claim_sem_classe_nao_dispara_o_portao(self):
+        """Ausente e INSUFICIENCIA DECLARADA, nao ma-formacao.
+
+        Exigir classe de todas as 191 mataria a validacao antes de qualquer
+        veredito -- a mesma objecao que fez o `scope` virar INDETERMINADO em vez
+        de erro duro. O preco e declarado no proximo teste.
+        """
+        files = base()
+        sem = next(c["id"] for c in files["06-claims.yaml"] if not c.get("classe"))
+        add(files, "07-proofs.yaml",
+            observacao_da_instituicao("PRF-9104", [self.NORMA, sem]))
+        j, _ = judge(files)
+        self.assertEqual([e for e in j.errors if "PRF-9104" in e], [], j.errors)
+
+    def test_as_sem_classe_sao_CONTADAS_e_nao_passam_caladas(self):
+        """O preco da tolerancia acima, visivel no relatorio."""
+        j, m = judge(base())
+        cl = m["classes_de_claim"]
+        total = len(base()["06-claims.yaml"])
+        self.assertEqual(
+            len(cl["NORMA"]) + len(cl["VERIFICACAO"]) + len(cl["sem_classe"]),
+            total, "toda claim esta em um dos tres grupos, e em um so")
+        self.assertIn("sem classe declarada", gc.text_report(m, j))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

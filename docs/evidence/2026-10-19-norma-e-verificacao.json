@@ -1,0 +1,81 @@
+{
+  "ciclo": "C30-02",
+  "data": "2026-10-19",
+  "pedido": "as classes NORMA e VERIFICACAO, e a regra que impede a contaminacao",
+  "tres_correcoes_de_enunciado_medidas_antes_de_construir": {
+    "1_os_44_NORMA_nao_sao_claims": {
+      "claim": "CLM-0189",
+      "prova": "PRF-0219",
+      "veredito": "REFUTADA",
+      "o_que_sao": "CHAVES de declaracao em artefatos governados: de 301 candidatos, ESTADO 157, NORMA 44, SAI_DA_CLASSE 156",
+      "claim_tinha_campo_de_classe": false,
+      "propriedades_de_claim_antes": [
+        "asserted_by",
+        "blocks",
+        "chain_link",
+        "id",
+        "kind",
+        "prediction",
+        "statement"
+      ],
+      "o_risco_evitado": "pendurar a classe de claim na arvore de chaves, fazendo o portao C25-06 medir coisa de outra natureza"
+    },
+    "2_nao_ha_propagacao": {
+      "claim": "CLM-0190",
+      "prova": "PRF-0220",
+      "veredito": "REFUTADA",
+      "blocks_aponta_para": [
+        "escala (scale:REGIONAL)",
+        "incognita"
+      ],
+      "de_onde_vem_o_status": "das PROVAS que provam ou refutam a claim",
+      "o_vetor_real": "HUMANO: alguem escreve UMA prova e aponta o proves/refutes dela para as duas classes",
+      "consequencia": "o portao e LINT DE GRAFO e nao guarda de derivacao -- chamar de guarda seria inventar mecanismo",
+      "fineza_de_graca": "o schema diz proves XOR refutes, entao a travessia so cabe DENTRO de uma lista, e o portao confere a uniao",
+      "fora_do_escopo": [
+        "a FIT-019 retirando sustentacao",
+        "a supersessao entre provas"
+      ]
+    },
+    "3_a_direcao_estava_estreita": {
+      "pedido": "VERIFICACAO em REFUTED nao altera NORMA",
+      "a_direcao_viva": "a CONFIRMADA: 'a Prefeitura nao fara exigencia sobre C.A.' se confirmando e sendo lida como 'os indices atendem'",
+      "o_que_o_portao_barra": "o CRUZAMENTO, nos dois sentidos e em qualquer estado",
+      "a_frase": "ausencia de exigencia nao e evidencia de conformidade"
+    }
+  },
+  "o_portao": {
+    "claim": "CLM-0191",
+    "prova": "PRF-0221",
+    "veredito": "PROVEN (test)",
+    "casos": 7,
+    "mutacao_portao_desligado": "2 dos 7 falham -- os dois da travessia",
+    "o_controle_que_impede_bloqueio_geral": "a MESMA prova apontando para UMA classe PASSA: observacao externa deve provar VERIFICACAO",
+    "o_grafo_real_atravessa_hoje": false,
+    "o_portao_e": "PREVENTIVO, e isso esta medido"
+  },
+  "as_classes_povoadas": {
+    "NORMA": [
+      "CLM-0019 os indices atendem a LC 030/2007 na ZM",
+      "CLM-0033 a LC 097/2020 fecha a UNK-0009",
+      "CLM-0164 o prazo e derivavel do que o municipio PUBLICA"
+    ],
+    "VERIFICACAO": [
+      "CLM-0023 / 0024 / 0025 a Prefeitura nao fara exigencia",
+      "CLM-0026 o proximo ato sera a assinatura das 4 vias",
+      "CLM-0159 a exigencia mencionara a declaracao condominial",
+      "CLM-0162 o que a primeira exigencia de fato pediu",
+      "CLM-0174 o prazo que a Prefeitura APLICA"
+    ],
+    "sem_classe": 181,
+    "o_preco_declarado": "181 de 191 ficam FORA do portao. Exigir classe de todas mataria a validacao antes de qualquer veredito -- a mesma objecao do `scope`. Por isso a contagem aparece no relatorio: ausente e insuficiencia DECLARADA, e a fila fica visivel."
+  },
+  "a_prova_rodada_de_novo": {
+    "nova": "PRF-0222",
+    "supersede": "PRF-0215",
+    "claim": "CLM-0185",
+    "por_que": "o portao mexeu em genome_check.py e test_genome_check.py, e a PRF-0215 declarava superficie sobre os dois. O genome_surface_check acusou com os dois hashes lado a lado.",
+    "o_comportamento_mudou": false,
+    "a_alternativa_recusada": "estreitar os `paths` da PRF-0215 para parar de cobrir o juiz -- seria editar a prova velha para calar a guarda, exatamente o que a guarda existe para impedir"
+  }
+}
