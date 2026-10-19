@@ -927,3 +927,18 @@
   kind: claim
   statement: "O prazo de aceitacao da certidao de matricula pelo DHAP e derivavel dos documentos que o municipio publica."
   asserted_by: "claude (2026-10-19) - implicito ao tratar os 30 dias declarados pelo cartorio como o prazo exigido pela Prefeitura"
+
+- id: CLM-0165
+  kind: claim
+  statement: "A cauda de fsync da maquina de desenvolvimento esta dentro do envelope de 10 ms da orientacao do etcd, por limite superior."
+  asserted_by: "medicao de 2026-10-19 com instrumento proprio, tres execucoes; o instrumento e os.fsync e NAO o fio, e por isso o resultado e limite superior"
+
+- id: CLM-0166
+  kind: claim
+  statement: "Sob carga concorrente, a retencao observada do GIL nas rotas do CORE cruza o limiar de 100 ms do heartbeat e nao cruza o de 400 ms da eleicao."
+  asserted_by: "medicao de 2026-10-19 com thread canario de tique de 5 ms, sobre 128 das 317 rotas em processo"
+
+- id: CLM-0167
+  kind: claim
+  statement: "O p99 de retencao do GIL nas rotas do CORE, sob carga, passa de 400 ms, e por isso a escolha entre etcd e PySyncObj deixa de ter duas opcoes."
+  asserted_by: "hipotese do gatilho da emenda ao Ciclo 28, de 2026-10-15, que tornaria a decisao de mecanismo uma inferencia em vez de uma escolha"
