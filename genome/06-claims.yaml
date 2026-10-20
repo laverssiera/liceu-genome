@@ -1141,3 +1141,15 @@
   classe: NORMA
   statement: "O motor de conformidade urbanistica avalia a frente minima da P-001 com a regra que a UNK-0009 estabeleceu, e por isso registrar a testada muda o veredito dele."
   asserted_by: "expectativa minha ao gravar a testada no arquivo de parametros: o valor entrou, logo o motor passaria a compara-lo"
+
+- id: CLM-0204
+  kind: claim
+  classe: NORMA
+  statement: "Os recuos lateral e de fundos da P-001 nao estao cotados na prancha, e por isso a lacuna da CLM-0019 e de leitura do desenho."
+  asserted_by: "claude (2026-10-19, na PRF-0234) - afirmado ao dizer que os recuos estao em None e que a prancha os traz, sem ter ido ler"
+
+- id: CLM-0205
+  kind: claim
+  classe: NORMA
+  statement: "Medidos os recuos na prancha, a conformidade deles com a Tabela I fica resolvida."
+  asserted_by: "expectativa minha ao sair medir: o limite esta na tabela, o valor esta no desenho, logo bastaria comparar"
