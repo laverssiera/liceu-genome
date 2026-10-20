@@ -1123,3 +1123,21 @@
   classe: NORMA
   statement: "A area minima de lote de 360 m2 da Tabela I alcanca a unidade autonoma da P-001 dentro do condominio ja aprovado, e a frente minima de 5,00 m nao alcanca."
   asserted_by: "as duas metades da pergunta da UNK-0009, enunciadas juntas para serem medidas contra a cadeia normativa vigente"
+
+- id: CLM-0201
+  kind: claim
+  classe: NORMA
+  statement: "A P-001 NAO atende a frente minima de 5,00 m que a Tabela I fixa para a Zona Mista e que o art. 13 da LC 097/2020 manda observar."
+  asserted_by: "hipotese enunciada para ser medida: a PRF-0232 deixou a frente minima com regra determinada e cumprimento DESCONHECIDO, e desconhecido nao e atendido nem desatendido"
+
+- id: CLM-0202
+  kind: claim
+  classe: NORMA
+  statement: "Medida a testada, a CLM-0019 fica resolvida: todos os indices urbanisticos da P-001 atendem a LC 030/2007 na zona ZM."
+  asserted_by: "hipotese minha ao sair medir a testada, enunciada para ser conferida contra o que ainda falta e nao contra o que acabou de ser medido"
+
+- id: CLM-0203
+  kind: claim
+  classe: NORMA
+  statement: "O motor de conformidade urbanistica avalia a frente minima da P-001 com a regra que a UNK-0009 estabeleceu, e por isso registrar a testada muda o veredito dele."
+  asserted_by: "expectativa minha ao gravar a testada no arquivo de parametros: o valor entrou, logo o motor passaria a compara-lo"
