@@ -1,0 +1,45 @@
+{
+  "o_que_foi_medido": "a testada da P-001, na cota frontal da prancha do projeto",
+  "data": "2026-10-19",
+  "resultado": {
+    "testada_m": 7.0,
+    "frente_minima_exigida_m": 5.0,
+    "atende": true,
+    "folga_m": 2.0
+  },
+  "as_duas_confirmacoes_independentes": [
+    "a linha de cota de 7,00 atravessa a frente INTEIRA do lote, entre as duas divisas, acima do passeio e da linha da rua (a cota de 1,50 abaixo dela e a largura do passeio)",
+    "7,00 x 25,00 = 175,00 m2, e 175 m2 e a area do terreno que o grafo ja registrava por outra via"
+  ],
+  "a_profundidade_nao_se_escreve": "25,00 deriva de 175 / 7,00 -- derivavel de outro artefato nao se escreve, se deriva",
+  "a_base_normativa": "o art. 13 da LC 097/2020, na redacao da LC 99/2021, manda observar os indices e restricoes de ocupacao da Tabela 1 da ZM excluindo APENAS a area minima de lote. A frente nao esta excluida.",
+  "o_que_isto_fecha": "a lacuna que a PRF-0232 nomeou ha menos de uma hora: a frente minima tinha regra determinada e cumprimento DESCONHECIDO",
+  "o_placar_da_P_001_contra_a_Tabela_I_da_ZM": {
+    "C.A": "0,56 contra maximo 2,0 \u2014 ATENDE",
+    "T.O": "55,54% contra maximo 60% \u2014 ATENDE",
+    "T.P": "10,9% contra minimo 10% \u2014 ATENDE",
+    "area_do_terreno": "175 m2 contra a quota minima de 160,00 m2 do art. 119 \u2014 ATENDE (a area minima de 360 m2 da Tabela I NAO alcanca a unidade)",
+    "frente": "7,00 m contra minimo 5,00 m \u2014 ATENDE",
+    "I.E": "4,0 na Tabela I, DIRECAO de limite desconhecida \u2014 UNK-0008",
+    "recuo_lateral": "1,50 m minimo \u2014 NAO MEDIDO",
+    "recuo_3_00": "3,00 m minimo \u2014 NAO MEDIDO"
+  },
+  "a_CLM_0019_segue_UNPROVEN": {
+    "faltam": 3,
+    "e_a_razao_mudou_de_natureza": "antes faltava saber QUAL regra vale (incognita de NORMA, fechada pela UNK-0009); agora falta MEDIR tres valores (lacuna de medicao)",
+    "por_que_importa": "o primeiro exigia ler lei, o segundo exige ler prancha -- e so um dos dois depende de texto que nao existe"
+  },
+  "privacidade": {
+    "o_que_a_prancha_traz_e_NAO_entra": [
+      "endereco com numero",
+      "numero de lote e de quadra"
+    ],
+    "por_que": "sao identificadores que amarram imovel e proprietario pelo sistema municipal; a FIT-014 vale para eles como para CPF",
+    "as_copias_locais": "apagadas depois da leitura"
+  },
+  "um_limite_do_instrumento": {
+    "o_que": "a pagina tem rotation 270: search_for devolve coordenadas no espaco NAO ROTACIONADO e get_pixmap recorta no de EXIBICAO",
+    "custo": "dois recortes errados antes de passar pela page.rotation_matrix",
+    "por_que_e_perigoso": "os recortes errados mostram OUTRO desenho da mesma prancha -- plausivel, que e o pior jeito de errar"
+  }
+}

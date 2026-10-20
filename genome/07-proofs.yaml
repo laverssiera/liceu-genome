@@ -4544,3 +4544,46 @@
     repo: liceu-genome
     path: genome/09-unknowns.yaml
     note: "A UNK-0009 PERGUNTAVA DUAS COISAS E AS DUAS TEM RESPOSTA AGORA, EM DIRECOES OPOSTAS. PRIMEIRA: a area minima de lote de 360 m2 da Tabela I NAO alcanca a unidade autonoma. O art. 13 da LC 097, na redacao vigente, exclui a area minima de lote por nome e a substitui pela quota minima do art. 119 da LC 30, que para unidade autonoma horizontal de casas GEMINADAS e 160,00 m2. E repare que o art. 13 ESCOLHE a faixa: ele nao manda enquadrar a casa real entre as quatro do art. 119, manda usar a de geminadas para todo Condominio de Lotes. Nao ha inferencia minha nesse passo. SEGUNDA: a frente minima de 5,00 m ALCANCA a unidade. A exclusao do art. 13 nomeia 'a area minima de lote' e mais nada; a frente fica entre os 'indices urbanisticos e restricoes de ocupacao utilizados na Zona Mista, previstos na Tabela 1' que o mesmo artigo manda observar. E O QUE ISSO FAZ COM A P-001: o terreno tem 175 m2, e 175 e maior que 160 — atende, com folga de 15 m2. Compare-se com o que a pergunta supunha: contra os 360 m2 da Tabela I o terreno seria menos da metade do minimo. O QUE ISTO NAO FECHA, e e preciso ser exato: a frente minima APLICA-SE e a testada da P-001 NAO ESTA MEDIDA em lugar nenhum do grafo. A regra esta determinada; o cumprimento dela nao. E o I.E. segue INDETERMINADO por direcao desconhecida, que e a UNK-0008. Entao a CLM-0019 — os indices atendem a LC 030/2007 na ZM — permanece UNPROVEN, e responder a UNK-0009 nao a promove: trocou-se uma incognita de NORMA por uma lacuna de MEDICAO, e as duas nao sao a mesma coisa. UMA LIMITACAO DO GENOMA QUE ESTA RESPOSTA REVELA: o tipo `unknown` nao tem campo de estado. Nao ha como marcar uma incognita como RESPONDIDA — o precedente da UNK-0008 foi reescrever o required_evidence, e e o que se faz aqui. Enquanto nao houver esse campo, uma incognita respondida continua indistinguivel de uma aberta para quem le o grafo por tipo, e o `blocks` dela continua apontando. Registro como achado estrutural e nao mexo no blocks: baixar contagem de bloqueador e afirmar progresso, e progresso se prova."
+
+- id: PRF-0233
+  kind: proof
+  title: "A testada da P-001 e 7,00 m, lida na cota frontal da prancha: atende os 5,00 m com folga de 2,00 m"
+  refutes: [CLM-0201]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "localizacao das cotas lineares da prancha por busca de texto, transformacao das coordenadas pela matriz de rotacao da pagina, e leitura VISUAL da linha de cota que atravessa a frente do lote entre as duas divisas"
+    universo: "a prancha do projeto da unidade no acervo da P-001 no Drive do titular, uma pagina A1 de 84 x 59 cm, sha256 e3840b7de3e9a87f826239bea50e136e95ac920783f4a85e6ee2cd08835cce42, 1000105 bytes conferidos contra o tamanho que o Drive declara"
+    excluidos:
+      - "endereco, numero de lote e de quadra, que a prancha traz e que a regra de minimizacao e a FIT-014 mantem FORA de qualquer registro"
+      - "os recuos lateral e de fundos, que a Tabela I tambem fixa e que esta prova NAO mediu"
+      - "a conferencia em campo: isto le o PROJETO, nao o terreno; divergencia entre desenho e lote nao e mensuravel daqui"
+    instrumento: "pymupdf: search_for para achar as cotas, page.rotation_matrix para converter do espaco nao rotacionado ao de exibicao (a pagina tem rotation 270 e sem a conversao os recortes caem no lugar errado), e get_pixmap com clip a 9x para leitura visual"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-a-testada.json
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-a-testada.json
+    note: "A TESTADA E 7,00 m, E A LEITURA TEM DUAS CONFIRMACOES INDEPENDENTES. A primeira e a cota: a linha de 7,00 atravessa a frente INTEIRA do lote, entre as duas divisas laterais, imediatamente acima do passeio e da linha da rua — e abaixo dela ha outra cota, de 1,50, que e a largura do passeio e nao se confunde com a do lote. A segunda e aritmetica e serve de controle: 7,00 x 25,00 = 175,00 m2, e 175 m2 e a area do terreno que o grafo ja registrava por outra via. Duas coisas medidas em momentos diferentes, concordando. E PELA REGRA DE CLASSE A PROFUNDIDADE NAO SE ESCREVE: 25,00 deriva de 175 dividido por 7,00, e derivavel de outro artefato nao se escreve, se deriva. CONTRA A NORMA: a Tabela I fixa frente minima de 5,00 m para a Zona Mista, e o art. 13 da LC 097/2020, na redacao da LC 99/2021, manda observar os indices urbanisticos e restricoes de ocupacao da Tabela 1 da ZM excluindo APENAS a area minima de lote. A frente nao esta excluida. Entao 7,00 contra 5,00 minimo: ATENDE, com folga de 2,00 m — e folga e NUMERO e nao veredito, como a CLM-0052 ja fixou. ISTO FECHA A LACUNA QUE A PRF-0232 NOMEOU ha menos de uma hora: la a frente minima ficou com regra determinada e cumprimento desconhecido, e desconhecido nao e atendido nem desatendido. Agora e medido. O QUE A PRANCHA TRAZ E NAO ENTRA EM LUGAR NENHUM: endereco com numero, e numero de lote e de quadra. Sao identificadores que amarram imovel e proprietario pelo sistema municipal, e a FIT-014 vale para eles como vale para CPF. Foram vistos para localizar a cota e ficam fora do registro — e as copias locais do documento foram apagadas depois da leitura. UM LIMITE DO INSTRUMENTO que custou dois recortes errados: a pagina tem rotation 270, e o search_for devolve coordenadas no espaco NAO ROTACIONADO enquanto o get_pixmap recorta no espaco de EXIBICAO. Sem passar pela page.rotation_matrix os recortes caem noutro desenho da mesma prancha — e caem mostrando desenho plausivel, que e o pior jeito de errar."
+
+- id: PRF-0234
+  kind: proof
+  title: "A CLM-0019 continua UNPROVEN: faltam o I.E. e os recuos, e medir a testada nao os mede"
+  refutes: [CLM-0202]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "confronto item a item entre os indices que a Tabela I fixa para a Zona Mista e o que o grafo tem medido da P-001, apos a medicao da testada"
+    universo: "a linha ZM da Tabela I como o perfil VGP-LC030-2007-ZM a registra, com oito limites; e os parametros da P-001 em backend/juridicotech/dados/projeto_p001.json"
+    excluidos:
+      - "os limites que a Tabela I nao fixa para a ZM"
+      - "o que a Prefeitura vai de fato exigir, que e classe VERIFICACAO"
+    instrumento: "leitura do perfil e do arquivo de parametros, item por item, com a contagem dos que tem valor e dos que estao em None"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-a-testada.json
+  location:
+    repo: liceu-genome
+    path: genome/06-claims.yaml
+    note: "MEDIR UMA COISA NAO MEDE AS OUTRAS, e a tentacao de fechar a CLM-0019 agora e exatamente a que o metodo existe para conter. Com a testada, o placar da P-001 contra a Tabela I da ZM fica assim: C.A 0,56 contra maximo 2,0 ATENDE; T.O 55,54% contra maximo 60% ATENDE; T.P 10,9% contra minimo 10% ATENDE; area do terreno 175 m2 contra a quota minima de 160,00 m2 do art. 119 ATENDE, lembrando que a area minima de 360 m2 da Tabela I NAO alcanca a unidade; frente 7,00 m contra minimo 5,00 m ATENDE. SOBRAM TRES, E NENHUMA DELAS SE RESOLVE COM O QUE FOI MEDIDO HOJE: o I.E., que a Tabela I traz como 4,0 e cuja DIRECAO de limite e desconhecida — e UNK-0008, e so o texto consolidado da lei fecha, e esse texto nao existe; e os recuos LATERAL, que a Tabela I fixa em 1,50 m minimo, e o outro, em 3,00 m minimo, que estao em None no arquivo de parametros e NAO foram medidos nesta prova. A prancha os traz; esta prova nao os leu, e dizer que atendem porque a prancha parece atender seria afirmar sem medir. ENTAO A CLM-0019 SEGUE UNPROVEN, e a razao mudou de natureza: antes faltava saber QUAL regra vale para a unidade, que era incognita de NORMA e a UNK-0009 fechou; agora falta MEDIR tres valores, que e lacuna de medicao. A distincao importa para o proximo passo — o primeiro exigia ler lei, o segundo exige ler prancha, e so um dos dois depende de texto que nao existe."
