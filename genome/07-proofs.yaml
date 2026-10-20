@@ -4646,3 +4646,47 @@
     repo: JURIDICO-TECH
     path: backend/juridicotech/modules/conformidade_urbanistica.py
     note: "GRAVEI A TESTADA E O VEREDITO NAO MUDOU, E A RAZAO DISSO E O ACHADO. O motor nao olha o valor: ele resolve a frente minima ANTES de comparar, com esta frase — 'Frente minima e limite de LOTE e o projeto esta em regime CONDOMINIO: a aplicabilidade nao se resolve pela tabela — falta: decisao da Prefeitura sobre o regime'. Com 7,00 ou com None, a saida e a mesma. ISSO ERA CERTO ATE HOJE DE MANHA E DEIXOU DE SER. A UNK-0009 foi respondida: o art. 13 da LC 097/2020, na redacao da LC 99/2021, manda observar os indices urbanisticos e restricoes de ocupacao da Tabela 1 da Zona Mista para a unidade autonoma do Condominio de Lotes, EXCLUINDO APENAS a area minima de lote. Entao a aplicabilidade RESOLVE-SE, e resolve-se pela LEI e nao pela tabela nem por decisao de ninguem: a frente minima ALCANCA a unidade, e a area minima NAO alcanca, sendo substituida pela quota de 160,00 m2 do art. 119. O MOTOR ESTA ERRADO NOS DOIS, E EM DIRECOES OPOSTAS: na frente, ele pede decisao para algo que a lei ja decidiu APLICAR; na area minima, pede decisao para algo que a lei ja decidiu NAO aplicar. Nos dois casos ele devolve INDETERMINADO com a falta nomeada, que e o comportamento correto para quem nao sabe — e e por isso que nenhum teste quebrou e que a PRF-0235 pode dizer com verdade que o comportamento nao mudou. Ele nao esta quebrado: esta DESATUALIZADO, e a diferenca importa. NAO CONSERTEI, e a razao e de metodo: mudar a regra de aplicabilidade do motor altera o veredito da CLM-0019, e e outra diagnose — tem de nascer com o seu proprio teste, mostrando que a frente passa a ser COMPARADA e que a area minima passa a ser comparada contra 160,00 e nao contra 360,00. Emendar isso dentro do PR que mede uma testada seria exatamente o tipo de mudanca que entra de carona e ninguem confere. O QUE ISTO CUSTA ENQUANTO NAO FOR FEITO: a testada esta medida, registrada e atende com folga de 2,00 m — e o motor nao a usa. O numero existe no arquivo e nao chega ao veredito."
+
+- id: PRF-0237
+  kind: proof
+  title: "Os recuos estao cotados: 3,00 m nos fundos e 1,50 m num lado, com o outro na divisa - e os dois exatamente no minimo"
+  refutes: [CLM-0204]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "leitura visual das linhas de cota da planta do terreo: a cadeia transversal no pe da edificacao, que fecha a largura do lote, e a cota longitudinal entre a divisa de fundo e a parede dos fundos"
+    universo: "a prancha do projeto da unidade no acervo da P-001, sha256 e3840b7de3e9a87f826239bea50e136e95ac920783f4a85e6ee2cd08835cce42, 1000105 bytes, uma pagina A1; e a linha ZM da Tabela I como o perfil VGP-LC030-2007-ZM a registra"
+    excluidos:
+      - "endereco, numero de lote e de quadra, que a prancha traz e ficam FORA de todo registro"
+      - "o recuo FRONTAL, que a Tabela I nao fixa na linha ZM e que esta prova nao mediu"
+      - "conferencia em campo: le-se o PROJETO, nao a obra"
+    instrumento: "pymupdf com page.rotation_matrix para converter as coordenadas, e get_pixmap com clip a 10x e 11x sobre a cadeia de cotas e sobre a faixa dos fundos"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-os-recuos.json
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-os-recuos.json
+    note: "EU TINHA ESCRITO QUE A PRANCHA OS TRAZ SEM TER IDO LER, e trazia mesmo — mas o que ela traz e mais interessante que um par de numeros. A CADEIA TRANSVERSAL FECHA: 5,50 da divisa esquerda ate a parede direita, mais 1,50 dali ate a divisa direita, somando os 7,00 m da testada. Entao a edificacao ENCOSTA na divisa esquerda — recuo zero — e deixa 1,50 m no lado direito. A COTA DOS FUNDOS: 3,00 m da divisa de fundo ate a parede, ao longo da faixa de area permeavel. E OS DOIS CAEM EXATAMENTE NO MINIMO. A Tabela I da ZM pede, ate 2 pavimentos, '1,50 x 1 (lado)' de recuo lateral e 3,00 m de fundos. O projeto entrega 1,50 e 3,00. FOLGA ZERO nos dois, e folga zero e numero, nao veredito — mas e o numero que faz qualquer discussao de medicao virar discussao de conformidade. O RECUO ZERO NO LADO ESQUERDO NAO E IRREGULARIDADE, e a propria Tabela I diz por que: a observacao do cabecalho, que o perfil ja registrava, faculta 'nos lotes com testada igual ou inferior a 12,00m e com area de ate 500,00m2 inclusive, as edificacoes a serem implantadas deixar de observar UM dos recuos laterais quando exigidos'. A P-001 tem testada 7,00 e area 175 m2: cabe nas duas condicoes. O limite ja e de UM lado, e a faculdade cobre o outro. UMA COISA QUE A PRANCHA NAO RESOLVE E QUE NAO INVENTO: o numero de PAVIMENTOS nao esta declarado em campo, e os dois limites sao condicionados a ele — ate 2 pavimentos valem 1,50 e 3,00; acima, 3,00 em dois lados e 5,00 de fundos. O perfil diz, com essas palavras, que sem o numero de pavimentos o limite nao se fixa. As elevacoes e o I.E. de 1,0 apontam para pavimento unico, e APONTAR NAO E DECLARAR: fica nomeado."
+
+- id: PRF-0238
+  kind: proof
+  title: "O beiral avanca dentro dos dois recuos, e a lei nao diz se ele conta - a mesma medicao da ATENDE ou NAO ATENDE"
+  refutes: [CLM-0205]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "leitura das legendas de projecao de beiral na planta do terreo e na de cobertura, confrontadas com a definicao de recuo e com a de area nao computavel no art. 3o da LC 30/2007"
+    universo: "a prancha do projeto (mesmo sha da PRF-0237); e a LC 30/2007, arquivo?Id=12870, sha256 53e09fd2..., paginas 2 e 3, lidas visualmente a 200 dpi"
+    excluidos:
+      - "o Codigo de Obras do Estado de Sao Paulo, que o art. 4o III da LC 097 tambem manda observar e que NAO foi lido: ele pode definir beiral e recuo, e esta prova nao olhou"
+      - "jurisprudencia e pratica do balcao: isto le o dispositivo, nao a aplicacao"
+      - "o valor exato da projecao lateral, cuja legenda traz unidade inconsistente"
+    instrumento: "get_pixmap com clip sobre as legendas da prancha; e renderizacao das paginas 2 e 3 da LC 30 a 200 dpi para leitura visual das definicoes"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-os-recuos.json
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-os-recuos.json
+    note: "MEDIR OS RECUOS NAO RESOLVEU A CONFORMIDADE DELES, E A RAZAO E UMA PERGUNTA DE LEITURA QUE A MEDICAO FEZ APARECER. A prancha marca, dentro dos dois recuos, projecoes de beiral: 'Projecao de Beiral 80cm' na faixa dos fundos, e na faixa lateral direita duas legendas, 'Projecao de Beiral 60cm' e 'Projecao Beiral 1.15 cm'. A planta de cobertura confirma por outro numero: a faixa livre nos fundos aparece como 2,20, que e exatamente 3,00 menos 0,80. ENTAO A MESMA EDIFICACAO TEM DUAS MEDIDAS, e o veredito depende de qual conta. Medindo ate a PAREDE: fundos 3,00 contra minimo 3,00 e lateral 1,50 contra minimo 1,50 — ATENDE os dois, com folga zero. Medindo ate o BEIRAL: fundos 2,20 contra 3,00 — NAO ATENDE. O QUE A LEI DIZ, E E POR ISSO QUE NAO DECIDO: o art. 3o define 'recuo de fundos — medido entre a divisa de fundo e a EDIFICACAO', e define 'AREA NAO COMPUTAVEL — PARTES DAS EDIFICACOES elevadas do solo, de modo que avance para alem do seu suporte de sustentacao vertical, tais como: marquises e beirais'. Pela letra, o beiral E parte da edificacao, e o recuo se mede ate a edificacao. Mas a categoria 'nao computavel' existe justamente para tira-lo de uma conta — a de AREA. A lei nao diz se a exclusao vale tambem para o RECUO, e as duas leituras sao defensaveis no mesmo texto. ISTO NAO E LACUNA DE MEDICAO, E QUESTAO DE DIREITO, e a distincao muda quem resolve: nenhuma leitura de prancha fecha isso, e quem fecha e quem tem inscricao na ordem ou o despacho do orgao. REGISTRO E PARO. E UM DEFEITO DA PRANCHA, de passagem, que o titular e quem assina como responsavel tecnico: a legenda lateral diz 'Projecao Beiral 1.15 cm', e 1,15 cm e pouco mais de um centimetro — as outras duas legendas da mesma prancha usam cm para 60 e 80. Ou a unidade esta errada ou o numero esta, e por isso o valor da projecao lateral ficou FORA do escopo desta prova. O QUE ISSO FAZ COM A CLM-0019: ela continua UNPROVEN, e agora as tres faltas tem naturezas diferentes — o I.E. espera texto consolidado que nao existe, os recuos esperam uma LEITURA JURIDICA, e nenhuma das duas se resolve medindo mais."

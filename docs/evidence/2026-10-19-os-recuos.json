@@ -1,0 +1,61 @@
+{
+  "o_que_foi_medido": "os recuos lateral e de fundos, na planta do terreo",
+  "data": "2026-10-19",
+  "a_cadeia_transversal_fecha": {
+    "da_divisa_esquerda_a_parede_direita_m": 5.5,
+    "da_parede_a_divisa_direita_m": 1.5,
+    "soma_m": 7.0,
+    "igual_a_testada": true
+  },
+  "os_recuos_a_PAREDE": {
+    "lateral_esquerdo_m": 0.0,
+    "lateral_direito_m": 1.5,
+    "fundos_m": 3.0
+  },
+  "os_limites_da_Tabela_I_ZM_ate_2_pavimentos": {
+    "lateral": "1,50 x 1 (lado)",
+    "fundos": "3,00"
+  },
+  "folga": "ZERO nos dois",
+  "o_recuo_zero_a_esquerda_nao_e_irregularidade": {
+    "fonte": "observacao do cabecalho da Tabela I, ja registrada no perfil",
+    "texto": "facultado nos lotes com testada igual ou inferior a 12,00m e com area de ate 500,00m2 inclusive, deixar de observar UM dos recuos laterais",
+    "a_P_001_cabe": {
+      "testada_m": 7.0,
+      "area_m2": 175
+    }
+  },
+  "o_que_a_prancha_NAO_declara": {
+    "pavimentos": "nao esta em campo, e os DOIS limites sao condicionados a ele: ate 2 pavimentos 1,50 e 3,00; acima, 3,00 em dois lados e 5,00 de fundos",
+    "o_que_aponta": "as elevacoes e o I.E. de 1,0 apontam para pavimento unico",
+    "apontar_nao_e_declarar": true
+  },
+  "a_pergunta_que_a_medicao_fez_aparecer": {
+    "claim": "CLM-0205",
+    "prova": "PRF-0238",
+    "as_projecoes_de_beiral_dentro_dos_recuos": {
+      "fundos": "Projecao de Beiral 80cm",
+      "lateral": [
+        "Projecao de Beiral 60cm",
+        "Projecao Beiral 1.15 cm"
+      ]
+    },
+    "confirmacao_pela_cobertura": "a faixa livre nos fundos aparece como 2,20 = 3,00 - 0,80",
+    "medindo_ate_a_PAREDE": "fundos 3,00 >= 3,00 e lateral 1,50 >= 1,50 \u2014 ATENDE, folga zero",
+    "medindo_ate_o_BEIRAL": "fundos 2,20 < 3,00 \u2014 NAO ATENDE",
+    "o_que_a_lei_diz": {
+      "recuo": "medido entre a divisa de fundo e a EDIFICACAO (art. 3o)",
+      "area_nao_computavel": "PARTES DAS EDIFICACOES elevadas do solo que avancem alem do suporte vertical, tais como marquises e beirais (art. 3o)",
+      "a_tensao": "pela letra o beiral E parte da edificacao; mas 'nao computavel' existe para tira-lo da conta de AREA, e a lei nao diz se a exclusao vale para o RECUO"
+    },
+    "natureza": "NAO e lacuna de medicao, e questao de DIREITO: nenhuma leitura de prancha fecha, e quem fecha e quem tem inscricao na ordem ou o despacho do orgao",
+    "fora_do_escopo": "o Codigo de Obras do Estado de SP, que o art. 4o III da LC 097 tambem manda observar e que NAO foi lido"
+  },
+  "um_defeito_da_prancha": {
+    "o_que": "a legenda lateral diz 'Projecao Beiral 1.15 cm'",
+    "por_que_e_defeito": "1,15 cm e pouco mais de um centimetro, e as outras duas legendas da mesma prancha usam cm para 60 e 80",
+    "consequencia": "o valor da projecao lateral ficou FORA do escopo",
+    "quem_assina": "o titular e o responsavel tecnico da prancha"
+  },
+  "o_que_isso_faz_com_a_CLM_0019": "continua UNPROVEN, e as tres faltas tem naturezas diferentes: o I.E. espera texto consolidado que nao existe, os recuos esperam LEITURA JURIDICA, e nenhuma se resolve medindo mais"
+}
