@@ -1264,3 +1264,13 @@
   kind: claim
   statement: "Com voo que pode TRAVAR, existe remedio construivel que satisfaz o I3b como escrito e mantem o avanco da epoca."
   asserted_by: "ninguem ainda - enunciada por mim em 2026-10-20 para ser medida ANTES de decidir o remedio, porque decidir sobre o dreno incondicional do fencing.py seria decidir sobre uma idealizacao"
+
+- id: CLM-0228
+  kind: claim
+  statement: "A releitura do I3b em termos de efeito possivel conserta o protocolo de autoridade: depois dela o modelo nao viola invariante nenhum, e por isso a camada de autoridade esta correta."
+  asserted_by: "a leitura natural do relatorio depois da releitura, e e minha: a linha diz 'ainda viola: nada', e e exatamente assim que um resultado de releitura se faz passar por conserto"
+
+- id: CLM-0229
+  kind: claim
+  statement: "O I3b relido e o I3a com outro nome, e por isso um dos dois e redundante no conjunto de invariantes."
+  asserted_by: "ninguem ainda - enunciada por mim em 2026-10-20 porque a releitura aproxima os dois enunciados: um fala do efeito que ACONTECEU e o outro do efeito que PODE acontecer, e sem medicao isso se confunde"

@@ -1,0 +1,94 @@
+{
+  "o_que_e": "o I3b relido em termos de efeito possivel, por decisao do titular",
+  "data": "2026-10-20",
+  "a_decisao": {
+    "quem": "o titular",
+    "o_que": "reler o I3b: de 'nada FICA em voo sob epoca revogada' para 'nada que ainda POSSA TOMAR EFEITO fica sob epoca revogada'",
+    "o_que_ela_NAO_e": "nao e conserto do protocolo. Nenhuma linha dele mudou: 387 estados antes, 387 depois."
+  },
+  "o_resultado_de_manchete_e_a_armadilha_dele": {
+    "o_relatorio_passou_a_dizer": "ainda viola: nada",
+    "por_que_isso_e_armadilha": "e exatamente assim que resultado de releitura se faz passar por conserto",
+    "a_guarda_contra_isso": "a leitura antiga ficou como `i3b_escrito`, FORA do dicionario de invariantes, com teste mostrando que no MESMO modelo ela SEGUE violando",
+    "o_que_a_releitura_custa_declarado": "sob a leitura vigente, uma requisicao sob epoca revogada PODE estar em voo -- ela so nao pode concluir. Quem contar requisicoes em voo vai encontra-las, e o invariante nao as proibe mais."
+  },
+  "o_desenho": {
+    "a_cerca_e_do_PROTOCOLO_nao_do_estado": "por isso os invariantes passaram a receber (estado, modelo): 'pode tomar efeito' depende do protocolo, e nao ha como codifica-lo so no estado",
+    "i3b_escrito": "guardado fora do dicionario, para a mudanca ser medivel",
+    "falsificavel": "a mutacao `conclui_sem_conferir_no_efeito` quebra o relido -- sem isso a releitura so apagaria o invariante",
+    "nao_e_o_I3a": "ha estado que viola o relido e nao o I3a: o retardado esta ali e pode concluir, e nada concluiu ainda. Passado contra presente."
+  },
+  "as_cinco_provas_repostas": {
+    "PRF-0244 -> PRF-0264": {
+      "segue_refutada": true,
+      "por_que": "a divisao nao fechou nada: ela separou. O I3b passou a valer pela RELEITURA, que e ato distinto e posterior -- e a releitura tambem nao consertou o protocolo, mudou o que se exige dele"
+    },
+    "PRF-0245 -> PRF-0265": {
+      "I3a_vale": true,
+      "I3a_falsificavel": true,
+      "separou_na_leitura_escrita": true,
+      "hoje_sob_a_releitura_os_dois_valem": true
+    },
+    "PRF-0246 -> PRF-0266": {
+      "relido_viola_em": 0,
+      "escrito_viola_em": 32,
+      "de": 32,
+      "truncaram": 12,
+      "matriz": {
+        "sem P4": [
+          "I1_uma_instancia_por_epoca",
+          "I4_testemunha_nao_inventa"
+        ],
+        "sem P5": [
+          "I1_uma_instancia_por_epoca"
+        ],
+        "sem P2": [],
+        "sem P1": [],
+        "sem P3": [],
+        "sem P2 e sem P5": [
+          "I1_uma_instancia_por_epoca",
+          "I2_epoca_monotonica"
+        ]
+      },
+      "mantida": true
+    },
+    "PRF-0247 -> PRF-0267": {
+      "as_cinco_bastam_agora": true,
+      "quebra_sem_a_cerca": [
+        "I3a_nenhum_efeito_sob_epoca_revogada",
+        "I3b_nada_que_possa_tomar_efeito_sob_epoca_revogada"
+      ],
+      "quebra_sem_P4": [
+        "I1_uma_instancia_por_epoca",
+        "I4_testemunha_nao_inventa"
+      ],
+      "clausula_causal_falsa": true,
+      "segue_refutada": true,
+      "mas_por_motivo_DIFERENTE": "antes: as cinco NAO bastavam. Agora: bastam, e o que as faz bastar NAO e o log -- e a cerca no efeito, que e protocolo"
+    },
+    "PRF-0256 -> PRF-0268": {
+      "sem_P4_a_mais": [
+        "I1_uma_instancia_por_epoca",
+        "I4_testemunha_nao_inventa"
+      ],
+      "sem_P3_a_mais": [],
+      "duravel": true,
+      "linearizavel": false,
+      "segue_refutada": true
+    }
+  },
+  "a_que_mais_mudou": {
+    "qual": "CLM-0172, pela PRF-0267",
+    "antes": "REFUTADA porque as cinco propriedades NAO bastavam -- o I3 ainda violava com as cinco ligadas",
+    "agora": "REFUTADA porque BASTAM, e o que as faz bastar NAO e o log: desligar a cerca no efeito (protocolo) quebra o I3a e o I3b relido; desligar o P4 (log) quebra I1 e I4, nunca o fencing",
+    "o_que_isso_exige_de_quem_le": "'CLM-0172 REFUTED' nao significa mais 'as cinco nao bastam'. Significa 'bastam, e nao e o log que as faz bastar' -- e a segunda e mais forte",
+    "a_consequencia_pratica_da_PRF_0202_segue_de_pe": "escolher etcd ou PySyncObj continua nao fechando o fencing"
+  },
+  "o_protocolo_base": {
+    "estados": 387,
+    "truncou": false,
+    "viola": [],
+    "i3b_escrito_viola": true
+  },
+  "o_que_segue_NAO_construido": "o dreno. Ele satisfaria a leitura ESCRITA, que segue violando. A releitura deixou de exigi-la; nao a satisfez."
+}
