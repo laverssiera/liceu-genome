@@ -1289,3 +1289,13 @@
   kind: claim
   statement: "O passivo do furo da evidencia e conhecido por varredura de regex sobre o YAML das provas."
   asserted_by: "claude (2026-10-20), ao medir a Parte 1 do PASSO A com um regex que exigia `repo:` seguido de `path:` na linha seguinte e anunciar 114 provas com o campo"
+
+- id: CLM-0233
+  kind: claim
+  statement: "Os unicos passos do roteiro REGIONAL v2 que dependem do titular sao o B e o G; o C se executa sozinho, porque medir nao apaga nada e o runtime nao tem questao de licenca."
+  asserted_by: "o roteiro REGIONAL v2 (titular, 2026-10-20 12h25): 'Nenhum passo precisa de fatura. O que precisa de voce: o I3b no B, e a palavra do mecanismo no G'; e o PASSO C diz 'Medir nao apaga nada. Autorizado.'"
+
+- id: CLM-0234
+  kind: claim
+  statement: "O `C:\\Windows\\Installer`, com 21,24 GB, e cache reconstruivel e entra na conta dos 40 GB livres."
+  asserted_by: "ninguem ainda - enunciada por mim em 2026-10-20 justamente porque e o maior numero unico do disco, e quem procura 40 GB chega nele primeiro"
