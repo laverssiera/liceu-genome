@@ -1,0 +1,64 @@
+{
+  "pergunta": "a UNK-0009, lida ao pe da letra, metade por metade",
+  "data": "2026-10-19",
+  "a_cadeia_normativa_vigente": [
+    "LC 097/2020, art. 13 \u2014 NA REDACAO DA LC 99/2021 (unica alteradora, conforme o bloco 'Alterada por' da Camara)",
+    "remete ao art. 119 da LC 30/2007 \u2014 NA REDACAO DA LC 99/2021",
+    "LC 101/2021 e a unica alteradora posterior da LC 30 e NAO toca o art. 119 (zero ocorrencias de '119')"
+  ],
+  "a_resposta": {
+    "area_minima_de_lote_360_m2": {
+      "alcanca_a_unidade": false,
+      "por_que": "o art. 13 a exclui POR NOME e a substitui pela quota minima do art. 119",
+      "valor_que_vale": "160,00 m2 (unidade autonoma horizontal de casas GEMINADAS)",
+      "o_art_13_ESCOLHE_a_faixa": "ele nao manda enquadrar a casa real entre as quatro do art. 119 -- manda usar a de geminadas para todo CL"
+    },
+    "frente_minima_5_00_m": {
+      "alcanca_a_unidade": true,
+      "por_que": "a exclusao nomeia 'a area minima de lote' e mais nada; a frente fica entre os indices e restricoes de ocupacao da Tabela 1 que o mesmo artigo manda observar"
+    }
+  },
+  "o_que_isso_faz_com_a_P_001": {
+    "terreno_m2": 175,
+    "quota_minima_exigida_m2": 160,
+    "atende": true,
+    "folga_m2": 15,
+    "contraste": "contra os 360 m2 da Tabela I seria menos da metade do minimo"
+  },
+  "o_que_NAO_fecha": {
+    "a_testada_da_P_001": "NAO ESTA MEDIDA em lugar nenhum do grafo: a regra esta determinada, o cumprimento nao",
+    "o_I_E": "segue INDETERMINADO por direcao desconhecida -- e a UNK-0008",
+    "a_CLM_0019": "permanece UNPROVEN: trocou-se uma incognita de NORMA por uma lacuna de MEDICAO, e nao sao a mesma coisa"
+  },
+  "a_autocorrecao": {
+    "claim": "CLM-0198",
+    "prova": "PRF-0230",
+    "o_que_a_PRF_0225_fez": "transcreveu o art. 13 do PDF ORIGINAL de 2020, que remetia a 'art. 4o, par. 1o da LC 30'",
+    "o_que_a_LC_99_2021_fez": "reescreveu o art. 13 inteiro, redirecionando para o art. 119",
+    "a_substancia_mudou": false,
+    "a_remissao_velha_era_MORTA": "a LC 101/2021 REVOGOU o par. 1o do art. 4o da LC 30 em 31/08/2021 -- a LC 99 redirecionou em julho, a LC 101 revogou o alvo em agosto",
+    "o_defeito_do_escopo": "a PRF-0225 declarou o universo como 'as nove paginas do PDF da LC 097/2020' e nao disse nada sobre alteracoes da propria LC 097. Um universo que e UM PDF de 2020 nao sustenta afirmacao sobre o que a lei DIZ hoje.",
+    "a_mesma_licao_do_Decreto_095": "acompanhar a lei nao basta -- e aqui com agravante: a norma posterior mudou PARA ONDE a lei aponta"
+  },
+  "onde_a_cota_NAO_estava": {
+    "claim": "CLM-0199",
+    "prova": "PRF-0231",
+    "o_art_4o_da_LC_30_e": "o artigo das ZONAS DE USO, incisos I a XIV",
+    "o_par_1o_existiu": "sim -- a LC 101/2021 o revoga expressamente, e nao se revoga o que nao existe -- mas tambem tratava de zona de uso, nao de cota",
+    "dois_achados_sobre_a_LC_30_que_o_perfil_nao_registrava": [
+      "o art. 5o lista os indices urbanisticos e 'Area minima do lote' e o inciso I -- por isso o art. 13 precisou exclui-la POR NOME",
+      "'frente minima' NAO esta entre os sete incisos do art. 5o, o que a poe entre as 'restricoes de ocupacao' e nao entre os 'indices'"
+    ]
+  },
+  "um_limite_do_instrumento_que_quase_parou_a_leitura": {
+    "o_que": "a LC 30 usa compressao JBIG2 e o binario jbig2dec nao existe nesta maquina",
+    "sintoma": "pypdf falha com DependencyError ao extrair as imagens",
+    "conserto": "pymupdf decodifica JBIG2 nativamente",
+    "se_nao_houvesse": "a regra de parada teria disparado por indisponibilidade de INSTRUMENTO, nao de NORMA"
+  },
+  "uma_limitacao_estrutural_do_genoma": {
+    "o_que": "o tipo `unknown` nao tem campo de estado",
+    "consequencia": "nao ha como marcar uma incognita como RESPONDIDA; o precedente da UNK-0008 foi reescrever o required_evidence, e e o que se faz aqui",
+    "o_blocks_nao_foi_mexido": "baixar contagem de bloqueador e afirmar progresso, e progresso se prova"
+  }
+}
