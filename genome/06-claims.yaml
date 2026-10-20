@@ -1135,3 +1135,9 @@
   classe: NORMA
   statement: "Medida a testada, a CLM-0019 fica resolvida: todos os indices urbanisticos da P-001 atendem a LC 030/2007 na zona ZM."
   asserted_by: "hipotese minha ao sair medir a testada, enunciada para ser conferida contra o que ainda falta e nao contra o que acabou de ser medido"
+
+- id: CLM-0203
+  kind: claim
+  classe: NORMA
+  statement: "O motor de conformidade urbanistica avalia a frente minima da P-001 com a regra que a UNK-0009 estabeleceu, e por isso registrar a testada muda o veredito dele."
+  asserted_by: "expectativa minha ao gravar a testada no arquivo de parametros: o valor entrou, logo o motor passaria a compara-lo"

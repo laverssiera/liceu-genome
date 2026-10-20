@@ -4587,3 +4587,62 @@
     repo: liceu-genome
     path: genome/06-claims.yaml
     note: "MEDIR UMA COISA NAO MEDE AS OUTRAS, e a tentacao de fechar a CLM-0019 agora e exatamente a que o metodo existe para conter. Com a testada, o placar da P-001 contra a Tabela I da ZM fica assim: C.A 0,56 contra maximo 2,0 ATENDE; T.O 55,54% contra maximo 60% ATENDE; T.P 10,9% contra minimo 10% ATENDE; area do terreno 175 m2 contra a quota minima de 160,00 m2 do art. 119 ATENDE, lembrando que a area minima de 360 m2 da Tabela I NAO alcanca a unidade; frente 7,00 m contra minimo 5,00 m ATENDE. SOBRAM TRES, E NENHUMA DELAS SE RESOLVE COM O QUE FOI MEDIDO HOJE: o I.E., que a Tabela I traz como 4,0 e cuja DIRECAO de limite e desconhecida — e UNK-0008, e so o texto consolidado da lei fecha, e esse texto nao existe; e os recuos LATERAL, que a Tabela I fixa em 1,50 m minimo, e o outro, em 3,00 m minimo, que estao em None no arquivo de parametros e NAO foram medidos nesta prova. A prancha os traz; esta prova nao os leu, e dizer que atendem porque a prancha parece atender seria afirmar sem medir. ENTAO A CLM-0019 SEGUE UNPROVEN, e a razao mudou de natureza: antes faltava saber QUAL regra vale para a unidade, que era incognita de NORMA e a UNK-0009 fechou; agora falta MEDIR tres valores, que e lacuna de medicao. A distincao importa para o proximo passo — o primeiro exigia ler lei, o segundo exige ler prancha, e so um dos dois depende de texto que nao existe."
+
+- id: PRF-0235
+  kind: proof
+  title: "O I.E segue INDETERMINADO e o motor segue nomeando a falta - rodado de novo sobre a superficie que a testada alterou"
+  proves: [CLM-0071, CLM-0020]
+  basis: test
+  supersedes: [PRF-0087, PRF-0089]
+  date: "2026-10-19"
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_conformidade_urbanistica.py
+    name: test_conformidade_urbanistica
+  mechanism:
+    repo: JURIDICO-TECH
+    paths:
+      - backend/juridicotech/dados/projeto_p001.json
+      - backend/juridicotech/dados/vgp_lc030_2007_zm.json
+      - backend/juridicotech/modules/conformidade_urbanistica.py
+      - backend/tests/test_conformidade_urbanistica.py
+    content_hash: ec512c180588d1f84fb48ecdda90cdcabfa4691aa1b9701080c7c4fca40bfd72
+    commit: aec0c89
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-a-testada.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    note: "RODADO DE NOVO PORQUE A ec512c180588d1f84fb48ecdda90cdcabfa4691aa1b9701080c7c4fca40bfd72 MUDOU: gravar a testada tocou o arquivo de parametros e o de teste, e as duas provas cobriam os quatro arquivos. O comportamento que elas provavam CONTINUA valendo, e isso foi MEDIDO e nao suposto — o relatorio do motor foi gerado nas duas versoes, a de HEAD~1 e a atual, e saiu IDENTICO, 4544 caracteres nos dois. 83 testes passam. O I.E segue INDETERMINADO por direcao de limite desconhecida, e o motor segue nomeando a falta em vez de chutar. E A PRIMEIRA TENTATIVA DESSA COMPARACAO FOI NULA, e registro porque quase passou por boa: eu rodei `git stash` para voltar ao estado anterior, mas a mudanca JA ESTAVA COMMITADA — a arvore estava limpa, o stash nao guardou nada, e as duas execucoes rodaram o MESMO codigo. Saiu identico, como tinha de sair, e teria passado por confirmacao se o `git stash pop` nao tivesse reclamado que nao havia stash. Experimento que compara uma coisa com ela mesma devolve igualdade sempre, e devolve com a mesma cara de quem mediu."
+
+- id: PRF-0236
+  kind: proof
+  title: "O motor ficou ATRAS da lei: ele ainda pede decisao da Prefeitura sobre o regime, que a UNK-0009 ja respondeu"
+  refutes: [CLM-0203]
+  basis: test
+  date: "2026-10-19"
+  test:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    name: relatorio
+  mechanism:
+    repo: JURIDICO-TECH
+    paths:
+      - backend/juridicotech/dados/projeto_p001.json
+      - backend/juridicotech/dados/vgp_lc030_2007_zm.json
+      - backend/juridicotech/modules/conformidade_urbanistica.py
+      - backend/tests/test_conformidade_urbanistica.py
+    content_hash: ec512c180588d1f84fb48ecdda90cdcabfa4691aa1b9701080c7c4fca40bfd72
+    commit: aec0c89
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-a-testada.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    note: "GRAVEI A TESTADA E O VEREDITO NAO MUDOU, E A RAZAO DISSO E O ACHADO. O motor nao olha o valor: ele resolve a frente minima ANTES de comparar, com esta frase — 'Frente minima e limite de LOTE e o projeto esta em regime CONDOMINIO: a aplicabilidade nao se resolve pela tabela — falta: decisao da Prefeitura sobre o regime'. Com 7,00 ou com None, a saida e a mesma. ISSO ERA CERTO ATE HOJE DE MANHA E DEIXOU DE SER. A UNK-0009 foi respondida: o art. 13 da LC 097/2020, na redacao da LC 99/2021, manda observar os indices urbanisticos e restricoes de ocupacao da Tabela 1 da Zona Mista para a unidade autonoma do Condominio de Lotes, EXCLUINDO APENAS a area minima de lote. Entao a aplicabilidade RESOLVE-SE, e resolve-se pela LEI e nao pela tabela nem por decisao de ninguem: a frente minima ALCANCA a unidade, e a area minima NAO alcanca, sendo substituida pela quota de 160,00 m2 do art. 119. O MOTOR ESTA ERRADO NOS DOIS, E EM DIRECOES OPOSTAS: na frente, ele pede decisao para algo que a lei ja decidiu APLICAR; na area minima, pede decisao para algo que a lei ja decidiu NAO aplicar. Nos dois casos ele devolve INDETERMINADO com a falta nomeada, que e o comportamento correto para quem nao sabe — e e por isso que nenhum teste quebrou e que a PRF-0235 pode dizer com verdade que o comportamento nao mudou. Ele nao esta quebrado: esta DESATUALIZADO, e a diferenca importa. NAO CONSERTEI, e a razao e de metodo: mudar a regra de aplicabilidade do motor altera o veredito da CLM-0019, e e outra diagnose — tem de nascer com o seu proprio teste, mostrando que a frente passa a ser COMPARADA e que a area minima passa a ser comparada contra 160,00 e nao contra 360,00. Emendar isso dentro do PR que mede uma testada seria exatamente o tipo de mudanca que entra de carona e ninguem confere. O QUE ISTO CUSTA ENQUANTO NAO FOR FEITO: a testada esta medida, registrada e atende com folga de 2,00 m — e o motor nao a usa. O numero existe no arquivo e nao chega ao veredito."
