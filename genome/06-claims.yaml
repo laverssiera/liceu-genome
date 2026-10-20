@@ -1179,3 +1179,23 @@
   kind: claim
   statement: "O I3a - nenhum ato sob epoca revogada toma efeito - e satisfeito pelo protocolo com a imposicao e e falsificavel por mutacao, e por isso a divisao separa um invariante fechado de um aberto em vez de renomear o mesmo furo."
   asserted_by: "ninguem ainda - e o que a divisao produz, e so vale se a mutacao que desguarnece o efeito quebrar o I3a E o I3b seguir violando no mesmo modelo"
+
+- id: CLM-0211
+  kind: claim
+  statement: "A refutacao da CLM-0007 repousa em prova de escopo incompleto, e por isso a refutacao nao se sustenta e a claim volta a UNPROVEN."
+  asserted_by: "regra de parada do proprio PASSO 0 (titular, 2026-10-20) - 'se o escopo da prova refutadora for INDETERMINADO, a refutacao nao se sustenta e a CLM-0007 volta a UNPROVEN. Isso e resultado, nao retrocesso.' Enunciada para ser medida, e e o que se mede aqui."
+
+- id: CLM-0212
+  kind: claim
+  statement: "Os tres bloqueadores do REGIONAL sao afirmacoes sobre protocolo e aplicacao, e por isso tres conteineres num host, com particao simulada por regra de firewall, fecham os tres."
+  asserted_by: "o paragrafo 0 do plano de 2026-10-20 (titular), ao corrigir o enquadramento do envelope"
+
+- id: CLM-0213
+  kind: claim
+  statement: "O enunciado correto da Sucessora, que o diagnostico (iii) exige, ja nasceu no PASSO 1, e por isso o resto do plano tem a que se aplicar."
+  asserted_by: "o PASSO 0 do plano de 2026-10-20 (titular) - 'Se (iii): o enunciado correto nasce no PASSO 1, e o resto deste documento se aplica a claim nova, nao a antiga'. O PASSO 1 e o C30-01, executado em 2026-10-19."
+
+- id: CLM-0214
+  kind: claim
+  statement: "O teto de autonomia de cada monolito esta definido canonicamente em codigo, ainda que a Constituicao o declare ABERTO."
+  asserted_by: "ninguem - enunciada por mim em 2026-10-20 para que a declaracao da Constituicao fosse CONFERIDA e nao aceita: documento que declara o proprio estado nao e medicao desse estado"
