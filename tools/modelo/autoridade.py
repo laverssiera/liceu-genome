@@ -197,19 +197,19 @@ def sucessores(m: Modelo, e: Estado) -> Iterator[tuple]:
 # ---------------------------------------------------------------------------
 # OS CINCO INVARIANTES
 # ---------------------------------------------------------------------------
-def i1(e: Estado) -> bool:
+def i1(e: Estado, m: Modelo) -> bool:
     """Nunca duas instancias servindo a MESMA epoca."""
     epocas = [ep for _, ep in e.servindo]
     return len(epocas) == len(set(epocas))
 
 
-def i2(e: Estado) -> bool:
+def i2(e: Estado, m: Modelo) -> bool:
     """authority_epoch monotonica: nunca decresce, nunca repete."""
     eps = [ep for ep, _ in e.log]
     return all(b > a for a, b in zip(eps, eps[1:]))
 
 
-def i3a(e: Estado) -> bool:
+def i3a(e: Estado, m: Modelo) -> bool:
     """I3a -- SEGURANCA: nenhum ato sob epoca revogada TOMA EFEITO.
 
     E o que a imposicao do C30-01 entrega, conferindo no momento do efeito.
@@ -218,23 +218,58 @@ def i3a(e: Estado) -> bool:
     return not e.efeito_sob_revogada
 
 
-def i3b(e: Estado) -> bool:
-    """I3b -- ESTADO: nada FICA em voo sob epoca revogada.
+def cerca_no_efeito(m: Modelo) -> bool:
+    """O receptor confere a epoca no EFEITO e recusa se revogada.
 
-    E o I3 COMO ESTAVA ESCRITO, palavra por palavra e sem emenda. A
-    imposicao NAO o satisfaz: o ato e recusado no efeito, mas ja estava em
-    voo quando a epoca virou. So o DRENO -- esvaziar o que voa antes de
-    comprometer a epoca nova -- o satisfaz, e o dreno nao foi construido.
+    E propriedade do PROTOCOLO e nao do estado, e e por isso que os
+    invariantes recebem o modelo. A mutacao que a desliga e o unico jeito de
+    o I3b relido ser falsificavel.
+    """
+    return m.mutacao != "conclui_sem_conferir_no_efeito"
+
+
+def i3b_escrito(e: Estado, m: Modelo) -> bool:
+    """O I3b COMO ESTAVA ESCRITO, guardado para a releitura ser comparavel.
+
+    "Nada FICA em voo sob epoca revogada" -- proibe a PRESENCA. Fica FORA do
+    dicionario de invariantes desde 2026-10-20: nao e mais o que o LICEU
+    exige, e continua aqui para que a mudanca de leitura possa ser MEDIDA
+    contra o que havia antes, em vez de afirmada.
     """
     corrente = epoca_comprometida(e)
     return all(ep >= corrente for _, ep in e.servindo)
 
 
-def i4(e: Estado) -> bool:
+def i3b(e: Estado, m: Modelo) -> bool:
+    """I3b -- RELIDO em 2026-10-20, por decisao do titular: nada que ainda
+    POSSA TOMAR EFEITO fica sob epoca revogada.
+
+    O que mudou e o que se proibe. A leitura escrita proibia a PRESENCA da
+    requisicao sob epoca revogada, e so o dreno a satisfazia -- um dreno que
+    nao pode falhar, porque o que trava nao drena (PRF-0260). Esta leitura
+    proibe a presenca do que ainda pode CONCLUIR: com a cerca no momento do
+    efeito, o retardado nao pode, e deixa de contar.
+
+    NAO E O I3a, e ha teste para isso. O I3a olha o PASSADO -- nenhum efeito
+    sob epoca revogada ACONTECEU. Este olha o PRESENTE -- nada que possa
+    acontecer esta ali. Existe estado em que este viola e o I3a ainda vale:
+    o retardado existe e pode concluir, e nada concluiu ainda.
+    """
+    if cerca_no_efeito(m):
+        return True
+    corrente = epoca_comprometida(e)
+    return all(ep >= corrente for _, ep in e.servindo)
+
+
+def i4(e: Estado, m: Modelo) -> bool:
     """Se a Testemunha registra transicao, houve transicao real."""
     return all(t in e.log for t in e.testemunha)
 
 
+#: O I3b FOI RELIDO EM 2026-10-20, por decisao do titular, em termos de
+#: EFEITO POSSIVEL: ele proibia a PRESENCA da requisicao sob epoca revogada e
+#: passa a proibir a presenca do que ainda PODE tomar efeito. A leitura antiga
+#: fica em `i3b_escrito`, fora deste dicionario, para a mudanca ser medivel.
 #: O I3 FOI DIVIDIDO EM 2026-10-20, por decisao do titular. O enunciado
 #: unico -- "token de epoca revogada NUNCA aceito" -- carregava duas
 #: exigencias de forca diferente, e por isso nao tinha veredito: a imposicao
@@ -242,7 +277,7 @@ def i4(e: Estado) -> bool:
 #: o que esta fechado do que nao esta.
 INVARIANTES = {"I1_uma_instancia_por_epoca": i1, "I2_epoca_monotonica": i2,
                "I3a_nenhum_efeito_sob_epoca_revogada": i3a,
-               "I3b_nada_em_voo_sob_epoca_revogada": i3b,
+               "I3b_nada_que_possa_tomar_efeito_sob_epoca_revogada": i3b,
                "I4_testemunha_nao_inventa": i4}
 # I5 (progresso) e propriedade de VIVACIDADE e nao de seguranca: nao se confere
 # estado a estado. Fica declarada como NAO EXPRESSAVEL neste verificador.
@@ -261,7 +296,7 @@ def explorar(m: Modelo, teto: int = 300000):
             break
         atual, caminho = fila.pop(0)
         for nome, inv in INVARIANTES.items():
-            if nome not in violacoes and not inv(atual):
+            if nome not in violacoes and not inv(atual, m):
                 violacoes[nome] = caminho
         for rotulo, prox in sucessores(m, atual):
             k = prox.chave()
@@ -280,6 +315,26 @@ def roda(props, instancias=("ativa", "sucessora"), epoca_max=2, mutacao=""):
 # ---------------------------------------------------------------------------
 # O SELF-TEST: sem ele, nenhum resultado deste arquivo vale
 # ---------------------------------------------------------------------------
+I3B_NOME = "I3b_nada_que_possa_tomar_efeito_sob_epoca_revogada"
+
+
+def _existe_estado(m: Modelo, pred, teto: int = 300000) -> bool:
+    """Existe estado alcancavel que satisfaz `pred`? Busca exaustiva."""
+    ini = inicial(m)
+    vistos = {ini.chave()}
+    fila = [ini]
+    while fila and len(vistos) <= teto:
+        atual = fila.pop(0)
+        if pred(atual):
+            return True
+        for _, prox in sucessores(m, atual):
+            k = prox.chave()
+            if k not in vistos:
+                vistos.add(k)
+                fila.append(prox)
+    return False
+
+
 def self_test() -> int:
     casos = []
     todas = list(PROPRIEDADES)
@@ -292,15 +347,27 @@ def self_test() -> int:
     #    2. Admissao validada no momento do pedido nao impede conclusao depois
     #    da revogacao.
     v, n, _ = roda(todas)
-    casos.append(("log completo deixa SO o I3b, e ele nao e do log",
-                  set(v) == {"I3b_nada_em_voo_sob_epoca_revogada"},
-                  f"esperava so I3b, violou {sorted(v)}"))
+    # A RELEITURA DE 2026-10-20 MUDA ESTE RESULTADO, e a mudanca fica MEDIDA
+    # nas duas leituras ao lado: com o log completo o protocolo passa a nao
+    # violar NADA sob a leitura vigente, e a leitura ESCRITA segue violando.
+    casos.append(("log completo nao viola NADA sob o I3b relido",
+                  set(v) == set(),
+                  f"esperava nenhuma violacao, violou {sorted(v)}"))
+    m_cheio = Modelo(instancias=("ativa", "sucessora"), epoca_max=2,
+                     props=frozenset(PROPRIEDADES))
+    escrito_viola = _existe_estado(m_cheio, lambda e: not i3b_escrito(e, m_cheio))
+    casos.append(("e a leitura ESCRITA do I3b SEGUE violando no mesmo modelo",
+                  escrito_viola,
+                  "a leitura escrita parou de violar -- entao a releitura nao "
+                  "mudou nada e nao havia o que decidir"))
 
-    # A DIVISAO SO VALE SE OS DOIS DIVERGIREM. Iguais, ela nao separou nada.
-    casos.append(("a divisao SEPARA: I3a vale e I3b viola no mesmo modelo",
-                  "I3a_nenhum_efeito_sob_epoca_revogada" not in v
-                  and "I3b_nada_em_voo_sob_epoca_revogada" in v,
-                  f"os dois sairam iguais -- a divisao e decoracao; violou {sorted(v)}"))
+    # A DIVISAO DE 2026-10-20 SEPAROU, e isso se mede na leitura ESCRITA --
+    # que e a que estava em vigor quando ela foi feita. Sob a releitura os dois
+    # valem, e e exatamente o que a releitura foi decidida para fazer.
+    casos.append(("a divisao SEPAROU na leitura escrita: I3a vale, escrito viola",
+                  "I3a_nenhum_efeito_sob_epoca_revogada" not in v and escrito_viola,
+                  "os dois sairam iguais na leitura escrita -- a divisao teria "
+                  "sido decoracao"))
 
     # E O I3a PRECISA SER FALSIFICAVEL, senao e decoracao pelo outro lado.
     vm = roda(list(PROPRIEDADES), mutacao="conclui_sem_conferir_no_efeito")[0]
@@ -311,16 +378,23 @@ def self_test() -> int:
     # 1b. E A PROVA DE QUE O I3 NAO E PROPRIEDADE DO LOG: ele viola nos 32
     #     subconjuntos das cinco propriedades. Nenhuma combinacao o conserta.
     import itertools as _it
-    sempre = all("I3b_nada_em_voo_sob_epoca_revogada" in roda(list(s))[0]
+    sempre = all(_existe_estado(
+        Modelo(instancias=("ativa", "sucessora"), epoca_max=2,
+               props=frozenset(s)),
+        lambda e, _s=s: not i3b_escrito(e, Modelo(
+            instancias=("ativa", "sucessora"), epoca_max=2,
+            props=frozenset(_s))))
                  for r in range(len(todas) + 1)
                  for s in _it.combinations(todas, r))
-    casos.append(("I3b viola nos 32 subconjuntos: o log NAO basta", sempre,
-                  "algum subconjunto do log conserta o I3b — refaca a conclusao"))
+    casos.append(("o I3b ESCRITO viola nos 32 subconjuntos: o log NAO basta",
+                  sempre,
+                  "algum subconjunto do log conserta o I3b escrito — refaca a "
+                  "conclusao da PRF-0202"))
 
     # 2. MUTACOES do protocolo: violacao CONHECIDA, o verificador tem de achar
     v, _, _ = roda(todas, mutacao="serve_sem_conferir_fencing")
     casos.append(("mutacao: servir sem conferir fencing e PEGA",
-                  "I3b_nada_em_voo_sob_epoca_revogada" in v
+                  "I3b_nada_que_possa_tomar_efeito_sob_epoca_revogada" in v
                   or "I1_uma_instancia_por_epoca" in v,
                   f"nao pegou; violou {sorted(v)}"))
 
@@ -347,11 +421,29 @@ def self_test() -> int:
 
     v, _, _ = roda([p for p in todas if p != "P4_durabilidade"])
     casos.append(("sem P4 o fencing quebra (entrada comprometida some)",
-                  "I3b_nada_em_voo_sob_epoca_revogada" in v
+                  "I3b_nada_que_possa_tomar_efeito_sob_epoca_revogada" in v
                   or "I4_testemunha_nao_inventa" in v,
                   f"nao quebrou; violou {sorted(v)}"))
 
     ruins = 0
+    # A RELEITURA PRECISA SER FALSIFICAVEL, senao ela so apaga o invariante.
+    vm = roda(list(PROPRIEDADES), mutacao="conclui_sem_conferir_no_efeito")[0]
+    casos.append(("o I3b RELIDO e FALSIFICAVEL: sem a cerca no efeito ele cai",
+                  I3B_NOME in vm,
+                  f"a mutacao nao quebrou o I3b relido; violou {sorted(vm)}"))
+
+    # E NAO PODE SER O I3a COM OUTRO NOME: ha de existir estado em que o
+    # relido viola e o I3a ainda vale -- o retardado esta ali e pode concluir,
+    # e nada concluiu ainda.
+    m_mut = Modelo(instancias=("ativa", "sucessora"), epoca_max=2,
+                   props=frozenset(PROPRIEDADES),
+                   mutacao="conclui_sem_conferir_no_efeito")
+    casos.append(("o I3b relido NAO e o I3a: existe estado que viola um e nao o outro",
+                  _existe_estado(m_mut,
+                                 lambda e: not i3b(e, m_mut) and i3a(e, m_mut)),
+                  "todo estado que viola o relido tambem viola o I3a -- entao o "
+                  "relido e o I3a com outro nome, e um dos dois e redundante"))
+
     print("SELF-TEST — o verificador enxerga?")
     for nome, ok, erro in casos:
         print(f"  {'ok   ' if ok else 'FALHA'} {nome}")
@@ -368,7 +460,7 @@ def matriz() -> int:
     import itertools as _it
     todas = list(PROPRIEDADES)
     I3A = "I3a_nenhum_efeito_sob_epoca_revogada"
-    I3B = "I3b_nada_em_voo_sob_epoca_revogada"
+    I3B = "I3b_nada_que_possa_tomar_efeito_sob_epoca_revogada"
 
     print("O MODELO: duas instancias (ativa, sucessora), epocas ate 2.")
     print("Seguranca conferida em CADA estado alcancavel; busca exaustiva.")
@@ -389,9 +481,15 @@ def matriz() -> int:
     print("  I3a  nenhum ato sob epoca revogada TOMA EFEITO  -- a imposicao")
     print("       do C30-01 o satisfaz, e ele e falsificavel pela mutacao")
     print("       `conclui_sem_conferir_no_efeito`.")
-    print("  I3b  nada FICA em voo sob epoca revogada  -- o I3 como estava")
-    print("       escrito, sem emenda. So o DRENO o satisfaz, e o dreno NAO")
-    print("       foi construido. A divisao nao fechou o I3b.")
+    print("  I3b  RELIDO em 2026-10-20 (decisao do titular): nada que ainda")
+    print("       POSSA TOMAR EFEITO fica sob epoca revogada. Com a cerca no")
+    print("       efeito o retardado nao pode, e deixa de contar -- e por isso")
+    print("       o protocolo passa a nao violar NADA sob esta leitura.")
+    print("       NAO LEIA ISSO COMO PROTOCOLO CONSERTADO: nada no protocolo")
+    print("       mudou com a releitura; mudou o que se EXIGE dele. A leitura")
+    print("       ESCRITA -- `i3b_escrito`, proibindo a PRESENCA -- segue")
+    print("       violando, e so o dreno a satisfaria. Ela fica no arquivo")
+    print("       para que a diferenca continue medivel.")
     print()
     print("NENHUM DOS DOIS E PROPRIEDADE DO LOG, e por isso saem da matriz:")
     print(f"  viola nos 32 subconjuntos das cinco propriedades: {sempre}")
