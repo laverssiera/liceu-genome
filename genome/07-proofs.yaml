@@ -4480,3 +4480,67 @@
     repo: liceu-genome
     path: tools/genome_pino_check.py
     note: "OS TESTES NAO FIXAM 8 NEM 1, e essa foi a decisao de desenho que mais importou. Literal apodrece — este mesmo arquivo de teste ja tinha a licao escrita, de quando um 40 e um 0 literais caducaram no mesmo PR em que foram escritos. Um repositorio a mais ou a menos mudaria a contagem, e o teste passaria a medir o calendario. O que se afirma e a RELACAO: toda citacao viva tem forma e tem exatamente uma; as formas PARTICIONAM os vivos; e os pinos sao MENOS que os vivos — uma desigualdade, nao um numero. Se um dia pinos == vivos, ou a instrucao sumiu do README e o furo reabriu, ou alguem a reclassificou como pino. O TESTE QUE IMPEDE O CONSERTO DE VIRAR REGRESSAO: com a fonte alterada de proposito, a INSTRUCAO tem de aparecer entre as divergentes. Se a separacao a tirasse da conferencia, o C30-05 teria reaberto o furo do C29-04 enquanto arrumava a contagem dele. A MUTACAO: reclassificada a instrucao como PINO, QUATRO dos oito casos falham. E ESTA PROVA SUPERSEDE A PRF-0212 porque a superficie mudou: o detector e o teste foram ambos tocados, o genome_surface_check acusou com os dois hashes lado a lado, e a lei deste schema manda prova nova em vez de edicao da antiga. O comportamento que a PRF-0212 provava CONTINUA valendo e foi rodado de novo: as 14 afirmacoes originais passam, entre elas a que diz que nao ha caractere de controle na regex de ancora — a que existe porque uma barra-b num heredoc virou BACKSPACE e matou a regra em silencio. Sao 22 casos agora, e os 22 passam. UM DEFEITO DO MEU PROPRIO TESTE, achado ao roda-lo e registrado porque custou tempo: cada caso varria os 19 repositorios de novo, e a classe estourava os 600 segundos. Com a varredura em cache, 33 segundos. Era defeito do TESTE e nao do detector, e a diferenca importa — um teste lento nao se deixa rodar, e teste que nao roda nao guarda nada."
+
+- id: PRF-0230
+  kind: proof
+  title: "A LC 99/2021 reescreveu o art. 13 da LC 097: a PRF-0225 transcreveu texto superseded, e o dispositivo que ele citava foi REVOGADO"
+  refutes: [CLM-0198]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "leitura da pagina que a Camara Municipal publica para a LC 097/2020, bloco 'Alterada por'; e leitura integral das normas alteradoras ali listadas, buscando dispositivo que mude o art. 13"
+    universo: "a pagina Documentos/Documento/27500 da Camara de Vargem Grande Paulista, baixada em 2026-10-19; e a LC 99/2021 (arquivo?Id=31548, sha256 063be7d3..., 28 paginas, com camada de texto de OCR), conferida visualmente na pagina 18"
+    excluidos:
+      - "normas alteradoras que a Camara NAO liste nessa pagina: o proprio perfil do genoma ja declarava que nao existe texto consolidado oficial e que alteracao nao listada la nao foi conferida"
+      - "a vigencia formal das normas: esta prova le o que a Camara publica, nao confere publicacao em diario oficial"
+    instrumento: "curl da pagina do documento e extracao do bloco 'Alterada por'; pymupdf para o texto da LC 99/2021 e renderizacao a 220 dpi da pagina 18 para leitura visual do dispositivo"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-a-cadeia-do-artigo-119.json
+  location:
+    repo: liceu-genome
+    path: genome/07-proofs.yaml
+    note: "A PRF-0225 FOI REGISTRADA HA UMA HORA E JA PRECISA DESTA CORRECAO. Ela transcreveu o art. 13 da LC 097/2020 a partir do PDF ORIGINAL de 2020, onde ele remete a 'art. 4o, paragrafo 1o da Lei Complementar no 30'. A pagina da Camara para a LC 097 traz o bloco 'Alterada por' com UMA entrada: Lei Complementar no 99, de 07/07/2021. E o Art. 2o da LC 99/2021 diz, com estas palavras: 'O art. 13 da Lei Complementar no 097, de 15 de dezembro de 2020, passa a vigorar com a seguinte redacao', e a redacao nova remete a 'art. 119 da Lei Complementar no 30' — nao mais ao art. 4o paragrafo 1o. O QUE MUDOU E O QUE NAO MUDOU: a SUBSTANCIA e identica — a area minima de lote segue excluida e os indices urbanisticos e restricoes de ocupacao da Zona Mista seguem observados. O que mudou e a REMISSAO, e so ela. Entao a conclusao da PRF-0225 sobre as duas metades permanece de pe, e o que cai e a transcricao do dispositivo. E A REMISSAO VELHA NAO ERA SO VELHA, ERA MORTA: a LC 101/2021, de 31/08/2021, diz no seu Art. 2o 'Fica revogado o paragrafo 1o do art. 4o da Lei Complementar no 30'. A LC 99 redirecionou a referencia em julho; a LC 101 revogou o alvo em agosto. Quem seguisse a PRF-0225 hoje iria procurar um dispositivo revogado — e eu fui, e nao achei, e foi por nao achar que vim parar aqui. O DEFEITO DO MEU ESCOPO, nomeado: a PRF-0225 declarou o universo como 'as nove paginas do PDF da LC 097/2020' e excluiu 'o texto da propria LC 30'. Nao declarou nada sobre alteracoes da propria LC 097 — e um universo que e UM PDF de uma lei de 2020 nao pode sustentar afirmacao sobre o que a lei DIZ hoje. E a mesma licao do Decreto 095, que o genoma ja tinha: acompanhar a lei nao basta, porque outra norma muda o que ela exige. Agora com um agravante — aqui a norma posterior mudou PARA ONDE a lei aponta."
+
+- id: PRF-0231
+  kind: proof
+  title: "O art. 4o da LC 30 e o das ZONAS, e o paragrafo 1o dele foi revogado: a cota minima vive no art. 119"
+  refutes: [CLM-0199]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "localizacao do art. 4o da LC 30/2007 por leitura visual sequencial, e verificacao de quais paragrafos ele tem; depois busca pela expressao 'casas geminadas' e 'cota minima' nas normas alteradoras listadas pela Camara"
+    universo: "a LC 30/2007 (arquivo?Id=12870, sha256 53e09fd2..., 68 paginas, ZERO objetos /Font — digitalizacao JBIG2), paginas 9 a 16 lidas visualmente a 200 dpi; a LC 99/2021 e a LC 101/2021, as duas ultimas da lista 'Alterada por' da Camara"
+    excluidos:
+      - "as onze normas alteradoras anteriores a LC 99/2021 (LC 32/2008 a LC 85/2018): nao foram lidas, e nao precisam ser, porque a LC 99/2021 e POSTERIOR a todas e da a redacao INTEIRA do art. 119"
+      - "as paginas 17 a 68 da LC 30, fora do trecho dos artigos 4o a 9o"
+    instrumento: "pymupdf para renderizar a 200 dpi e leitura visual pagina a pagina; o jbig2dec nao esta disponivel e por isso a extracao de imagem por pypdf falha — o pymupdf decodifica o JBIG2 nativamente"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-a-cadeia-do-artigo-119.json
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-a-cadeia-do-artigo-119.json
+    note: "EU FUI PROCURAR A COTA MINIMA ONDE A LEI MANDAVA E NAO HAVIA NADA DISSO LA. O art. 4o da LC 30/2007 e o artigo das ZONAS DE USO: os incisos vao de I a XIV, de ZPR a CORREDOR DE USO COMERCIAL, e terminam direto no titulo 'DOS INDICES URBANISTICOS' do art. 5o. Nao ha cota minima de casas geminadas em lugar nenhum dele. O paragrafo 1o que o art. 13 original citava EXISTIU — a LC 101/2021 o REVOGA expressamente, e nao se revoga o que nao existe — mas nem ele tratava de cota: a LC 101 altera o inciso XI do mesmo art. 4o, que e o CORREDOR DE USO INDUSTRIAL DIVERSIFICADO, e acrescenta paragrafo unico sobre caracteristicas de zona da testada principal. Tudo zona de uso. ONDE A COTA VIVE: no art. 119, na redacao que a LC 99/2021 lhe deu — 'Fica estabelecida como quota minima (FRACAO IDEAL) de terreno por unidade autonoma, a area de 300,00 m2 para conjunto residencial horizontal composto de unidades autonomas ISOLADAS terreas e/ou assobradadas; 160,00 m2 por unidade autonoma para conjunto residencial horizontal, composto de unidades GEMINADAS terreas e/ou assobradadas; 125,00 m2 para conjunto residencial vertical em blocos de ate 2 pavimentos; 62,50 m2 para conjunto vertical em blocos com mais de 2 pavimentos'. DE PASSAGEM, DOIS ACHADOS SOBRE A ESTRUTURA DA LC 30 que o perfil do genoma nao registrava: o art. 5o lista os indices urbanisticos e 'Area minima do lote' e o inciso I deles — ou seja, a area minima E indice urbanistico nesta lei, e por isso o art. 13 precisou exclui-la por nome; e 'frente minima' NAO esta entre os sete incisos do art. 5o, o que a coloca entre as 'restricoes de ocupacao' e nao entre os 'indices'. O INSTRUMENTO TEVE UM LIMITE QUE QUASE PAROU A LEITURA: o PDF usa compressao JBIG2 e o binario jbig2dec nao existe nesta maquina, entao a extracao de imagem por pypdf falha com DependencyError. O pymupdf decodifica nativamente. Sem ele, a regra de parada do C30-03 teria disparado por indisponibilidade de instrumento, e nao de norma."
+
+- id: PRF-0232
+  kind: proof
+  title: "A UNK-0009 respondida: a area minima NAO alcanca a unidade e vale 160,00 m2; a frente minima ALCANCA"
+  refutes: [CLM-0200]
+  basis: record_reading
+  date: "2026-10-19"
+  scope:
+    padrao: "aplicacao da cadeia normativa vigente a pergunta literal da UNK-0009, metade por metade, com a redacao atual de cada dispositivo e a lista de alteracoes de cada lei conferida na fonte"
+    universo: "art. 13 da LC 097/2020 na redacao da LC 99/2021; art. 119 da LC 30/2007 na redacao da LC 99/2021; a linha ZM da Tabela I como o perfil VGP-LC030-2007-ZM a registra; e os parametros da P-001 ja registrados no grafo"
+    excluidos:
+      - "a TESTADA da P-001: ela nao esta medida em lugar nenhum do grafo, e por isso o cumprimento da frente minima fica NAO MEDIDO — a REGRA foi determinada, o VALOR do projeto nao"
+      - "o I.E., que segue INDETERMINADO por direcao de limite desconhecida, e e materia da UNK-0008 e nao desta"
+      - "o que a Prefeitura vai de fato exigir, que e classe VERIFICACAO e so o despacho resolve"
+    instrumento: "leitura dos dois dispositivos nas redacoes vigentes, conferidas visualmente; e os valores da P-001 e da linha ZM lidos do grafo e do perfil, nao de memoria"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-19-a-cadeia-do-artigo-119.json
+  location:
+    repo: liceu-genome
+    path: genome/09-unknowns.yaml
+    note: "A UNK-0009 PERGUNTAVA DUAS COISAS E AS DUAS TEM RESPOSTA AGORA, EM DIRECOES OPOSTAS. PRIMEIRA: a area minima de lote de 360 m2 da Tabela I NAO alcanca a unidade autonoma. O art. 13 da LC 097, na redacao vigente, exclui a area minima de lote por nome e a substitui pela quota minima do art. 119 da LC 30, que para unidade autonoma horizontal de casas GEMINADAS e 160,00 m2. E repare que o art. 13 ESCOLHE a faixa: ele nao manda enquadrar a casa real entre as quatro do art. 119, manda usar a de geminadas para todo Condominio de Lotes. Nao ha inferencia minha nesse passo. SEGUNDA: a frente minima de 5,00 m ALCANCA a unidade. A exclusao do art. 13 nomeia 'a area minima de lote' e mais nada; a frente fica entre os 'indices urbanisticos e restricoes de ocupacao utilizados na Zona Mista, previstos na Tabela 1' que o mesmo artigo manda observar. E O QUE ISSO FAZ COM A P-001: o terreno tem 175 m2, e 175 e maior que 160 — atende, com folga de 15 m2. Compare-se com o que a pergunta supunha: contra os 360 m2 da Tabela I o terreno seria menos da metade do minimo. O QUE ISTO NAO FECHA, e e preciso ser exato: a frente minima APLICA-SE e a testada da P-001 NAO ESTA MEDIDA em lugar nenhum do grafo. A regra esta determinada; o cumprimento dela nao. E o I.E. segue INDETERMINADO por direcao desconhecida, que e a UNK-0008. Entao a CLM-0019 — os indices atendem a LC 030/2007 na ZM — permanece UNPROVEN, e responder a UNK-0009 nao a promove: trocou-se uma incognita de NORMA por uma lacuna de MEDICAO, e as duas nao sao a mesma coisa. UMA LIMITACAO DO GENOMA QUE ESTA RESPOSTA REVELA: o tipo `unknown` nao tem campo de estado. Nao ha como marcar uma incognita como RESPONDIDA — o precedente da UNK-0008 foi reescrever o required_evidence, e e o que se faz aqui. Enquanto nao houver esse campo, uma incognita respondida continua indistinguivel de uma aberta para quem le o grafo por tipo, e o `blocks` dela continua apontando. Registro como achado estrutural e nao mexo no blocks: baixar contagem de bloqueador e afirmar progresso, e progresso se prova."

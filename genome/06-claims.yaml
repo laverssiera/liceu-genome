@@ -1105,3 +1105,21 @@
   kind: claim
   statement: "O detector separa, dentro de VIVO, o pino que uma ferramenta le do comando que um humano executa, conta os dois em separado, e mantem os dois sob a guarda da fonte."
   asserted_by: "ninguem ainda - e o que o C30-05 produz, e so vale se reclassificar a instrucao como pino fizer o teste falhar"
+
+- id: CLM-0198
+  kind: claim
+  classe: NORMA
+  statement: "O texto do art. 13 da LC 097/2020 que a PRF-0225 leu e transcreveu e o texto vigente do dispositivo."
+  asserted_by: "claude (2026-10-19, na PRF-0225) - implicito ao transcrever o art. 13 do PDF original de 2020 como se fosse a redacao atual, com escopo que nao declarou as alteracoes da propria LC 097"
+
+- id: CLM-0199
+  kind: claim
+  classe: NORMA
+  statement: "A LC 30/2007 tem, no paragrafo 1o do seu art. 4o, a cota minima para unidade autonoma horizontal de casas geminadas."
+  asserted_by: "o proprio art. 13 da LC 097/2020 em sua redacao ORIGINAL, que remetia para la; e eu, ao sair procurando o dispositivo onde ele mandava"
+
+- id: CLM-0200
+  kind: claim
+  classe: NORMA
+  statement: "A area minima de lote de 360 m2 da Tabela I alcanca a unidade autonoma da P-001 dentro do condominio ja aprovado, e a frente minima de 5,00 m nao alcanca."
+  asserted_by: "as duas metades da pergunta da UNK-0009, enunciadas juntas para serem medidas contra a cadeia normativa vigente"
