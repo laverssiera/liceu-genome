@@ -1153,3 +1153,9 @@
   classe: NORMA
   statement: "Medidos os recuos na prancha, a conformidade deles com a Tabela I fica resolvida."
   asserted_by: "expectativa minha ao sair medir: o limite esta na tabela, o valor esta no desenho, logo bastaria comparar"
+
+- id: CLM-0206
+  kind: claim
+  classe: NORMA
+  statement: "O valor da projecao lateral de beiral da P-001 nao e estabelecivel, porque a legenda da prancha traz unidade inconsistente com o numero."
+  asserted_by: "claude (2026-10-19, no escopo da PRF-0238) - excluido como nao mensuravel por causa da legenda 'Projecao Beiral 1.15 cm'"
