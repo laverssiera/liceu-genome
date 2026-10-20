@@ -5022,3 +5022,50 @@
     repo: liceu-genome
     path: genome/06-claims.yaml
     note: "O RAMO DO PASSO 0 NAO TEM ALVO, E E ISSO QUE PRECISA SER DITO ANTES DE QUALQUER CODIGO. O PASSO 0 diz: 'Se (iii): o enunciado correto nasce no PASSO 1, e o resto deste documento se aplica a claim nova, nao a antiga'. O DIAGNOSTICO E (i) E (iii) JUNTOS -- medido no C29-00 pela PRF-0199, e a razao decisiva e a segunda: a identidade vem do cabecalho do CHAMADOR, resolvida por hmac.compare_digest contra os segredos de instancia, e um processo serve QUALQUER Mae que apresente o segredo dela; 'a Sucessora' nao e um processo que mantem replica, e uma linha em authority_instances mais um segredo no ambiente DA PROPRIA ATIVA. MAS O PASSO 1 JA FOI EXECUTADO -- e o C30-01, de 2026-10-19 -- E NAO PRODUZIU ENUNCIADO NOVO DA SUCESSORA. Varri as 213 claims: a UNICA que menciona a Sucessora e a CLM-0007, e o seu texto literal e 'A Sucessora mantem estado de autoridade replicado.' O seu asserted_by e 'Constituicao 1.15.0'. ENTAO O RESTO DO DOCUMENTO NAO TEM A QUE SE APLICAR NO QUE TOCA AO PASSO 7, e a saida nao e escrever a claim por conta propria: a CLM-0007 vem da Constituicao, e reescrever enunciado constitucional e ato do titular e nao meu. O QUE EU PODERIA PRODUZIR SEM INVADIR ISSO, e nao produzi porque nao foi pedido: uma PROPOSTA de enunciado derivada do vocabulario que o modelo de autoridade ja tem -- epoca, token de fencing, receptor, admissao e efeito -- para o titular aceitar, emendar ou recusar."
+
+- id: PRF-0252
+  kind: proof
+  title: "O disco nao e o obstaculo que o plano descreve: 37,2 GB livres por dois instrumentos, e o que prende os passos 3 e 6 e a AUSENCIA DE RUNTIME"
+  refutes: [CLM-0215]
+  basis: external_observation
+  date: "2026-10-20"
+  external_observation:
+    instrument: "df -h; Get-PSDrive; Get-CimInstance Win32_LogicalDisk; Get-ChildItem -Recurse -File -Force somando por diretorio; Get-Command para cada runtime; wsl -l -q e wsl --status"
+    observed: "o volume C: da maquina de desenvolvimento em 2026-10-20: 223 GB totais, 185,8 usados, 37,2 livres por dois instrumentos que concordam; ausencia de docker, podman e nerdctl no PATH; e wsl.exe presente sem distribuicao instalada"
+  scope:
+    padrao: "leitura do espaco livre por DOIS instrumentos independentes; soma recursiva dos diretorios de primeiro nivel e dos arquivos da raiz; e conferencia de presenca dos executaveis de runtime de conteiner no PATH"
+    universo: "o volume C: da maquina de desenvolvimento do titular, 223 GB; os diretorios de primeiro nivel de C: e os arquivos da sua raiz; e os comandos docker, podman, nerdctl e wsl"
+    excluidos:
+      - "C:\\System Volume Information, que nao se deixa ler sem privilegio administrativo, e `vssadmin list shadowstorage` nao devolveu nada pelo mesmo motivo. E o candidato mais provavel para o nao medido, e NAO foi tocado"
+      - "o que ocupava o disco quando o plano foi escrito: a diferenca entre 8,4 e 37,2 GB nao e mensuravel retroativamente, e nao afirmo qual das duas estava errada"
+      - "desligar hibernacao para recuperar os 4,76 GB do hiberfil.sys: e alteracao de configuracao do sistema, e nao e ato meu"
+    instrumento: "`df -h /c`; `Get-PSDrive C` e `Get-CimInstance Win32_LogicalDisk`; `Get-ChildItem -Recurse -File -Force | Measure-Object Length -Sum` por diretorio; `Get-Command` para cada runtime"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-disco-e-o-runtime.json
+  environment: local
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-disco-e-o-runtime.json
+    note: "A PREMISSA DO PASSO 2 ESTA VENCIDA, E O OBSTACULO QUE SOBRA E OUTRO. O plano diz 8,4 GB livres de 223; medido hoje por dois instrumentos que concordam, sao 37,2 GB livres de 223, com 185,8 usados e 84 por cento de ocupacao. A META do passo era 40 GB: faltam 2,8 GB, nao 31,6. NAO AFIRMO QUE O PLANO ERROU O NUMERO, porque nao e mensuravel retroativamente -- entre a escrita e agora algo pode ter liberado trinta gigabytes, e saber qual das duas coisas aconteceu exigiria um registro que nao existe. E O ACHADO QUE IMPORTA MAIS QUE O DISCO: NAO HA RUNTIME DE CONTEINER NESTA MAQUINA. docker, podman e nerdctl nao estao no PATH; `wsl.exe` existe mas `wsl -l -q` e `wsl --status` devolvem o texto de USO, que e o que o WSL imprime quando nao ha distribuicao instalada. Entao o PASSO 3 -- tres conteineres com volume separado e rede manipulavel -- e o PASSO 6 -- etcd de tres nos em conteiner -- nao esperam disco: esperam um runtime que nao esta instalado. E COMO O PASSO 4 DEPENDE DO 3, O PRIMEIRO BLOQUEADOR A CAIR TAMBEM NAO CAI AINDA. Dos passos que restam, o unico desimpedido e o 5, que e a sua palavra mais o ADR-005. INSTALAR RUNTIME NAO E ATO MEU E TEM DOIS CUSTOS QUE NAO SAO FATURA DE NUVEM: a licenca do Docker Desktop para uso comercial, e o espaco que a propria instalacao consome -- varios gigabytes, contra uma folga de 2,8 GB para a meta. O QUE NAO SE MEDE, declarado: a soma dos diretorios de primeiro nivel com os arquivos da raiz da 96,4 GB contra 185,8 usados, e portanto cerca de 89 GB ficam NAO-MENSURAVEIS com o privilegio que tenho. O candidato mais provavel e C:\\System Volume Information, que nao se le sem privilegio administrativo. NAO TOQUEI, e nao proponho tocar: a regra de parada do passo diz que nada se apaga por aperto, e coisa de natureza desconhecida e exatamente o que ela protege."
+
+- id: PRF-0253
+  kind: proof
+  title: "A suite E2E nao e a consumidora de disco: a unica configuracao do ecossistema e conservadora, e test-results tem 0 MB"
+  refutes: [CLM-0216]
+  basis: code_reading
+  date: "2026-10-20"
+  scope:
+    padrao: "busca por configuracao de Playwright em todos os repositorios rastreados e leitura dos campos que decidem o que se grava por teste; e soma do que as pastas de saida de teste efetivamente ocupam"
+    universo: "playwright.config.ts e .js na raiz e em frontend/ de cada repositorio sob C:\\Users\\Messias.Alves\\projetos; e as pastas test-results, playwright-report, coverage e .pytest_cache em toda a arvore"
+    excluidos:
+      - "o que a suite grava na CI, onde o disco e do executor e nao desta maquina"
+      - "se a suite JA ENCHEU o disco em alguma execucao passada: o que se mede aqui e o que ela grava por desenho e o que esta gravado agora"
+    instrumento: "grep pelos campos video, trace, screenshot, outputDir e retain na configuracao encontrada; e Get-ChildItem recursivo somando as pastas de saida"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-disco-e-o-runtime.json
+  location:
+    repo: John-Brasileiro-
+    path: frontend/playwright.config.js
+    note: "A HIPOTESE (1) DO PASSO 2 CAI, E ELA MERECIA SER TESTADA. Existe UMA unica configuracao de Playwright em todo o ecossistema, e ela esta nos tres campos conservadores: `video: 'retain-on-failure'`, `trace: 'on-first-retry'` e `screenshot: 'only-on-failure'`. Nenhum deles grava por teste de forma incondicional. E O QUE ESTA GRAVADO CONFIRMA: test-results ocupa 0 MB, playwright-report nao existe, e a arvore inteira de projetos -- dezenove repositorios -- soma 0,64 GB, dos quais 411 MB sao os onze node_modules. UMA RESSALVA QUE A MEDICAO NAO APAGA, e ela e tecnica e nao retorica: `retain-on-failure` GRAVA video de todo teste e apaga no fim quando o teste passa. A escrita transitoria acontece sempre; o que e condicional e a RETENCAO. Sob disco de verdade apertado, escrita transitoria falha igual -- entao a configuracao conservadora reduz o que FICA, nao o que se ESCREVE. O que ela nao pode ser e a explicacao para 185,8 GB ocupados."

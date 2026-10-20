@@ -1,0 +1,80 @@
+{
+  "passo": "PASSO 2 -- medir antes de apagar",
+  "data": "2026-10-20",
+  "1_o_que_a_suite_E2E_grava_por_teste": {
+    "configuracoes_de_playwright_no_ecossistema": 1,
+    "onde": "John-Brasileiro-/frontend/playwright.config.js",
+    "video": "retain-on-failure",
+    "trace": "on-first-retry",
+    "screenshot": "only-on-failure",
+    "veredito": "conservadora -- nenhum grava por teste de forma incondicional",
+    "test-results": "0 MB",
+    "playwright-report": "nao existe",
+    "a_ressalva_tecnica": "`retain-on-failure` GRAVA video de todo teste e apaga no fim quando passa. A escrita transitoria acontece sempre; condicional e a RETENCAO. Sob disco apertado, escrita transitoria falha igual."
+  },
+  "2_os_maiores_consumidores": {
+    "Windows": 41.96,
+    "Users": 25.01,
+    "Program Files (x86)": 10.3,
+    "Program Files": 8.52,
+    "ProgramData": 2.68,
+    "SQL2025": 1.36,
+    "hiberfil.sys": 4.76,
+    "pagefile.sys": 1.81,
+    "swapfile.sys": 0.02,
+    "soma_do_medido_GB": 96.42,
+    "usado_no_volume_GB": 185.8,
+    "NAO_MENSURAVEL_GB": 89.4,
+    "por_que": "C:\\System Volume Information nao se le sem privilegio administrativo, e `vssadmin list shadowstorage` nao devolveu nada pelo mesmo motivo",
+    "candidato_mais_provavel": "copias de sombra / pontos de restauro",
+    "foi_tocado": false
+  },
+  "3_quanto_e_cache_reconstruivel": {
+    "pip cache": 0.92,
+    "Temp": 0.61,
+    "node_modules (11 pastas)": 0.41,
+    "coverage": 0.0015,
+    ".pytest_cache": 0.0002,
+    "total_identificado_GB": 1.94,
+    "fora_do_meu_alcance": "hiberfil.sys, 4,76 GB -- desligar hibernacao e alteracao de configuracao do sistema e nao e ato meu"
+  },
+  "o_espaco_livre": {
+    "o_plano_dizia_GB": 8.4,
+    "medido_df_h": "38G",
+    "medido_Get-PSDrive_GB": 37.16,
+    "os_dois_concordam": true,
+    "meta_do_passo_GB": 40,
+    "falta_para_a_meta_GB": 2.84,
+    "com_o_cache_reconstruivel_chegaria_a_GB": 39.1,
+    "nao_afirmo_qual_estava_errada": "a diferenca entre 8,4 e 37,2 nao e mensuravel retroativamente; algo pode ter liberado trinta gigabytes entre a escrita do plano e agora"
+  },
+  "o_achado_maior_que_o_disco": {
+    "runtime_de_conteiner": "AUSENTE",
+    "docker": "ausente do PATH",
+    "podman": "ausente",
+    "nerdctl": "ausente",
+    "wsl": "wsl.exe existe, mas `wsl -l -q` e `wsl --status` devolvem o texto de USO -- o que o WSL imprime quando nao ha distribuicao instalada",
+    "o_que_isso_bloqueia": [
+      "PASSO 3 -- tres conteineres",
+      "PASSO 6 -- etcd de tres nos em conteiner",
+      "PASSO 4 -- por depender do 3"
+    ],
+    "o_unico_passo_restante_desimpedido": "PASSO 5 -- a sua palavra + ADR-005",
+    "dois_custos_que_nao_sao_fatura_de_nuvem": [
+      "a licenca do Docker Desktop para uso comercial",
+      "o espaco da propria instalacao -- varios GB, contra 2,8 GB de folga para a meta"
+    ],
+    "instalar_nao_e_ato_meu": true
+  },
+  "a_regra_de_parada_DISPAROU": {
+    "texto": "NADA se apaga por aperto. Se liberar 40 GB exigir apagar coisa cuja natureza voce nao conhece, PARE e pergunte.",
+    "por_que_disparou": "o cache reconstruivel identificado leva a 39,1 GB e a meta e 40. O que resta sao ~89 GB de natureza desconhecida, sob um diretorio que nao se le sem privilegio administrativo.",
+    "o_que_eu_NAO_fiz": [
+      "nao apaguei nada",
+      "nao toquei em System Volume Information",
+      "nao desliguei hibernacao",
+      "nao instalei runtime"
+    ]
+  },
+  "o_que_o_paragrafo_0_ACERTA_e_isto_nao_toca": "que o ENVELOPE -- cauda, custo, jitter -- nao e bloqueador do REGIONAL. A correcao do enquadramento segue certa; o que muda e qual obstaculo material prende os passos 3 e 6."
+}
