@@ -1,0 +1,60 @@
+{
+  "o_que_e": "as duas correcoes que os cinco pontos do titular exigem, uma em cada direcao",
+  "data": "2026-10-20",
+  "o_paragrafo_1_parte_de_numero_refutado": {
+    "o_titular_usou_GB_livres": 8.4,
+    "medido_hoje_GB_livres": 36.21,
+    "quem_ja_havia_refutado": "PRF-0252, no PR #155, derrubando a CLM-0215",
+    "falta_para_a_meta_GB": 3.79,
+    "nao_31_6": true,
+    "o_powercfg_sozinho_GB": 4.76,
+    "passa_da_meta_sozinho": true,
+    "o_inventario_dos_89_GB": "JA FEITO: a PRF-0277, mergeada em bf9c5c0, atribuiu o vazio -- 73 de 88 GB estavam em oito perfis contados como ZERO; o residuo e 11,41 GB",
+    "o_que_sobrevive_do_paragrafo": [
+      "a pergunta de se 40 GB BASTAM para o laboratorio, que e outra pergunta e segue sem medicao",
+      "o habito de declarar o resultado possivel ANTES de gastar o esforco, que esta certo e foi seguido"
+    ]
+  },
+  "a_tendencia_que_declaro_contra_mim": {
+    "leituras_do_dia_GB": [
+      37.16,
+      36.42,
+      36.41,
+      36.21
+    ],
+    "monotonicamente_decrescente": true,
+    "consumidor": "eu -- suites de teste, temporarios e objetos git desta sessao",
+    "consequencia": "a margem de 3,79 GB nao e estavel enquanto eu trabalho"
+  },
+  "o_paragrafo_2_esta_certo_e_agora_esta_medido": {
+    "ChassisType": 9,
+    "significa": "Laptop",
+    "modelo": "Latitude E5450",
+    "bateria": "presente",
+    "estados_disponiveis": [
+      "Espera (S3)",
+      "Hibernar",
+      "Suspensao Hibrida",
+      "Inicializacao Rapida"
+    ],
+    "a_minha_formulacao": "'a unica que nao toca dado de ninguem' -- verdadeira sobre ARQUIVOS, falsa sobre COMPORTAMENTO",
+    "a_troca_real": "removida a hibernacao, a acao de bateria critica deixa de hibernar e passa a desligar: trabalho nao salvo se perde",
+    "reversibilidade": "powercfg /h on recria o hiberfil e devolve hibernacao e Inicializacao Rapida -- o que a distingue do /ResetBase, que nao se desfaz"
+  },
+  "os_dois_instrumentos_na_formulacao_do_titular": {
+    "a_minha_era": "a minha soma de Length estava errada",
+    "a_dele_e_melhor": "a soma de Length vale em todo o disco MENOS onde hard link domina, e o unico lugar onde domina e o WinSxS; o DISM cobre exatamente esse",
+    "por_que_importa": "a primeira formulacao descarta um instrumento bom; a segunda delimita o alcance de cada um"
+  },
+  "o_ResetBase": {
+    "status": "PROIBIDO neste passo",
+    "razao": "remove as versoes superadas e torna as atualizacoes instaladas permanentemente nao desinstalaveis; libera mais e NAO se desfaz",
+    "o_perigo": "parece o mesmo comando, a um flag de distancia"
+  },
+  "a_ordem_das_opcoes_depois_destas_duas_medicoes": [
+    "1. DISM /AnalyzeComponentStore -- so leitura, e a unica candidata que poderia fechar os 3,79 GB sem troca e sem tocar dado de ninguem. Exige elevacao: erro 740 medido sem ela.",
+    "2. o reconstruivel que eu identifico, 1,94 GB -- leva a 38,15, insuficiente sozinho",
+    "3. powercfg /h off, 4,76 GB -- passa da meta, e e TROCA: perde preservacao de trabalho em bateria critica. Reversivel.",
+    "4. o perfil de 44,5 GB -- dado pessoal, maquina compartilhada, decisao do titular item por item"
+  ]
+}

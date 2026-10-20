@@ -1314,3 +1314,13 @@
   kind: claim
   statement: "O maior item unico do volume C: e o C:\\Windows\\Installer, com 21,24 GB."
   asserted_by: "claude (2026-10-20), na PRF-0275: 'o Windows\\Installer e o MAIOR numero unico do disco com 21,24 GB'"
+
+- id: CLM-0238
+  kind: claim
+  statement: "Faltam cerca de 31,6 GB para a meta de 40 GB livres, porque ha 8,4 GB livres de 223, e por isso o inventario dos 89 GB e o caminho critico e a faxina de sistema nao e."
+  asserted_by: "o titular, no paragrafo 1 dos cinco pontos de 2026-10-20: '223 GB total, 8,4 GB livres, 214,6 GB em uso; meta de 40 GB livres, faltam 31,6 GB'"
+
+- id: CLM-0239
+  kind: claim
+  statement: "O `powercfg /h off` nao toca dado de ninguem, e por isso e a opcao quase gratis para liberar os 4,76 GB do hiberfil."
+  asserted_by: "claude (2026-10-20), ao por as tres opcoes da Parte 2 em ordem: 'e a UNICA que nao toca dado de ninguem'"
