@@ -5269,3 +5269,190 @@
     repo: liceu-genome
     path: tools/modelo/dreno.py
     note: "DECISAO TOMADA (claude, 2026-10-20, por delegacao expressa do titular -- 'decida o remedio do I3b'): DRENAR COM PRAZO E CERCAR NO EFEITO. Drena-se o que der antes de comprometer a epoca nova; vencido o prazo, promove-se de qualquer forma, e o retardado e RECUSADO no momento do efeito. E A DECISAO NAO FECHA O I3b, E ISSO TEM DE SER LIDO JUNTO COM ELA: o I3b como escrito segue VIOLADO, de forma limitada -- entre o prazo vencido e a recusa do retardado. O que se decidiu foi ACEITAR essa violacao limitada em troca de um avanco que nao trava. POR QUE NAO O B_bloqueia, que satisfaz o I3b: ele deixa o avanco IRRECUPERAVEL quando ha travado -- medido por ponto fixo no grafo, e nao suposto. E a requisicao travada e exatamente o caso para o qual o failover existe: escolher o I3b ali seria deixar uma chamada pendurada impedir a troca de Mae para sempre, quando o I3a JA garante que nada daquele ato toma efeito. Trocar a recuperacao do sistema por uma propriedade do ESTADO, tendo a seguranca preservada nos dois lados, e trade ruim. POR QUE NAO O B_ideal, que e verde nas tres colunas: porque o dreno dele drena o que esta TRAVADO, e travado e, por definicao, o que nao termina. Nao se constroi. E UMA HONESTIDADE SOBRE O LIMITE DESTA MEDICAO: o B_prazo_avanca e o AB_prazo_cerca saem IDENTICOS -- 15 estados, mesmos vereditos -- porque a cerca no efeito esta nos dois. O modelo NAO distingue 'promover de qualquer forma' de 'promover e cercar': sao o mesmo mecanismo aqui, e a minha preferencia entre os dois nomes nao e medida. Decidi o MECANISMO, e os dois nomes o descrevem. E O QUE EU NAO DECIDI, PORQUE NAO E MEU: existe uma terceira saida que nao custa nem o avanco nem a seguranca, e ela e DEFINICIONAL. Relido o I3b como 'nada que AINDA POSSA TOMAR EFEITO fica sob epoca revogada', ele VALE em todos os remedios que tem cerca -- medido na coluna I3b-rel, com teste dos dois lados: vale onde ha cerca, e cai onde nao ha. Mas reescrever invariante e ato do titular, como foi a divisao do I3 em 2026-10-20. Eu meco a diferenca que a releitura faria; nao a faco."
+
+- id: PRF-0262
+  kind: proof
+  title: "A releitura NAO consertou o protocolo: nenhuma linha dele mudou, e a leitura ESCRITA segue violando no mesmo modelo"
+  refutes: [CLM-0228]
+  basis: test
+  date: "2026-10-20"
+  test:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    name: self_test
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/modelo/autoridade.py
+    content_hash: 1212d2f584a2ae20f84d467429c520ccac942d8b083e8561cd57030e5e1a5ff8
+    commit: 3c29a3f
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-i3b-relido.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    note: "O RELATORIO PASSOU A DIZER 'ainda viola: nada', E ESSA LINHA E A ARMADILHA DESTE PR. O titular releu o I3b em 2026-10-20: ele proibia a PRESENCA da requisicao sob epoca revogada e passa a proibir a presenca do que ainda PODE tomar efeito. Com a cerca no momento do efeito o retardado nao pode -- logo deixa de contar, e o protocolo base, com as cinco propriedades, passa a nao violar invariante nenhum. NADA NO PROTOCOLO MUDOU: 387 estados antes da releitura e 387 depois, as mesmas transicoes, o mesmo codigo de admissao, efeito e promocao. O que mudou foi o que se EXIGE dele. E A PROVA DE QUE A MUDANCA E DE EXIGENCIA E NAO DE COMPORTAMENTO ESTA NO PROPRIO ARQUIVO, de proposito: a leitura antiga ficou como `i3b_escrito`, FORA do dicionario de invariantes, e ha teste mostrando que no MESMO modelo ela SEGUE VIOLANDO. Releitura que ninguem pode comparar com o que havia antes e troca de assunto, nao decisao -- e por isso a funcao antiga nao foi apagada. O DRENO SEGUE NAO CONSTRUIDO, e e ele que satisfaria a leitura escrita. O que a releitura fez foi reconhecer que a cerca no efeito ja entrega a propriedade que importa, e deixar de exigir a que custava o avanco da epoca (PRF-0260 e PRF-0261). E O QUE ELA CUSTA, declarado: sob a leitura vigente, uma requisicao sob epoca revogada PODE estar em voo -- ela so nao pode concluir. Quem contar requisicoes em voo vai encontra-las, e o invariante nao as proibe mais."
+
+- id: PRF-0263
+  kind: proof
+  title: "O I3b relido NAO e o I3a: existe estado que viola um e nao o outro, e a diferenca e passado contra presente"
+  refutes: [CLM-0229]
+  basis: test
+  date: "2026-10-20"
+  test:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    name: self_test
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/modelo/autoridade.py
+    content_hash: 1212d2f584a2ae20f84d467429c520ccac942d8b083e8561cd57030e5e1a5ff8
+    commit: 3c29a3f
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-i3b-relido.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    note: "DOIS ENUNCIADOS PARECIDOS PODEM SER O MESMO INVARIANTE COM NOMES DIFERENTES, e aqui nao sao -- medido por busca exaustiva e nao por leitura das frases. O I3a olha o PASSADO: nenhum efeito sob epoca revogada ACONTECEU, e e um bit que, uma vez ligado, nao desliga. O I3b relido olha o PRESENTE: nada que POSSA tomar efeito esta ali. O teste procura, sob a mutacao que desliga a cerca, um estado alcancavel em que o relido VIOLA e o I3a ainda VALE -- e acha: o retardado esta em voo sob epoca revogada e pode concluir, e nada concluiu ainda. Se todo estado que violasse um violasse o outro, um dos dois seria redundante e deveria sair do conjunto; nao e o caso. E OS DOIS SAO FALSIFICAVEIS PELA MESMA MUTACAO, o que nao os torna iguais: `conclui_sem_conferir_no_efeito` quebra os dois, mas em ORDEM -- o relido cai no instante em que o retardado existe, o I3a so cai quando ele conclui. 13 de 13 no self-test."
+
+- id: PRF-0264
+  kind: proof
+  title: "A divisao segue NAO tendo fechado o I3: quem fez o I3b valer foi a RELEITURA, ato distinto e posterior"
+  refutes: [CLM-0209]
+  basis: test
+  supersedes: [PRF-0244]
+  date: "2026-10-20"
+  test:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    name: self_test
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/modelo/autoridade.py
+    content_hash: 1212d2f584a2ae20f84d467429c520ccac942d8b083e8561cd57030e5e1a5ff8
+    commit: 3c29a3f
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-i3b-relido.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    note: "RODADA DE NOVO PORQUE A RELEITURA MUDOU A SUPERFICIE, e o veredito nao mudou -- mudou o que o sustenta. A CLM-0209 diz que dividir o I3 fecha o I3, e segue FALSA: a divisao separou, e separar nao e fechar. O que fez o I3b passar a valer foi a RELEITURA de 2026-10-20, que e OUTRO ato do titular, posterior a divisao e de natureza diferente -- a divisao partiu um enunciado em dois, a releitura trocou o que um deles proibe. ATRIBUIR A DIVISAO O QUE A RELEITURA FEZ SERIA O MESMO ERRO QUE A CLM-0209 ENUNCIA, so com um ato de distancia. E A PROVA DE QUE A DIVISAO AINDA FOI UTIL ESTA MEDIDA: na leitura ESCRITA, que era a vigente quando ela foi feita, o I3a vale e o I3b viola -- os dois divergem, e o teste disso continua no self-test. Sem a divisao, a releitura teria de ser aplicada a um enunciado unico que carregava as duas exigencias, e teria apagado a de seguranca junto. A divisao preparou o terreno; a releitura pisou nele."
+
+- id: PRF-0265
+  kind: proof
+  title: "O I3a segue valendo e falsificavel, e a divisao segue tendo separado - medido na leitura ESCRITA, que era a vigente quando ela foi feita"
+  proves: [CLM-0210]
+  basis: test
+  supersedes: [PRF-0245]
+  date: "2026-10-20"
+  test:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    name: self_test
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/modelo/autoridade.py
+    content_hash: 1212d2f584a2ae20f84d467429c520ccac942d8b083e8561cd57030e5e1a5ff8
+    commit: 3c29a3f
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-i3b-relido.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    note: "A CLM-0210 TEM DUAS PARTES E A RELEITURA TOCA SO A SEGUNDA, e por isso o escopo desta prova diz em que leitura cada uma foi medida. PRIMEIRA PARTE, intacta: o I3a vale no protocolo base e e FALSIFICAVEL -- a mutacao `conclui_sem_conferir_no_efeito` o quebra, e `concluir` dispara de verdade (160 vezes no base, com `recusar` 144 e o bit em zero estados). SEGUNDA PARTE -- 'a divisao separa um invariante fechado de um aberto em vez de renomear o mesmo furo': medida na leitura ESCRITA, que era a que vigia em 2026-10-20 quando a divisao foi feita, e la o I3a vale e o escrito viola. SOB A LEITURA VIGENTE DE HOJE OS DOIS VALEM, e isso NAO desmente a segunda parte: ela e sobre o que a divisao fez quando foi feita, e o teste que a sustenta roda sobre `i3b_escrito` justamente para nao depender do que veio depois. SE EU TIVESSE DEIXADO O TESTE APONTANDO PARA O I3b VIGENTE, ele teria passado a dizer 'os dois valem' e a divisao apareceria como decoracao retroativa -- que e falso. Foi essa a razao de guardar a leitura antiga no arquivo, e nao nostalgia."
+
+- id: PRF-0266
+  kind: proof
+  title: "Nenhuma das DUAS leituras do fencing exige nada do log: o relido viola em 0 dos 32 subconjuntos e o escrito em 32"
+  proves: [CLM-0173]
+  basis: test
+  supersedes: [PRF-0246]
+  date: "2026-10-20"
+  test:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    name: matriz
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/modelo/autoridade.py
+    content_hash: 1212d2f584a2ae20f84d467429c520ccac942d8b083e8561cd57030e5e1a5ff8
+    commit: 3c29a3f
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-i3b-relido.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    note: "RODADA DE NOVO NOS 32, E AGORA NAS DUAS LEITURAS. A CLM-0173 afirma, entre outras coisas, que o fencing nao exige nada do log. Varri os 32 subconjuntos das cinco propriedades: o I3b RELIDO viola em 0 de 32, e o ESCRITO em 32 de 32. As duas leituras concordam no que importa para esta claim -- nenhuma delas se conserta nem se quebra por propriedade do log -- e por isso as duas saem da matriz. A MATRIZ SEGUE A MESMA, palavra por palavra: sem P4 quebram I1 e I4; sem P5 quebra I1; sem P2 sozinho NAO quebra nada, porque o P5 mascara; sem P2 E sem P5 quebram I1 e I2; sem P1 e sem P3, nada. INSUFICIENCIA DECLARADA, e e do instrumento: 12 dos 32 subconjuntos TRUNCARAM no teto de 300000 estados. Para o I3b escrito isso nao enfraquece -- violacao encontrada e contraexemplo exibido. Para o RELIDO enfraquece: nos 12 truncados, 'nao achei contraexemplo' nao e 'nao existe'. O protocolo base, com as cinco, NAO truncou: 387 estados, busca completa."
+
+- id: PRF-0267
+  kind: proof
+  title: "As cinco propriedades AGORA BASTAM, e a CLM-0172 segue refutada por motivo oposto: o que as faz bastar nao e o log, e a cerca no efeito"
+  refutes: [CLM-0172]
+  basis: test
+  supersedes: [PRF-0247]
+  date: "2026-10-20"
+  test:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    name: self_test
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/modelo/autoridade.py
+    content_hash: 1212d2f584a2ae20f84d467429c520ccac942d8b083e8561cd57030e5e1a5ff8
+    commit: 3c29a3f
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-i3b-relido.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    note: "ESTA E A PROVA QUE MAIS MUDOU, E ELA VIRA DE RAZAO SEM VIRAR DE VEREDITO. A CLM-0172 afirma duas coisas numa: que as cinco propriedades do log BASTAM para os invariantes valerem, E POR ISSO escolher o mecanismo de log fecha o fencing de epoca revogada. ATE HOJE A PRIMEIRA METADE ERA FALSA: com as cinco ligadas o I3 ainda violava, e era disso que a refutacao vivia. Depois da releitura a primeira metade e VERDADEIRA: com as cinco, o modelo nao viola invariante nenhum -- 387 estados, busca completa, sem truncar. E A CLAUSULA CAUSAL SEGUE FALSA, E AGORA E SO ELA QUE SUSTENTA A REFUTACAO: o que faz os invariantes valerem NAO e o log. Medido pelos dois lados: desligar a CERCA NO EFEITO, que e protocolo e nao log, quebra o I3a E o I3b relido; e desligar o P4, que e log, quebra I1 e I4 -- nunca o fencing. Entao 'as cinco bastam' passou a ser verdade por uma razao que a claim nega: bastam porque o protocolo ja impoe o fencing, e nao porque o log o entregue. ESCOLHER ETCD OU PySyncObj CONTINUA NAO FECHANDO O FENCING, que era a consequencia pratica da PRF-0202 e segue de pe. O QUE ISSO EXIGE DE QUEM LER A REFUTACAO DAQUI PARA A FRENTE: 'CLM-0172 REFUTED' nao significa mais 'as cinco nao bastam'. Significa 'bastam, e nao e o log que as faz bastar'. Sao coisas diferentes e a segunda e mais forte."
+
+- id: PRF-0268
+  kind: proof
+  title: "O segundo caminho segue exigindo DURABILIDADE e nao linearizabilidade, e a releitura nao mexeu nisso"
+  refutes: [CLM-0222]
+  basis: test
+  supersedes: [PRF-0256]
+  date: "2026-10-20"
+  test:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    name: roda
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/modelo/autoridade.py
+    content_hash: 1212d2f584a2ae20f84d467429c520ccac942d8b083e8561cd57030e5e1a5ff8
+    commit: 3c29a3f
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-i3b-relido.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    note: "RODADA DE NOVO E O RESULTADO E IDENTICO, e vale dizer por que: a pergunta do segundo caminho nunca dependeu do I3b. Sem P4 -- a replica pode perder entrada comprometida -- quebram I1 e I4 A MAIS. Sem P3 -- a replica serve leitura obsoleta -- NADA a mais. Os dois numeros sao os mesmos de antes da releitura, porque o que decide esta pergunta sao I1 e I4, que a releitura nao toca. ENTAO SEGUE VALENDO: o segundo caminho tem de ser DURAVEL e nao precisa ser linearizavel para a seguranca que o modelo expressa; consenso e uma forma de obter durabilidade, replicacao SINCRONA de uma linha e outra; e a CLM-0007 pode fechar antes da UNK-0001. O limite tambem segue: `servir` exige visao igual a epoca comprometida, entao leitura obsoleta nao serve errado -- nao serve -- e o custo cai na vivacidade, que o I5 declara NAO EXPRESSAVEL."
