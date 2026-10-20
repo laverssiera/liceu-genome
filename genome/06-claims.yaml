@@ -1299,3 +1299,18 @@
   kind: claim
   statement: "O `C:\\Windows\\Installer`, com 21,24 GB, e cache reconstruivel e entra na conta dos 40 GB livres."
   asserted_by: "ninguem ainda - enunciada por mim em 2026-10-20 justamente porque e o maior numero unico do disco, e quem procura 40 GB chega nele primeiro"
+
+- id: CLM-0235
+  kind: claim
+  statement: "O System Volume Information e o unico candidato credivel para os cerca de 88 GB que a varredura nao mediu no volume C:, porque e onde vivem as copias de sombra."
+  asserted_by: "claude (2026-10-20), na PRF-0274 e no PR #155, ao fechar o PASSO C: 'o System Volume Information e o unico candidato credivel para um vazio de 88 GB'"
+
+- id: CLM-0236
+  kind: claim
+  statement: "O vazio de cerca de 88 GB do volume C: segue sem atribuicao, e so se atribui medindo com elevacao os quatro diretorios protegidos que recusam leitura."
+  asserted_by: "claude (2026-10-20), na PRF-0274 e no PR #155: eu apontei os quatro diretorios protegidos como o que faltava medir, e tratei o resto da varredura como se estivesse completo"
+
+- id: CLM-0237
+  kind: claim
+  statement: "O maior item unico do volume C: e o C:\\Windows\\Installer, com 21,24 GB."
+  asserted_by: "claude (2026-10-20), na PRF-0275: 'o Windows\\Installer e o MAIOR numero unico do disco com 21,24 GB'"
