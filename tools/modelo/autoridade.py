@@ -57,9 +57,14 @@ class Estado:
     testemunha: tuple
     #: instancias vivas
     vivas: tuple
+    #: UM BIT, e nao um historico: o I3a diz NUNCA, e para "nunca" basta
+    #: lembrar que aconteceu uma vez. Historico de conclusoes multiplicaria o
+    #: espaco de estados sem dizer nada a mais.
+    efeito_sob_revogada: bool = False
 
     def chave(self):
-        return (self.log, self.visao, self.servindo, self.testemunha, self.vivas)
+        return (self.log, self.visao, self.servindo, self.testemunha,
+                self.vivas, self.efeito_sob_revogada)
 
 
 @dataclass(frozen=True)
@@ -142,6 +147,22 @@ def sucessores(m: Modelo, e: Estado) -> Iterator[tuple]:
         yield (f"servir({inst},e{ep})",
                replace(e, servindo=e.servindo + ((inst, ep),)))
 
+    # --- CONCLUIR: o ato em voo toma EFEITO. Esta transicao entrou em
+    # 2026-10-20 com a divisao do I3, e sem ela o I3a nao teria onde ser
+    # violado -- invariante que nenhum estado alcancavel viola e decoracao.
+    for (inst, ep) in e.servindo:
+        comp = epoca_comprometida(e)
+        resto = tuple(x for x in e.servindo if x != (inst, ep))
+        if m.mutacao != "conclui_sem_conferir_no_efeito" and ep != comp:
+            # A IMPOSICAO DO C30-01: confere no momento do efeito e RECUSA.
+            # O ato sai de voo sem tomar efeito -- e e exatamente por isso
+            # que ela satisfaz o I3a e nao satisfaz o I3b.
+            yield (f"recusar({inst},e{ep})", replace(e, servindo=resto))
+            continue
+        yield (f"concluir({inst},e{ep})",
+               replace(e, servindo=resto,
+                       efeito_sob_revogada=e.efeito_sob_revogada or ep != comp))
+
     # --- parar de servir (pausa de processo / perda de lideranca)
     for s in e.servindo:
         yield (f"parar({s[0]})",
@@ -188,8 +209,23 @@ def i2(e: Estado) -> bool:
     return all(b > a for a, b in zip(eps, eps[1:]))
 
 
-def i3(e: Estado) -> bool:
-    """Fencing: token de epoca revogada NUNCA aceito."""
+def i3a(e: Estado) -> bool:
+    """I3a -- SEGURANCA: nenhum ato sob epoca revogada TOMA EFEITO.
+
+    E o que a imposicao do C30-01 entrega, conferindo no momento do efeito.
+    Falsificavel pela mutacao `conclui_sem_conferir_no_efeito`.
+    """
+    return not e.efeito_sob_revogada
+
+
+def i3b(e: Estado) -> bool:
+    """I3b -- ESTADO: nada FICA em voo sob epoca revogada.
+
+    E o I3 COMO ESTAVA ESCRITO, palavra por palavra e sem emenda. A
+    imposicao NAO o satisfaz: o ato e recusado no efeito, mas ja estava em
+    voo quando a epoca virou. So o DRENO -- esvaziar o que voa antes de
+    comprometer a epoca nova -- o satisfaz, e o dreno nao foi construido.
+    """
     corrente = epoca_comprometida(e)
     return all(ep >= corrente for _, ep in e.servindo)
 
@@ -199,8 +235,15 @@ def i4(e: Estado) -> bool:
     return all(t in e.log for t in e.testemunha)
 
 
+#: O I3 FOI DIVIDIDO EM 2026-10-20, por decisao do titular. O enunciado
+#: unico -- "token de epoca revogada NUNCA aceito" -- carregava duas
+#: exigencias de forca diferente, e por isso nao tinha veredito: a imposicao
+#: do C30-01 satisfaz uma e nao a outra. A divisao nao fecha nada; ela separa
+#: o que esta fechado do que nao esta.
 INVARIANTES = {"I1_uma_instancia_por_epoca": i1, "I2_epoca_monotonica": i2,
-               "I3_fencing_de_epoca_revogada": i3, "I4_testemunha_nao_inventa": i4}
+               "I3a_nenhum_efeito_sob_epoca_revogada": i3a,
+               "I3b_nada_em_voo_sob_epoca_revogada": i3b,
+               "I4_testemunha_nao_inventa": i4}
 # I5 (progresso) e propriedade de VIVACIDADE e nao de seguranca: nao se confere
 # estado a estado. Fica declarada como NAO EXPRESSAVEL neste verificador.
 
@@ -249,23 +292,36 @@ def self_test() -> int:
     #    2. Admissao validada no momento do pedido nao impede conclusao depois
     #    da revogacao.
     v, n, _ = roda(todas)
-    casos.append(("log completo deixa SO o I3, e ele nao e do log",
-                  set(v) == {"I3_fencing_de_epoca_revogada"},
-                  f"esperava so I3, violou {sorted(v)}"))
+    casos.append(("log completo deixa SO o I3b, e ele nao e do log",
+                  set(v) == {"I3b_nada_em_voo_sob_epoca_revogada"},
+                  f"esperava so I3b, violou {sorted(v)}"))
+
+    # A DIVISAO SO VALE SE OS DOIS DIVERGIREM. Iguais, ela nao separou nada.
+    casos.append(("a divisao SEPARA: I3a vale e I3b viola no mesmo modelo",
+                  "I3a_nenhum_efeito_sob_epoca_revogada" not in v
+                  and "I3b_nada_em_voo_sob_epoca_revogada" in v,
+                  f"os dois sairam iguais -- a divisao e decoracao; violou {sorted(v)}"))
+
+    # E O I3a PRECISA SER FALSIFICAVEL, senao e decoracao pelo outro lado.
+    vm = roda(list(PROPRIEDADES), mutacao="conclui_sem_conferir_no_efeito")[0]
+    casos.append(("I3a e FALSIFICAVEL: desguarnecer o efeito o quebra",
+                  "I3a_nenhum_efeito_sob_epoca_revogada" in vm,
+                  f"a mutacao nao quebrou o I3a; violou {sorted(vm)}"))
 
     # 1b. E A PROVA DE QUE O I3 NAO E PROPRIEDADE DO LOG: ele viola nos 32
     #     subconjuntos das cinco propriedades. Nenhuma combinacao o conserta.
     import itertools as _it
-    sempre = all("I3_fencing_de_epoca_revogada" in roda(list(s))[0]
+    sempre = all("I3b_nada_em_voo_sob_epoca_revogada" in roda(list(s))[0]
                  for r in range(len(todas) + 1)
                  for s in _it.combinations(todas, r))
-    casos.append(("I3 viola nos 32 subconjuntos: o log NAO basta", sempre,
-                  "algum subconjunto do log conserta o I3 — refaca a conclusao"))
+    casos.append(("I3b viola nos 32 subconjuntos: o log NAO basta", sempre,
+                  "algum subconjunto do log conserta o I3b — refaca a conclusao"))
 
     # 2. MUTACOES do protocolo: violacao CONHECIDA, o verificador tem de achar
     v, _, _ = roda(todas, mutacao="serve_sem_conferir_fencing")
     casos.append(("mutacao: servir sem conferir fencing e PEGA",
-                  "I3_fencing_de_epoca_revogada" in v or "I1_uma_instancia_por_epoca" in v,
+                  "I3b_nada_em_voo_sob_epoca_revogada" in v
+                  or "I1_uma_instancia_por_epoca" in v,
                   f"nao pegou; violou {sorted(v)}"))
 
     v, _, _ = roda(todas, mutacao="testemunha_registra_sem_commit")
@@ -291,7 +347,8 @@ def self_test() -> int:
 
     v, _, _ = roda([p for p in todas if p != "P4_durabilidade"])
     casos.append(("sem P4 o fencing quebra (entrada comprometida some)",
-                  "I3_fencing_de_epoca_revogada" in v or "I4_testemunha_nao_inventa" in v,
+                  "I3b_nada_em_voo_sob_epoca_revogada" in v
+                  or "I4_testemunha_nao_inventa" in v,
                   f"nao quebrou; violou {sorted(v)}"))
 
     ruins = 0
@@ -310,7 +367,8 @@ def self_test() -> int:
 def matriz() -> int:
     import itertools as _it
     todas = list(PROPRIEDADES)
-    I3 = "I3_fencing_de_epoca_revogada"
+    I3A = "I3a_nenhum_efeito_sob_epoca_revogada"
+    I3B = "I3b_nada_em_voo_sob_epoca_revogada"
 
     print("O MODELO: duas instancias (ativa, sucessora), epocas ate 2.")
     print("Seguranca conferida em CADA estado alcancavel; busca exaustiva.")
@@ -324,10 +382,18 @@ def matriz() -> int:
     print("")
 
     # --- o I3 sai da matriz, e a razao e MEDIDA e nao suposta
-    sempre = all(I3 in roda(list(s))[0]
+    sempre = all(I3B in roda(list(s))[0]
                  for r in range(len(todas) + 1)
                  for s in _it.combinations(todas, r))
-    print("O I3 NAO E PROPRIEDADE DO LOG, e por isso sai da matriz:")
+    print("O I3 FOI DIVIDIDO EM 2026-10-20 (decisao do titular):")
+    print("  I3a  nenhum ato sob epoca revogada TOMA EFEITO  -- a imposicao")
+    print("       do C30-01 o satisfaz, e ele e falsificavel pela mutacao")
+    print("       `conclui_sem_conferir_no_efeito`.")
+    print("  I3b  nada FICA em voo sob epoca revogada  -- o I3 como estava")
+    print("       escrito, sem emenda. So o DRENO o satisfaz, e o dreno NAO")
+    print("       foi construido. A divisao nao fechou o I3b.")
+    print()
+    print("NENHUM DOS DOIS E PROPRIEDADE DO LOG, e por isso saem da matriz:")
     print(f"  viola nos 32 subconjuntos das cinco propriedades: {sempre}")
     print("  contraexemplo de 3 passos:")
     print("    promover(ativa,e1) -> servir(ativa,e1) -> promover(ativa,e2)")
@@ -337,12 +403,12 @@ def matriz() -> int:
     print("  nao achado.")
     print("")
 
-    alvos = [k for k in INVARIANTES if k != I3]
+    alvos = [k for k in INVARIANTES if k not in (I3A, I3B)]
     print("MATRIZ sobre os invariantes que o log PODE afetar (I1, I2, I4):")
     exig = {k: [] for k in alvos}
     for pp in todas:
         v, n, tr = roda([x for x in todas if x != pp])
-        q = sorted(k for k in v if k != I3)
+        q = sorted(k for k in v if k not in (I3A, I3B))
         curtos = ", ".join(x.split("_")[0] for x in q) if q else "nada"
         print(f"  sem {pp:28s} {n:7d} estados; quebra: {curtos}")
         for inv in q:
@@ -365,7 +431,7 @@ def matriz() -> int:
                                                    for x in ks}]:
                 break
             v, _, _ = roda([x for x in todas if x not in (a, b)])
-            q = sorted(k for k in v if k != I3)
+            q = sorted(k for k in v if k not in (I3A, I3B))
             novos = [k for k in q
                      if k in orfaos and a not in exig[k] and b not in exig[k]]
             if novos:
