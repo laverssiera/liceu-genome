@@ -1,0 +1,72 @@
+{
+  "passo": "PASSO A do roteiro REGIONAL v2 -- o furo do juiz, fechado antes de produzir prova",
+  "data": "2026-10-20",
+  "parte_1_o_passivo": {
+    "provas": 266,
+    "com_campo": 131,
+    "EXISTE": 131,
+    "AUSENTE": 0,
+    "NAO_MENSURAVEL": 0,
+    "as_ausentes": [],
+    "as_nao_mensuraveis": [],
+    "o_erro_da_primeira_medicao": {
+      "instrumento": "regex exigindo repo: seguido de path:",
+      "disse": {
+        "com_campo": 114,
+        "nao_mensuravel": 3
+      },
+      "a_verdade": {
+        "com_campo": 131,
+        "nao_mensuravel": 0
+      },
+      "licao": "contagem de regex nao e medicao; o juiz le YAML parseado"
+    }
+  },
+  "parte_2_o_contraste": {
+    "artefato_falso": "docs/evidence/ESTE-ARQUIVO-NAO-EXISTE-2026-10-20.json",
+    "juiz_novo": {
+      "exit": 1,
+      "recusa": true
+    },
+    "juiz_velho": {
+      "exit": 0,
+      "recusa": false,
+      "origem": "origin/main:tools/genome_check.py"
+    },
+    "contraste_vale": true
+  },
+  "parte_2_as_decisoes_de_desenho": {
+    "regra_estrutural_e_nao_fitness_nova": {
+      "por_que": "a FIT-014 e especifica de teste de regressao de PFC; reusa-la misatribuiria. Fitness nova subiria o denominador de 31 para 32.",
+      "onde_entrou": "self.errors.append no laco de provas, onde o portao C30-02 ja vive",
+      "denominador": "INALTERADO em 31"
+    },
+    "o_juiz_declara_o_que_nao_confere": {
+      "conferidas_no_checkout_do_genoma": 120,
+      "nao_conferidas": 11,
+      "por_que": "vivem no monolito, que nao esta no checkout da CI",
+      "principio": "nao conferidas nao e o mesmo que em ordem"
+    },
+    "dois_testes_e_nao_um": {
+      "test_76": "recusa evidencia inexistente",
+      "test_77": "evidencia em OUTRO repositorio NAO e recusada e sai declarada -- senao o conserto trocaria um furo por uma mentira sobre o alcance",
+      "renumerados": "de 56/57 para 76/77: eu havia colidido com dois testes existentes; o maximo era 75"
+    }
+  },
+  "parte_3_o_escopo_retroativo": {
+    "o_que_o_juiz_velho_fazia": "lia `evidence_artifact.repo` e NAO conferia o `path`",
+    "logo": "todo INTEGRO anterior a 2026-10-20 carregava esta condicao NAO VERIFICADA",
+    "mas_o_passivo_e_zero": "as 131 provas que citam artefato citam arquivos que existem",
+    "conclusao": "nenhum INTEGRO anterior estava ERRADO: faltava a verificacao, nao a verdade",
+    "a_declaracao_vive_no_relatorio": "secao `EXISTENCIA DA EVIDENCIA - condicao do INTEGRO desde 2026-10-20`, no padrao da FIT-019",
+    "desde_quando": "2026-10-20"
+  },
+  "os_erros_meus_no_caminho": [
+    "o cheque disparou num FIXTURE do portao C30-02 que citava docs/evidence/fixture.json como andaime -- corrigi o fixture",
+    "tentei resolver o caminho contra a raiz do GRAFO em vez do ROOT e quebrei TRES testes: o arnes escreve o grafo num diretorio temporario, e ali todo caminho real parece ausente",
+    "rodei o contraste com `python -I`, que tira o diretorio do script do sys.path e impede o juiz de importar genome_date_check -- dois runs sairam exit 1 sem recusar",
+    "colei a lista dos nao conferidos no objeto e NAO a imprimia: o dado existia e nunca chegava a quem le",
+    "medi a Parte 1 com regex e anunciei 114 provas com o campo; sao 131, e quem me corrigiu foi o relatorio do proprio juiz"
+  ],
+  "o_que_isto_libera": "os passos B a G do roteiro v2, que o PASSO A condicionava"
+}

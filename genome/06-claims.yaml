@@ -1274,3 +1274,18 @@
   kind: claim
   statement: "O I3b relido e o I3a com outro nome, e por isso um dos dois e redundante no conjunto de invariantes."
   asserted_by: "ninguem ainda - enunciada por mim em 2026-10-20 porque a releitura aproxima os dois enunciados: um fala do efeito que ACONTECEU e o outro do efeito que PODE acontecer, e sem medicao isso se confunde"
+
+- id: CLM-0230
+  kind: claim
+  statement: "O `INTEGRO` que o juiz imprimiu antes de 2026-10-20 incluia a existencia do artefato de evidencia de cada prova."
+  asserted_by: "a leitura natural da palavra INTEGRO, e e a leitura que qualquer um faz: veredito sem ressalva passa por conferencia completa. Enunciada aqui para ser medida contra o que o juiz de fato conferia."
+
+- id: CLM-0232
+  kind: claim
+  statement: "Se o juiz nao conferia a existencia do artefato de evidencia, entao algum `INTEGRO` que ele imprimiu antes de 2026-10-20 estava errado."
+  asserted_by: "a leitura natural do furo, e e a que eu faria: condicao nao verificada soa como condicao violada. Enunciada para ser medida contra o passivo, que e o que separa escopo retroativo de erro retroativo."
+
+- id: CLM-0231
+  kind: claim
+  statement: "O passivo do furo da evidencia e conhecido por varredura de regex sobre o YAML das provas."
+  asserted_by: "claude (2026-10-20), ao medir a Parte 1 do PASSO A com um regex que exigia `repo:` seguido de `path:` na linha seguinte e anunciar 114 provas com o campo"
