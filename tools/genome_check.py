@@ -317,6 +317,10 @@ class Judge:
         self.nodes = nodes
         # O que o juiz VARRE e o que ele julga, nunca "o diretorio de sempre".
         self.genome_dir = Path(genome_dir) if genome_dir else ROOT / "genome"
+        #: artefatos de evidencia que vivem em outro repositorio e que ESTE
+        #: checkout nao pode conferir. Saem nomeados no relatorio: o juiz diz
+        #: o que NAO conferiu, em vez de deixar passar por conferido.
+        self.ev_nao_conferidos: list = []
         self.schema = schema
         # Contract Registry do kit: a fonte de produtor/versão/lifecycle (FIT-010).
         self.registry = registry if registry is not None else load_kit_registry()
@@ -428,6 +432,32 @@ class Judge:
             # CONFIRMADA -- "a Prefeitura nao fara exigencia sobre C.A." se
             # confirmando e sendo lida como "os indices atendem". Ausencia de
             # exigencia nao e evidencia de conformidade.
+            # ----------------------------------------- A EVIDENCIA EXISTE?
+            # O juiz lia `evidence_artifact.repo` e NAO conferia o `path`.
+            # Logo prova podia citar artefato ausente e sair aprovada -- furo
+            # achado em 2026-10-20 por um deslize meu, quando duas provas
+            # citaram um arquivo antes de ele existir e o juiz saiu INTEGRO.
+            # Medido no mesmo dia: 114 provas com o campo, ZERO ausentes. O
+            # furo era POTENCIAL, nao realizado -- e potencial basta, porque o
+            # que o juiz nao confere nao e condicao do INTEGRO dele.
+            ev = p.get("evidence_artifact") or {}
+            ev_repo, ev_path = ev.get("repo"), ev.get("path")
+            if ev_path:
+                if ev_repo == GENOME_REPO:
+                    # relativo ao ROOT do repositorio, e NAO a raiz do grafo
+                    # carregado: o arnes de teste escreve o grafo num diretorio
+                    # temporario, e resolver por ali faria TODO caminho real
+                    # parecer ausente. Tentei e quebrou 3 testes de uma vez.
+                    if not (ROOT / ev_path).is_file():
+                        self.errors.append(
+                            f"{p['id']}: evidence_artifact aponta "
+                            f"{ev_path!r}, que NAO existe. Prova que cita "
+                            f"artefato ausente nao tem evidencia -- tem "
+                            f"endereco. Escreva o arquivo ou tire o campo.")
+                else:
+                    # fora do alcance deste checkout: DECLARADO, nao ignorado
+                    self.ev_nao_conferidos.append((p["id"], ev_repo, ev_path))
+
             tocadas = p.get("proves", []) + p.get("refutes", [])
             classes = {}
             for cid in tocadas:
@@ -1270,6 +1300,35 @@ def text_report(m: dict, j: Judge) -> str:
         L.append(f"PROVAS VENCIDAS: {', '.join(m['proofs_expired'])}  "
                  f"(a afirmação vira STALE — prove de novo, não é falsa)")
         L.append("")
+    # ESCOPO DO VEREDITO: a existencia da evidencia passou a ser condicao
+    # do INTEGRO em 2026-10-20. Antes dessa data o juiz lia o `repo` do
+    # evidence_artifact e NAO conferia o `path` -- entao todo INTEGRO
+    # anterior carregava uma condicao NAO VERIFICADA. O passivo medido no
+    # mesmo dia era ZERO em 114 provas com o campo, logo nenhum INTEGRO
+    # anterior estava ERRADO; o que faltava era a verificacao, nao a
+    # verdade. Declarar isso e o que separa escopo retroativo de erro
+    # retroativo.
+    com_ev = [p for p in j.kind["proof"]
+              if (p.get("evidence_artifact") or {}).get("path")]
+    L.append("EXISTENCIA DA EVIDENCIA — condição do ÍNTEGRO desde 2026-10-20")
+    L.append(f"  provas que citam artefato ................ {len(com_ev)}")
+    L.append(f"  conferidas neste checkout ............... "
+             f"{len(com_ev) - len(j.ev_nao_conferidos)}")
+    L.append(f"  NÃO conferidas aqui ..................... "
+             f"{len(j.ev_nao_conferidos)}")
+    for pid, repo, cam in j.ev_nao_conferidos:
+        L.append(f"    {pid}  {repo}/{cam}")
+    if j.ev_nao_conferidos:
+        L.append("    vivem em outro repositório, que não está neste "
+                 "checkout. NÃO conferidas não é o mesmo que em ordem — "
+                 "o juiz diz o que não olhou.")
+    L.append("  ANTES de 2026-10-20 o juiz lia o `repo` e NÃO conferia o "
+             "`path`:")
+    L.append("    todo ÍNTEGRO anterior tinha esta condição NÃO "
+             "VERIFICADA. O passivo, medido no dia, era ZERO — então "
+             "nenhum estava errado, e faltava a verificação, não a "
+             "verdade.")
+    L.append("")
     sc = m.get("scope_coverage") or {}
     if sc.get("alvo"):
         L.append("COBERTURA DECLARADA DE BUSCA (FIT-019) — insuficiência declarada, "

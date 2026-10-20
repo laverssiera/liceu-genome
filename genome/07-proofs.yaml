@@ -5456,3 +5456,129 @@
     repo: liceu-genome
     path: tools/modelo/autoridade.py
     note: "RODADA DE NOVO E O RESULTADO E IDENTICO, e vale dizer por que: a pergunta do segundo caminho nunca dependeu do I3b. Sem P4 -- a replica pode perder entrada comprometida -- quebram I1 e I4 A MAIS. Sem P3 -- a replica serve leitura obsoleta -- NADA a mais. Os dois numeros sao os mesmos de antes da releitura, porque o que decide esta pergunta sao I1 e I4, que a releitura nao toca. ENTAO SEGUE VALENDO: o segundo caminho tem de ser DURAVEL e nao precisa ser linearizavel para a seguranca que o modelo expressa; consenso e uma forma de obter durabilidade, replicacao SINCRONA de uma linha e outra; e a CLM-0007 pode fechar antes da UNK-0001. O limite tambem segue: `servir` exige visao igual a epoca comprometida, entao leitura obsoleta nao serve errado -- nao serve -- e o custo cai na vivacidade, que o I5 declara NAO EXPRESSAVEL."
+
+- id: PRF-0269
+  kind: proof
+  title: "O juiz nao conferia a existencia do artefato: o VELHO aprova INTEGRO o grafo que o NOVO recusa"
+  refutes: [CLM-0230]
+  basis: test
+  date: "2026-10-20"
+  test:
+    repo: liceu-genome
+    path: tools/test_genome_check.py
+    name: test_76_prova_que_cita_evidencia_INEXISTENTE_e_recusada
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/genome_check.py
+      - tools/test_genome_check.py
+    content_hash: 282e9f63e6acd41651c5ad2d16e6f89af5828c72b79986f6b7e609110c853cbe
+    commit: 3400f17
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-juiz-confere-a-evidencia.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/genome_check.py
+    note: "O CONTRASTE E A PROVA, E SEM ELE EU TERIA PROVADO QUE ESCREVI E NAO QUE CONSERTEI. Mutei UMA prova do grafo real para citar `docs/evidence/ESTE-ARQUIVO-NAO-EXISTE-2026-10-20.json` e rodei os dois juizes contra o MESMO grafo: o juiz da origin/main saiu `exit 0` e `RESULTADO: INTEGRO - nenhuma violacao nova`; o juiz deste branch saiu `exit 1` com `PRF-0268: evidence_artifact aponta ... que NAO existe`. O furo era real e esta fechado. POR QUE REGRA ESTRUTURAL E NAO FITNESS NOVA, que e decisao e nao acidente: a FIT-014 e especifica de teste de regressao de PFC -- 'Falsa afirmacao evitada (PFC) so conta com teste de regressao que EXISTE' -- e reusa-la aqui misatribuiria o enunciado dela. Fitness nova subiria o denominador de 31 para 32, e o denominador nao sobe sem palavra do titular. A conferencia entrou onde o portao C30-02 ja vive: `self.errors.append` dentro do laco de provas, como integridade estrutural do grafo. Denominador INALTERADO em 31. E O JUIZ PASSA A DIZER O QUE NAO CONFERE: artefato que vive em outro repositorio nao esta no checkout dele, e sai NOMEADO numa secao propria do relatorio -- 120 conferidas aqui, 11 nao. Nao conferidas nao e o mesmo que em ordem. TRES ERROS MEUS NO CAMINHO, registrados porque voltam: o cheque disparou num FIXTURE do portao C30-02 que citava `docs/evidence/fixture.json` como andaime, e corrigi o fixture para `repo: r` como os irmaos dele; tentei resolver o caminho contra a raiz do GRAFO em vez do ROOT, o que pareceu mais correto e quebrou TRES testes de uma vez, porque o arnes escreve o grafo num diretorio temporario e ali todo caminho real parece ausente; e rodei o contraste com `python -I`, habito meu para script nao confiavel, que tira o diretorio do script do sys.path e impede o juiz de importar o modulo irmao `genome_date_check` -- dois runs sairam exit 1 sem recusar, e eu quase li isso como 'o conserto nao funciona'."
+
+- id: PRF-0270
+  kind: proof
+  title: "O passivo e ZERO, e o regex que o mediu primeiro errou por 17 provas"
+  refutes: [CLM-0231]
+  basis: record_reading
+  date: "2026-10-20"
+  scope:
+    padrao: "para CADA prova do grafo, ler `evidence_artifact.repo` e `.path` do YAML PARSEADO e conferir a existencia do arquivo na arvore do repositorio citado; e confrontar o resultado com o que a primeira medicao, por regex, havia anunciado"
+    universo: "as 266 provas de genome/07-proofs.yaml e dos demais arquivos do grafo, carregadas com yaml.safe_load; e os 19 repositorios com .git sob C:\\Users\\Messias.Alves\\projetos"
+    excluidos:
+      - "as 135 provas SEM o campo: o schema nao o exige de toda prova, e ausencia de campo nao e evidencia ausente"
+      - "se o CONTEUDO de cada artefato sustenta a prova: aqui se mede existencia, nao suficiencia"
+      - "`test.path` e `location.path`, que sao outros campos e outra pergunta"
+    instrumento: "yaml.safe_load sobre os arquivos do grafo, e Path.is_file() por prova"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-juiz-confere-a-evidencia.json
+  location:
+    repo: liceu-genome
+    path: genome/07-proofs.yaml
+    note: "O PASSIVO E ZERO E A PRIMEIRA MEDICAO ESTAVA ERRADA, e as duas coisas importam. Medido com YAML parseado: 266 provas, 131 com `evidence_artifact.path`, 131 EXISTEM, ZERO ausentes, ZERO nao-mensuraveis. Entao o furo era POTENCIAL e nao realizado -- e a regra de parada do PASSO A, que manda parar acima de dez ausentes, nao dispara. E O INSTRUMENTO DA PRIMEIRA PASSADA ERA RUIM: eu havia anunciado 114 provas com o campo e 3 fora do alcance, por um regex que exigia `repo:` imediatamente seguido de `path:` na linha seguinte. Ele perdeu 17 provas -- as que escrevem as duas chaves em outra ordem ou com outra formatacao. Quem me corrigiu nao fui eu: foi o proprio relatorio do juiz, depois de eu acrescentar a secao de escopo, imprimindo 131 onde eu havia dito 114. 'Contagem de grep nao e medicao' e regra desta casa, e eu a violei dentro do passo cuja razao de existir e nao produzir prova sob condicao nao verificada. DUAS PERGUNTAS QUE NAO SE CONFUNDEM, e o numero muda com ela: desta maquina, que tem os dezenove repositorios, as 131 EXISTEM, inclusive as 11 do monolito. Do checkout da CI do genoma, onde so o genoma esta presente, 120 sao conferiveis e 11 ficam declaradas como nao conferidas. As duas afirmacoes sao verdadeiras e medem coisas diferentes; o relatorio imprime a segunda, porque e a que condiciona o veredito dele."
+
+- id: PRF-0271
+  kind: proof
+  title: "O escopo retroativo declarado: nenhum INTEGRO anterior estava errado, e todos tinham uma condicao nao verificada"
+  refutes: [CLM-0232]
+  basis: record_reading
+  date: "2026-10-20"
+  scope:
+    padrao: "leitura do que o juiz da origin/main fazia com o `evidence_artifact` -- quais campos lia e quais conferia -- confrontada com o passivo medido na mesma data"
+    universo: "tools/genome_check.py na origin/main em 9c7bcda, e as 266 provas do grafo na mesma data"
+    excluidos:
+      - "os relatorios INTEGRO de datas anteriores, um por um: nao foram reconferidos com o juiz novo, e nao e preciso -- o passivo de hoje e zero e o grafo so cresce por acrescimo"
+      - "as outras condicoes do INTEGRO, que esta prova nao mede"
+    instrumento: "git show origin/main:tools/genome_check.py, e a medicao do passivo da PRF-0270"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-juiz-confere-a-evidencia.json
+  location:
+    repo: liceu-genome
+    path: tools/genome_check.py
+    note: "ESCOPO RETROATIVO NAO E ERRO RETROATIVO, e a distincao e a Parte 3 do PASSO A. O juiz anterior lia `evidence_artifact` -- ele usava o `repo` para compor a lista de repositorios com superficie -- e NAO conferia o `path`. Logo todo `INTEGRO` impresso antes de 2026-10-20 carregava esta condicao NAO VERIFICADA. MAS O PASSIVO MEDIDO HOJE E ZERO: as 131 provas que citam artefato citam arquivos que existem. Entao nenhum `INTEGRO` anterior estava ERRADO -- faltava a verificacao, nao a verdade. A DECLARACAO, e ela vive no relatorio e nao so aqui: o juiz passou a imprimir uma secao `EXISTENCIA DA EVIDENCIA - condicao do INTEGRO desde 2026-10-20`, com quantas conferiu, quantas NAO conferiu e quais, e a frase de que antes dessa data a condicao nao era verificada. Segui o padrao da FIT-019, que ja declara a insuficiencia da cobertura de busca dentro do proprio relatorio: declaracao que nao aparece onde o veredito aparece nao e declaracao. E UMA LACUNA DO MEU PROPRIO TRABALHO QUE ACHEI ASSIM: eu havia coletado a lista dos nao conferidos e NAO a imprimia -- o dado existia no objeto e nunca chegava a quem le. Foi ao escrever a secao que o numero 131 apareceu e derrubou o 114 que eu havia anunciado na Parte 1."
+
+- id: PRF-0272
+  kind: proof
+  title: "O portao da nao-propagacao segue recusando a travessia nos dois sentidos depois da conferencia de evidencia"
+  proves: [CLM-0191]
+  basis: test
+  supersedes: [PRF-0221]
+  date: "2026-10-20"
+  test:
+    repo: liceu-genome
+    path: tools/test_genome_check.py
+    name: PortaoDaNaoPropagacao
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/genome_check.py
+      - tools/test_genome_check.py
+    content_hash: 282e9f63e6acd41651c5ad2d16e6f89af5828c72b79986f6b7e609110c853cbe
+    commit: 3400f17
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-juiz-confere-a-evidencia.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/genome_check.py
+    note: "RODADA DE NOVO PORQUE A CONFERENCIA DE EVIDENCIA ENTROU NO MESMO LACO, e isso merecia medicao e nao confianca: o codigo novo foi inserido ANTES da linha que monta as claims tocadas pelo portao C30-02, dentro do mesmo laco sobre as provas. Inserir antes de um bloco e a forma mais comum de alterar um bloco sem notar. Rodei a classe inteira: PortaoDaNaoPropagacao, 7 testes, OK. O portao segue recusando a travessia NORMA x VERIFICACAO nos dois sentidos, passando a prova que fica em uma classe, e tolerando claim sem classe. E o suite completo do juiz fechou em 102 testes, OK, sobre esta arvore. O QUE MUDOU no mesmo laco e so o que esta declarado: prova com artefato no proprio genoma passa a ter o arquivo conferido, e prova com artefato em outro repositorio entra na lista dos nao conferidos."
+
+- id: PRF-0273
+  kind: proof
+  title: "As duas contagens do modo sombra seguem separadas: 2 atos de terceiro e 4 previsoes, nenhuma respondida"
+  proves: [CLM-0185]
+  basis: test
+  supersedes: [PRF-0222]
+  date: "2026-10-20"
+  test:
+    repo: liceu-genome
+    path: tools/test_genome_check.py
+    name: AtoDeTerceiroNaoEPrevisaoRespondida
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/genome_check.py
+      - tools/test_genome_check.py
+    content_hash: 282e9f63e6acd41651c5ad2d16e6f89af5828c72b79986f6b7e609110c853cbe
+    commit: 3400f17
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-juiz-confere-a-evidencia.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/genome_check.py
+    note: "RODADA DE NOVO PORQUE A SECAO NOVA DO RELATORIO ENTROU PERTO, e proximidade no mesmo arquivo de relatorio basta para remedir em vez de supor. A classe AtoDeTerceiroNaoEPrevisaoRespondida, 4 testes, OK. E o relatorio de hoje imprime as duas contagens lado a lado e separadas: ATOS DE TERCEIRO recebidos 2; PREVISOES pre-registradas 4, confirmadas por ato do mundo 0, refutadas por ato do mundo 0, ainda sem resposta 4. A SECAO NOVA FICOU NO NIVEL DA FUNCAO DE RELATORIO e fora de qualquer condicional, e isso foi erro meu antes de ser decisao: na primeira tentativa ela caiu ENTRE a condicional da cobertura de busca e o corpo dela, e quebrou o bloco da FIT-019 com IndentationError. Consertei lendo a regiao com os espacos visiveis, em vez de re-indentar no escuro -- tres tentativas de re-indentacao cega custaram mais que uma leitura."
