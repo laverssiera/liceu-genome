@@ -1,0 +1,129 @@
+{
+  "passo": "PASSO C do roteiro REGIONAL v2 -- disco e runtime",
+  "data": "2026-10-20",
+  "parte_1_a_medicao": {
+    "privilegio": {
+      "usuario": "LAINEZ\\messias.alves",
+      "IsInRole_Administrator": false,
+      "consequencia": "autorizacao do titular para MEDIR nao vira privilegio do sistema; UAC e dialogo interativo e acionar elevacao nao e ato meu"
+    },
+    "os_maiores_legiveis": {
+      "Windows": {
+        "GB": 41.97,
+        "arquivos": 215612,
+        "negados": 47,
+        "natureza": "sistema"
+      },
+      "Users": {
+        "GB": 25.63,
+        "arquivos": 238615,
+        "negados": 11,
+        "natureza": "perfil: cache de aplicativo misturado com DADO"
+      },
+      "Program Files (x86)": {
+        "GB": 10.3,
+        "natureza": "software instalado"
+      },
+      "Program Files": {
+        "GB": 8.52,
+        "natureza": "software instalado"
+      },
+      "hiberfil.sys": {
+        "GB": 4.76,
+        "natureza": "sistema; desligar hibernacao e config do SO"
+      },
+      "ProgramData": {
+        "GB": 2.68,
+        "natureza": "configuracao e estado de aplicativo"
+      },
+      "pagefile.sys": {
+        "GB": 1.81,
+        "natureza": "sistema"
+      },
+      "SQL2025": {
+        "GB": 1.36,
+        "natureza": "instalacao"
+      }
+    },
+    "dentro_do_Windows": {
+      "Installer": {
+        "GB": 21.24,
+        "natureza": "cache de MSI -- NAO reconstruivel, NAO apagavel",
+        "por_que": "o Windows o usa para REPARAR, DESINSTALAR e ATUALIZAR; apagado, patches e desinstalacoes falham"
+      },
+      "WinSxS": {
+        "GB": 9.78,
+        "natureza": "armazenamento de componentes",
+        "so_encolhe_por": "DISM /Cleanup-Image, que exige elevacao",
+        "aviso": "cheio de hard links; Length conta cada ligacao"
+      },
+      "System32": {
+        "GB": 5.2,
+        "natureza": "sistema vivo"
+      }
+    },
+    "o_que_NAO_abre_na_raiz": {
+      "juncoes_sem_espaco_proprio": [
+        "Arquivos de Programas",
+        "Documents and Settings"
+      ],
+      "diretorios_reais_que_recusam": [
+        "System Volume Information",
+        "Config.Msi",
+        "MSOCache",
+        "PerfLogs"
+      ],
+      "vssadmin": "recusa por permissao",
+      "Win32_ShadowCopy": "falha na inicializacao",
+      "o_unico_candidato_credivel_para_os_88_GB": "System Volume Information, onde vivem as copias de sombra"
+    },
+    "o_vazio": {
+      "usado_no_volume_GB": 185.8,
+      "medido_GB": 97.84,
+      "NAO_MENSURAVEL_GB": 87.96,
+      "atribuicao": "quatro diretorios reais que recusam leitura, nao um misterio; 192 acessos negados nas subarvores"
+    },
+    "a_suite_E2E": "respondida no PASSO 2 de 09h24 e inalterada: unica configuracao do ecossistema, nos tres campos conservadores; test-results 0 MB; os 19 repos somam 0,64 GB"
+  },
+  "parte_2_liberar": {
+    "livre_GB": 37.2,
+    "meta_GB": 40,
+    "reconstruivel_identificado_sem_elevar_GB": 1.94,
+    "chegaria_a_GB": 39.1,
+    "falta_GB": 0.9,
+    "o_que_cobriria_a_meta": [
+      "DISM /Cleanup-Image sobre o WinSxS (elevacao)",
+      "cleanmgr / limpeza do Windows Update (elevacao)",
+      "desligar hibernacao, 4,76 GB (config do SO)"
+    ],
+    "a_regra_de_parada_DISPAROU": true,
+    "o_que_eu_NAO_fiz": [
+      "nao apaguei nada",
+      "nao elevei",
+      "nao toquei em System Volume Information",
+      "nao mexi no Windows\\Installer"
+    ]
+  },
+  "parte_3_runtime": {
+    "docker_podman_nerdctl": "ausentes do PATH",
+    "wsl_exe": "existe",
+    "distros_no_HKCU_Lxss": 0,
+    "kernel_do_WSL2_instalado": false,
+    "consequencia": "nao e escolher distro: o recurso precisa ser INSTALADO, e isso exige elevacao",
+    "custo_em_disco": "varios GB, contra 0,9 GB de folga para a meta"
+  },
+  "o_achado_do_passo": {
+    "o_roteiro_acerta": "nenhum passo precisa de FATURA",
+    "o_roteiro_perde": "dois passos precisam de ELEVACAO -- a Parte 2 e a Parte 3 do C -- e elevacao e portao diferente de fatura, e tambem e do titular",
+    "o_que_o_roteiro_diz_precisar_do_titular": [
+      "o I3b no B",
+      "a palavra do mecanismo no G"
+    ],
+    "o_que_a_medicao_acrescenta": [
+      "elevacao para medir os 88 GB",
+      "elevacao para liberar ate a meta",
+      "elevacao para instalar o WSL2"
+    ]
+  },
+  "o_que_isso_faz_com_a_ordem": "os passos D, E e F dependem dos tres conteineres, que dependem do runtime, que depende de elevacao. Entao o caminho do REGIONAL para na sua mao -- nao por fatura, por privilegio."
+}

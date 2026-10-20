@@ -5582,3 +5582,54 @@
     repo: liceu-genome
     path: tools/genome_check.py
     note: "RODADA DE NOVO PORQUE A SECAO NOVA DO RELATORIO ENTROU PERTO, e proximidade no mesmo arquivo de relatorio basta para remedir em vez de supor. A classe AtoDeTerceiroNaoEPrevisaoRespondida, 4 testes, OK. E o relatorio de hoje imprime as duas contagens lado a lado e separadas: ATOS DE TERCEIRO recebidos 2; PREVISOES pre-registradas 4, confirmadas por ato do mundo 0, refutadas por ato do mundo 0, ainda sem resposta 4. A SECAO NOVA FICOU NO NIVEL DA FUNCAO DE RELATORIO e fora de qualquer condicional, e isso foi erro meu antes de ser decisao: na primeira tentativa ela caiu ENTRE a condicional da cobertura de busca e o corpo dela, e quebrou o bloco da FIT-019 com IndentationError. Consertei lendo a regiao com os espacos visiveis, em vez de re-indentar no escuro -- tres tentativas de re-indentacao cega custaram mais que uma leitura."
+
+- id: PRF-0274
+  kind: proof
+  title: "Autorizacao nao e elevacao: o processo roda como usuario comum, e as partes 2 e 3 do PASSO C param nisso"
+  refutes: [CLM-0233]
+  basis: external_observation
+  date: "2026-10-20"
+  external_observation:
+    instrument: "WindowsIdentity.GetCurrent() com WindowsPrincipal.IsInRole(Administrator); tentativa de leitura de cada diretorio de primeiro nivel de C: com -ErrorAction Stop; vssadmin list shadowstorage; Get-CimInstance Win32_ShadowCopy; leitura do HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Lxss; e Test-Path do kernel do WSL2"
+    observed: "o processo roda como LAINEZ\\messias.alves e IsInRole(Administrator) devolve False; System Volume Information, Config.Msi, MSOCache e PerfLogs recusam leitura com UnauthorizedAccessException; vssadmin recusa por permissao; Win32_ShadowCopy falha na inicializacao; o HKCU\\Lxss tem ZERO distros e o kernel do WSL2 NAO esta instalado"
+  scope:
+    padrao: "conferir o nivel de privilegio do processo, e entao tentar UMA POR UMA as leituras que a Parte 1 exige e as instalacoes que as Partes 2 e 3 exigiriam"
+    universo: "o volume C: da maquina de desenvolvimento do titular; os seis diretorios de primeiro nivel que nao abrem; e o estado do WSL no registro do usuario e no System32"
+    excluidos:
+      - "elevar o processo: UAC e dialogo interativo, e acionar elevacao nao e ato meu. A autorizacao do titular para MEDIR nao se converte em privilegio administrativo"
+      - "o que ha dentro dos quatro diretorios reais que recusam leitura: declarado NAO-MENSURAVEL, nao estimado"
+    instrumento: "PowerShell 5.1 nao elevado, com cada tentativa registrada pelo tipo de excecao que devolveu"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-disco-e-a-elevacao.json
+  environment: local
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-disco-e-a-elevacao.json
+    note: "O ROTEIRO ACERTA A FATURA E PERDE A ELEVACAO, e sao portoes diferentes. 'Nenhum passo precisa de fatura' esta CERTO -- nada aqui depende de nuvem nem de pagamento. Mas o PASSO C diz 'Medir nao apaga nada. Autorizado.', e autorizacao do titular nao vira privilegio do sistema operacional: o processo roda como LAINEZ\\messias.alves, IsInRole(Administrator) e False, e os quatro diretorios reais que faltam -- System Volume Information, Config.Msi, MSOCache e PerfLogs -- devolvem UnauthorizedAccessException um por um. O vssadmin recusa por permissao e o Win32_ShadowCopy falha na inicializacao. ENTAO A PARTE 1 CHEGA AO FIM DO QUE SE MEDE SEM ELEVAR, e o que falta tem nome e nao e mistero: dos SEIS diretorios de raiz que nao abrem, DOIS sao JUNCAO -- 'Arquivos de Programas' e 'Documents and Settings' -- e portanto nao ocupam espaco proprio; sobram QUATRO reais, e o System Volume Information e o unico candidato credivel para um vazio de 88 GB, porque e onde vivem as copias de sombra. A PARTE 3 PARA PELO MESMO PORTAO: o HKCU\\Lxss tem ZERO distros e o kernel do WSL2 NAO esta instalado, entao nao se trata de escolher distro -- o recurso precisa ser instalado, e isso exige elevacao. E A PARTE 2 PARA POR DUAS RAZOES SOMADAS: o reconstruivel que eu identifico sem elevar soma cerca de 1,9 GB e leva o livre de 37,2 para 39,1, contra meta de 40; e o que falta para a meta esta em itens que ou exigem elevacao (DISM sobre o WinSxS, cleanmgr, limpeza de Windows Update) ou tem natureza que eu nao conheco. A regra de parada do passo manda parar e perguntar item por item, e e o que fica feito."
+
+- id: PRF-0275
+  kind: proof
+  title: "O maior numero do disco NAO e cache: o Windows\\Installer e o cache de MSI, e apaga-lo quebra reparo, desinstalacao e atualizacao"
+  refutes: [CLM-0234]
+  basis: external_observation
+  date: "2026-10-20"
+  external_observation:
+    instrument: "soma recursiva por subdiretorio de C:\\Windows e de C:\\Users com Get-ChildItem -Recurse -File -Force, contando os acessos negados por diretorio"
+    observed: "Windows\\Installer 21,24 GB; Windows\\WinSxS 9,78 GB; Windows\\System32 5,2 GB; Users\\Messias.Alves 25,63 GB; a soma dos diretorios de primeiro nivel da 91,25 GB com 192 acessos negados, e os arquivos da raiz somam 6,59 GB"
+  scope:
+    padrao: "localizar os maiores consumidores por diretorio e classificar a NATUREZA de cada um: cache reconstruivel, artefato de build, imagem antiga, ou DADO que nao se reconstroi"
+    universo: "os diretorios de primeiro nivel de C: e os subdiretorios de Windows e de Users; e os arquivos da raiz do volume"
+    excluidos:
+      - "os quatro diretorios que recusam leitura: estao na PRF-0274 como NAO-MENSURAVEIS"
+      - "quanto cada item liberaria DE FATO: `Length` nao e ocupacao em disco, e o WinSxS e cheio de hard links, que inflam a soma em vez de deflaciona-la"
+      - "executar qualquer limpeza: esta prova classifica, nao apaga"
+    instrumento: "PowerShell 5.1 nao elevado"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-disco-e-a-elevacao.json
+  environment: local
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-disco-e-a-elevacao.json
+    note: "ENUNCIEI ESTA CLAIM PARA SER DERRUBADA, porque e nela que alguem procurando 40 GB tropeca primeiro: o Windows\\Installer e o MAIOR numero unico do disco com 21,24 GB, e a palavra 'Installer' convida a trata-lo como sobra de instalacao. NAO E. E o cache de pacotes MSI que o Windows guarda para REPARAR, DESINSTALAR e ATUALIZAR o que esta instalado; apagado, desinstalacoes e patches futuros falham, e o que se perde nao se reconstroi a partir da maquina -- so dos instaladores originais, que podem nao existir mais. Nao e cache reconstruivel, nao e artefato de build, e nao entra na conta dos 40 GB. A NATUREZA DOS DEMAIS, declarada uma por uma: WinSxS 9,78 GB e o armazenamento de componentes, e so encolhe por DISM /Cleanup-Image, que exige elevacao -- e a soma dele e enganosa, porque e cheio de hard links e `Length` conta cada ligacao; System32 5,2 GB e sistema vivo; Users\\Messias.Alves 25,63 GB e perfil, com AppData\\Local em 16,82 GB, onde vive cache de aplicativo misturado com DADO; ProgramData 2,68 GB e configuracao e estado de aplicativo; SQL2025 1,36 GB e instalacao. O RECONSTRUIVEL QUE EU IDENTIFICO SEM ELEVAR soma cerca de 1,9 GB: pip cache 0,92, Temp 0,61, os onze node_modules 0,41, coverage e pytest_cache no residual. Leva o livre de 37,2 para 39,1 GB, contra meta de 40. E UM AVISO SOBRE O INSTRUMENTO que vale para todos os numeros acima: `Length` e tamanho logico, nao ocupacao; com hard links, compressao NTFS e arquivos esparsos os dois divergem, e no WinSxS divergem muito. Os numeros servem para ordenar candidatos, nao para prometer quanto se libera."
