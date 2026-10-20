@@ -57,5 +57,34 @@
     "consequencia": "o valor da projecao lateral ficou FORA do escopo",
     "quem_assina": "o titular e o responsavel tecnico da prancha"
   },
-  "o_que_isso_faz_com_a_CLM_0019": "continua UNPROVEN, e as tres faltas tem naturezas diferentes: o I.E. espera texto consolidado que nao existe, os recuos esperam LEITURA JURIDICA, e nenhuma se resolve medindo mais"
+  "o_que_isso_faz_com_a_CLM_0019": "continua UNPROVEN, e as tres faltas tem naturezas diferentes: o I.E. espera texto consolidado que nao existe, os recuos esperam LEITURA JURIDICA, e nenhuma se resolve medindo mais",
+  "ADENDO_2026-10-19_a_unidade_confirmada_pelo_RT": {
+    "a_unidade_confirmada": {
+      "claim": "CLM-0206",
+      "prova": "PRF-0239",
+      "veredito": "REFUTADA",
+      "a_legenda_diz": "Projecao Beiral 1.15 cm",
+      "o_RT_declarou": "sao 1,15 m; a unidade na legenda esta errada",
+      "quando": "2026-10-19",
+      "o_documento_protocolado_segue_com_o_defeito": true,
+      "conserto": "e ato do responsavel tecnico, nao meu"
+    },
+    "o_que_isso_faz_com_o_lateral": {
+      "recuo_ate_a_parede_m": 1.5,
+      "beiral_m": 1.15,
+      "livre_sob_a_leitura_do_beiral_m": 0.35,
+      "minimo_m": 1.5,
+      "ate_a_parede": "ATENDE, folga zero",
+      "ate_o_beiral": "0,35 contra 1,50 \u2014 menos de um quarto do exigido"
+    },
+    "a_pergunta_do_beiral_deixa_de_ser_marginal": {
+      "nos_fundos": "separa 3,00 de 2,20 \u2014 27%",
+      "no_lateral": "separa 1,50 de 0,35 \u2014 77%",
+      "mesma_questao_de_direito": true
+    },
+    "o_que_segue_NAO_medido": {
+      "extensao_do_beiral_lateral": "nao medida; sem ela nenhuma conta de area computavel se faz",
+      "a_regra_de_1_00_m_informada_pelo_titular": "sem fonte normativa. Procurada no art. 3o (area nao computavel cita beirais SEM limiar) e no art. 5o par. 1o (tres exclusoes, nenhuma e beiral). Nao lidas: as 68 paginas inteiras e o Codigo de Obras do Estado."
+    }
+  }
 }
