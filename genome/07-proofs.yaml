@@ -4830,3 +4830,109 @@
     repo: JURIDICO-TECH
     path: backend/juridicotech/modules/conformidade_urbanistica.py
     note: "A REFUTACAO DA PRF-0236 SEGUE DE PE, E ISSO FOI MEDIDO NO CODIGO DE AGORA: a frente minima continua saindo 'e limite de LOTE e o projeto esta em regime CONDOMINIO: a aplicabilidade nao se resolve pela tabela -- falta: decisao da Prefeitura sobre o regime', e a area minima do lote continua comparada contra 360,00. A UNK-0009 ja respondeu as duas pela LEI: o art. 13 da LC 097/2020, na redacao da LC 99/2021, manda observar a Tabela 1 da Zona Mista para a unidade autonoma EXCLUINDO APENAS a area minima de lote, que o art. 119 da LC 30 substitui por 160,00 m2. Entao a frente minima ALCANCA a unidade e deveria ser COMPARADA (7,00 contra 5,00), e a area minima NAO alcanca e deveria ser comparada contra 160,00 (175 contra 160). NAO CONSERTEI NESTE PR, E E DECISAO DE METODO E NAO FALTA DE TEMPO: mudar a regra de aplicabilidade altera o veredito da CLM-0019, e tem de nascer com o seu proprio teste. Emendar isso dentro do PR que conserta a leitura pendente seria a mudanca que entra de carona e ninguem confere -- que e a mesma razao pela qual nao foi emendada no PR que mediu a testada. O QUE ISSO CUSTA, pelo segundo ciclo seguido: a testada esta medida, registrada, e atende com folga de 2,00 m, e o motor nao a usa; o numero existe no arquivo e nao chega ao veredito."
+
+- id: PRF-0244
+  kind: proof
+  title: "A divisao NAO fecha o I3: ela separa a metade fechada da aberta, e o I3b segue violando nos 32 subconjuntos"
+  refutes: [CLM-0209]
+  basis: test
+  date: "2026-10-20"
+  test:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    name: self_test
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/modelo/autoridade.py
+    content_hash: 20295a186ee585d5c4876f086de9270ed8a032c0c7e4b5a0d98d4f15ed901854
+    commit: 5df1e33
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-i3-dividido.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    note: "DIVIDIR NAO E CONSERTAR, E O GENOMA NAO DEVE DEIXAR A DIVISAO PASSAR POR PROGRESSO. O titular decidiu em 2026-10-20 dividir o I3, e a decisao resolve o que estava mal posto: o enunciado unico -- 'token de epoca revogada NUNCA aceito' -- carregava DUAS exigencias de forca diferente, e por isso nao tinha veredito. Agora tem dois. O I3a (nenhum ato sob epoca revogada TOMA EFEITO) VALE no protocolo com a imposicao. O I3b (nada FICA em voo sob epoca revogada) e o I3 como estava escrito, palavra por palavra e sem emenda, e VIOLA -- nos 32 subconjuntos das cinco propriedades do log, exatamente como antes da divisao. O QUE MUDOU FOI O QUE SE SABE, E NAO O QUE O SISTEMA FAZ: nenhuma linha do protocolo foi alterada por esta divisao, e nenhum estado alcancavel novo apareceu no protocolo base -- 387 estados antes, 387 depois, o mesmo numero. O dreno NAO foi construido, e so ele satisfaz o I3b. A CONSEQUENCIA QUE ISSO TEM PARA A CADEIA E NENHUMA, e e importante dizer: a CLM-0007 segue REFUTED, o REGIONAL segue bloqueado por tres itens, e a divisao nao mexe em nada disso. Ela torna a pergunta aberta NOMEAVEL -- 'falta o dreno para o I3b' em vez de 'o I3 nao fecha' -- e nomear nao e fechar."
+
+- id: PRF-0245
+  kind: proof
+  title: "O I3a vale e e FALSIFICAVEL: a transicao de efeito dispara 160x, recusa 144x, e a mutacao liga o bit em 200 estados"
+  proves: [CLM-0210]
+  basis: test
+  date: "2026-10-20"
+  test:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    name: self_test
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/modelo/autoridade.py
+    content_hash: 20295a186ee585d5c4876f086de9270ed8a032c0c7e4b5a0d98d4f15ed901854
+    commit: 5df1e33
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-i3-dividido.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    note: "A DIVISAO EXIGIU UMA TRANSICAO NOVA, E A RAZAO E QUE SEM ELA O I3a SERIA DECORACAO. O `autoridade.py` so tinha `servir` (admissao) e `parar`: nao havia ato de EFEITO, e invariante que nenhum estado alcancavel pode violar nao e invariante, e enfeite. Entrou `concluir`, e com ela a mutacao `conclui_sem_conferir_no_efeito` que a desguarnece. OS DOIS TESTES QUE DECIDEM SE A DIVISAO VALE ESTAO NO SELF-TEST, e nao na prosa: 'a divisao SEPARA -- I3a vale e I3b viola no mesmo modelo' (iguais, ela nao separou nada) e 'I3a e FALSIFICAVEL -- desguarnecer o efeito o quebra' (se a mutacao nao quebrasse, o I3a seria vacuo). 10 de 10 passam. E OS 387 ESTADOS IGUAIS ANTES E DEPOIS QUASE PASSARAM POR EXPERIMENTO NULO, e registro o que os separa de um: a transicao `concluir` DISPARA 160 vezes no protocolo base e `recusar` 144, e o bit de efeito sujo fica em ZERO estado -- a imposicao recusa e as recusas nao produzem estado que o `parar` ja nao produzisse. Sob a mutacao, `concluir` dispara 384 vezes, `recusar` nenhuma, e 200 estados carregam o bit ligado, com o espaco indo de 387 para 587. Se o numero de disparos fosse zero, os 387 iguais seriam medicao de nada. O BIT E UM BIT E NAO UM HISTORICO, de proposito: o I3a diz NUNCA, e para 'nunca' basta lembrar que aconteceu uma vez -- guardar as conclusoes multiplicaria o espaco de estados sem dizer nada a mais."
+
+- id: PRF-0246
+  kind: proof
+  title: "A lista de propriedades exigidas do log sobrevive a divisao, e NENHUMA das duas metades do fencing exige nada do log"
+  proves: [CLM-0173]
+  basis: test
+  supersedes: [PRF-0203]
+  date: "2026-10-20"
+  test:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    name: matriz
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/modelo/autoridade.py
+    content_hash: 20295a186ee585d5c4876f086de9270ed8a032c0c7e4b5a0d98d4f15ed901854
+    commit: 5df1e33
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-i3-dividido.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    note: "RODADO DE NOVO PORQUE A DIVISAO REESCREVEU O ARQUIVO, e rodado onde a divisao podia ter mudado a resposta. A CLM-0173 afirma, entre outras coisas, que 'o fencing nao exige nada do log' -- e isso valia do I3 UNICO. A divisao abre a pergunta de saber se vale das DUAS metades, e so a medicao a fecha: varri os 32 subconjuntos e o I3b viola em 32 de 32, o I3a em 0 de 32. Nenhuma das duas metades e propriedade do log, e por isso as duas saem da matriz. A MATRIZ SEGUE A MESMA: sem P4 quebram I1 e I4; sem P5 quebra I1; sem P2 sozinho NAO quebra nada, porque o P5 mascara; sem P2 E sem P5 quebram I1 e I2; sem P1 e sem P3, nada. INSUFICIENCIA DECLARADA, e ela e do instrumento e nao da conclusao: em 12 dos 32 subconjuntos a busca TRUNCOU no teto de 300000 estados. Para o I3b isso nao enfraquece nada -- violacao encontrada e contraexemplo exibido, e truncar depois de achar nao desfaz o achado. Para o I3a enfraquece: nos 12 truncados, 'nao achei contraexemplo' NAO e 'nao existe contraexemplo', e o que esta medido ali e ausencia de violacao no prefixo explorado. O protocolo base, com as cinco propriedades, NAO truncou: 387 estados, busca exaustiva completa."
+
+- id: PRF-0247
+  kind: proof
+  title: "As cinco propriedades seguem NAO bastando depois da divisao, e agora se sabe qual metade elas nao alcancam"
+  refutes: [CLM-0172]
+  basis: test
+  supersedes: [PRF-0202]
+  date: "2026-10-20"
+  test:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    name: self_test
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/modelo/autoridade.py
+    content_hash: 20295a186ee585d5c4876f086de9270ed8a032c0c7e4b5a0d98d4f15ed901854
+    commit: 5df1e33
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-i3-dividido.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    note: "A REFUTACAO DA PRF-0202 SEGUE DE PE E FICOU MAIS PRECISA. Com as cinco propriedades ligadas, o modelo tem 387 estados, nao trunca, e ainda viola -- e o que viola agora tem nome proprio: o I3b, nada FICA em voo sob epoca revogada. O contraexemplo e o mesmo de tres passos: promover(ativa,e1), servir(ativa,e1), promover(ativa,e2). A requisicao foi ADMITIDA sob a epoca 1 e segue em voo quando a epoca vira 2, e nao e corrida de failover -- e o avanco normal, praticado pela propria ativa. O QUE A DIVISAO ACRESCENTA A ESTA REFUTACAO: antes dizia-se 'o log nao basta para o fencing'; agora diz-se que o log nao basta para o I3b e que o I3a nao depende do log de forma alguma, valendo em 0 de 32 violacoes. A escolha entre etcd e PySyncObj continua nao fechando nenhuma das duas metades, e isso nao mudou por ter sido medido duas vezes."

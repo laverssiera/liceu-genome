@@ -1,0 +1,89 @@
+{
+  "ciclo": "decisao do titular, 2026-10-20",
+  "a_decisao": {
+    "quem": "o titular",
+    "quando": "2026-10-20",
+    "o_que": "dividir o I3 em dois invariantes",
+    "o_que_ela_NAO_e": "nao e implementacao concluida, nao e prova obtida e nao e escala promovida. O dreno nao foi construido e o I3b segue violando.",
+    "de_onde_veio_a_alternativa": "o proprio C30-01 escreveu 'ou o I3 se divide em dois invariantes, ou falta o dreno -- e as duas sao decisao de desenho, nao resultado de medicao'"
+  },
+  "o_corte": {
+    "I3a": "nenhum ato sob epoca revogada TOMA EFEITO -- seguranca",
+    "I3b": "nada FICA em voo sob epoca revogada -- o I3 como estava escrito, sem emenda",
+    "por_que_o_enunciado_unico_nao_tinha_veredito": "'token de epoca revogada NUNCA aceito' confere `e.servindo`, que e o que esta em voo; logo proibia o ESTADO. A imposicao do C30-01 confere no momento do EFEITO: o ato nao toma efeito, mas ficou em voo."
+  },
+  "a_transicao_que_a_divisao_exigiu": {
+    "nome": "concluir / recusar",
+    "por_que": "sem ato de EFEITO o I3a nao teria onde ser violado, e invariante que nenhum estado alcancavel viola e decoracao",
+    "disparos_no_protocolo_base": {
+      "concluir": 160,
+      "recusar": 144,
+      "estados_com_o_bit": 0
+    },
+    "disparos_sob_a_mutacao": {
+      "concluir": 384,
+      "recusar": 0,
+      "estados_com_o_bit": 200
+    },
+    "o_bit_e_um_bit_e_nao_um_historico": "o I3a diz NUNCA, e para nunca basta lembrar que aconteceu"
+  },
+  "a_divisao_separa": {
+    "separa": true,
+    "I3a_falsificavel": true,
+    "estados_base": 387,
+    "estados_mutacao": 587
+  },
+  "os_32_subconjuntos": {
+    "total": 32,
+    "I3b_viola": 32,
+    "I3a_viola": 0,
+    "truncaram": 12,
+    "I3a_quebra_em": []
+  },
+  "CLM-0172_segue_refutada": {
+    "segue_refutada": true,
+    "viola": [
+      "I3b_nada_em_voo_sob_epoca_revogada"
+    ],
+    "estados": 387
+  },
+  "CLM-0173_segue_provada": {
+    "mantida": true,
+    "casos": {
+      "sem P4": [
+        "I1_uma_instancia_por_epoca",
+        "I4_testemunha_nao_inventa"
+      ],
+      "sem P5": [
+        "I1_uma_instancia_por_epoca"
+      ],
+      "sem P2": [],
+      "sem P2 e sem P5": [
+        "I1_uma_instancia_por_epoca",
+        "I2_epoca_monotonica"
+      ],
+      "sem P1": [],
+      "sem P3": []
+    },
+    "fencing_nao_exige_nada_do_log": true
+  },
+  "insuficiencia_declarada": {
+    "truncaram": 12,
+    "o_que_isso_faz_com_o_I3b": "nada: violacao encontrada e contraexemplo exibido, e truncar depois de achar nao desfaz o achado",
+    "o_que_isso_faz_com_o_I3a": "enfraquece: nos truncados, 'nao achei contraexemplo' nao e 'nao existe'. O medido ali e ausencia de violacao no prefixo explorado.",
+    "o_protocolo_base_truncou": false
+  },
+  "os_387_estados_iguais": {
+    "antes": 387,
+    "depois": 387,
+    "por_que_NAO_e_experimento_nulo": "a transicao nova DISPARA -- 160 concluir e 144 recusar -- e o bit fica em zero porque a imposicao recusa. Se os disparos fossem zero, os 387 iguais mediriam nada.",
+    "o_que_eles_significam": "as recusas da imposicao nao produzem estado que o `parar` ja nao produzisse"
+  },
+  "o_que_a_divisao_NAO_moveu": {
+    "CLM-0007": "segue REFUTED",
+    "REGIONAL": "segue bloqueado por tres itens",
+    "o_dreno": "NAO construido, e so ele satisfaz o I3b",
+    "nenhuma_linha_do_protocolo_mudou": true
+  },
+  "a_pergunta_que_fica_e_e_do_titular": "qual remedio fecha o I3b -- o DRENO na camada de autoridade, ou a validacao do token a jusante no momento da ESCRITA. A PRF-0202 nomeou os dois e nenhum foi escolhido. Nao criei incognita para isso sem a sua palavra."
+}
