@@ -5633,3 +5633,55 @@
     repo: liceu-genome
     path: docs/evidence/2026-10-20-o-disco-e-a-elevacao.json
     note: "ENUNCIEI ESTA CLAIM PARA SER DERRUBADA, porque e nela que alguem procurando 40 GB tropeca primeiro: o Windows\\Installer e o MAIOR numero unico do disco com 21,24 GB, e a palavra 'Installer' convida a trata-lo como sobra de instalacao. NAO E. E o cache de pacotes MSI que o Windows guarda para REPARAR, DESINSTALAR e ATUALIZAR o que esta instalado; apagado, desinstalacoes e patches futuros falham, e o que se perde nao se reconstroi a partir da maquina -- so dos instaladores originais, que podem nao existir mais. Nao e cache reconstruivel, nao e artefato de build, e nao entra na conta dos 40 GB. A NATUREZA DOS DEMAIS, declarada uma por uma: WinSxS 9,78 GB e o armazenamento de componentes, e so encolhe por DISM /Cleanup-Image, que exige elevacao -- e a soma dele e enganosa, porque e cheio de hard links e `Length` conta cada ligacao; System32 5,2 GB e sistema vivo; Users\\Messias.Alves 25,63 GB e perfil, com AppData\\Local em 16,82 GB, onde vive cache de aplicativo misturado com DADO; ProgramData 2,68 GB e configuracao e estado de aplicativo; SQL2025 1,36 GB e instalacao. O RECONSTRUIVEL QUE EU IDENTIFICO SEM ELEVAR soma cerca de 1,9 GB: pip cache 0,92, Temp 0,61, os onze node_modules 0,41, coverage e pytest_cache no residual. Leva o livre de 37,2 para 39,1 GB, contra meta de 40. E UM AVISO SOBRE O INSTRUMENTO que vale para todos os numeros acima: `Length` e tamanho logico, nao ocupacao; com hard links, compressao NTFS e arquivos esparsos os dois divergem, e no WinSxS divergem muito. Os numeros servem para ordenar candidatos, nao para prometer quanto se libera."
+
+- id: PRF-0276
+  kind: proof
+  title: "As copias de sombra usam 1,40 GB e nao 88: a minha hipotese cai, e o vazio esta em OITO perfis de usuario que a varredura contou como zero"
+  refutes: [CLM-0235]
+  basis: external_observation
+  date: "2026-10-20"
+  external_observation:
+    instrument: "vssadmin list shadowstorage, rodado em janela elevada pelo titular com o comando que eu escrevi; e tentativa de leitura de CADA perfil em C:\\Users, uma por uma, com -ErrorAction Stop, feita por mim sem elevacao"
+    observed: "o armazenamento de copias de sombra do volume C: usa 1,40 GB, tem 1,78 GB alocados e 3,87 GB de maximo; e dos quinze itens de C:\\Users, DEZ recusam leitura -- OITO perfis reais mais duas juncoes -- enquanto o perfil do titular, legivel, soma 25,65 GB. Os nomes dos perfis NAO entram: sao nomes de pessoas de uma maquina de dominio e este repositorio e publico"
+  scope:
+    padrao: "confrontar o tamanho REAL do armazenamento de copias de sombra com a hipotese que eu havia registrado; e entao perguntar, perfil por perfil, quais a varredura anterior pode ter contado como zero por falta de permissao"
+    universo: "o volume C: da maquina do titular; a saida do vssadmin em janela elevada; e os quinze itens de C:\\Users"
+    excluidos:
+      - "o TAMANHO dos oito perfis negados: segue NAO-MENSURAVEL sem elevacao, e nao foi estimado"
+      - "as lixeiras por usuario em C:\\$Recycle.Bin, que tambem recusam leitura"
+      - "se o vazio e INTEIRAMENTE dos perfis: a hipotese nova nao foi confirmada, so a antiga foi derrubada"
+    instrumento: "vssadmin em janela elevada; PowerShell 5.1 nao elevado para o resto"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-a-hipotese-das-sombras-caiu.json
+  environment: local
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-a-hipotese-das-sombras-caiu.json
+    note: "EU ESCREVI 'UNICO CANDIDATO CREDIVEL' E ERRA POR DUAS ORDENS DE GRANDEZA. O vssadmin em janela elevada diz que o armazenamento de copias de sombra do C: USA 1,40 GB, tem 1,78 GB alocados e NAO PODE passar de 3,87 GB, que e o maximo configurado. Entao o System Volume Information nao guarda 88 GB: ele nao tem como. A hipotese nao era arbitraria -- copias de sombra sao o suspeito classico de vazio grande em volume Windows, e o diretorio e realmente ilegivel sem elevacao -- mas 'suspeito classico' e 'unico candidato credivel' nao sao a mesma coisa, e eu escrevi a segunda. O ERRO DE METODO QUE A PRODUZIU E PIOR QUE A HIPOTESE, e e o que vale guardar: eu tinha a resposta ao alcance da mao e nao olhei. A varredura por diretorio contava `Negados` por subarvore e eu IMPRIMI esse numero -- 11 negados em C:\\Users -- sem perguntar o que eram. Eram perfis inteiros. Ao ler um por um com -ErrorAction Stop, DEZ dos quinze itens de C:\\Users recusam leitura, e OITO sao perfis reais, cujos nomes nao entram aqui. A varredura somou C:\\Users em 25,63 GB, que e praticamente so o perfil do titular (25,65) -- os outros oito entraram na conta como ZERO. E uma maquina de dominio, LAINEZ, com nove perfis humanos; tratar oito deles como vazios e a explicacao simples que eu nao busquei. O QUE ISTO NAO ESTABELECE, declarado: que o vazio seja INTEIRAMENTE dos perfis. Nenhum deles foi medido -- segue NAO-MENSURAVEL sem elevacao, junto com as lixeiras por usuario. A hipotese antiga esta REFUTADA; a nova esta apenas NOMEADA, e so a medicao elevada a confirma ou derruba."
+
+- id: PRF-0277
+  kind: proof
+  title: "O vazio cai de 88 para 11 GB e nao estava nos diretorios protegidos: 73 GB estavam em perfis que a minha varredura contou como zero"
+  refutes: [CLM-0236, CLM-0237]
+  basis: external_observation
+  date: "2026-10-20"
+  external_observation:
+    instrument: "tres comandos que eu escrevi e o titular rodou em janela elevada: soma recursiva por item de C:\\Users com as juncoes identificadas; soma recursiva dos quatro diretorios protegidos; e soma recursiva da lixeira de todos os usuarios. Mais o vssadmin list shadowstorage da rodada anterior"
+    observed: "os itens reais de C:\\Users somam 98,92 GB, contra os 25,63 que eu havia medido sem elevacao; ProgramData da 4,76 contra 2,68; os quatro protegidos somam 0,75 GB, dos quais o System Volume Information da ZERO; a lixeira da 0,48 GB em 436 arquivos; e o armazenamento de copias de sombra usa 1,40 GB com maximo de 3,87"
+  scope:
+    padrao: "refazer a soma do volume substituindo cada numero que eu havia medido sem elevacao pelo medido com elevacao, e confrontar o total com o `Used` do volume"
+    universo: "o volume C: da maquina do titular, 185,80 GB usados; os quinze itens de C:\\Users; os quatro diretorios protegidos; e a lixeira"
+    excluidos:
+      - "os NOMES dos perfis: sao nomes de pessoas de uma maquina de dominio, e este repositorio e publico. Entram os tamanhos e a contagem, nunca a identificacao"
+      - "o CONTEUDO de qualquer perfil: ninguem entrou em perfil de ninguem, e a medicao e de tamanho"
+      - "os 47 acessos negados dentro de Windows e os 37 dentro de Program Files, que seguem NAO-MENSURAVEIS e onde o resto do vazio cabe"
+    instrumento: "PowerShell em janela elevada, rodado pelo titular com o comando que eu escrevi; e a reconciliacao aritmetica conferida por script e nao de cabeca"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-vazio-atribuido.json
+  environment: local
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-vazio-atribuido.json
+    note: "O VAZIO ESTAVA ONDE EU NAO OLHEI, E DUAS DAS MINHAS AFIRMACOES CAEM DE UMA VEZ. A RECONCILIACAO: eu media 97,84 GB de 185,80 usados, com C:\\Users em 25,63 e ProgramData em 2,68. Medido com elevacao, C:\\Users soma 98,92 -- mais SETENTA E TRES GIGABYTES do que eu havia contado -- ProgramData da 4,76, os quatro protegidos somam 0,75 e a lixeira 0,48. O total sobe para 174,39 e o vazio desce de 87,96 para 11,41 GB. O que resta cabe nos 47 acessos negados dentro de Windows e nos 37 dentro de Program Files, que seguem nao mensuraveis sem elevacao. A PRIMEIRA AFIRMACAO QUE CAI: eu disse que o vazio se atribuia medindo os quatro diretorios protegidos. Eles somam 0,75 GB, e o System Volume Information -- que eu havia chamado de unico candidato credivel para 88 GB, e que a PRF-0276 ja derrubou pelo vssadmin -- da ZERO. Apontei para o lugar errado duas vezes, por duas vias diferentes. A SEGUNDA: eu escrevi que o Windows\\Installer, com 21,24 GB, era o maior item unico do disco. Nao e. O maior e um PERFIL DE USUARIO, com 44,5 GB -- mais do que o dobro. O segundo maior tambem e perfil, com 23,69. O Installer e o TERCEIRO. E O ERRO DE RAIZ E O MESMO DAS DUAS VEZES, e nao e falta de permissao: a varredura imprimia `Negados` por subarvore e eu publiquei o numero sem perguntar o que eram. Onze negados em C:\\Users eram OITO PERFIS INTEIROS numa maquina de dominio com nove perfis humanos. Permissao faltava para medir; nao faltava para PERGUNTAR o que eu nao estava medindo. O QUE ISTO NAO FAZ, declarado: nao propoe apagar nada. Perfil de usuario e dado pessoal de alguem, a maquina e compartilhada, e a regra de parada do PASSO C manda parar e perguntar item por item. O numero e meu de entregar; a decisao nao."

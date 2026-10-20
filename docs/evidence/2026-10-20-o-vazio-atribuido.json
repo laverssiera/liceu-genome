@@ -1,0 +1,68 @@
+{
+  "o_que_e": "a atribuicao do vazio do volume C:, com as medicoes elevadas do titular",
+  "data": "2026-10-20",
+  "privacidade": "os nomes dos perfis NAO entram: sao nomes de pessoas de uma maquina de dominio e este repositorio e publico. Entram os tamanhos e a contagem.",
+  "a_reconciliacao": {
+    "eu_media_GB": 97.84,
+    "C_Users_que_eu_media_GB": 25.63,
+    "C_Users_medido_elevado_GB": 98.92,
+    "diferenca_GB": 73.29,
+    "ProgramData_antes_GB": 2.68,
+    "ProgramData_elevado_GB": 4.76,
+    "quatro_protegidos_GB": 0.75,
+    "lixeira_GB": 0.48,
+    "medido_agora_GB": 174.39,
+    "usado_no_volume_GB": 185.8,
+    "vazio_antes_GB": 87.96,
+    "vazio_agora_GB": 11.41,
+    "onde_o_resto_cabe": "nos 47 acessos negados dentro de Windows e nos 37 dentro de Program Files, nao mensuraveis sem elevacao"
+  },
+  "os_perfis_sem_nome": {
+    "itens_em_C_Users": 15,
+    "juncoes": 4,
+    "perfis_reais": 11,
+    "tamanhos_GB_em_ordem": [
+      44.5,
+      23.69,
+      18.25,
+      4.24,
+      2.79,
+      1.96,
+      1.62,
+      1.18,
+      0.69,
+      0.0,
+      0.0
+    ],
+    "soma_GB": 98.92,
+    "quantos_a_minha_varredura_contou_como_zero": 8
+  },
+  "os_quatro_protegidos": {
+    "System Volume Information": 0.0,
+    "Config.Msi": 0.01,
+    "MSOCache": 0.74,
+    "PerfLogs": 0.0
+  },
+  "copias_de_sombra": {
+    "usado_GB": 1.4,
+    "maximo_GB": 3.87
+  },
+  "as_duas_afirmacoes_minhas_que_caem": {
+    "1": {
+      "eu_disse": "o vazio se atribui medindo os quatro diretorios protegidos",
+      "a_medicao": "eles somam 0,75 GB, e o System Volume Information da ZERO"
+    },
+    "2": {
+      "eu_disse": "o Windows/Installer, com 21,24 GB, e o maior item unico do disco",
+      "a_medicao": "o maior e um PERFIL com 44,5 GB; o segundo tambem e perfil, com 23,69; o Installer e o TERCEIRO"
+    }
+  },
+  "o_erro_de_raiz": "a varredura imprimia `Negados` por subarvore e eu publiquei o numero sem perguntar o que eram. Permissao faltava para MEDIR; nao faltava para PERGUNTAR o que eu nao estava medindo.",
+  "o_que_isto_NAO_faz": "nao propoe apagar nada. Perfil de usuario e dado pessoal de alguem, a maquina e compartilhada, e a regra de parada manda perguntar item por item.",
+  "a_parte_2_com_os_numeros_na_mao": {
+    "livre_GB": 36.41,
+    "meta_GB": 40.0,
+    "falta_GB": 3.59,
+    "o_maior_perfil_sozinho_GB": 44.5
+  }
+}

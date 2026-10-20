@@ -1,0 +1,40 @@
+{
+  "o_que_e": "a refutacao da minha propria hipotese sobre os 88 GB",
+  "data": "2026-10-20",
+  "a_hipotese_que_caiu": {
+    "quem": "claude",
+    "onde": "PRF-0274 e PR #155 (PASSO C)",
+    "o_que_eu_escrevi": "o System Volume Information e o unico candidato credivel para um vazio de 88 GB"
+  },
+  "a_medicao_que_a_derrubou": {
+    "instrumento": "vssadmin list shadowstorage, em janela elevada",
+    "usado_GB": 1.4,
+    "alocado_GB": 1.78,
+    "maximo_GB": 3.87,
+    "consequencia": "o System Volume Information nao guarda 88 GB: ele nao tem como, porque o maximo configurado e 3,87 GB"
+  },
+  "o_erro_de_metodo_que_importa_mais": {
+    "o_que_eu_fiz": "a varredura contava `Negados` por subarvore e eu IMPRIMI o numero -- 11 em C:\\Users -- sem perguntar o que eram",
+    "o_que_eram": "perfis de usuario inteiros",
+    "licao": "eu tinha a resposta ao alcance e nao olhei; 'suspeito classico' nao e 'unico candidato credivel'"
+  },
+  "o_candidato_novo_apenas_NOMEADO": {
+    "itens_em_C_Users": 15,
+    "negados": 10,
+    "o_que_a_varredura_anterior_disse_de_C_Users": 25.63,
+    "ou_seja": "praticamente so o perfil do titular; os outros oito como ZERO",
+    "a_maquina": "de dominio, LAINEZ, com nove perfis humanos",
+    "perfis_reais_negados_quantos": 8,
+    "os_nomes_NAO_entram": "sao nomes de pessoas de uma maquina de dominio, e este repositorio e publico",
+    "juncoes_negadas_quantas": 2,
+    "legiveis_tamanhos_GB": [
+      25.65,
+      2.68,
+      2.68,
+      0,
+      0
+    ]
+  },
+  "o_que_isto_NAO_estabelece": "que o vazio seja INTEIRAMENTE dos perfis. Nenhum foi medido: seguem NAO-MENSURAVEIS sem elevacao, junto com as lixeiras por usuario. A hipotese antiga esta REFUTADA; a nova esta apenas NOMEADA.",
+  "a_lixeira": "C:\\$Recycle.Bin nao abre; as lixeiras por usuario recusam"
+}
