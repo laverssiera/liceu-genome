@@ -5069,3 +5069,102 @@
     repo: John-Brasileiro-
     path: frontend/playwright.config.js
     note: "A HIPOTESE (1) DO PASSO 2 CAI, E ELA MERECIA SER TESTADA. Existe UMA unica configuracao de Playwright em todo o ecossistema, e ela esta nos tres campos conservadores: `video: 'retain-on-failure'`, `trace: 'on-first-retry'` e `screenshot: 'only-on-failure'`. Nenhum deles grava por teste de forma incondicional. E O QUE ESTA GRAVADO CONFIRMA: test-results ocupa 0 MB, playwright-report nao existe, e a arvore inteira de projetos -- dezenove repositorios -- soma 0,64 GB, dos quais 411 MB sao os onze node_modules. UMA RESSALVA QUE A MEDICAO NAO APAGA, e ela e tecnica e nao retorica: `retain-on-failure` GRAVA video de todo teste e apaga no fim quando o teste passa. A escrita transitoria acontece sempre; o que e condicional e a RETENCAO. Sob disco de verdade apertado, escrita transitoria falha igual -- entao a configuracao conservadora reduz o que FICA, nao o que se ESCREVE. O que ela nao pode ser e a explicacao para 185,8 GB ocupados."
+
+- id: PRF-0254
+  kind: proof
+  title: "O enunciado reescrito NASCE REFUTED, e a refutacao tem escopo por METADE: os tres campos que existem estao medidos, os dois tipos que nao existem seguem inmensuraveis"
+  refutes: [CLM-0007]
+  basis: code_reading
+  supersedes: [PRF-0144]
+  date: "2026-10-20"
+  scope:
+    padrao: "leitura da funcao que cria e le o estado de autoridade no CORE, e das fontes de que ela depende, para responder se o estado sobrevive a queda do processo e se ha caminho de leitura que nao termine no armazenamento do processo caido"
+    universo: "cv-backend-core/app/services/authority_control_plane.py, funcoes ensure_state, snapshot, enforce e promote; e o modelo de dados AuthorityState e AuthorityInstance que elas usam"
+    excluidos:
+      - "OS DOIS TIPOS DE ESTADO QUE A LEI MANDA REPLICAR E QUE NAO EXISTEM CANONICAMENTE -- os tetos de cada monolito e as decisoes em curso com escalonamentos pendentes. Sobre eles esta prova NAO se pronuncia: nao estao refutados, estao INMENSURAVEIS, porque nao ha definicao a replicar. Ver UNK-0019 e PRF-0250"
+      - "a segunda metade do enunciado antigo - 'so autoriza apos promocao valida' - que saiu da CLM-0007 para as CLM-0217 a CLM-0220 pelo mapa da PRF-0257"
+      - "o que seria necessario para tornar o enunciado verdadeiro: isso e desenho, e a PRF-0256 mede apenas qual propriedade o segundo caminho exige"
+    instrumento: "leitura das funcoes nomeadas no arquivo nomeado, com as linhas localizadas"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-a-sucessora-reescrita.json
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/app/services/authority_control_plane.py
+    note: "O ENUNCIADO NOVO NASCE REFUTED, E ISSO E O GANHO E NAO O PROBLEMA. O estado de autoridade e UMA LINHA: ensure_state cria AuthorityState(federation_id, authority_epoch, active_instance_id, issuer_instance_id) e o proprio docstring diz 'Depois disso o banco e a fonte: so promote() altera'. Fonte unica, no banco local, sem segundo caminho de leitura. Entao o enunciado reescrito e falsificavel E ESTA FALSIFICADO -- medido, nao suposto. O QUE MUDA COM ISSO, e e aqui que esta o valor: depois deste PR o REGIONAL continua bloqueado por TRES, e a contagem nao se move. O que muda e a NATUREZA do terceiro bloqueador: ele deixa de ser um desconhecido de projeto -- 'a Sucessora nao replica, e nao se sabe o que isso quer dizer' -- e passa a ser um item de construcao nomeado e pequeno: segundo caminho de leitura para TRES campos. Reescrever a CLM-0007 nao e progresso NO bloqueador; e progresso EM SABER o bloqueador, e as duas coisas sao diferentes. ESCOPO POR METADE, QUE E O REPARO §4 DO TITULAR: 'CLM-0007 REFUTED' nao pode ser lido como cobrindo os tres tipos de estado que a lei manda replicar. Os TRES CAMPOS QUE EXISTEM estao refutados e medidos. Os DOIS TIPOS QUE NAO EXISTEM -- tetos e decisoes em curso -- NAO estao refutados: estao inmensuraveis, por falta de definicao a replicar, e e a UNK-0019 que os carrega. Uma claim com dois veredictos e exatamente o motivo de ela ter sido partida; registrar a refutacao sem a distincao faria a refutacao afirmar mais do que mediu. POR QUE ESTA PROVA SUPERSEDE A PRF-0144 em vez de conviver com ela: a PRF-0144 refutou OUTRA FRASE -- 'A Sucessora mantem estado de autoridade replicado' -- e o enunciado foi reescrito hoje. Deixa-la vigente faria uma refutacao de 2026-10-13 parecer refutar um texto que ainda nao existia naquela data. O merito dela nao caiu e esta citado aqui; o que caiu foi o alvo."
+
+- id: PRF-0255
+  kind: proof
+  title: "O defeito e DA LEI e fica registrado contra a linha dela: a 1.18.0 manda replicar tres tipos de estado e declara dois deles canonicamente inexistentes"
+  refutes: [CLM-0221]
+  basis: record_reading
+  date: "2026-10-20"
+  scope:
+    padrao: "leitura da linha do bloco `papeis` que define o papel SUCCESSOR, confrontada com o bloco `o_que_a_Mae_SUCESSORA_precisa` do mesmo documento e com o bloco LIMITE_NAO_DEFINIDO que ele manda ver"
+    universo: "liceu-protocol/liceu_protocol/liceu_constitution.yaml, current_constitution_version 1.18.0, nas linhas 915-922 (o que a Sucessora precisa), 1008 (os papeis) e 817-840 (LIMITE_NAO_DEFINIDO)"
+    excluidos:
+      - "a EMENDA da linha, que e a opcao (1) e e ato do titular: esta prova registra o defeito, nao o corrige"
+      - "se os tetos DEVEM ser definidos, e em que forma: a propria lei marca `decisao_requerida: true` e lista cinco dimensoes possiveis"
+      - "as demais linhas da Constituicao: o achado e sobre uma"
+    instrumento: "leitura direta do YAML instalado, por bloco e com as linhas localizadas"
+  mechanism:
+    repo: liceu-protocol
+    paths:
+      - liceu_protocol/liceu_constitution.yaml
+    content_hash: c49dbba8eaa90b4f78251bee6ad4bce99e190ade78cf584ed8269575a6698635
+    commit: 2ebfc75
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-a-sucessora-reescrita.json
+  location:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_constitution.yaml
+    note: "ESTA E A PECA QUE FALTAVA A OPCAO (2), E O TITULAR TEM RAZAO NO PORQUE. Sem ela o genoma ficaria contendo tres coisas e nenhuma delas dizendo que a LEI esta defeituosa: a Constituicao citada como fonte dizendo `mantem estado replicado`, uma claim dizendo a versao medivel, e um rotulo de 'leitura e nao transcricao' explicando a divergencia. A divergencia viraria propriedade da claim, quando o defeito e do artefato que as pessoas citam -- e a consequencia concreta seria que a proxima pessoa a derivar claim daquela linha derivaria a MESMA claim inprovavel, pelo mesmo motivo, pagando outra vez o custo que acabamos de pagar. O DEFEITO, MEDIDO: a linha 1008 diz `SUCCESSOR: mantem estado replicado; so autoriza apos promocao valida`. O bloco que detalha o que replicar enumera TRES tipos -- os tetos de cada monolito, decisoes em curso e escalonamentos pendentes, e a epoca atual -- e o proprio documento escreve, duas linhas abaixo: 'ATENCAO: os tetos ainda NAO existem canonicamente. Replicar estado que nao esta definido nao e possivel -- ver LIMITE_NAO_DEFINIDO', e 'consequencia: a dupla Mae depende de o teto ser definido primeiro'. O bloco LIMITE_NAO_DEFINIDO traz `estado: ABERTO` e `decisao_requerida: true`. DOIS DOS TRES TIPOS NAO EXISTEM, PELA PROPRIA LEI -- e a linha manda replica-los sem ressalva no lugar onde ela define o papel. O ACHADO FICA AMARRADO AO CONTEUDO DA LINHA, E ISSO E EXIGIVEL E NAO DECLARATIVO: o `mechanism` desta prova declara superficie sobre o proprio liceu_constitution.yaml, e o liceu-protocol roda `genome_surface_check --repo liceu-protocol` na sua propria CI. Editar a Constituicao faz a guarda acusar e pedir prova nova -- que e precisamente o que se quer quando alguem mexer naquela linha. POR QUE NAO ENTROU NO LIVRO DE DIVIDA (10-violations.yaml): fui conferir e a catraca de la indexa a divida por `(fitness, subject)` e falha a CI nos DOIS sentidos -- violacao detectada que nao esta no livro falha, e divida registrada que o genoma deixou de detectar tambem falha. Nao existe guarda automatica que detecte este defeito, entao registra-lo la quebraria a CI por desenho. O livro esta vazio e continua vazio. E NAO E EMENDA: a lei nao foi tocada. A emenda e a opcao (1), nasce depois, e nasce sabendo o que foi provado."
+
+- id: PRF-0256
+  kind: proof
+  title: "Uma replica da linha BASTA, se for duravel: perder entrada comprometida quebra I1 e I4, e leitura obsoleta nao quebra invariante nenhum"
+  refutes: [CLM-0222]
+  basis: test
+  date: "2026-10-20"
+  test:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    name: roda
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/modelo/autoridade.py
+    content_hash: 20295a186ee585d5c4876f086de9270ed8a032c0c7e4b5a0d98d4f15ed901854
+    commit: 1a00a04
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-a-sucessora-reescrita.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    note: "A RESPOSTA AO §5 MUDA A ORDEM DO FECHAMENTO, e por isso ela foi MEDIDA e nao opinada. A pergunta era se o segundo caminho de leitura tem de ser o mecanismo de consenso ou se uma segunda replica da linha basta. Traduzi em duas propriedades do log que o modelo sabe ligar e desligar: perder entrada comprometida e P4, leitura obsoleta e P3. O QUE SAIU, propriedade por propriedade, com o espaco inteiro explorado e sem truncar: com as cinco, viola so o I3b (387 estados). SEM P4 -- a replica pode perder entrada comprometida -- violam I1, I3b e I4, ou seja I1 e I4 A MAIS (180375 estados). SEM P3 -- a replica serve leitura obsoleta -- viola so o I3b, ou seja NADA a mais (1307 estados). ENTAO: o segundo caminho tem de ser DURAVEL, e nao precisa ser linearizavel para a seguranca que o modelo expressa. Consenso e UMA forma de obter durabilidade; replicacao SINCRONA de uma linha e outra. A CLM-0007 PODE FECHAR ANTES DA UNK-0001, desde que a replica nao possa estar atrasada em entrada comprometida no momento da leitura -- e o passo 7 do roteiro deixa de depender do passo 5. POR QUE A LEITURA OBSOLETA NAO QUEBRA SEGURANCA AQUI, que e a parte que preciso declarar para a resposta nao afirmar mais do que mediu: a transicao `servir` exige que a VISAO da instancia seja igual a epoca COMPROMETIDA, entao visao obsoleta nao serve errado -- simplesmente NAO SERVE. O custo da leitura obsoleta cai na VIVACIDADE, e o I5 (progresso) esta declarado NAO EXPRESSAVEL neste verificador, no proprio codigo. 'Basta' aqui significa basta para os invariantes de SEGURANCA que o modelo expressa, e nao diz nada sobre disponibilidade. E O ENUNCIADO ACEITO NAO FIXA A RESPOSTA POR ACIDENTE, que era o risco apontado: ele diz 'sobrevive a queda' e 'e legivel por caminho que nao termina no armazenamento do processo caido'. 'Sobrevive' carrega a durabilidade; 'legivel' nao carrega linearizabilidade -- e e exatamente essa a reparticao que a medicao encontrou."
+
+- id: PRF-0257
+  kind: proof
+  title: "O mapa de cobertura tem buraco: das SETE partes da segunda metade, QUATRO nao estavam reivindicadas em nenhuma das cinco claims"
+  refutes: [CLM-0223]
+  basis: record_reading
+  date: "2026-10-20"
+  scope:
+    padrao: "enumeracao das partes que a frase 'so autoriza apos promocao valida' afirma, derivada do texto constitucional em volta dela e das guardas de promote(); e busca de cada parte entre TODAS as claims do grafo, por mais de um conjunto de palavras, antes de declarar parte sem mapa"
+    universo: "as 219 claims de genome/06-claims.yaml na main de 2026-10-20; os blocos `papeis`, ACEITACAO_NO_EVENT_STORE, REGRA_DE_ORIGEM_DO_PAPEL, `sucessora_se_promove_sozinha` e a resolucao de D-040 da Constituicao 1.18.0; e as guardas de promote() e enforce() no CORE"
+    excluidos:
+      - "a primeira metade do enunciado, que e o objeto da PRF-0254"
+      - "se as quatro partes resgatadas sao VERDADEIRAS: elas entram como claims, com fonte, e nao como provas -- nenhuma delas nasce provada aqui"
+      - "as cinco claims no que elas afirmam ALEM das partes mapeadas"
+    instrumento: "regex sobre os blocos de claim, em duas rodadas com conjuntos de palavras diferentes para cada parte, e leitura dos achados um por um"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-a-sucessora-reescrita.json
+  location:
+    repo: liceu-genome
+    path: genome/06-claims.yaml
+    note: "O §3 DO TITULAR EVITOU UMA EVAPORACAO, E O NUMERO MOSTRA QUE NAO ERA RISCO TEORICO. Eu havia escrito que a segunda metade 'ja esta reivindicada em outro lugar'. Mapeada parte por parte, a frase afirma SETE coisas e QUATRO delas nao tinham claim nenhuma -- nao era noventa por cento coberto, eram tres setimos. AS TRES MAPEADAS: a promocao exige concordancia da Testemunha nesta promocao e na epoca vigente, que e a CLM-0057 com a CLM-0147 nomeando a borda aberta do TTL; a concordancia e OBSERVADA e nao declarada, que sao a CLM-0059 e a CLM-0103; e depois da promocao a Ativa retirada e rejeitada mesmo online, que sao a CLM-0004 e a CLM-0113, agora reforcadas pela CLM-0210. AS QUATRO SEM MAPA, e para onde foram: (1) antes da promocao o papel SUCCESSOR nao autoriza -- a CLM-0148 cobre as proibicoes da TESTEMUNHA, nao as da Sucessora, e a CLM-0114 fala da ambiguidade entre duas ACTIVE; foi para a CLM-0217. (2) a epoca avanca de exatamente 1 e nunca decresce -- busquei duas vezes e TODAS as claims de epoca falam de fencing e rejeicao, nenhuma de monotonia; existia como invariante I2 do modelo e como a guarda `authority_epoch_not_monotonic`, e INVARIANTE NAO E CLAIM neste grafo; foi para a CLM-0218. (3) o papel vem da identidade autenticada e nunca de campo autodeclarado -- esta literal na REGRA_DE_ORIGEM_DO_PAPEL e no docstring do control plane, e em claim nenhuma; foi para a CLM-0219. (4) sem atestacao valida escala ao humano com dossie -- a CLM-0089 fala da COMPLETUDE do dossie na cadeia, que e outra coisa; foi para a CLM-0220. NENHUMA DAS QUATRO HERDOU `blocks: scale:REGIONAL`, e isso e deliberado: sao propriedades de comportamento de no unico que o codigo ja aplica, nao bloqueadores de escala. Herdar o `blocks` por inercia inflaria a contagem de bloqueadores -- que e o defeito que a propria divisao desta claim veio desfazer."
