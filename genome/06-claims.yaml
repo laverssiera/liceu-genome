@@ -56,8 +56,8 @@
   blocks: ["scale:REGIONAL"]
 - id: CLM-0007
   kind: claim
-  statement: A Sucessora mantem estado de autoridade replicado.
-  asserted_by: Constituicao 1.15.0
+  statement: "O estado de autoridade que EXISTE - epoca vigente, instancia ativa e emissor - sobrevive a queda do PROCESSO que o serve, e outra instancia o le por caminho que nao termina no armazenamento do processo caido."
+  asserted_by: "titular (2026-10-20), reescrevendo o enunciado que vinha da Constituicao 1.15.0 depois do diagnostico (iii) da PRF-0199 e da leitura da Constituicao 1.18.0 pela PRF-0249. OPCAO (2) DAS DUAS QUE ESTAVAM POSTAS: a claim passa a ser LEITURA MEDIVEL da lei e nao transcricao dela, e a emenda constitucional fica para depois, nascendo do que for provado. O defeito da linha da lei esta registrado contra ela na PRF-0255, que e o terceiro elemento que faltava a opcao (2)."
   blocks: ["scale:REGIONAL"]
 - id: CLM-0009
   kind: claim
@@ -1209,3 +1209,38 @@
   kind: claim
   statement: "O vermelho de 'No space left on device' na suite Frontend E2E vem do que ela grava por teste, e por isso e codigo e nao infraestrutura."
   asserted_by: "a hipotese (1) do PASSO 2 do plano de 2026-10-20 (titular), enunciada para ser medida antes de liberar espaco - 'video e trace por teste enchem disco por merito proprio'"
+
+- id: CLM-0217
+  kind: claim
+  statement: "Antes da promocao, a instancia com papel SUCCESSOR nao autoriza: o papel veda, e a aceitacao no event store exige authority_role == ACTIVE."
+  asserted_by: "Constituicao 1.18.0, bloco `papeis` ('SUCCESSOR: ... so autoriza apos promocao valida') e bloco ACEITACAO_NO_EVENT_STORE (condicao `authority_role == ACTIVE`). RESGATADA da segunda metade da CLM-0007 pelo mapa de cobertura da PRF-0257: nao estava reivindicada em nenhuma das cinco claims que a cobririam."
+
+- id: CLM-0218
+  kind: claim
+  statement: "A epoca de autoridade avanca de exatamente 1 e nunca decresce nem repete, e e isso que torna 'promocao valida' identificavel."
+  asserted_by: "a guarda `authority_epoch_not_monotonic` de promote() no CORE, que recusa epoca pedida diferente de corrente+1; e o invariante I2 do modelo de autoridade. RESGATADA pelo mapa da PRF-0257: existia como invariante e como guarda de codigo, e NAO como claim -- e invariante nao e claim neste grafo."
+
+- id: CLM-0219
+  kind: claim
+  statement: "O papel de autoridade e derivado da identidade AUTENTICADA da instancia, nunca de campo autodeclarado no payload."
+  asserted_by: "Constituicao 1.18.0, REGRA_DE_ORIGEM_DO_PAPEL, literal; e o docstring do authority_control_plane.py do CORE, que diz 'O papel (ACTIVE | SUCCESSOR | WITNESS) vem da IDENTIDADE AUTENTICADA'. RESGATADA pelo mapa da PRF-0257: a CLM-0115 fala do ALVO da concordancia da Testemunha e a CLM-0114 da ambiguidade entre duas ACTIVE -- nenhuma afirma a origem do papel."
+
+- id: CLM-0220
+  kind: claim
+  statement: "Sem atestacao valida da Testemunha a promocao nao ocorre, e o sistema escala ao humano com dossie em vez de promover."
+  asserted_by: "Constituicao 1.18.0, resolucao de D-040 e `sucessora_se_promove_sozinha: false`; e o docstring de promote() no CORE, que diz 'Sem ela a Sucessora nao assume e escala ao humano com dossie (D-040)'. RESGATADA pelo mapa da PRF-0257: a CLM-0089 fala da COMPLETUDE do dossie na cadeia, nao do escalonamento como comportamento na falta de atestacao."
+
+- id: CLM-0221
+  kind: claim
+  statement: "A linha da Constituicao 1.18.0 que manda a SUCCESSOR manter estado replicado enumera tres tipos de estado que existem e sao replicaveis, e por isso dela se deriva claim provavel."
+  asserted_by: "a Constituicao 1.18.0 ao escrever a linha: `SUCCESSOR: mantem estado replicado` no bloco `papeis`, e os tres itens de `o_que_a_Mae_SUCESSORA_precisa.estado_replicado`. Enunciada aqui para que o DEFEITO DA LEI fique registrado CONTRA A LINHA e nao apenas como rotulo numa claim derivada dela."
+
+- id: CLM-0222
+  kind: claim
+  statement: "O segundo caminho de leitura do estado de autoridade exige o mecanismo de consenso, e por isso a CLM-0007 so fecha depois da UNK-0001."
+  asserted_by: "a ordem do roteiro de 2026-10-20 (titular), que poe a CLM-0007 no passo 7, depois da decisao de mecanismo; e o §5 do mesmo documento enuncia a duvida para ser medida - 'o segundo caminho E o mecanismo, ou uma segunda replica da linha basta?'"
+
+- id: CLM-0223
+  kind: claim
+  statement: "A segunda metade da CLM-0007 - 'so autoriza apos promocao valida' - esta integralmente reivindicada nas cinco claims que a cobrem, e por isso remove-la da CLM-0007 nao perde nada."
+  asserted_by: "claude (2026-10-20), ao propor o enunciado novo - 'A segunda metade ja esta reivindicada em outro lugar, e mante-la aqui duplica'. O §3 do titular exigiu que isso fosse MAPEADO parte por parte antes de remover, em vez de aproximado."

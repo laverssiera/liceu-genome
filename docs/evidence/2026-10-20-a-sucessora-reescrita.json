@@ -1,0 +1,135 @@
+{
+  "o_que_e": "a CLM-0007 reescrita, com os quatro reparos do titular",
+  "data": "2026-10-20",
+  "a_decisao_e_do_titular": {
+    "aceitou": "o enunciado como escrito",
+    "escolheu": "opcao (2) + o registro do defeito na linha da lei; emenda depois",
+    "o_que_isto_NAO_e": "implementacao concluida nem prova obtida. O enunciado novo NASCE REFUTED."
+  },
+  "\u00a71_nasce_REFUTED": {
+    "por_que": "o estado e UMA LINHA: ensure_state cria AuthorityState e o docstring diz 'Depois disso o banco e a fonte: so promote() altera'. Fonte unica, local, sem segundo caminho.",
+    "o_REGIONAL_depois_deste_PR": "continua bloqueado por TRES",
+    "o_que_muda": "a NATUREZA do terceiro bloqueador: de desconhecido de projeto para item de construcao nomeado -- segundo caminho de leitura para TRES campos",
+    "a_distincao": "nao e progresso NO bloqueador, e progresso EM SABER o bloqueador"
+  },
+  "\u00a72_o_defeito_da_lei_registrado_contra_a_linha": {
+    "prova": "PRF-0255",
+    "a_linha": "SUCCESSOR: mantem estado replicado; so autoriza apos promocao valida",
+    "o_defeito": "enumera tres tipos de estado a replicar e o proprio documento declara dois deles canonicamente inexistentes",
+    "amarrado_como": "`mechanism` com superficie sobre o proprio liceu_constitution.yaml; o liceu-protocol roda genome_surface_check na sua CI, entao editar a lei acusa e pede prova nova",
+    "por_que_NAO_no_livro_de_divida": "a catraca do 10-violations.yaml indexa por (fitness, subject) e falha nos dois sentidos; nao ha guarda que detecte este defeito, entao registra-lo la quebraria a CI por desenho. O livro esta vazio e continua vazio.",
+    "nao_e_emenda": "a lei nao foi tocada; a emenda e a opcao (1) e vem depois"
+  },
+  "\u00a73_o_mapa_de_cobertura": {
+    "prova": "PRF-0257",
+    "partes_da_segunda_metade": 7,
+    "mapeadas": 3,
+    "SEM_MAPA": 4,
+    "o_que_eu_havia_dito": "'ja esta reivindicada em outro lugar'",
+    "o_que_a_medicao_deu": "tres setimos, nao noventa por cento",
+    "mapeadas_detalhe": {
+      "a promocao exige concordancia da Testemunha": "CLM-0057 (+ CLM-0147 na borda do TTL)",
+      "a concordancia e observada, nao declarada": "CLM-0059, CLM-0103",
+      "a Ativa retirada e rejeitada mesmo online": "CLM-0004, CLM-0113 (+ CLM-0210)"
+    },
+    "resgatadas_e_para_onde": {
+      "o papel SUCCESSOR nao autoriza antes da promocao": "CLM-0217",
+      "a epoca avanca de 1 e nunca decresce": "CLM-0218 (era invariante I2 e guarda de codigo, nao claim)",
+      "o papel vem da identidade autenticada": "CLM-0219",
+      "sem atestacao, escala ao humano com dossie": "CLM-0220"
+    },
+    "nenhuma_herdou_blocks_REGIONAL": "deliberado: sao comportamento de no unico que o codigo ja aplica. Herdar por inercia inflaria a contagem de bloqueadores."
+  },
+  "\u00a74_a_refutacao_tem_escopo_por_metade": {
+    "prova": "PRF-0254, que supersede a PRF-0144",
+    "os_tres_campos_que_EXISTEM": "REFUTED, medido",
+    "os_dois_tipos_que_NAO_EXISTEM": "nao refutados: INMENSURAVEIS, por falta de definicao a replicar. Declarados nos excluidos.",
+    "por_que_supersede_a_PRF_0144": "ela refutou OUTRA FRASE; deixa-la vigente faria uma refutacao de 2026-10-13 parecer refutar um texto que nao existia naquela data"
+  },
+  "\u00a75_o_segundo_caminho": {
+    "prova": "PRF-0256",
+    "medicao": {
+      "uma_a_menos": {
+        "as cinco": {
+          "estados": 387,
+          "truncou": false,
+          "quebra": [
+            "I3b_nada_em_voo_sob_epoca_revogada"
+          ]
+        },
+        "sem P1_unicidade_por_indice": {
+          "estados": 387,
+          "truncou": false,
+          "quebra": [
+            "I3b_nada_em_voo_sob_epoca_revogada"
+          ]
+        },
+        "sem P2_monotonia": {
+          "estados": 387,
+          "truncou": false,
+          "quebra": [
+            "I3b_nada_em_voo_sob_epoca_revogada"
+          ]
+        },
+        "sem P3_leitura_linearizavel": {
+          "estados": 1307,
+          "truncou": false,
+          "quebra": [
+            "I3b_nada_em_voo_sob_epoca_revogada"
+          ]
+        },
+        "sem P4_durabilidade": {
+          "estados": 180375,
+          "truncou": false,
+          "quebra": [
+            "I1_uma_instancia_por_epoca",
+            "I3b_nada_em_voo_sob_epoca_revogada",
+            "I4_testemunha_nao_inventa"
+          ]
+        },
+        "sem P5_lider_unico_por_epoca": {
+          "estados": 915,
+          "truncou": false,
+          "quebra": [
+            "I1_uma_instancia_por_epoca",
+            "I3b_nada_em_voo_sob_epoca_revogada"
+          ]
+        }
+      },
+      "sem_P4_quebra_a_mais": [
+        "I1_uma_instancia_por_epoca",
+        "I4_testemunha_nao_inventa"
+      ],
+      "sem_P3_quebra_a_mais": [],
+      "o_limite_declarado": {
+        "I5_progresso": "NAO EXPRESSAVEL neste verificador",
+        "logo": "'basta' significa basta para os invariantes de SEGURANCA que o modelo expressa, e nao diz nada sobre disponibilidade",
+        "linhas_no_codigo": [
+          "# I5 (progresso) e propriedade de VIVACIDADE e nao de seguranca: nao se confere",
+          "print(\"I5 (progresso) e VIVACIDADE: NAO EXPRESSAVEL neste verificador.\")"
+        ]
+      },
+      "resposta": "o segundo caminho tem de ser DURAVEL -- entrada comprometida nunca desaparece -- e NAO precisa ser linearizavel para a seguranca que o modelo expressa. Consenso e UMA forma de obter durabilidade; replicacao SINCRONA de uma linha e outra. Logo a CLM-0007 pode fechar ANTES da decisao de mecanismo, desde que a replica nao possa estar atrasada em entrada comprometida no momento da leitura.",
+      "a_CLM_0007_pode_fechar_antes_da_UNK_0001": true
+    },
+    "resposta": "o segundo caminho tem de ser DURAVEL -- entrada comprometida nunca desaparece -- e NAO precisa ser linearizavel para a seguranca que o modelo expressa. Consenso e UMA forma de obter durabilidade; replicacao SINCRONA de uma linha e outra. Logo a CLM-0007 pode fechar ANTES da decisao de mecanismo, desde que a replica nao possa estar atrasada em entrada comprometida no momento da leitura.",
+    "a_CLM_0007_pode_fechar_antes_da_UNK_0001": true,
+    "o_limite_declarado": {
+      "I5_progresso": "NAO EXPRESSAVEL neste verificador",
+      "logo": "'basta' significa basta para os invariantes de SEGURANCA que o modelo expressa, e nao diz nada sobre disponibilidade",
+      "linhas_no_codigo": [
+        "# I5 (progresso) e propriedade de VIVACIDADE e nao de seguranca: nao se confere",
+        "print(\"I5 (progresso) e VIVACIDADE: NAO EXPRESSAVEL neste verificador.\")"
+      ]
+    },
+    "o_enunciado_nao_fixou_a_resposta_por_acidente": "'sobrevive' carrega a durabilidade; 'legivel' nao carrega linearizabilidade -- e e essa a reparticao que a medicao achou"
+  },
+  "\u00a76_a_incognita_do_teto": {
+    "id": "UNK-0019",
+    "owner": "titular",
+    "blocks": [
+      "CLM-0007"
+    ],
+    "nao_entrou_como_claim": "sabe-se que nao se sabe, e isso bloqueia algo: UNK e o instrumento exato"
+  }
+}
