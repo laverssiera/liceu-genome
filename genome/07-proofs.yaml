@@ -5168,3 +5168,52 @@
     repo: liceu-genome
     path: genome/06-claims.yaml
     note: "O §3 DO TITULAR EVITOU UMA EVAPORACAO, E O NUMERO MOSTRA QUE NAO ERA RISCO TEORICO. Eu havia escrito que a segunda metade 'ja esta reivindicada em outro lugar'. Mapeada parte por parte, a frase afirma SETE coisas e QUATRO delas nao tinham claim nenhuma -- nao era noventa por cento coberto, eram tres setimos. AS TRES MAPEADAS: a promocao exige concordancia da Testemunha nesta promocao e na epoca vigente, que e a CLM-0057 com a CLM-0147 nomeando a borda aberta do TTL; a concordancia e OBSERVADA e nao declarada, que sao a CLM-0059 e a CLM-0103; e depois da promocao a Ativa retirada e rejeitada mesmo online, que sao a CLM-0004 e a CLM-0113, agora reforcadas pela CLM-0210. AS QUATRO SEM MAPA, e para onde foram: (1) antes da promocao o papel SUCCESSOR nao autoriza -- a CLM-0148 cobre as proibicoes da TESTEMUNHA, nao as da Sucessora, e a CLM-0114 fala da ambiguidade entre duas ACTIVE; foi para a CLM-0217. (2) a epoca avanca de exatamente 1 e nunca decresce -- busquei duas vezes e TODAS as claims de epoca falam de fencing e rejeicao, nenhuma de monotonia; existia como invariante I2 do modelo e como a guarda `authority_epoch_not_monotonic`, e INVARIANTE NAO E CLAIM neste grafo; foi para a CLM-0218. (3) o papel vem da identidade autenticada e nunca de campo autodeclarado -- esta literal na REGRA_DE_ORIGEM_DO_PAPEL e no docstring do control plane, e em claim nenhuma; foi para a CLM-0219. (4) sem atestacao valida escala ao humano com dossie -- a CLM-0089 fala da COMPLETUDE do dossie na cadeia, que e outra coisa; foi para a CLM-0220. NENHUMA DAS QUATRO HERDOU `blocks: scale:REGIONAL`, e isso e deliberado: sao propriedades de comportamento de no unico que o codigo ja aplica, nao bloqueadores de escala. Herdar o `blocks` por inercia inflaria a contagem de bloqueadores -- que e o defeito que a propria divisao desta claim veio desfazer."
+
+- id: PRF-0258
+  kind: proof
+  title: "As quatro NAO sao o mesmo conceito: sao tres grandezas sem relacao mais um teto por JOHN, e so uma delas limita algo"
+  refutes: [CLM-0224]
+  basis: code_reading
+  date: "2026-10-20"
+  scope:
+    padrao: "leitura de CADA ocorrencia de `autonomy_level` nos quatro monolitos que a Constituicao nomeia, para responder tres coisas por ocorrencia: que grandeza ela mede, quem a compara, e o que a comparacao decide"
+    universo: "BIM.ARQ.ENG/backend/app/bimarqeng/runtime/autonomous_engineering/engine.py e orbital_construction_runtime/orbital_twins/orbital_twin.py; FORNECEDORES/backend/app/planetary/runtime.py e app/routers/sovereign.py; LICEU_6.0_CONSTRUTORA_VIRTUAL/pre_constitution/{autonomy_level,autonomy_enforcement,decision_audit}.py e backend/app/runtime/governance/autonomy_engine.py; OPERA/apps/opera/{autonomous_operations,runtime_store}.py e database/migrations/999_autonomous_runtime.sql"
+    excluidos:
+      - "os repositorios onde o campo nao aparece: a Constituicao nomeia quatro e sao esses quatro"
+      - "se as grandezas DEVEM ser renomeadas, e para que nomes: isso e consequencia da decisao e nao leitura"
+    instrumento: "grep -rn por arquivo e leitura das linhas de declaracao e de USO, uma por uma -- tipo lido no texto, nunca inferido da contagem"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-teto-decidido.json
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: pre_constitution/autonomy_level.py
+    note: "A PREMISSA DA PERGUNTA E FALSA, E ELEGER UMA DAS QUATRO FUNDIRIA GRANDEZAS DISTINTAS. A Constituicao diz 'quatro representacoes do mesmo conceito'. Lidas uma por uma, com o USO e nao so o tipo: BIM -- `self.autonomy_level = 0.0` e, dentro de `_run_optimization`, `min(1.0, self.autonomy_level + 0.05)`. CRESCE a cada otimizacao e nada a compara para bloquear nada: e acumulador de maturidade, nao limite. No gemeo orbital o mesmo nome e campo de telemetria de habitat, ao lado de radiation_level e maintenance_risk. FORNECEDORES -- `route['autonomy_level'] * 0.3` dentro de um escore de resiliencia de rota interplanetaria, com supply_stability, radiation_risk e delay_risk, e `status = 'stable' if resilience > 60`: e atributo de ROTA DE SUPRIMENTO, em escala de 0 a 100 (o limiar 60 denuncia a escala), e nao tem relacao com delegacao de autoridade. OPERA -- `autonomy_level: str`, fixado em 'L6' no construtor e usado SO como filtro em consulta (`where autonomy_level = :autonomy_level`), coluna TEXT: e ROTULO de operacao, nunca comparado para autorizar. CORE -- `AutonomyLevel(IntEnum)` de 0 a 4, com nomes (OBSERVE_ONLY, SUGGEST, EXECUTE_CONTROLLED, EXECUTE_AUTONOMOUS, STRATEGIC_DECISION), e `enforce_autonomy` BLOQUEIA quando `action_level > john_level`, chamado de verdade em backend/app/runtime/kernel/runtime_kernel.py:67. ENTAO SO UMA DAS QUATRO LIMITA ALGO, e ela limita por JOHN e por CLASSE DE ATO -- `JOHN_AUTONOMY_LIMITS` mapeia JOHN_LICEU_INTERNAL, JOHN_EXTERNAL, JOHN_CORE_MONOLITH e HUMAN. Nao e o teto por MONOLITO que a Constituicao quer dizer; e outro teto, legitimo, e tem de MANTER o seu nome. Promover qualquer uma das outras tres a teto de autoridade seria pior que o estado atual: um `+0.05` de otimizacao do BIM passaria a mexer em algo que a camada de autoridade le."
+
+- id: PRF-0259
+  kind: proof
+  title: "O teto por monolito EXISTE, e canonico e e aplicado: `teto_interno` no Producer Registry, 16 de 16 produtores, com invariante e regra de avaliacao"
+  refutes: [CLM-0225]
+  basis: code_reading
+  date: "2026-10-20"
+  scope:
+    padrao: "busca por conceito de teto delegado -- e nao pelo nome `autonomy_level` -- nos repositorios rastreados e no kit; leitura do bloco de semantica do teto no Producer Registry; e leitura do codigo que o consulta e do que ele faz quando o escopo o excede"
+    universo: "liceu-protocol/liceu_protocol/liceu_producer_registry.yaml, bloco `teto_semantica` e os 16 produtores; ANCHOR.OS/backend/app/federation/authorization_publisher.py, SCALE_ORDER, ceiling() e check(); e ANCHOR.OS/tests/test_authorization_publisher.py"
+    excluidos:
+      - "se os VALORES de teto de cada produtor estao certos: a pergunta e sobre a FORMA canonica, nao sobre o numero de cada um"
+      - "o teto por JOHN do CORE, que e outro teto e esta na PRF-0258"
+      - "`teto_externo` no que ele exige de external_effect por capacidade: lido o bastante para a regra, nao auditado produtor por produtor"
+    instrumento: "grep por ceiling, teto_interno e teto delegado; leitura dos blocos e das funcoes nomeadas; contagem dos produtores com o campo, separando produtor de bloco de metadados"
+  mechanism:
+    repo: liceu-protocol
+    paths:
+      - liceu_protocol/liceu_producer_registry.yaml
+    content_hash: 872fd72c82c6c59d43c75f0b42fac6057626a86848b320d7bbe0926a952dfdaa
+    commit: 2ebfc75
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-teto-decidido.json
+  location:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_producer_registry.yaml
+    note: "O TETO NAO FALTAVA: ELE EXISTE SOB OUTRO NOME, E A LEI ESTAVA OLHANDO PARA O CAMPO ERRADO. Procurei o CONCEITO em vez do nome `autonomy_level`, e ele esta no Producer Registry do kit, como `teto.teto_interno`: 16 de 16 produtores o declaram (liceu.core INTERPLANETARIA, liceu.anchor LOCAL, liceu.opera LOCAL, liceu.bim REGIONAL, liceu.suppliers REGIONAL, e assim por diante). NAO E CAMPO SOLTO -- vem com tudo o que um teto canonico precisa: dominio ORDENADO (`SCALE_ORDER = {LOCAL:1, REGIONAL:2, CONTINENTAL:3, GLOBAL:4, CIVILIZACIONAL:5, INTERPLANETARIA:6}`), INVARIANTE (`teto_externo <= teto_interno <= scale_max`), GRANULARIDADE decidida (`[DECIDIDO TA1] dois tetos por produtor, nao por classe de capacidade`), e REGRA DE AVALIACAO em cinco passos: obter a capacidade que originou o fato, consultar o `external_effect` dela, `teto_aplicavel = teto_externo se external_effect senao teto_interno`, e se `event.scale <= teto_aplicavel` decide sozinho, SENAO ESCALA PARA A MAE. E E APLICADO, nao declarado: o `authorization_publisher` do ANCHOR le `ceiling()` do registry e, quando o escopo excede, devolve `_blocked('scope_above_ceiling', owner='liceu.authority')` com o detalhe 'acima do teto e a Mae ativa quem autoriza -- e ai o fencing opera'. O teste `test_ceiling_comes_from_the_producer_registry` fixa a PROCEDENCIA: o teto vem do registry e nao de literal no codigo. DUAS DAS CINCO DIMENSOES QUE A LEI LISTA JA ESTAO SEPARADAS: a dimensao do `teto_interno` e ESCALA, e o EFEITO EXTERNO entra por um teto proprio, o `teto_externo`, em vez de ser dobrado dentro do mesmo numero. O QUE ISSO FAZ COM O LIMITE_NAO_DEFINIDO DA CONSTITUICAO: ele nao esta ABERTO, esta DESATUALIZADO. Ele descreve quatro representacoes de `autonomy_level` -- que a PRF-0258 mostra nao serem o mesmo conceito -- e nao menciona o `teto_interno`, que e o teto de verdade, e e anterior a ele no kit. E A CONSEQUENCIA MAIOR, que nao e deste PR mas nasce aqui: a lei escreve 'a dupla Mae depende de o teto ser definido primeiro'. O teto esta definido. Essa condicao nao bloqueia mais nada."

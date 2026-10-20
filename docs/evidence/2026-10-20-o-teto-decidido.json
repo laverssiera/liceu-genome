@@ -1,0 +1,104 @@
+{
+  "o_que_e": "a decisao do teto, por delegacao expressa do titular",
+  "data": "2026-10-20",
+  "a_pergunta": "qual das quatro representacoes de autonomy_level e canonica",
+  "a_resposta": "nenhuma das quatro, e a premissa da pergunta caiu: o teto por monolito JA EXISTE sob outro nome, e e canonico, ordenado e aplicado",
+  "a_decisao": {
+    "quem": "claude, por delegacao expressa do titular em 2026-10-20",
+    "canonico": "teto.teto_interno no liceu_producer_registry.yaml do kit",
+    "dominio": {
+      "LOCAL": 1,
+      "REGIONAL": 2,
+      "CONTINENTAL": 3,
+      "GLOBAL": 4,
+      "CIVILIZACIONAL": 5,
+      "INTERPLANETARIA": 6
+    },
+    "invariante": "teto_externo <= teto_interno <= scale_max",
+    "granularidade": "[DECIDIDO TA1] dois tetos por produtor, nao por classe de capacidade",
+    "regra_de_avaliacao": [
+      "1. obter a capacidade que originou o fato",
+      "2. consultar external_effect dessa capacidade",
+      "3. teto_aplicavel = teto_externo se external_effect senao teto_interno",
+      "4. se event.scale <= teto_aplicavel -> decide sozinho",
+      "5. senao -> ESCALA para a Mae"
+    ],
+    "dimensao_declarada": "ESCALA; e o EFEITO EXTERNO entra por teto proprio (teto_externo) em vez de ser dobrado no mesmo numero -- duas das cinco dimensoes que a Constituicao lista, ja separadas",
+    "nenhuma_das_quatro_e_promovida": true,
+    "o_que_NAO_e": "nao e implementacao concluida nem prova obtida: o que se decidiu e qual forma e canonica, e a medicao mostrou que ela ja existia"
+  },
+  "por_que_a_premissa_caiu": {
+    "a_lei_diz": "quatro representacoes do mesmo conceito; nenhuma canonica",
+    "medido_uso_por_uso": {
+      "BIM": {
+        "forma": "float 0.0-1.0",
+        "o_que_mede": "acumulador de maturidade: CRESCE min(1.0, +0.05) a cada _run_optimization",
+        "quem_compara": "ninguem",
+        "limita_algo": false,
+        "e_tambem": "campo de telemetria de habitat no gemeo orbital, ao lado de radiation_level e maintenance_risk"
+      },
+      "FORNECEDORES": {
+        "forma": "inteiro em escala 0-100 (o limiar 60 denuncia a escala)",
+        "o_que_mede": "termo de escore de resiliencia de rota interplanetaria, com peso 0.3",
+        "quem_compara": "o escore, contra 60, para dizer stable/critical",
+        "limita_algo": false
+      },
+      "OPERA": {
+        "forma": "str 'L6', coluna TEXT",
+        "o_que_mede": "rotulo de operacao, fixado no construtor",
+        "quem_compara": "so consulta: where autonomy_level = :autonomy_level",
+        "limita_algo": false
+      },
+      "CORE": {
+        "forma": "AutonomyLevel(IntEnum) 0-4, com nomes",
+        "o_que_mede": "teto por JOHN e por CLASSE DE ATO: OBSERVE_ONLY, SUGGEST, EXECUTE_CONTROLLED, EXECUTE_AUTONOMOUS, STRATEGIC_DECISION",
+        "quem_compara": "enforce_autonomy bloqueia action_level > john_level, chamado em backend/app/runtime/kernel/runtime_kernel.py:67",
+        "limita_algo": true,
+        "e_o_teto_por_monolito": false,
+        "veredito": "outro teto, legitimo, MANTEM o seu nome"
+      }
+    },
+    "so_uma_das_quatro_limita_algo": "CORE, e por JOHN, nao por monolito",
+    "promover_qualquer_uma_das_outras_tres": "seria pior que o estado atual: um +0,05 de otimizacao do BIM passaria a mexer em algo que a camada de autoridade le"
+  },
+  "o_teto_que_existe": {
+    "onde": "liceu-protocol/liceu_protocol/liceu_producer_registry.yaml",
+    "campo": "teto.teto_interno (com teto.teto_externo)",
+    "produtores_com_o_campo": "16 de 16",
+    "valores_conferidos_um_por_um": {
+      "liceu.core": "INTERPLANETARIA",
+      "liceu.archimedes": "CONTINENTAL",
+      "liceu.anchor": "LOCAL",
+      "liceu.opera": "LOCAL",
+      "liceu.bim": "REGIONAL"
+    },
+    "e_aplicado": "authorization_publisher do ANCHOR le ceiling() do registry e devolve _blocked('scope_above_ceiling', owner='liceu.authority') quando o escopo excede, com o detalhe 'acima do teto e a Mae ativa quem autoriza -- e ai o fencing opera'",
+    "a_procedencia_tem_teste": "test_ceiling_comes_from_the_producer_registry: o teto vem do registry, nao de literal no codigo",
+    "fonte_unica": "ADR-001: consumidores INSTALAM o pacote, nao copiam; e o registry esta no MANIFEST do kit, com sha256"
+  },
+  "a_corroboracao_mais_forte_e_do_proprio_genoma": {
+    "FIT-013": "campo relatado declara origem, e `derived` e conferido contra o Producer Registry",
+    "FC-003": {
+      "titulo": "O teto digitado que virou premissa de plano",
+      "false_claim": "O teto interno do ARCHIMEDES e LOCAL - logo, um ato REGIONAL exigiria a Mae.",
+      "prova": "tools/test_genome_check.py::test_38_derived_que_nao_confere_com_a_fonte_e_violacao"
+    },
+    "o_que_isso_mostra": "o ecossistema JA tratava o Producer Registry como A fonte do teto, com fitness conferindo derivacao e um falso contraexemplo catalogado para o teto digitado a mao. A decisao nao inventa canonicidade: reconhece a que estava em uso.",
+    "e_o_valor_do_FC_003_e_FALSO_de_proposito": "ARCHIMEDES e CONTINENTAL no registry; o LOCAL do FC-003 e exatamente o erro que a guarda impede, e nao uma afirmacao vigente"
+  },
+  "o_que_isso_faz_com_a_lei": {
+    "LIMITE_NAO_DEFINIDO": "nao esta ABERTO, esta DESATUALIZADO: descreve quatro representacoes de autonomy_level -- que nao sao o mesmo conceito -- e nao menciona o teto_interno, que e anterior a ele",
+    "a_condicao_da_dupla_Mae": "a lei escreve 'a dupla Mae depende de o teto ser definido primeiro'. O teto esta definido. Essa condicao nao bloqueia mais nada.",
+    "defeito_a_somar": "ao que a PRF-0255 ja registrou contra a mesma linha"
+  },
+  "o_que_fica_por_fazer_e_e_consequencia_e_nao_parte_da_decisao": {
+    "renomear_as_tres_que_nao_sao_teto": "BIM, OPERA e FORNECEDORES seguem chamando-se autonomy_level, e e essa colisao de nome que fez a lei chamar quatro coisas de 'quatro representacoes do mesmo conceito'. Quatro repositorios, ciclo proprio.",
+    "o_teto_por_JOHN_do_CORE": "mantem o nome; e outro teto e nao colide se renomeadas as tres"
+  },
+  "um_furo_do_JUIZ_achado_por_um_deslize_meu": {
+    "o_deslize": "as PRF-0258 e PRF-0259 citaram este arquivo antes de ele existir",
+    "o_furo": "o juiz saiu INTEGRO assim: ele le `evidence_artifact.repo` e NAO confere se o `path` existe",
+    "consequencia": "prova pode apontar para evidencia inexistente e passar",
+    "nao_consertado_aqui": "mexer no juiz e maquinaria, e e outra diagnose; apontado para ciclo proprio"
+  }
+}
