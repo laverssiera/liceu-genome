@@ -1,0 +1,150 @@
+{
+  "o_defeito": {
+    "medido_em": "2026-10-19",
+    "sintoma": "o motor dizia 'o projeto nao informou Recuo lateral'",
+    "a_verdade": "o recuo esta COTADO na prancha: 1,50 m lateral e 3,00 m de fundos (PRF-0237)",
+    "por_que_nao_bastava_gravar": "o campo so aceitava float ou None, e gravar 1,50 escolheria em silencio a leitura que mede ate a parede, que e a questao aberta da PRF-0238"
+  },
+  "o_terceiro_estado": {
+    "forma": {
+      "pendente": "a questao de direito",
+      "falta": "o que a resolve",
+      "leituras": "duas ou mais candidatas"
+    },
+    "valor_devolve": "None, para nao escolher em silencio",
+    "leituras_recusa": "uma candidata so -- uma candidata e um valor",
+    "a_P001": {
+      "recuo_lateral": {
+        "ate_a_parede": 1.5,
+        "ate_o_beiral": 0.35,
+        "minimo": 1.5,
+        "distancia": "77%"
+      },
+      "recuo_fundos": {
+        "ate_a_parede": 3.0,
+        "ate_o_beiral": 2.2,
+        "minimo": 3.0,
+        "distancia": "27%"
+      }
+    }
+  },
+  "o_ganho_do_desenho": {
+    "candidatas_concordam": "o veredito SAI; a pendencia nao o altera",
+    "candidatas_discordam": "INDETERMINADO com as DUAS pontas a vista",
+    "por_que_importa": "a pendencia de direito pode ser IMATERIAL, e isso e propriedade do caso e nao da pendencia. 'Valor mais ressalva' nunca compararia a outra ponta.",
+    "no_caso_da_P001": "DISCORDAM, e por isso o veredito nao sai",
+    "a_CLM_0208_foi_REFUTADA": "ela e universal -- 'qualquer veredito' -- e o motor exibe contraexemplo. A claim era minha, implicita no desenho de valor mais ressalva que eu ia escrever."
+  },
+  "a_ordem_das_guardas": {
+    "o_condicionante_vem_antes": true,
+    "por_que": "o recuo da ZM e condicionado a `pavimentos`, que nao foi declarado; sem ele o limite nao se fixa, e comparar candidatas contra limite nao fixado daria veredito com cara de medido",
+    "o_primeiro_rascunho_tinha_a_guarda_DEPOIS": true
+  },
+  "medicao_por_mutacao": {
+    "ignorar a leitura pendente": "8 testes acusam",
+    "tirar a guarda do condicionante": "3 testes acusam",
+    "`valor` devolver a primeira candidata": "2 testes acusam",
+    "suite": "41 testes passam"
+  },
+  "as_superficies_repostas": {
+    "hash_anterior": "ec512c180588d1f84fb48ecdda90cdcabfa4691aa1b9701080c7c4fca40bfd72",
+    "hash_agora": "9f302157c202622ba7dc7816e0081d13b78b6fb46196c0425ea5c50f27b06867",
+    "commit": "a25e772",
+    "PRF-0235 -> PRF-0242": {
+      "mantida": true,
+      "itens_direcao_desconhecida": 1
+    },
+    "CLM-0020": {
+      "mantida": true
+    },
+    "PRF-0236 -> PRF-0243": {
+      "segue_refutada": true
+    },
+    "conferido_como": "a conferencia inteira foi gerada contra o codigo de agora e cada comportamento conferido item por item, nao por hash igual"
+  },
+  "a_conferencia_inteira_agora": [
+    {
+      "campo": "coeficiente_aproveitamento",
+      "resultado": "ATENDE",
+      "valor": 0.56,
+      "limite": 2.0,
+      "leituras": null,
+      "justificativa": "Coeficiente de Aproveitamento (C.A) = 0.56 razao, dentro do maximo de 2.0 razao"
+    },
+    {
+      "campo": "taxa_ocupacao",
+      "resultado": "ATENDE",
+      "valor": 55.54,
+      "limite": 60.0,
+      "leituras": null,
+      "justificativa": "Taxa de Ocupacao (T.O) = 55.54 %, dentro do maximo de 60.0 %"
+    },
+    {
+      "campo": "taxa_permeavel",
+      "resultado": "ATENDE",
+      "valor": 10.9,
+      "limite": 10.0,
+      "leituras": null,
+      "justificativa": "Taxa Permeavel (T.P) = 10.9 %, acima do minimo de 10.0 %"
+    },
+    {
+      "campo": "area_minima_lote",
+      "resultado": "INDETERMINADO",
+      "valor": null,
+      "limite": 360.0,
+      "leituras": null,
+      "justificativa": "Area minima do lote e limite de LOTE e o projeto esta em regime CONDOMINIO: a aplicabilidade nao se resolve pela tabela \u2014 falta: decisao da Prefeitura sobre o regime"
+    },
+    {
+      "campo": "frente_minima",
+      "resultado": "INDETERMINADO",
+      "valor": null,
+      "limite": 5.0,
+      "leituras": null,
+      "justificativa": "Frente minima e limite de LOTE e o projeto esta em regime CONDOMINIO: a aplicabilidade nao se resolve pela tabela \u2014 falta: decisao da Prefeitura sobre o regime"
+    },
+    {
+      "campo": "recuo_lateral",
+      "resultado": "INDETERMINADO",
+      "valor": null,
+      "limite": 1.5,
+      "leituras": {
+        "pendente": "se o beiral conta como edificacao para efeito de recuo",
+        "falta": "leitura juridica",
+        "leituras": {
+          "ate_a_parede": 1.5,
+          "ate_o_beiral": 0.35
+        }
+      },
+      "justificativa": "Recuo lateral tem leitura pendente E depende de pavimentos, que o projeto nao informou: sem pavimentos o proprio limite nao se fixa, e comparar as leituras contra um limite nao fixado daria veredito com cara de medido. falta: projeto (pavimentos); e leitura juridica"
+    },
+    {
+      "campo": "recuo_fundos",
+      "resultado": "INDETERMINADO",
+      "valor": null,
+      "limite": 3.0,
+      "leituras": {
+        "pendente": "se o beiral conta como edificacao para efeito de recuo",
+        "falta": "leitura juridica",
+        "leituras": {
+          "ate_a_parede": 3.0,
+          "ate_o_beiral": 2.2
+        }
+      },
+      "justificativa": "Recuo de fundos tem leitura pendente E depende de pavimentos, que o projeto nao informou: sem pavimentos o proprio limite nao se fixa, e comparar as leituras contra um limite nao fixado daria veredito com cara de medido. falta: projeto (pavimentos); e leitura juridica"
+    },
+    {
+      "campo": "indice_elevacao",
+      "resultado": "INDETERMINADO",
+      "valor": 1.0,
+      "limite": 4.0,
+      "leituras": null,
+      "justificativa": "Indice de Elevacao (I.E) = 1.0 razao e a norma traz 4.0 razao, mas nao diz se e maximo, minimo ou exigencia \u2014 comparar sem a direcao seria inventar a regra. falta: texto consolidado da lei"
+    }
+  ],
+  "o_que_este_conserto_NAO_faz": {
+    "nao_decide_o_beiral": "e do titular; o motor agora mostra o tamanho",
+    "nao_declara_pavimentos": "elevacoes e I.E. 1,0 APONTAM pavimento unico, e apontar nao e declarar",
+    "nao_conserta_a_aplicabilidade": "frente minima e area minima de 160,00 m2 seguem erradas; PRF-0243"
+  }
+}
