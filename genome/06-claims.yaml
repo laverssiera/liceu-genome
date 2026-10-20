@@ -1199,3 +1199,13 @@
   kind: claim
   statement: "O teto de autonomia de cada monolito esta definido canonicamente em codigo, ainda que a Constituicao o declare ABERTO."
   asserted_by: "ninguem - enunciada por mim em 2026-10-20 para que a declaracao da Constituicao fosse CONFERIDA e nao aceita: documento que declara o proprio estado nao e medicao desse estado"
+
+- id: CLM-0215
+  kind: claim
+  statement: "O unico obstaculo material para subir os tres processos locais e espaco em disco, e ha 8,4 GB livres de 223 GB."
+  asserted_by: "o paragrafo 0 e o PASSO 2 do plano de 2026-10-20 (titular) - 'O unico obstaculo material e espaco em disco: 8,4 GB livres de 223 GB'"
+
+- id: CLM-0216
+  kind: claim
+  statement: "O vermelho de 'No space left on device' na suite Frontend E2E vem do que ela grava por teste, e por isso e codigo e nao infraestrutura."
+  asserted_by: "a hipotese (1) do PASSO 2 do plano de 2026-10-20 (titular), enunciada para ser medida antes de liberar espaco - 'video e trace por teste enchem disco por merito proprio'"
