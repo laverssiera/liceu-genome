@@ -1159,3 +1159,13 @@
   classe: NORMA
   statement: "O valor da projecao lateral de beiral da P-001 nao e estabelecivel, porque a legenda da prancha traz unidade inconsistente com o numero."
   asserted_by: "claude (2026-10-19, no escopo da PRF-0238) - excluido como nao mensuravel por causa da legenda 'Projecao Beiral 1.15 cm'"
+
+- id: CLM-0207
+  kind: claim
+  statement: "Um recuo medido cuja leitura e disputada nao entra nos parametros do motor sem escolher silenciosamente uma das leituras, e por isso o motor diz que o projeto nao informou o que foi medido."
+  asserted_by: "claude (2026-10-19, no relatorio do ecossistema) - 'escrever recuo_lateral: 1.50 escolheria silenciosamente a leitura da parede, mas isso deixa o motor dizendo nao informou quando a verdade e informado e ambiguo'"
+
+- id: CLM-0208
+  kind: claim
+  statement: "Limite com leitura pendente so se resolve depois da decisao juridica, e por isso a conferencia tem de esperar essa decisao para emitir qualquer veredito sobre ele."
+  asserted_by: "claude (2026-10-20, implicito no desenho que eu mesmo ia escrever: um campo que carrega valor mais ressalva trata a pendencia como bloqueio e nunca compara a outra ponta)"

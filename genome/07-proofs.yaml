@@ -4712,3 +4712,121 @@
     repo: liceu-genome
     path: docs/evidence/2026-10-19-os-recuos.json
     note: "A PRF-0238 EXCLUIU ESTE VALOR DO ESCOPO POR UNIDADE INCONSISTENTE, E A EXCLUSAO CAIU: a legenda diz 'Projecao Beiral 1.15 cm', e o responsavel tecnico — que e o titular, e assina a prancha — declarou em 2026-10-19 que sao 1,15 m e que a unidade na legenda esta errada. O QUE ISSO FAZ COM O LATERAL E GRANDE, E E O PONTO: o recuo lateral medido e 1,50 m ate a parede, e o beiral avanca 1,15 m dentro dele. Sob a leitura que mede ate a parede, 1,50 contra minimo 1,50: ATENDE com folga zero. Sob a leitura que mede ate o beiral, sobram 0,35 m contra minimo de 1,50 — nao e quase, e menos de um quarto do exigido. A PERGUNTA DO BEIRAL DEIXA DE SER MARGINAL: nos fundos ela separava 3,00 de 2,20, uma diferenca de 27 por cento; no lateral separa 1,50 de 0,35, que e 77 por cento. A mesma questao de direito, com consequencia muito maior de um lado do que do outro. E A PRANCHA CONTINUA COM O DEFEITO, que e o que mais importa daqui para a frente: o documento PROTOCOLADO traz 'cm' onde deveria ler 'm', e nenhuma declaracao em conversa conserta o papel que esta no processo. Quem ler a prancha no balcao le 1,15 cm. Corrigir a legenda e ato do responsavel tecnico, e fica registrado aqui como pendencia dele e nao minha. O QUE ESTA PROVA NAO ESTABELECE, declarado: a EXTENSAO do beiral lateral nao foi medida, e sem ela nenhuma conta de area computavel se faz; e a regra de limiar de 1,00 m que o titular informou no mesmo dia NAO entra, porque procurei o limiar na definicao de area nao computavel do art. 3o da LC 30, que cita beirais SEM limiar, e nas tres exclusoes do calculo do C.A. do art. 5o paragrafo 1o, onde beiral nao aparece — e nao li as 68 paginas inteiras nem o Codigo de Obras do Estado. Sem fonte, seria literal."
+
+- id: PRF-0240
+  kind: proof
+  title: "O terceiro estado existe: o recuo medido entra como DUAS leituras candidatas, e nenhuma e escolhida em silencio"
+  refutes: [CLM-0207]
+  basis: test
+  date: "2026-10-20"
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_conformidade_urbanistica.py
+    name: test_valor_devolve_None_para_campo_com_leitura_pendente
+  mechanism:
+    repo: JURIDICO-TECH
+    paths:
+      - backend/juridicotech/dados/projeto_p001.json
+      - backend/juridicotech/dados/vgp_lc030_2007_zm.json
+      - backend/juridicotech/modules/conformidade_urbanistica.py
+      - backend/tests/test_conformidade_urbanistica.py
+    content_hash: 9f302157c202622ba7dc7816e0081d13b78b6fb46196c0425ea5c50f27b06867
+    commit: a25e772
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-leitura-pendente.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    note: "A ALTERNATIVA ERA FALSA, E ERA EU QUE A TINHA POSTO. O campo so aceitava float ou None, e dai os dois lados ruins: gravar 1,50 escolhia a leitura da parede sem dizer, e nao gravar deixava o motor afirmando que o projeto nao informou um recuo que esta COTADO na prancha. O terceiro estado nao precisava de lei nova nem de decisao do titular, precisava de um campo que aguenta duas leituras: recuo_lateral agora e um objeto com pendente, falta e leituras {ate_a_parede: 1.50, ate_o_beiral: 0.35}, e recuo_fundos com {3.00, 2.20}. E O DESENHO RECUSA DUAS COISAS, de proposito: `valor` devolve None para campo com leitura pendente, porque devolver uma candidata ali seria a escolha em silencio com outro nome; e `leituras` LEVANTA ERRO com uma candidata so, porque uma candidata e um valor, e registrar valor como pendencia esconde a escolha em vez de mostra-la. O que o motor diz agora dos dois recuos: 'tem leitura pendente E depende de pavimentos, que o projeto nao informou'. Antes dizia que o projeto nao informou o recuo, e essa frase era falsa. O VALOR E A RESSALVA VIAJAM JUNTOS porque um numero solto pode ser lido sem a duvida que o acompanha, e foi exatamente assim que um recuo medido virou ausencia."
+
+- id: PRF-0241
+  kind: proof
+  title: "Quando as duas leituras concordam, a pendencia juridica e IMATERIAL e o veredito sai - e so comparando as duas pontas se descobre isso"
+  refutes: [CLM-0208]
+  basis: test
+  date: "2026-10-20"
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_conformidade_urbanistica.py
+    name: test_quando_as_leituras_CONCORDAM_em_atender_a_pendencia_nao_importa
+  mechanism:
+    repo: JURIDICO-TECH
+    paths:
+      - backend/juridicotech/dados/projeto_p001.json
+      - backend/juridicotech/dados/vgp_lc030_2007_zm.json
+      - backend/juridicotech/modules/conformidade_urbanistica.py
+      - backend/tests/test_conformidade_urbanistica.py
+    content_hash: 9f302157c202622ba7dc7816e0081d13b78b6fb46196c0425ea5c50f27b06867
+    commit: a25e772
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-leitura-pendente.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    note: "A CLM-0208 E UNIVERSAL E O MOTOR EXIBE O CONTRAEXEMPLO: ela diz que limite com leitura pendente obriga a esperar a decisao juridica para emitir QUALQUER veredito, e quando TODAS as candidatas caem do mesmo lado do limite o veredito SAI, com a justificativa dizendo que a pendencia nao o altera. A pendencia de direito pode ser IMATERIAL, e isso e propriedade do CASO e nao da pendencia. REGISTRO DE ONDE VEIO A CLAIM REFUTADA, que e minha: meu primeiro desenho era um campo com valor mais ressalva, que trata a pendencia como bloqueio -- nunca compararia a outra ponta, devolveria INDETERMINADO sempre, e teria cara de rigor. O CASO DA P-001 NAO E O CONTRAEXEMPLO, e isto precisa ficar claro para a prova nao ser lida como mais do que e: la as candidatas DISCORDAM -- 1,50 atende o minimo de 1,50 e 0,35 nao -- e por isso os dois recuos seguem INDETERMINADO e a decisao do titular segue sendo necessaria. O contraexemplo esta no teste, com limite minimo 1,50 contra candidatas 3,00 e 2,00: ATENDE. A ORDEM DAS GUARDAS IMPORTA E TEM TESTE SO PARA ELA: o recuo lateral da ZM e '1,50 x 1 lado ate 2 pavimentos; 3,00 x 2 acima', e `pavimentos` NAO foi declarado -- sem ele o proprio limite nao se fixa, e comparar candidatas contra limite nao fixado devolveria veredito com cara de medido. A guarda do condicionante vem ANTES do laco das candidatas, e o meu primeiro rascunho a tinha DEPOIS. MEDICAO POR MUTACAO, porque teste que passa nao prova que guarda: fazer o motor ignorar a leitura pendente e acusado por 8 testes; tirar a guarda do condicionante, por 3; fazer `valor` devolver a primeira candidata, por 2. 41 testes passam."
+
+- id: PRF-0242
+  kind: proof
+  title: "O I.E segue INDETERMINADO nomeado e nenhum limite de LOTE atravessa calado - rodado de novo sobre a superficie que a leitura pendente alterou"
+  proves: [CLM-0071, CLM-0020]
+  basis: test
+  supersedes: [PRF-0235]
+  date: "2026-10-20"
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_conformidade_urbanistica.py
+    name: test_conformidade_urbanistica
+  mechanism:
+    repo: JURIDICO-TECH
+    paths:
+      - backend/juridicotech/dados/projeto_p001.json
+      - backend/juridicotech/dados/vgp_lc030_2007_zm.json
+      - backend/juridicotech/modules/conformidade_urbanistica.py
+      - backend/tests/test_conformidade_urbanistica.py
+    content_hash: 9f302157c202622ba7dc7816e0081d13b78b6fb46196c0425ea5c50f27b06867
+    commit: a25e772
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-leitura-pendente.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    note: "RODADO DE NOVO PORQUE A SUPERFICIE MUDOU, e rodado de verdade: a conferencia inteira foi gerada contra o codigo de agora e cada um dos dois comportamentos foi conferido item por item, nao conferido por hash igual. CLM-0071: o perfil tem 1 limite de direcao desconhecida e a conferencia tem 1 item correspondente -- ficar FORA da lista seria o furo, e o item esta la, INDETERMINADO, nomeando a falta ('a norma traz 4.0 razao, mas nao diz se e maximo, minimo ou exigencia -- comparar sem a direcao seria inventar a regra'). CLM-0020: 5 INDETERMINADOS, TODOS com a falta nomeada, NENHUM virou zero; e dos 2 limites do perfil que nao alcancam CONDOMINIO (area minima do lote e frente minima), nenhum foi aplicado calado. O QUE MUDOU NA SUPERFICIE SEM MUDAR ESTES COMPORTAMENTOS: os dois recuos sairam de INDETERMINADO-por-ausencia para INDETERMINADO-por-leitura-pendente. O resultado e o mesmo rotulo e a falta segue nomeada -- o que mudou foi a VERDADE da justificativa, que antes dizia ausencia onde havia medida. Os INDETERMINADOS continuam 5."
+
+- id: PRF-0243
+  kind: proof
+  title: "O motor SEGUE atras da lei na frente minima e na area minima, e o conserto da leitura pendente nao o tirou de la"
+  refutes: [CLM-0203]
+  basis: test
+  supersedes: [PRF-0236]
+  date: "2026-10-20"
+  test:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    name: avaliar
+  mechanism:
+    repo: JURIDICO-TECH
+    paths:
+      - backend/juridicotech/dados/projeto_p001.json
+      - backend/juridicotech/dados/vgp_lc030_2007_zm.json
+      - backend/juridicotech/modules/conformidade_urbanistica.py
+      - backend/tests/test_conformidade_urbanistica.py
+    content_hash: 9f302157c202622ba7dc7816e0081d13b78b6fb46196c0425ea5c50f27b06867
+    commit: a25e772
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-leitura-pendente.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    note: "A REFUTACAO DA PRF-0236 SEGUE DE PE, E ISSO FOI MEDIDO NO CODIGO DE AGORA: a frente minima continua saindo 'e limite de LOTE e o projeto esta em regime CONDOMINIO: a aplicabilidade nao se resolve pela tabela -- falta: decisao da Prefeitura sobre o regime', e a area minima do lote continua comparada contra 360,00. A UNK-0009 ja respondeu as duas pela LEI: o art. 13 da LC 097/2020, na redacao da LC 99/2021, manda observar a Tabela 1 da Zona Mista para a unidade autonoma EXCLUINDO APENAS a area minima de lote, que o art. 119 da LC 30 substitui por 160,00 m2. Entao a frente minima ALCANCA a unidade e deveria ser COMPARADA (7,00 contra 5,00), e a area minima NAO alcanca e deveria ser comparada contra 160,00 (175 contra 160). NAO CONSERTEI NESTE PR, E E DECISAO DE METODO E NAO FALTA DE TEMPO: mudar a regra de aplicabilidade altera o veredito da CLM-0019, e tem de nascer com o seu proprio teste. Emendar isso dentro do PR que conserta a leitura pendente seria a mudanca que entra de carona e ninguem confere -- que e a mesma razao pela qual nao foi emendada no PR que mediu a testada. O QUE ISSO CUSTA, pelo segundo ciclo seguido: a testada esta medida, registrada, e atende com folga de 2,00 m, e o motor nao a usa; o numero existe no arquivo e nao chega ao veredito."
