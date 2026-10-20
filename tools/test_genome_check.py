@@ -205,6 +205,36 @@ class Mutacoes(unittest.TestCase):
             {"repo": "liceu-genome", "file": "tools/test_genome_check.py", "name": "test_que_nao_existe"}]
         self.assertFails(f, "VIOLAÇÃO NOVA FIT-014: FC-001 aponta test_que_nao_existe")
 
+    def test_76_prova_que_cita_evidencia_INEXISTENTE_e_recusada(self):
+        """PASSO A de 2026-10-20: o juiz nao conferia o evidence_artifact.path.
+
+        O furo foi achado por um deslize meu -- duas provas citaram um arquivo
+        antes de ele existir e o juiz saiu INTEGRO. O passivo medido no mesmo
+        dia era ZERO, entao o furo era potencial; e potencial basta, porque o
+        que o juiz nao confere nao e condicao do INTEGRO dele.
+        """
+        f = base()
+        node(f, "PRF-0001")["evidence_artifact"] = {
+            "repo": "liceu-genome",
+            "path": "docs/evidence/este-arquivo-nao-existe-2026-10-20.json"}
+        self.assertFails(f, "evidence_artifact aponta")
+
+    def test_77_evidencia_em_OUTRO_repositorio_nao_e_recusada_e_sai_declarada(self):
+        """O juiz nao pode conferir o que nao esta no checkout dele.
+
+        Recusar seria mentir sobre o alcance; deixar passar calado seria
+        pior. Ele registra em `ev_nao_conferidos` e o relatorio os NOMEIA.
+        """
+        f = base()
+        node(f, "PRF-0001")["evidence_artifact"] = {
+            "repo": "LICEU_6.0_CONSTRUTORA_VIRTUAL",
+            "path": "infra/authority/nao-confiro-isto.json"}
+        j, _ = judge(f)
+        self.assertNotIn("evidence_artifact aponta", "\n".join(j.errors))
+        self.assertTrue(any(x[0] == "PRF-0001" for x in j.ev_nao_conferidos),
+                        "o artefato de outro repositorio tinha de sair "
+                        "DECLARADO como nao conferido")
+
     # U0 — o genoma é público: dado pessoal não entra
     #
     # As amostras são MONTADAS em tempo de execução, nunca escritas literalmente:
@@ -1118,7 +1148,11 @@ def observacao_da_instituicao(pid, prova):
             "external_observation": {
                 "instrument": "leitura da exigencia emitida pelo orgao",
                 "observed": "a exigencia nao menciona o item"},
-            "evidence_artifact": {"repo": "liceu-genome",
+            # repo "r" como os irmaos deste arquivo: o artefato aqui e
+            # ANDAIME do portao C30-02, e nao o assunto. Com "liceu-genome" a
+            # conferencia de existencia de evidencia (PASSO A, 2026-10-20)
+            # passaria a cobrar um arquivo que este fixture nao tem por que ter.
+            "evidence_artifact": {"repo": "r",
                                   "path": "docs/evidence/fixture.json"},
             "environment": "durable"}
 
