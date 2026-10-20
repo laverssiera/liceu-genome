@@ -1169,3 +1169,13 @@
   kind: claim
   statement: "Limite com leitura pendente so se resolve depois da decisao juridica, e por isso a conferencia tem de esperar essa decisao para emitir qualquer veredito sobre ele."
   asserted_by: "claude (2026-10-20, implicito no desenho que eu mesmo ia escrever: um campo que carrega valor mais ressalva trata a pendencia como bloqueio e nunca compara a outra ponta)"
+
+- id: CLM-0209
+  kind: claim
+  statement: "Dividir o I3 em dois invariantes fecha o I3, porque a imposicao do C30-01 passa a satisfazer o invariante que lhe corresponde."
+  asserted_by: "a leitura natural da divisao, e ela e minha: o C30-01 escreveu 'ou o I3 se divide em dois invariantes, ou falta o dreno' lado a lado, como se fossem dois caminhos para o mesmo lugar"
+
+- id: CLM-0210
+  kind: claim
+  statement: "O I3a - nenhum ato sob epoca revogada toma efeito - e satisfeito pelo protocolo com a imposicao e e falsificavel por mutacao, e por isso a divisao separa um invariante fechado de um aberto em vez de renomear o mesmo furo."
+  asserted_by: "ninguem ainda - e o que a divisao produz, e so vale se a mutacao que desguarnece o efeito quebrar o I3a E o I3b seguir violando no mesmo modelo"
