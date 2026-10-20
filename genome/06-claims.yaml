@@ -1244,3 +1244,13 @@
   kind: claim
   statement: "A segunda metade da CLM-0007 - 'so autoriza apos promocao valida' - esta integralmente reivindicada nas cinco claims que a cobrem, e por isso remove-la da CLM-0007 nao perde nada."
   asserted_by: "claude (2026-10-20), ao propor o enunciado novo - 'A segunda metade ja esta reivindicada em outro lugar, e mante-la aqui duplica'. O §3 do titular exigiu que isso fosse MAPEADO parte por parte antes de remover, em vez de aproximado."
+
+- id: CLM-0224
+  kind: claim
+  statement: "As quatro ocorrencias de `autonomy_level` nos quatro monolitos sao quatro representacoes do MESMO conceito, e por isso definir o teto canonico e eleger uma delas."
+  asserted_by: "Constituicao 1.18.0, bloco LIMITE_NAO_DEFINIDO: 'quatro representacoes do mesmo conceito; nenhuma canonica'. E a pergunta do titular em 2026-10-20 -- 'qual das quatro representacoes e canonica' -- herda a premissa."
+
+- id: CLM-0225
+  kind: claim
+  statement: "O teto de cada monolito, acima do qual a Mae ativa autoriza, nao esta definido em lugar nenhum canonico."
+  asserted_by: "Constituicao 1.18.0, LIMITE_NAO_DEFINIDO: `estado: ABERTO`, `o_que_falta: o teto de cada monolito nao esta definido em lugar nenhum canonico`, `decisao_requerida: true`"
