@@ -5685,3 +5685,53 @@
     repo: liceu-genome
     path: docs/evidence/2026-10-20-o-vazio-atribuido.json
     note: "O VAZIO ESTAVA ONDE EU NAO OLHEI, E DUAS DAS MINHAS AFIRMACOES CAEM DE UMA VEZ. A RECONCILIACAO: eu media 97,84 GB de 185,80 usados, com C:\\Users em 25,63 e ProgramData em 2,68. Medido com elevacao, C:\\Users soma 98,92 -- mais SETENTA E TRES GIGABYTES do que eu havia contado -- ProgramData da 4,76, os quatro protegidos somam 0,75 e a lixeira 0,48. O total sobe para 174,39 e o vazio desce de 87,96 para 11,41 GB. O que resta cabe nos 47 acessos negados dentro de Windows e nos 37 dentro de Program Files, que seguem nao mensuraveis sem elevacao. A PRIMEIRA AFIRMACAO QUE CAI: eu disse que o vazio se atribuia medindo os quatro diretorios protegidos. Eles somam 0,75 GB, e o System Volume Information -- que eu havia chamado de unico candidato credivel para 88 GB, e que a PRF-0276 ja derrubou pelo vssadmin -- da ZERO. Apontei para o lugar errado duas vezes, por duas vias diferentes. A SEGUNDA: eu escrevi que o Windows\\Installer, com 21,24 GB, era o maior item unico do disco. Nao e. O maior e um PERFIL DE USUARIO, com 44,5 GB -- mais do que o dobro. O segundo maior tambem e perfil, com 23,69. O Installer e o TERCEIRO. E O ERRO DE RAIZ E O MESMO DAS DUAS VEZES, e nao e falta de permissao: a varredura imprimia `Negados` por subarvore e eu publiquei o numero sem perguntar o que eram. Onze negados em C:\\Users eram OITO PERFIS INTEIROS numa maquina de dominio com nove perfis humanos. Permissao faltava para medir; nao faltava para PERGUNTAR o que eu nao estava medindo. O QUE ISTO NAO FAZ, declarado: nao propoe apagar nada. Perfil de usuario e dado pessoal de alguem, a maquina e compartilhada, e a regra de parada do PASSO C manda parar e perguntar item por item. O numero e meu de entregar; a decisao nao."
+
+- id: PRF-0278
+  kind: proof
+  title: "O livre e 36,21 GB e nao 8,4: faltam 3,79 GB para a meta, e o inventario dos 89 GB ja esta feito"
+  refutes: [CLM-0238]
+  basis: external_observation
+  date: "2026-10-20"
+  external_observation:
+    instrument: "Get-PSDrive C, lido quatro vezes ao longo do dia; e a soma reconciliada da PRF-0277"
+    observed: "o volume C: tem 222,96 GB, com 186,75 usados e 36,21 livres; as leituras do dia foram 37,16, 36,42, 36,41 e 36,21, monotonicamente decrescentes; e o vazio nao medido caiu de 87,96 para 11,41 GB pela PRF-0277"
+  scope:
+    padrao: "confrontar o numero de espaco livre que o paragrafo 1 usa com as leituras do dia, e confrontar a premissa de que o inventario dos 89 GB esta pendente com o que a PRF-0277 ja mediu"
+    universo: "o volume C: da maquina do titular; as quatro leituras de Get-PSDrive do dia; e a reconciliacao da PRF-0277, mergeada no PR #156"
+    excluidos:
+      - "se 40 GB BASTAM para o laboratorio: a meta veio do roteiro e esta prova nao a julga -- mede apenas a distancia ate ela"
+      - "quanto o DISM recuperaria: nao foi rodado, porque exige elevacao"
+    instrumento: "Get-PSDrive C; e leitura da PRF-0277 ja mergeada"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-a-conta-e-a-bateria.json
+  environment: local
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-a-conta-e-a-bateria.json
+    note: "O PARAGRAFO 1 PARTE DO NUMERO DO ROTEIRO v1, QUE A PRF-0252 JA REFUTOU E QUE ESTA MERGEADO. 8,4 GB livres era o que o roteiro de 09h24 dizia; medido no mesmo dia, o livre e 36,21 GB -- e a PRF-0252, no PR #155, refutou exatamente isso ao derrubar a CLM-0215. A regra desta casa vale para o que o titular afirma tambem, e e por isso que esta prova existe. E A CONCLUSAO DO PARAGRAFO SE INVERTE COM O NUMERO CERTO: faltam 3,79 GB para a meta, nao 31,6. O `powercfg /h off`, com 4,76 GB, PASSA da meta sozinho. Nao ha deficit de 18 a 21 GB. E O INVENTARIO DOS 89 GB NAO E CAMINHO CRITICO PORQUE JA ESTA FEITO: a PRF-0277, mergeada em bf9c5c0, atribuiu o vazio -- 73 dos 88 GB estavam em oito perfis que a minha varredura havia contado como ZERO, e o residuo e 11,41 GB, nos 47 acessos negados dentro de Windows e nos 37 dentro de Program Files. O que o paragrafo propoe como proximo passo e o passo anterior. O QUE SOBREVIVE DO PARAGRAFO 1, e nao e pouco: a pergunta de se 40 GB BASTAM para tres conteineres com log duravel, imagens e folga, que e outra pergunta e segue sem medicao; e o habito de declarar o resultado possivel ANTES de gastar o esforco, que esta certo e foi seguido. E UMA TENDENCIA QUE EU DEVO DECLARAR CONTRA MIM: as quatro leituras do dia caem monotonicamente, de 37,16 para 36,21 GB. Quase um gigabyte, e o consumidor sou eu -- suites de teste, temporarios e objetos git desta sessao. A margem de 3,79 GB nao e estavel enquanto eu trabalho."
+
+- id: PRF-0279
+  kind: proof
+  title: "E notebook com bateria: desligar a hibernacao deixa de hibernar em bateria critica e passa a DESLIGAR, perdendo trabalho nao salvo"
+  refutes: [CLM-0239]
+  basis: external_observation
+  date: "2026-10-20"
+  external_observation:
+    instrument: "Get-CimInstance Win32_SystemEnclosure para o ChassisType; Win32_ComputerSystem para o modelo; Win32_Battery para a presenca de bateria; e powercfg /a para os estados de suspensao disponiveis"
+    observed: "ChassisType 9, que e Laptop; modelo Latitude E5450; uma bateria presente, DELL WYJC253, com BatteryStatus 2; e powercfg /a lista Espera (S3), Hibernar, Suspensao Hibrida e Inicializacao Rapida como disponiveis"
+  scope:
+    padrao: "determinar se a maquina e portatil e se tem bateria, porque disso depende se desligar a hibernacao e troca ou e quase gratis"
+    universo: "a maquina de desenvolvimento do titular, pelos seus proprios registros WMI e pelo powercfg"
+    excluidos:
+      - "a politica de energia configurada hoje para bateria critica: nao foi lida, e o que se afirma e a consequencia de remover a hibernacao como ACAO possivel"
+      - "quanto a Inicializacao Rapida custa em segundos de boot: nao medido"
+    instrumento: "PowerShell 5.1 nao elevado -- nada disto exige privilegio"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-a-conta-e-a-bateria.json
+  environment: local
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-a-conta-e-a-bateria.json
+    note: "A MINHA FORMULACAO ERA VERDADEIRA SOBRE ARQUIVOS E FALSA SOBRE COMPORTAMENTO, e o titular apontou isso antes de eu medir. Eu pus o `powercfg /h off` como primeira opcao da Parte 2 com o argumento de que e 'a UNICA que nao toca dado de ninguem'. Nao toca ARQUIVO de ninguem -- e dado nao salvo tambem e dado. MEDIDO: ChassisType 9 = Laptop, Latitude E5450, com bateria presente. Entao nao e desktop, e a troca e real: removida a hibernacao, a acao de bateria critica deixa de hibernar e passa a desligar, e trabalho nao salvo se perde em vez de ser preservado. Em desktop seria quase gratis; aqui nao e. E A REVERSIBILIDADE MUDA O PERFIL DE RISCO E VALE REGISTRADA JUNTO COM O NUMERO: `powercfg /h on` recria o hiberfil e devolve a hibernacao e a Inicializacao Rapida. Entao a troca e temporaria por escolha, e nao permanente -- o que a distingue do `/ResetBase`, que libera mais e nao se desfaz. O QUE ISSO FAZ COM A ORDEM DAS OPCOES: o `powercfg /h off` deixa de ser a primeira por ser inofensiva e passa a ser uma troca declarada de 4,76 GB contra a preservacao de trabalho em bateria critica. A analise do DISM sobe de posicao, porque e a unica candidata que poderia fechar os 3,79 GB sem troca e sem tocar dado de ninguem -- e ela exige a janela elevada do titular, com erro 740 medido sem ela."
