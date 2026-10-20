@@ -5217,3 +5217,55 @@
     repo: liceu-protocol
     path: liceu_protocol/liceu_producer_registry.yaml
     note: "O TETO NAO FALTAVA: ELE EXISTE SOB OUTRO NOME, E A LEI ESTAVA OLHANDO PARA O CAMPO ERRADO. Procurei o CONCEITO em vez do nome `autonomy_level`, e ele esta no Producer Registry do kit, como `teto.teto_interno`: 16 de 16 produtores o declaram (liceu.core INTERPLANETARIA, liceu.anchor LOCAL, liceu.opera LOCAL, liceu.bim REGIONAL, liceu.suppliers REGIONAL, e assim por diante). NAO E CAMPO SOLTO -- vem com tudo o que um teto canonico precisa: dominio ORDENADO (`SCALE_ORDER = {LOCAL:1, REGIONAL:2, CONTINENTAL:3, GLOBAL:4, CIVILIZACIONAL:5, INTERPLANETARIA:6}`), INVARIANTE (`teto_externo <= teto_interno <= scale_max`), GRANULARIDADE decidida (`[DECIDIDO TA1] dois tetos por produtor, nao por classe de capacidade`), e REGRA DE AVALIACAO em cinco passos: obter a capacidade que originou o fato, consultar o `external_effect` dela, `teto_aplicavel = teto_externo se external_effect senao teto_interno`, e se `event.scale <= teto_aplicavel` decide sozinho, SENAO ESCALA PARA A MAE. E E APLICADO, nao declarado: o `authorization_publisher` do ANCHOR le `ceiling()` do registry e, quando o escopo excede, devolve `_blocked('scope_above_ceiling', owner='liceu.authority')` com o detalhe 'acima do teto e a Mae ativa quem autoriza -- e ai o fencing opera'. O teste `test_ceiling_comes_from_the_producer_registry` fixa a PROCEDENCIA: o teto vem do registry e nao de literal no codigo. DUAS DAS CINCO DIMENSOES QUE A LEI LISTA JA ESTAO SEPARADAS: a dimensao do `teto_interno` e ESCALA, e o EFEITO EXTERNO entra por um teto proprio, o `teto_externo`, em vez de ser dobrado dentro do mesmo numero. O QUE ISSO FAZ COM O LIMITE_NAO_DEFINIDO DA CONSTITUICAO: ele nao esta ABERTO, esta DESATUALIZADO. Ele descreve quatro representacoes de `autonomy_level` -- que a PRF-0258 mostra nao serem o mesmo conceito -- e nao menciona o `teto_interno`, que e o teto de verdade, e e anterior a ele no kit. E A CONSEQUENCIA MAIOR, que nao e deste PR mas nasce aqui: a lei escreve 'a dupla Mae depende de o teto ser definido primeiro'. O teto esta definido. Essa condicao nao bloqueia mais nada."
+
+- id: PRF-0260
+  kind: proof
+  title: "O dreno do C30-01 era INCONDICIONAL: com voo que trava ele se parte em dois, e nenhuma das metades fecha o I3b sem travar o avanco"
+  refutes: [CLM-0226]
+  basis: test
+  date: "2026-10-20"
+  test:
+    repo: liceu-genome
+    path: tools/modelo/dreno.py
+    name: self_test
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/modelo/dreno.py
+    content_hash: 717a2623c81b1490d7ab818511dcb5e719b5788d5c01bbe9869f924d364243db
+    commit: 66b6c14
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-dreno-com-prazo.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/modelo/dreno.py
+    note: "O FENCING.PY MEDIU A SUPOSICAO, NAO O REMEDIO, e e isso que esta prova mostra sem derrubar nada do que ele mediu. A transicao de dreno dele e `('promover+drenar', (nova, frozenset()))`: esvazia o voo ATOMICAMENTE com a promocao, inclusive o que estiver pendurado. Dreno assim satisfaz o I3b por construcao, e nao porque dreno satisfaca o I3b -- satisfaz porque nao pode falhar. E DRENO PODE FALHAR: processo pausado, rede parada, chamada a jusante pendurada. Acrescentei ao modelo a unica transicao que faltava, `travar(ep)`, em que a requisicao sai do voo ativo e NUNCA conclui sozinha. Com ela os cinco remedios se separam assim, com o espaco inteiro explorado: A_so_cerca 31 estados, I3a VALE, I3b VIOLA, avanco livre. B_ideal 9 estados, I3a VALE, I3b VALE, avanco livre -- e e a IDEALIZACAO, porque o seu dreno drena o travado. B_bloqueia 9 estados, I3a VALE, I3b VALE, avanco BLOQUEIA. B_prazo_avanca e AB_prazo_cerca 15 estados, I3a VALE, I3b VIOLA, avanco livre. ENTAO A FRASE DO C30-01 CAI PELA METADE: o dreno que satisfaz o I3b e o que nao pode falhar, e o unico que se constroi satisfazendo o I3b e o que ESPERA -- e esperar deixa um travado bloquear a promocao para sempre. UMA MEDICAO MINHA FALHOU NO CAMINHO E CORRIGIU A METRICA, nao a expectativa, e registro porque a primeira versao teria passado por boa: eu media `avanco_bloqueado` como 'existe estado em que promover nao esta disponivel AGORA', e com isso o B_bloqueia aparecia bloqueado mesmo com teto_travados=0 -- porque esperar o voo esvaziar bloqueia tambem com requisicao NORMAL em voo. Isso confunde ATRASO com IMPASSE. A metrica certa e IRRECUPERABILIDADE, por ponto fixo para tras no grafo de estados: morto e o estado de onde NENHUMA continuacao alcanca promocao. Com ela, sem travamento o impasse SOME e com travamento ele aparece -- e ha mutacao no self-test para cada um dos dois lados. 18 de 18 passam. E O QUE A CERCA NO EFEITO FAZ E GRANDE: o I3a VALE nos CINCO remedios, e a mutacao que tira a cerca o quebra. Entao a escolha nunca foi entre seguranca e nada: nenhum ato sob epoca revogada toma efeito em nenhum dos cinco. A escolha e entre o ESTADO em voo e o AVANCO da epoca."
+
+- id: PRF-0261
+  kind: proof
+  title: "A DECISAO: drenar com prazo e cercar no efeito -- o I3b segue violado de forma limitada, porque o impasse custa mais que o estado em voo"
+  refutes: [CLM-0227]
+  basis: test
+  date: "2026-10-20"
+  test:
+    repo: liceu-genome
+    path: tools/modelo/dreno.py
+    name: percorre
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/modelo/dreno.py
+    content_hash: 717a2623c81b1490d7ab818511dcb5e719b5788d5c01bbe9869f924d364243db
+    commit: 66b6c14
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-dreno-com-prazo.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/modelo/dreno.py
+    note: "DECISAO TOMADA (claude, 2026-10-20, por delegacao expressa do titular -- 'decida o remedio do I3b'): DRENAR COM PRAZO E CERCAR NO EFEITO. Drena-se o que der antes de comprometer a epoca nova; vencido o prazo, promove-se de qualquer forma, e o retardado e RECUSADO no momento do efeito. E A DECISAO NAO FECHA O I3b, E ISSO TEM DE SER LIDO JUNTO COM ELA: o I3b como escrito segue VIOLADO, de forma limitada -- entre o prazo vencido e a recusa do retardado. O que se decidiu foi ACEITAR essa violacao limitada em troca de um avanco que nao trava. POR QUE NAO O B_bloqueia, que satisfaz o I3b: ele deixa o avanco IRRECUPERAVEL quando ha travado -- medido por ponto fixo no grafo, e nao suposto. E a requisicao travada e exatamente o caso para o qual o failover existe: escolher o I3b ali seria deixar uma chamada pendurada impedir a troca de Mae para sempre, quando o I3a JA garante que nada daquele ato toma efeito. Trocar a recuperacao do sistema por uma propriedade do ESTADO, tendo a seguranca preservada nos dois lados, e trade ruim. POR QUE NAO O B_ideal, que e verde nas tres colunas: porque o dreno dele drena o que esta TRAVADO, e travado e, por definicao, o que nao termina. Nao se constroi. E UMA HONESTIDADE SOBRE O LIMITE DESTA MEDICAO: o B_prazo_avanca e o AB_prazo_cerca saem IDENTICOS -- 15 estados, mesmos vereditos -- porque a cerca no efeito esta nos dois. O modelo NAO distingue 'promover de qualquer forma' de 'promover e cercar': sao o mesmo mecanismo aqui, e a minha preferencia entre os dois nomes nao e medida. Decidi o MECANISMO, e os dois nomes o descrevem. E O QUE EU NAO DECIDI, PORQUE NAO E MEU: existe uma terceira saida que nao custa nem o avanco nem a seguranca, e ela e DEFINICIONAL. Relido o I3b como 'nada que AINDA POSSA TOMAR EFEITO fica sob epoca revogada', ele VALE em todos os remedios que tem cerca -- medido na coluna I3b-rel, com teste dos dois lados: vale onde ha cerca, e cai onde nao ha. Mas reescrever invariante e ato do titular, como foi a divisao do I3 em 2026-10-20. Eu meco a diferenca que a releitura faria; nao a faco."

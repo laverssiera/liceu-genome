@@ -1,0 +1,159 @@
+{
+  "o_que_e": "a decisao do remedio do I3b, por delegacao expressa do titular",
+  "data": "2026-10-20",
+  "a_decisao": {
+    "quem": "claude, por delegacao expressa do titular",
+    "o_que": "DRENAR COM PRAZO E CERCAR NO EFEITO",
+    "como": "drena-se o que der antes de comprometer a epoca nova; vencido o prazo, promove-se de qualquer forma, e o retardado e RECUSADO no momento do efeito",
+    "o_que_ela_NAO_faz": "nao fecha o I3b. O I3b como escrito segue VIOLADO, de forma limitada -- entre o prazo vencido e a recusa do retardado. O que se decidiu foi ACEITAR essa violacao limitada.",
+    "por_que_nao_o_B_bloqueia": "ele satisfaz o I3b e deixa o avanco IRRECUPERAVEL quando ha travado. A requisicao travada e o caso para o qual o failover existe; e o I3a JA garante que nada daquele ato toma efeito.",
+    "por_que_nao_o_B_ideal": "e verde nas tres colunas e NAO se constroi: o dreno dele drena o que esta TRAVADO, e travado e o que nao termina"
+  },
+  "o_defeito_do_modelo_anterior": {
+    "o_fencing_py_mediu": "a suposicao, nao o remedio",
+    "a_transicao": "('promover+drenar', (nova, frozenset()))",
+    "por_que": "esvazia o voo ATOMICAMENTE com a promocao, inclusive o pendurado. Satisfaz o I3b por construcao, nao por merito.",
+    "a_unica_transicao_que_faltava": "travar(ep): a requisicao sai do voo ativo e NUNCA conclui sozinha"
+  },
+  "os_cinco_remedios_medidos": {
+    "A_so_cerca": {
+      "remedio": "A_so_cerca",
+      "estados": 31,
+      "viola_I3a": false,
+      "viola_I3b": true,
+      "avanco_bloqueado": false,
+      "contraexemplo_I3a": null,
+      "contraexemplo_I3b": {
+        "estado": {
+          "comprometida": 3,
+          "em_voo": [
+            2
+          ],
+          "travados": []
+        },
+        "caminho": [
+          "promover",
+          "admitir",
+          "promover"
+        ]
+      },
+      "contraexemplo_avanco": null,
+      "I3b_relido_vale": true
+    },
+    "B_ideal": {
+      "remedio": "B_ideal",
+      "estados": 9,
+      "viola_I3a": false,
+      "viola_I3b": false,
+      "avanco_bloqueado": false,
+      "contraexemplo_I3a": null,
+      "contraexemplo_I3b": null,
+      "contraexemplo_avanco": null,
+      "I3b_relido_vale": true
+    },
+    "B_bloqueia": {
+      "remedio": "B_bloqueia",
+      "estados": 9,
+      "viola_I3a": false,
+      "viola_I3b": false,
+      "avanco_bloqueado": true,
+      "contraexemplo_I3a": null,
+      "contraexemplo_I3b": null,
+      "contraexemplo_avanco": {
+        "estado": {
+          "comprometida": 2,
+          "em_voo": [],
+          "travados": [
+            2
+          ]
+        },
+        "caminho": [
+          "promover",
+          "admitir",
+          "travar(ep=2)"
+        ]
+      },
+      "I3b_relido_vale": true
+    },
+    "B_prazo_avanca": {
+      "remedio": "B_prazo_avanca",
+      "estados": 15,
+      "viola_I3a": false,
+      "viola_I3b": true,
+      "avanco_bloqueado": false,
+      "contraexemplo_I3a": null,
+      "contraexemplo_I3b": {
+        "estado": {
+          "comprometida": 3,
+          "em_voo": [],
+          "travados": [
+            2
+          ]
+        },
+        "caminho": [
+          "promover(prazo vencido)",
+          "admitir",
+          "travar(ep=2)",
+          "promover(prazo vencido)"
+        ]
+      },
+      "contraexemplo_avanco": null,
+      "I3b_relido_vale": true
+    },
+    "AB_prazo_cerca": {
+      "remedio": "AB_prazo_cerca",
+      "estados": 15,
+      "viola_I3a": false,
+      "viola_I3b": true,
+      "avanco_bloqueado": false,
+      "contraexemplo_I3a": null,
+      "contraexemplo_I3b": {
+        "estado": {
+          "comprometida": 3,
+          "em_voo": [],
+          "travados": [
+            2
+          ]
+        },
+        "caminho": [
+          "promover(prazo vencido)",
+          "admitir",
+          "travar(ep=2)",
+          "promover(prazo vencido)"
+        ]
+      },
+      "contraexemplo_avanco": null,
+      "I3b_relido_vale": true
+    }
+  },
+  "o_quadro": {
+    "A_so_cerca": "I3a VALE \u00b7 I3b VIOLA \u00b7 I3b-rel VALE \u00b7 avanco livre \u00b7 31 estados",
+    "B_ideal": "I3a VALE \u00b7 I3b VALE \u00b7 I3b-rel VALE \u00b7 avanco livre \u00b7 9 estados -- IDEALIZACAO",
+    "B_bloqueia": "I3a VALE \u00b7 I3b VALE \u00b7 I3b-rel VALE \u00b7 avanco BLOQUEIA \u00b7 9 estados",
+    "B_prazo_avanca": "I3a VALE \u00b7 I3b VIOLA \u00b7 I3b-rel VALE \u00b7 avanco livre \u00b7 15 estados",
+    "AB_prazo_cerca": "identico ao anterior -- o modelo nao os distingue"
+  },
+  "o_que_o_dreno_ganha_mesmo_sem_fechar_o_I3b": "com o dreno, SO O TRAVADO sobrevive a promocao; sem ele, TODA requisicao em voo da epoca velha sobrevive. O dreno encolhe o conjunto violador; a cerca limita o dano. Nao sao o mesmo trabalho.",
+  "a_cerca_no_efeito_sustenta_o_I3a_nos_cinco": {
+    "medido": true,
+    "e_falsificavel": "a mutacao que tira a cerca quebra o I3a -- ha teste",
+    "consequencia": "a escolha nunca foi entre seguranca e nada: nenhum ato sob epoca revogada toma efeito em nenhum dos cinco. A escolha e entre o ESTADO em voo e o AVANCO da epoca."
+  },
+  "uma_metrica_minha_que_falhou_e_foi_corrigida": {
+    "a_primeira_versao": "`avanco_bloqueado` = existe estado em que promover nao esta disponivel AGORA",
+    "o_que_ela_fazia_de_errado": "o B_bloqueia aparecia bloqueado mesmo com teto_travados=0, porque esperar o voo esvaziar bloqueia tambem com requisicao NORMAL em voo -- confundia ATRASO com IMPASSE",
+    "a_metrica_certa": "IRRECUPERABILIDADE, por ponto fixo para tras no grafo: morto e o estado de onde NENHUMA continuacao alcanca promocao",
+    "o_que_a_pegou": "um teste de mutacao meu, que esperava o impasse desaparecer sem travamento e viu que nao desaparecia",
+    "corrigi_a_METRICA_e_nao_a_expectativa": true
+  },
+  "o_limite_declarado": {
+    "vivacidade": "verificador de estados nao prova vivacidade. `livre` NAO prova que a epoca sempre avanca -- prova que nao ha estado de onde ela seja impossivel.",
+    "o_modelo_nao_distingue_B_prazo_avanca_de_AB_prazo_cerca": "a cerca no efeito esta nos dois; sao o mesmo mecanismo aqui, e a preferencia entre os nomes nao e medida"
+  },
+  "a_terceira_saida_que_NAO_e_minha": {
+    "qual": "reler o I3b como 'nada que AINDA POSSA TOMAR EFEITO fica sob epoca revogada'",
+    "o_que_ela_daria": "o I3b VALE em todos os remedios que tem cerca -- medido na coluna I3b-rel, com teste dos dois lados: vale onde ha cerca, cai onde nao ha",
+    "por_que_nao_a_fiz": "reescrever invariante e ato do titular, como foi a divisao do I3 em 2026-10-20. Meco a diferenca que a releitura faria; nao a faco."
+  },
+  "o_que_segue_NAO_construido": "o dreno em si. Esta decisao escolhe o mecanismo e o registra; nenhuma linha de protocolo foi escrita, e o I3b segue VIOLADO no grafo."
+}

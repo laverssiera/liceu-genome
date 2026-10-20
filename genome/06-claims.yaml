@@ -1254,3 +1254,13 @@
   kind: claim
   statement: "O teto de cada monolito, acima do qual a Mae ativa autoriza, nao esta definido em lugar nenhum canonico."
   asserted_by: "Constituicao 1.18.0, LIMITE_NAO_DEFINIDO: `estado: ABERTO`, `o_que_falta: o teto de cada monolito nao esta definido em lugar nenhum canonico`, `decisao_requerida: true`"
+
+- id: CLM-0226
+  kind: claim
+  statement: "So o dreno satisfaz o I3b como escrito, e por isso escolher o dreno fecha o I3b."
+  asserted_by: "o C30-01 (PRF-0219 e tools/modelo/fencing.py, 2026-10-19): 'O que o I3 escrito exige e mais: que a requisicao nem FIQUE em voo, e isso so o DRENO entrega'. A frase vale do dreno que aquele modelo tinha, e e isso que se mede aqui."
+
+- id: CLM-0227
+  kind: claim
+  statement: "Com voo que pode TRAVAR, existe remedio construivel que satisfaz o I3b como escrito e mantem o avanco da epoca."
+  asserted_by: "ninguem ainda - enunciada por mim em 2026-10-20 para ser medida ANTES de decidir o remedio, porque decidir sobre o dreno incondicional do fencing.py seria decidir sobre uma idealizacao"
