@@ -1,0 +1,75 @@
+{
+  "passo": "PASSO 0 -- o diagnostico da refutacao da CLM-0007",
+  "data": "2026-10-20",
+  "a_regra_de_parada_nao_disparou": {
+    "regra": "se a prova refutadora nao for localizavel em 30 minutos, PARE",
+    "localizada": "PRF-0144, por varredura das provas que tocam a CLM-0007"
+  },
+  "A_qual_prova_refutou": {
+    "id": "PRF-0144",
+    "basis": "code_reading",
+    "date": "2026-10-13",
+    "scope": "COMPLETO -- os quatro campos presentes",
+    "entre_as_40_INDETERMINADAS": false,
+    "como_isso_se_mede": [
+      "a lista das 40 foi FECHADA na introducao da FIT-019 em 2026-10-12, e o juiz imprime 'DEPOIS da introducao, sem isencao nenhuma: 0'; a PRF-0144 e de 2026-10-13",
+      "ela nao aparece na lista de indeterminadas que o juiz imprime",
+      "a PRF-0198 mediu o mesmo em 2026-10-19, contra 29 provas de escopo completo; hoje sao 58 e o resultado nao mudou"
+    ],
+    "consequencia": "a CLM-0007 segue REFUTED e NAO volta a UNPROVEN",
+    "a_armadilha_dentro_da_PRF_0144": "na busca de 2026-10-13 `raft` deu 2 e `lease` deu 7, e as nove eram `draft` e `release`. Contagem de grep nao e medicao; a conferencia um por um separou."
+  },
+  "B_o_diagnostico": {
+    "veredito": "(i) E (iii) JUNTOS -- nao implementada E mal escrita",
+    "medido_em": "C29-00, PRF-0199, 2026-10-19",
+    "(i)_nao_implementada": "replica 0, replication 0, etcd 0, quorum 0, consensus 0, streaming 0, standby 0. A epoca vem de UMA LINHA de UMA TABELA no banco local: enforce() faz ensure_state(db, federation_id) e le state.authority_epoch, sem segunda fonte, sem lease, sem termo de cluster.",
+    "(iii)_mal_escrita": "A INSTANCIA NAO E O PROCESSO. A identidade vem do cabecalho do CHAMADOR, por hmac.compare_digest contra os segredos de instancia, e um processo serve QUALQUER Mae que apresente o segredo dela. 'A Sucessora' e uma linha em authority_instances mais um segredo no ambiente DA PROPRIA ATIVA -- a claim predica replicacao de algo que nao e entidade replicante.",
+    "qual_das_duas_decide": "a (iii)"
+  },
+  "C_o_enunciado_literal_hoje": "A Sucessora mantem estado de autoridade replicado.",
+  "o_que_o_ramo_(iii)_encontra": {
+    "o_plano_diz": "'Se (iii): o enunciado correto nasce no PASSO 1, e o resto deste documento se aplica a claim nova'",
+    "o_PASSO_1_ja_foi_executado": "C30-01, 2026-10-19",
+    "produziu_enunciado_novo_da_Sucessora": false,
+    "claims_que_mencionam_a_Sucessora": 1,
+    "qual": "CLM-0007, asserted_by 'Constituicao 1.15.0'",
+    "consequencia": "o ramo nao tem alvo, e escrever o enunciado por conta propria seria reescrever texto constitucional"
+  },
+  "o_condicionante_que_o_plano_nao_contem": {
+    "fonte": "liceu_constitution.yaml, current_constitution_version 1.18.0",
+    "o_que_a_Sucessora_precisa_replicar": [
+      "os tetos de cada monolito",
+      "decisoes em curso e escalonamentos pendentes",
+      "a epoca atual"
+    ],
+    "a_ressalva_da_propria_Constituicao": "ATENCAO: os tetos ainda NAO existem canonicamente. Replicar estado que nao esta definido nao e possivel -- ver LIMITE_NAO_DEFINIDO.",
+    "consequencia_declarada_por_ela": "a dupla Mae depende de o teto ser definido primeiro",
+    "LIMITE_NAO_DEFINIDO": {
+      "estado": "ABERTO",
+      "decisao_requerida": true
+    },
+    "desalinhamento_de_versao": "a CLM-0007 cita 1.15.0 e a vigente e 1.18.0. Conferi o ponto e o texto NAO mudou: a 1.18.0 segue dizendo 'SUCCESSOR: mantem estado replicado; so autoriza apos promocao valida'. Citacao velha, substancia igual."
+  },
+  "o_teto_em_codigo_medido_uma_declaracao_por_vez": {
+    "BIM": "float 0.0-1.0 -- `self.autonomy_level = 0.0` e `autonomy_level: float`",
+    "FORNECEDORES": "inteiro em escala 0-100 -- aritmetica `* 0.3`, teste passa 80",
+    "CORE": "enum AutonomyLevel com `int(...)`; e `autonomy_engine.py` devolve a string 'default'",
+    "OPERA": "str 'L6', coluna `autonomy_level TEXT` na migracao 999",
+    "sao_conversiveis": false,
+    "por_que": "80, 0.8, 'L6' e um ordinal de enum nao se mapeiam um no outro, e 'default' nao e nenhum dos quatro"
+  },
+  "o_que_o_paragrafo_0_ACERTA_e_esta_prova_nao_toca": "que o ENVELOPE -- cauda de fsync, custo e jitter -- NAO e bloqueador do REGIONAL. Nenhuma das tres aparece na definicao, e protocolo nao liga para latencia de disco. A correcao do enquadramento esta certa.",
+  "o_que_segue_exequivel_sem_fatura_e_sem_decisao": [
+    "PASSO 1 -- feito (C30-01)",
+    "PASSO 2 -- medir e liberar disco",
+    "PASSO 3 -- os tres processos locais",
+    "PASSO 4 -- CLM-0006, que e sobre ROTA e nao e tocada por este achado"
+  ],
+  "o_que_PARA_aqui_e_espera_o_titular": {
+    "PASSO_7": "nao fecha pelo caminho escrito: dois dos tres itens do estado replicado nao tem definicao a replicar",
+    "duas_perguntas": [
+      "o enunciado correto da Sucessora -- posso propor um derivado do vocabulario do modelo (epoca, token de fencing, receptor, admissao, efeito), mas reescrever claim constitucional e ato seu",
+      "qual das quatro representacoes do teto e canonica, ou qual forma nova -- a Constituicao marca decisao_requerida e lista as dimensoes possiveis"
+    ]
+  }
+}

@@ -4936,3 +4936,89 @@
     repo: liceu-genome
     path: tools/modelo/autoridade.py
     note: "A REFUTACAO DA PRF-0202 SEGUE DE PE E FICOU MAIS PRECISA. Com as cinco propriedades ligadas, o modelo tem 387 estados, nao trunca, e ainda viola -- e o que viola agora tem nome proprio: o I3b, nada FICA em voo sob epoca revogada. O contraexemplo e o mesmo de tres passos: promover(ativa,e1), servir(ativa,e1), promover(ativa,e2). A requisicao foi ADMITIDA sob a epoca 1 e segue em voo quando a epoca vira 2, e nao e corrida de failover -- e o avanco normal, praticado pela propria ativa. O QUE A DIVISAO ACRESCENTA A ESTA REFUTACAO: antes dizia-se 'o log nao basta para o fencing'; agora diz-se que o log nao basta para o I3b e que o I3a nao depende do log de forma alguma, valendo em 0 de 32 violacoes. A escolha entre etcd e PySyncObj continua nao fechando nenhuma das duas metades, e isso nao mudou por ter sido medido duas vezes."
+
+- id: PRF-0248
+  kind: proof
+  title: "A refutacao da CLM-0007 SE SUSTENTA: a PRF-0144 tem os quatro campos de scope e e posterior ao instrumento que fechou a lista das 40"
+  refutes: [CLM-0211]
+  basis: record_reading
+  date: "2026-10-20"
+  scope:
+    padrao: "leitura do bloco scope da prova que refuta a CLM-0007, campo por campo, confrontada com a data de introducao da FIT-019 e com a lista de provas INDETERMINADAS que o juiz imprime hoje"
+    universo: "a PRF-0144 em genome/07-proofs.yaml; a secao COBERTURA DECLARADA DE BUSCA do relatorio do juiz rodado na main em 2026-10-20; e o enunciado literal da CLM-0007 em genome/06-claims.yaml"
+    excluidos:
+      - "o MERITO da refutacao: esta prova mede se o escopo esta completo, nao se a leitura de codigo de 2026-10-13 estava certa"
+      - "as outras 39 provas da lista fechada: a pergunta e sobre uma"
+    instrumento: "leitura do YAML e a saida de `python tools/genome_check.py` na main"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-passo-zero.json
+  location:
+    repo: liceu-genome
+    path: genome/07-proofs.yaml
+    note: "A REGRA DE PARADA DO PASSO 0 NAO DISPARA, E ESTA E A RESPOSTA (A) QUE ELE PEDE. A prova refutadora e a PRF-0144, basis `code_reading`, de 2026-10-13, e o seu `scope` esta COMPLETO -- os quatro campos presentes: padrao (nove termos de replicacao e consenso, sem distincao de caixa), universo (cv-backend-core/app/**/*.py, onde vive a camada A pelo ADR-003 1.1), excluidos (tres: tests/ e docs/, porque teste afirma e nao implementa; compose e overlays, porque a claim e sobre comportamento de codigo; e os outros 18 repositorios) e instrumento (git grep por termo, com conferencia UMA POR UMA dos positivos). ELA NAO ESTA ENTRE AS 40 INDETERMINADAS, e isso se mede por duas vias que concordam: a lista das 40 foi FECHADA na introducao da FIT-019 em 2026-10-12 e o juiz imprime 'DEPOIS da introducao, sem isencao nenhuma: 0', e a PRF-0144 e de 2026-10-13; e ela nao aparece na lista que o juiz imprime. A PRF-0198 ja havia medido isso em 2026-10-19 contra um denominador de 29 provas com escopo completo; hoje sao 58, e o resultado nao mudou. ENTAO A CLM-0007 SEGUE REFUTED E NAO VOLTA A UNPROVEN. E A ARMADILHA QUE ESSA PROVA CARREGA MERECE SER LIDA JUNTO, porque e a mesma que o genoma guarda como regra: na busca de 2026-10-13, `raft` deu 2 ocorrencias e `lease` deu 7, e as nove eram `draft` e `release`. Contagem de grep nao e medicao, e foi a conferencia um por um que separou o substring da ocorrencia."
+
+- id: PRF-0249
+  kind: proof
+  title: "Fechar a CLM-0007 nao e so protocolo e aplicacao: a Constituicao que a asserta condiciona a dupla Mae a um ato anterior"
+  refutes: [CLM-0212]
+  basis: record_reading
+  date: "2026-10-20"
+  scope:
+    padrao: "leitura dos blocos da Constituicao vigente que tratam do que a Mae SUCESSORA precisa e do limite nao definido, confrontados com a versao de Constituicao que a CLM-0007 cita"
+    universo: "liceu-protocol/liceu_protocol/liceu_constitution.yaml, cuja current_constitution_version e 1.18.0; o VERSION do kit instalado; e o campo asserted_by da CLM-0007"
+    excluidos:
+      - "o paragrafo 0 do plano no que ele afirma do ENVELOPE: que cauda de fsync, custo e jitter NAO sao bloqueadores do REGIONAL esta correto e esta prova nao o toca"
+      - "a CLM-0006 e a UNK-0001: o condicionante medido aqui e do estado replicado, e a CLM-0006 e sobre ROTA"
+      - "se o teto DEVE ser definido antes, que e decisao, e nao leitura"
+    instrumento: "leitura direta do YAML da Constituicao instalada, por bloco e com as linhas localizadas"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-passo-zero.json
+  location:
+    repo: liceu-protocol
+    path: liceu_protocol/liceu_constitution.yaml
+    note: "O PARAGRAFO 0 ACERTA O QUE CORRIGE E PERDE OUTRA COISA, E A SEGUNDA NAO ANULA A PRIMEIRA. Que o ENVELOPE -- cauda, custo, jitter -- nao e bloqueador do REGIONAL esta CERTO: nenhuma das tres aparece na definicao, e protocolo nao liga para latencia de disco. O QUE O PARAGRAFO NAO CONTEM: a Constituicao, que e quem asserta a CLM-0007, condiciona a dupla Mae a um ato que nao e protocolo nem aplicacao. No bloco `o_que_a_Mae_SUCESSORA_precisa.estado_replicado` ela lista tres coisas -- os tetos de cada monolito, decisoes em curso e escalonamentos pendentes, e a epoca atual -- e escreve em seguida, com as suas palavras: 'ATENCAO: os tetos ainda NAO existem canonicamente. Replicar estado que nao esta definido nao e possivel -- ver LIMITE_NAO_DEFINIDO', e 'consequencia: a dupla Mae depende de o teto ser definido primeiro'. O bloco LIMITE_NAO_DEFINIDO traz `estado: ABERTO` e `decisao_requerida: true`. DOIS DOS TRES ITENS A REPLICAR NAO EXISTEM CANONICAMENTE, pela propria lei. E UM DESALINHAMENTO DE VERSAO QUE NAO MUDA O MERITO, mas que fica registrado porque a PRF-0225 caiu nisso: a CLM-0007 e assertada por 'Constituicao 1.15.0' e a vigente e 1.18.0. Fui conferir se o texto mudou no ponto, e NAO mudou -- a 1.18.0 segue dizendo 'SUCCESSOR: mantem estado replicado; so autoriza apos promocao valida'. A citacao esta velha, a substancia nao. O QUE ISSO FAZ COM O PLANO: os passos 1, 3 e 6 seguem exequiveis e sem fatura, e a CLM-0006 e a UNK-0001 nao sao tocadas por este achado. O PASSO 7 e que nao fecha pelo caminho escrito, porque dois dos tres itens do estado replicado nao tem definicao a replicar."
+
+- id: PRF-0250
+  kind: proof
+  title: "O teto nao esta canonico em codigo tampouco: quatro representacoes nos quatro monolitos, e elas nao sao conversiveis"
+  refutes: [CLM-0214]
+  basis: code_reading
+  date: "2026-10-20"
+  scope:
+    padrao: "busca por `autonomy_level` nos repositorios rastreados e leitura UMA POR UMA das declaracoes encontradas, para separar o tipo declarado da ocorrencia de uso"
+    universo: "os repositorios sob C:\\Users\\Messias.Alves\\projetos, em *.py, *.ts, *.tsx, *.sql, *.proto e *.yaml, excluido node_modules, __pycache__, dist e build; o campo aparece em BIM, FORNECEDORES, LICEU_6.0_CONSTRUTORA_VIRTUAL e OPERA, que sao os quatro que a Constituicao nomeia"
+    excluidos:
+      - "se as quatro formas PODEM ser unificadas, e como: isso e desenho e decisao, nao leitura"
+      - "o valor de cada teto em producao: a pergunta e sobre a REPRESENTACAO, nao sobre o numero"
+      - "os demais repositorios rastreados, onde o campo nao aparece"
+    instrumento: "grep -rn por arquivo e leitura das linhas de declaracao, com o tipo lido no texto e nao inferido da contagem"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-passo-zero.json
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: pre_constitution/autonomy_level.py
+    note: "DOCUMENTO QUE DECLARA O PROPRIO ESTADO NAO E MEDICAO DESSE ESTADO, e e por isso que conferi em vez de aceitar. A Constituicao diz `LIMITE_NAO_DEFINIDO: estado: ABERTO` e descreve quatro representacoes; o codigo CONFIRMA, e com mais precisao do que o resumo dela. BIM: `self.autonomy_level = 0.0  # 0.0 - 1.0` e `autonomy_level: float  # 0.0 - 1.0` no gemeo orbital -- fracao. FORNECEDORES: usado em aritmetica, `route['autonomy_level'] * 0.3`, com o teste passando o valor 80 -- inteiro em escala de 0 a 100. CORE: `from pre_constitution.autonomy_level import AutonomyLevel` com `int(autonomy_level)` na auditoria -- enum com ordinal; e, no mesmo repositorio, `autonomy_engine.py` devolvendo a STRING 'default'. OPERA: `autonomy_level: str` com o valor 'L6', e a coluna `autonomy_level TEXT` na migracao 999. AS QUATRO NAO SAO CONVERSIVEIS SEM UMA REGRA QUE NAO EXISTE: 80 nos FORNECEDORES, 0.8 no BIM, 'L6' no OPERA e um ordinal de enum no CORE nao se mapeiam um no outro, e 'default' nao e nenhum dos quatro. ISSO NAO E UM DEFEITO QUE EU DEVA CONSERTAR AQUI: e o condicionante que a Constituicao nomeia, medido, e a decisao de qual forma e canonica e do titular -- a propria Constituicao marca `decisao_requerida: true` e lista as dimensoes possiveis (escala, valor financeiro, risco, reversibilidade, efeito externo)."
+
+- id: PRF-0251
+  kind: proof
+  title: "O enunciado correto da Sucessora NAO nasceu: a CLM-0007 e a unica claim sobre ela no grafo, e vem da Constituicao"
+  refutes: [CLM-0213]
+  basis: record_reading
+  date: "2026-10-20"
+  scope:
+    padrao: "varredura das claims do grafo por mencao a Sucessora, a authority_instances e a instancia que nao e o processo, com leitura do statement e do asserted_by de cada achado"
+    universo: "genome/06-claims.yaml inteiro, 213 claims na main de 2026-10-20; e as provas e artefatos produzidos pelo C30-01 em tools/modelo/"
+    excluidos:
+      - "qual DEVE ser o enunciado correto: propo-lo e ato de desenho, e reescrever claim que vem da Constituicao e ato do titular"
+      - "as claims sobre fencing e epoca que o C30-01 produziu: elas existem e nao predicam nada da Sucessora"
+    instrumento: "regex sobre os blocos de claim, com leitura dos achados"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-o-passo-zero.json
+  location:
+    repo: liceu-genome
+    path: genome/06-claims.yaml
+    note: "O RAMO DO PASSO 0 NAO TEM ALVO, E E ISSO QUE PRECISA SER DITO ANTES DE QUALQUER CODIGO. O PASSO 0 diz: 'Se (iii): o enunciado correto nasce no PASSO 1, e o resto deste documento se aplica a claim nova, nao a antiga'. O DIAGNOSTICO E (i) E (iii) JUNTOS -- medido no C29-00 pela PRF-0199, e a razao decisiva e a segunda: a identidade vem do cabecalho do CHAMADOR, resolvida por hmac.compare_digest contra os segredos de instancia, e um processo serve QUALQUER Mae que apresente o segredo dela; 'a Sucessora' nao e um processo que mantem replica, e uma linha em authority_instances mais um segredo no ambiente DA PROPRIA ATIVA. MAS O PASSO 1 JA FOI EXECUTADO -- e o C30-01, de 2026-10-19 -- E NAO PRODUZIU ENUNCIADO NOVO DA SUCESSORA. Varri as 213 claims: a UNICA que menciona a Sucessora e a CLM-0007, e o seu texto literal e 'A Sucessora mantem estado de autoridade replicado.' O seu asserted_by e 'Constituicao 1.15.0'. ENTAO O RESTO DO DOCUMENTO NAO TEM A QUE SE APLICAR NO QUE TOCA AO PASSO 7, e a saida nao e escrever a claim por conta propria: a CLM-0007 vem da Constituicao, e reescrever enunciado constitucional e ato do titular e nao meu. O QUE EU PODERIA PRODUZIR SEM INVADIR ISSO, e nao produzi porque nao foi pedido: uma PROPOSTA de enunciado derivada do vocabulario que o modelo de autoridade ja tem -- epoca, token de fencing, receptor, admissao e efeito -- para o titular aceitar, emendar ou recusar."
