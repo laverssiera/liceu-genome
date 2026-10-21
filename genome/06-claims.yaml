@@ -1348,3 +1348,21 @@
   kind: claim
   statement: "O pre-registro das previsoes da P-001 e um selo escrito com data, e previsao que o motor passa a derivar depois do selo NAO entra nele por conta propria: sai declarada como derivada e nao pre-registrada."
   asserted_by: "eu, em 2026-10-21, ao consertar o mecanismo que a CI do JURIDICO-TECH #24 expos"
+- id: CLM-0245
+  kind: claim
+  statement: "A guarda de main distingue, pelo que PUBLICA, 'main foi violada' de 'a guarda nao conseguiu medir'."
+  asserted_by: "o desenho de 2026-10-15 enunciou o contrario e ninguem registrou isso no grafo; a afirmacao e minha, pela leitura natural de um check que fica vermelho: quem le vermelho supoe que o check mediu algo"
+
+- id: CLM-0246
+  kind: claim
+  statement: "A guarda de main tem TRES estados e o codigo de saida os separa -- 0 conforme, 1 violacao medida por duas leituras de acordo, 2 a guarda nao conseguiu medir -- e o estado 2 nao acusa ninguem."
+  asserted_by: "eu, em 2026-10-21, ao aplicar o desenho de 2026-10-15 depois de a guarda acusar o titular de um push direto que nao houve"
+
+- id: CLM-0247
+  kind: claim
+  statement: "A lista vazia devolvida por `commits/<sha>/pulls` e uma resposta real: significa que nenhum PR mergeado corresponde ao commit."
+  asserted_by: "a secao 3.1 do desenho de 2026-10-15, que escreve `a lista esta vazia -- que e uma resposta real: nenhum PR` e so pede releitura para a FALHA"
+- id: CLM-0248
+  kind: claim
+  statement: "Com o terceiro estado aplicado, a guarda de main nao produz mais acusacao falsa de push direto por defasagem de consistencia da API."
+  asserted_by: "a leitura natural de um furo fechado, e e minha: consertar o que produziu a acusacao falsa parece impedir a acusacao falsa, e a diferenca entre as duas coisas e o orcamento de releitura, que e palpite (UNK-0020)"

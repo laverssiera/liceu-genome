@@ -6017,3 +6017,65 @@
     repo: JURIDICO-TECH
     path: backend/juridicotech/modules/previsoes_processo.py
     note: "EU REESCREVI O TESTE QUE SUSTENTAVA A PRF-0020, e por isso a prova se remede em vez de se manter. A PRF-0020 e de 2026-09-22 e cobria a superficie dos mesmos dois arquivos, com o hash 4d246a22; o conserto do selo mudou os dois, e prova cujo hash nao casa mais nao se defende dizendo que o comportamento e o mesmo -- mede-se de novo. O QUE MUDOU NA ASSERCAO, e e o ponto: o teste congelava o conjunto dos TRES indices de setembro, `coeficiente_aproveitamento`, `taxa_ocupacao` e `taxa_permeavel`. Ali o literal apodreceu -- esta funcao DERIVA, e quando o conserto da aplicabilidade fez dois indices novos atenderem o teste caiu por o motor ter MELHORADO. O teste passou a afirmar a RELACAO: o conjunto das previsoes e exatamente `PRV-{campo}` para cada item ATENDE, e nenhum campo de resultado diferente de ATENDE aparece entre elas. A ASSERCAO FICOU MAIS FORTE, e nao mais fraca, e isso esta medido: a varredura antiga percorria os INDETERMINADOS; a nova percorre TODO item cujo resultado nao e ATENDE, o que inclui NAO_ATENDE e o NAO_SE_APLICA que o conserto da aplicabilidade introduziu. Hoje, na P-001, isso e 5 ATENDE contra 4 de outro resultado, e as duas guardas de vacuidade -- `assert atende` e `assert outros` -- impedem que o teste passe por lista vazia. O QUE A PRF-0020 TAMBEM COBRIA SEGUE COBERTO, item por item: indice que NAO atende nao vira previsao de aprovacao; processo concluido nao gera previsao de proximo ato; toda previsao declara metodo, versao, base e o ato real que a resolve -- e esta ultima passou a ser conferida em `derivadas_p001()`, isto e, TAMBEM nas duas que ninguem selou, com assercao que falha se o arquivo parar de ter nao-seladas; e o texto das quatro previsoes da P-001 segue congelado nos mesmos quatro enunciados, agora ao lado do selo que guarda as datas. Suite: 272 passam, e o arquivo das previsoes tem 16 testes. O LIMITE DESTA PROVA, declarado: ela roda em `local`, e a PRF-0020 rodava em `ci`. A esteira do JURIDICO-TECH confirmou o Backend CI verde no commit 885e42c, mas o que esta prova registra e a execucao desta maquina; e nesta maquina `pytest -q` sem argumento nao roda teste NENHUM, porque o padrao do LegalCoreStore e um caminho POSIX, e por isso os dois arquivos que penduram ficaram de fora da contagem por `--ignore`."
+- id: PRF-0291
+  kind: proof
+  title: "A guarda publicou o MESMO codigo 1 para violacao e para leitura que nao fechou, e as duas vezes quem leu nao podia saber qual era"
+  refutes: [CLM-0245]
+  basis: external_observation
+  date: "2026-10-21"
+  environment: ci
+  scale: LOCAL
+  external_observation:
+    instrument: "leitura das corridas 38747461285 (LICEU_6.0_CONSTRUTORA_VIRTUAL) e 39598125055 (liceu-genome) pela API de Actions, dos logs de cada passo, da issue #160 e da lista de issues do CONSTRUTORA; e releitura do criterio das linhas 21-22 do `main_guard.sh` sobre os mesmos dois sha, horas e minutos depois"
+    observed: "DUAS corridas, duas causas diferentes e o MESMO codigo de saida 1. Em 2026-10-15 as 13:59, sobre 7771f2c0, o `gh api` FALHOU com `unexpected end of JSON input` e NENHUMA issue foi aberta: o vermelho nao deixou registro, e a mesma leitura horas depois devolvia o PR #109. Em 2026-10-21 as 12:15, sobre a76d91d, o `gh api` NAO falhou -- devolveu `[]` com sucesso 8 segundos depois do merge (12:15:10Z contra 12:15:18Z) -- e a guarda ABRIU A ISSUE #160 acusando o titular de um push direto que nao houve; o criterio exato, rodado minutos depois sobre o MESMO sha, devolve [159], e a MESMA corrida reexecutada passa na tentativa 2. Logo o codigo 1 cobria tres coisas: violacao, leitura que falhou e leitura que ainda nao propagou. E a diferenca entre as duas primeiras aparecia so pela AUSENCIA de uma issue."
+  evidence_artifact:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: docs/evidence/2026-10-21-o-terceiro-estado-aplicado.json
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: .github/scripts/main_guard.sh
+    note: "E ESTA CLAIM NUNCA ESTEVE NO GRAFO, e isso e metade do achado. O furo foi enunciado em 2026-10-15, no commit f3e4397 e no documento docs/evidence/2026-10-15-o-terceiro-estado-da-main-guard.md, com desenho em seis partes e com um teste que AFIRMAVA o furo de proposito. Conferido: NENHUMA prova do genoma citava `main_guard.sh`, `test_main_guard.sh` nem aquele documento, em `mechanism.paths`, em `test.path` ou em `evidence_artifact.path`, e NENHUMA claim falava da guarda de main. O unico registro de que a unica guarda de main tinha dois estados vivia numa mensagem de commit -- fora do grafo que o juiz le, e portanto invisivel a todo relatorio de estado que este ecossistema produziu entre 15 e 21 de outubro. POR QUE ISSO PESA MAIS AQUI DO QUE EM OUTRO LUGAR: a protecao de branch do GitHub e indisponivel neste plano para repositorio privado, e por isso esta guarda nao e UMA guarda, e a UNICA. Um furo na unica guarda, conhecido e nao registrado, e passivo que nenhuma contagem mostrava. O LIMITE DESTA PROVA, declarado: ela observa duas corridas, e duas corridas nao sao a distribuicao da defasagem de consistencia da API -- o que esta medido e que a defasagem EXISTE e que 8 segundos nao bastam, nao quanto basta. Isso e a UNK-0020."
+
+- id: PRF-0292
+  kind: proof
+  title: "`[]` logo depois de um push nao e 'nenhum PR': e 'nenhum PR AINDA', e foi `[]` que produziu a acusacao falsa"
+  refutes: [CLM-0247]
+  basis: external_observation
+  date: "2026-10-21"
+  environment: ci
+  scale: LOCAL
+  external_observation:
+    instrument: "o criterio das linhas 21-22 do `main_guard.sh` -- `merged_at != null and base.ref == \"main\" and merge_commit_sha == <sha>` -- rodado sobre o sha a76d91d em dois momentos: o do log da corrida 39598125055 e o de uma execucao minha minutos depois; mais a ficha do PR #159 e a reexecucao da mesma corrida"
+    observed: "O merge do PR #159 ocorreu em 12:15:10Z e o `merge_commit_sha` dele e a76d91d, pela ficha do proprio PR. A chamada da guarda, em 12:15:18Z, devolveu `[]` com codigo de saida ZERO -- resposta bem formada, lista vazia. O MESMO criterio, sobre o MESMO sha, minutos depois devolve [159]. A mesma corrida, reexecutada, conclui `success` na tentativa 2. Entao a lista vazia, naquele instante, nao dizia que nenhum PR correspondia: dizia que a associacao ainda nao havia propagado."
+  evidence_artifact:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: docs/evidence/2026-10-21-o-terceiro-estado-aplicado.json
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: docs/evidence/2026-10-15-o-terceiro-estado-da-main-guard.md
+    note: "ESTA PROVA REFUTA UMA AFIRMACAO DO PROPRIO DESENHO QUE ELA APLICA, e por isso ela existe separada da PRF-0291. A secao 3.1 escreve que a lista vazia e `uma resposta real: nenhum PR`, e manda reler apenas quando a leitura FALHA (3.2). Se o conserto tivesse seguido o desenho ao pe da letra, teria deixado passar exatamente a corrida que o provocou: em 21/10 a leitura nao falhou -- ela respondeu, e respondeu vazio. O remedio releu tambem o vazio, e e por isso que o CASO 2 do teste existe. O documento de 15/10 NAO FOI REESCRITO: ele registra o que estava medido naquele dia, e evidencia nao se reescreve depois; recebeu um ponteiro no cabecalho dizendo o que 21/10 corrigiu. O QUE ESTA PROVA NAO DIZ: que `[]` nunca seja resposta. Ele e, e passado o tempo de propagacao e a resposta certa -- e por isso o remedio nao troca uma leitura pela outra, e exige DUAS leituras de acordo antes de acusar."
+
+- id: PRF-0293
+  kind: proof
+  title: "Os tres estados existem, o codigo de saida os separa, e o estado 2 nao nomeia ninguem"
+  proves: [CLM-0246]
+  basis: test
+  date: "2026-10-21"
+  environment: ci
+  scale: LOCAL
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: .github/scripts/test_main_guard.sh
+    name: test_violacao_e_falha_de_leitura_saem_com_codigos_DIFERENTES
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths: [.github/scripts/main_guard.sh, .github/scripts/test_main_guard.sh]
+    content_hash: fad57082dbd17abb46c8ce47ecb811fdb17f52fcca9643529d8fd39583eb2ce6
+    commit: 0c3b6e7
+  evidence_artifact:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: docs/evidence/2026-10-21-o-terceiro-estado-aplicado.json
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: .github/scripts/main_guard.sh
+    note: "O TESTE QUE AFIRMAVA O FURO VIROU O SEU CONTRARIO, e era isso que o desenho pedia: `test_o_FURO_violacao_e_falha_de_leitura_sao_INDISTINGUIVEIS` dizia que falhar ali seria o sinal de que o remedio entrou. Medido: conforme=0, violacao=1, nao_mensuravel=2, onde antes eram 0, 1, 1. `set -e` SAIU, e era a raiz -- ele matava o script na propria chamada do `gh`, antes de qualquer decisao; agora cada chamada tem o codigo CONFERIDO. 45 asercoes em 13 casos, sem rede, com o `gh` dublado e o MODO vindo do ambiente, nunca de argumento. OITO MUTACOES, OITO ACUSADAS: `set -e` de volta (12 asercoes), a conferencia de forma da saida removida (2), o vazio sem releitura (4), a segunda leitura removida (13), o codigo 2 virando 1 (9), o registro do estado 3 nomeando quem empurrou (2), a falha de registro ignorada (5) e a falha da segunda leitura contando como concordancia (6). DUAS DELAS ACHARAM FURO MEU, e os dois no lugar que decide. A distincao entre `[]` e nenhuma resposta estava dentro da expressao `--jq`, como um prefixo `LIDO`, e NENHUM teste a alcancava, porque o duble de `gh` nao avalia jq -- so imprime; foi movida para o shell, codigo de retorno mais FORMA da saida, e a mutacao passou a acusar. E o CASO 2 nao testava o que dizia: `: > contador` deixava o arquivo vazio, `[ \"\" -eq 0 ]` dava `integer expected` e caia no ramo que ACHA, e esse erro ia ao stderr que o guarda captura com `2>&1` -- a leitura 1 saia como FALHOU e nao como vazia, e a releitura do VAZIO, que e o conserto inteiro, ficava sem cobertura. CONFERIDO NA CI, e nao so nesta maquina: a corrida 39611340010 do LICEU_6.0_CONSTRUTORA_VIRTUAL, no job `A guarda de main tem os tres estados` do `ci.yml`, rodou os 13 casos em ubuntu e imprimiu `violacao=1  leitura_falha=2  conforme=0` com `passou: 45   falhou: 0`. O teste esta ligado em dois lugares -- primeiro passo do `main-guard.yml`, que so dispara em push para main, e job proprio do `ci.yml`, porque teste que roda depois do fato nao protege o PR que mexe na guarda. O LIMITE DESTA PROVA, declarado em duas partes. Primeira: Primeira: o teste dubla o `gh`, logo ele prova o COMPORTAMENTO DA GUARDA diante de cada resposta, e nao que a API responda daquelas formas; que ela responda assim e a PRF-0291 e a PRF-0292, por observacao. Segunda: rebase-merge nao deixa marca na forma do commit, entao a segunda leitura nao tem nada a dizer sobre ele, e `nada a dizer` conta como DE ACORDO com a lista vazia -- se nao contasse, push direto nenhum seria acusado e a guarda perderia a funcao. Um rebase-merge cuja associacao nao propague dentro do orcamento ainda pode ser acusado, e isso esta escrito no proprio script. E O REMEDIO ENTROU EM UM REPOSITORIO DE DEZENOVE: a guarda vive em 19, antes deste commit em quatro variantes que diferiam SO em comentario e numa frase do corpo da issue, com a logica identica, conferido por diff; e so o CONSTRUTORA tinha teste. Os outros 18 seguem com dois estados."
