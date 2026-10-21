@@ -1366,3 +1366,7 @@
   kind: claim
   statement: "Com o terceiro estado aplicado, a guarda de main nao produz mais acusacao falsa de push direto por defasagem de consistencia da API."
   asserted_by: "a leitura natural de um furo fechado, e e minha: consertar o que produziu a acusacao falsa parece impedir a acusacao falsa, e a diferenca entre as duas coisas e o orcamento de releitura, que e palpite (UNK-0020)"
+- id: CLM-0249
+  kind: claim
+  statement: "A defasagem da associacao commit -> PR tem um limiar medido, e por isso o orcamento de releitura da guarda de main pode ser derivado dele."
+  asserted_by: "eu, ao relatar ao titular que 'dois segundos separaram acusar o titular falsamente de passar limpo' -- uma frase que implica limiar e que a propria medicao que a produziu nao sustenta"

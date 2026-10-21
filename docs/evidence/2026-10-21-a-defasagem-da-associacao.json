@@ -1,0 +1,72 @@
+{
+  "data": "2026-10-21",
+  "o_que_se_mediu": "quanto tempo decorre entre o merge de um PR e o instante em que `commits/<sha>/pulls` passa a devolver a associacao",
+  "instrumento": {
+    "inicio": "o `mergedAt` do proprio PR, pela API",
+    "fim": "o carimbo de tempo, no log da execucao, da LINHA EM QUE A GUARDA DECIDIU -- `OK: <sha> e o merge do PR [N]` ou `::error::push direto`. E o primeiro instante em que se sabe que a resposta ja havia chegado, e por isso e limite SUPERIOR do atraso real",
+    "por_tentativa": "lido por `actions/runs/<id>/attempts/<n>/jobs`, e nao por `actions/runs/<id>/jobs`, que devolve a ULTIMA tentativa -- foi assim que eu quase registrei 273s no lugar de 8s para a corrida que falhou"
+  },
+  "observacoes": [
+    {
+      "repo": "liceu-genome",
+      "pr": 159,
+      "sha": "a76d91d",
+      "run": "39598125055",
+      "tentativa": 1,
+      "merge": "2026-10-21T12:15:10Z",
+      "decisao": "2026-10-21T12:15:18.082Z",
+      "decorrido_s": 8.1,
+      "respondeu": "[] -- AUSENTE",
+      "conclusao": "failure",
+      "consequencia": "acusacao falsa, issue #160 aberta contra o titular"
+    },
+    {
+      "repo": "LICEU_6.0_CONSTRUTORA_VIRTUAL",
+      "pr": 112,
+      "sha": "d12579a",
+      "run": "39621762489",
+      "tentativa": 1,
+      "merge": "2026-10-21T14:59:37Z",
+      "decisao": "2026-10-21T14:59:47.292Z",
+      "decorrido_s": 10.3,
+      "respondeu": "o PR [112] -- PRESENTE",
+      "conclusao": "success",
+      "consequencia": "passou; e esta e a guarda de TRES estados, ja aplicada"
+    },
+    {
+      "repo": "liceu-genome",
+      "pr": 161,
+      "sha": "3788ee2",
+      "run": "39621314590",
+      "tentativa": 1,
+      "merge": "2026-10-21T14:56:38Z",
+      "decisao": "2026-10-21T14:56:51.312Z",
+      "decorrido_s": 13.3,
+      "respondeu": "o PR [161] -- PRESENTE",
+      "conclusao": "success",
+      "consequencia": "passou, com a guarda de DOIS estados"
+    },
+    {
+      "repo": "liceu-genome",
+      "pr": 159,
+      "sha": "a76d91d",
+      "run": "39598125055",
+      "tentativa": 2,
+      "merge": "2026-10-21T12:15:10Z",
+      "decisao": "2026-10-21T12:19:44Z (fim do passo)",
+      "decorrido_s": 274,
+      "respondeu": "o PR [159] -- PRESENTE",
+      "conclusao": "success",
+      "consequencia": "a reexecucao que mostrou que o vermelho era falso"
+    }
+  ],
+  "o_que_isto_mostra": {
+    "ausencia_observada": 1,
+    "presenca_observada": 3,
+    "faixa_nunca_observada": "entre 8,1 s e 10,3 s nao ha observacao nenhuma",
+    "limiar": "NAO MEDIDO. Uma unica observacao de ausencia nao estabelece limiar: para isso faltaria ao menos uma ausencia ACIMA de 10,3 ou uma presenca ABAIXO de 8,1, e nenhuma das duas existe",
+    "cauda": "desconhecida. As quatro observacoes sao do MESMO DIA e de condicao parecida; nada diz o que acontece sob carga da API",
+    "o_que_se_deriva_do_orcamento": "o padrao `5 15 30` faz a primeira releitura 5 s depois da primeira leitura -- MAIS CEDO que o unico instante em que ja vimos a associacao faltar (8,1 s). Logo a primeira releitura tende a voltar vazia tambem, e quem salvaria seria a SEGUNDA, aos 20 s, ou a terceira, aos 50 s. Na defasagem observada isso basta; sobre a cauda nao se afirma nada"
+  },
+  "o_que_eu_afirmei_e_nao_media": "eu relatei ao titular que 'dois segundos separaram acusar o titular falsamente de passar limpo', e que havia QUATRO pontos de defasagem. As duas coisas estavam erradas. Os 8 s vinham do carimbo do log e os outros do `started_at` do passo -- instrumentos diferentes; e um deles era a tentativa 2, reexecutada 273 s depois do merge, nao a que falhou. E dos quatro pontos que eu listei, o de 2026-10-15 NAO e medicao de defasagem: ali a chamada FALHOU com `unexpected end of JSON input`, que e outro modo de falha. A serie de defasagem tem QUATRO observacoes, e uma so de ausencia"
+}
