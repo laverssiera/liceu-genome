@@ -1339,3 +1339,12 @@
   kind: claim
   statement: "Consertada a regra de aplicabilidade, a conferencia da P-001 deixa de ter faltas e o veredito sai de INDETERMINADO."
   asserted_by: "a leitura natural de um conserto que remove duas faltas, e e minha: tirar faltas parece aproximar o veredito, e e assim que subtracao de lacuna se faz passar por prova de conformidade"
+- id: CLM-0243
+  kind: claim
+  statement: "A lista que o modulo de previsoes chama de pre-registrada e pre-registro: ela devolve o que alguem registrou antes de o mundo real responder."
+  asserted_by: "o nome da funcao e o titulo do relatorio, e a leitura e minha: `previsoes_p001()` e PREVISOES PRE-REGISTRADAS diziam pre-registro, e eu li o nome como se fosse a coisa"
+
+- id: CLM-0244
+  kind: claim
+  statement: "O pre-registro das previsoes da P-001 e um selo escrito com data, e previsao que o motor passa a derivar depois do selo NAO entra nele por conta propria: sai declarada como derivada e nao pre-registrada."
+  asserted_by: "eu, em 2026-10-21, ao consertar o mecanismo que a CI do JURIDICO-TECH #24 expos"
