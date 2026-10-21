@@ -1334,3 +1334,8 @@
   kind: claim
   statement: "Replicacao sincrona de uma linha, que basta para o estado de autoridade sobreviver, tambem impede DOIS ESCRITORES."
   asserted_by: "ninguem ainda - enunciada por mim em 2026-10-20 porque e o passo de raciocinio que a reenunciacao da UNK-0001 pode induzir: se replicar basta para o estado, parece bastar para tudo o que o estado sustenta"
+
+- id: CLM-0242
+  kind: claim
+  statement: "Consertada a regra de aplicabilidade, a conferencia da P-001 deixa de ter faltas e o veredito sai de INDETERMINADO."
+  asserted_by: "a leitura natural de um conserto que remove duas faltas, e e minha: tirar faltas parece aproximar o veredito, e e assim que subtracao de lacuna se faz passar por prova de conformidade"

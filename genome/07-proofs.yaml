@@ -5782,3 +5782,159 @@
     repo: liceu-genome
     path: tools/modelo/autoridade.py
     note: "ESTE E O MOTIVO MEDIDO DA REENUNCIACAO, e sem ele a troca de pergunta seria preferencia. A pergunta antiga -- 'como replicar' -- pedia escolha de mecanismo para um requisito que a medicao mudou: a PRF-0268 mostra que o segundo caminho de leitura precisa ser DURAVEL e nao precisa ser linearizavel, entao replicacao sincrona de UMA LINHA basta para o ESTADO sobreviver. DAI NAO SEGUE QUE BASTE PARA O ESCRITOR UNICO, e e esse passo que a claim tenta dar. O I1 -- nunca duas instancias servindo a MESMA epoca -- depende do P5, lider unico por epoca, que e propriedade do LOG. Rodado com o espaco inteiro explorado: com as cinco propriedades nada viola, em 387 estados; SEM P5 o I1 viola, em 915 estados; sem P4 violam I1 e I4, em 180375; sem P3 nada viola, em 1307. REPLICACAO ENTREGA DURABILIDADE, QUE E P4; LIDER UNICO POR EPOCA E OUTRA PROPRIEDADE, E NAO SE OBTEM REPLICANDO. Logo a lacuna que resta nao e de biblioteca e sim de TOPOLOGIA: o que, no arranjo, pode produzir duas replicas gravaveis. O LIMITE DESTA PROVA, declarado: ela mede o MODELO do protocolo, nao uma topologia real. Dizer qual arranjo produz duas replicas gravaveis exige o laboratorio -- o split-brain de ESCRITA do PASSO F -- e ele exige os tres conteineres, o runtime e a elevacao que o titular ainda nao deu. O modelo diz o que PRECISA ser garantido; nao diz qual arranjo garante."
+
+- id: PRF-0282
+  kind: proof
+  title: "Duas faltas sairam e TRES ficaram: a P-001 segue INDETERMINADA, e a CLM-0019 nao se prova por subtracao de lacuna"
+  refutes: [CLM-0242]
+  basis: test
+  date: "2026-10-21"
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_conformidade_urbanistica.py
+    name: test_p001_hoje_e_indeterminado_com_as_faltas_nomeadas
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/dados/projeto_p001.json, backend/juridicotech/dados/vgp_lc030_2007_zm.json, backend/juridicotech/modules/conformidade_urbanistica.py, backend/tests/test_conformidade_urbanistica.py]
+    content_hash: 978ce78a8cb212962709ae9d5f9d3150894a2ddd160818897329a80ea01485c6
+    commit: 1a07716
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-21-a-aplicabilidade-corrigida.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    note: "O CONSERTO REMOVE FALTA E NAO PRODUZ CONFORMIDADE, e a diferenca e o que esta prova guarda. A conferencia da P-001 passou de CINCO itens INDETERMINADOS para TRES: a area minima da Tabela I saiu porque o art. 13 da LC 097/2020 a EXCLUI POR NOME para a unidade autonoma -- veredito NAO_SE_APLICA, nao ATENDE -- e a frente minima saiu porque ALCANCA e passou a ser COMPARADA, 7,00 contra 5,00, ATENDE com folga de 2,00. Entrou no lugar a quota do art. 119 da LC 30/2007, 160,00 m2, e a P-001 atende com 175, folga de 15. O AGREGADO SEGUE INDETERMINADO, medido: ficaram os dois recuos, por leitura juridica do beiral somada a `pavimentos` nao declarado, e o I.E., por direcao de limite desconhecida. Nenhum dos tres se resolve conhecendo melhor a lei de uso e ocupacao -- dois esperam decisao do titular e um espera texto consolidado que nao existe. E A CLM-0019 NAO ANDOU: ela afirma que os indices da P-001 atendem a LC 030/2007 na ZM, e segue UNPROVEN. Tirar faltas aproxima do veredito e nao o entrega; se entregasse, bastaria apagar lacunas para provar conformidade."
+
+- id: PRF-0283
+  kind: proof
+  title: "O motor DEIXOU de estar atras da lei: a frente minima e comparada pela regra da UNK-0009, e a testada muda o veredito DO ITEM"
+  proves: [CLM-0203]
+  basis: test
+  supersedes: [PRF-0243]
+  date: "2026-10-21"
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_conformidade_urbanistica.py
+    name: test_p001_hoje_e_indeterminado_com_as_faltas_nomeadas
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/dados/projeto_p001.json, backend/juridicotech/dados/vgp_lc030_2007_zm.json, backend/juridicotech/modules/conformidade_urbanistica.py, backend/tests/test_conformidade_urbanistica.py]
+    content_hash: 978ce78a8cb212962709ae9d5f9d3150894a2ddd160818897329a80ea01485c6
+    commit: 1a07716
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-21-a-aplicabilidade-corrigida.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/dados/vgp_lc030_2007_zm.json
+    note: "ESTA PROVA VIRA O VEREDITO DA CLM-0203, e vira porque o mundo mudou e nao porque a leitura mudou. A PRF-0243 a REFUTAVA em 2026-10-20 com razao: o motor pedia 'decisao da Prefeitura sobre o regime' para a frente minima, quando o art. 13 da LC 097/2020 ja havia resolvido a aplicabilidade. Era atraso de dois ciclos, registrado antes nas PRF-0236. O CONSERTO DE 2026-10-21 TIROU O ATRASO: a frente minima passou a declarar que ALCANCA o regime CONDOMINIO, com a base legal no proprio limite, e o motor a COMPARA -- 7,00 contra 5,00, ATENDE. Medido: a justificativa nao contem mais 'decisao da Prefeitura'. E A SEGUNDA METADE DA CLAIM FOI MEDIDA SEPARADAMENTE, porque ela diz mais do que a primeira: 'por isso registrar a testada muda o veredito dele'. Rodei a conferencia COM e SEM a testada no arquivo de parametros. Sem ela, a frente da INDETERMINADO; com ela, ATENDE. ENTAO O VEREDITO DO ITEM MUDA, E ESTA PROVADO. O AGREGADO NAO MUDA, E ISSO TAMBEM ESTA MEDIDO: INDETERMINADO nos dois casos, porque os recuos e o I.E. ficam de pe. Declaro a distincao porque a claim nao diz qual dos dois vereditos, e provar o agregado seria afirmar mais do que se mediu. O QUE AINDA SE DEVE A ESTA CLAIM: ela e de classe NORMA, e o que esta provado e que o MOTOR aplica a regra que a UNK-0009 estabeleceu. Que a Prefeitura aplique a mesma regra e outra afirmacao, de classe VERIFICACAO, e nao esta medida."
+
+- id: PRF-0284
+  kind: proof
+  title: "A Tabela I da LC 99/2021 segue intacta no perfil depois do conserto: os oito limites e os dois valores do art. 13"
+  refutes: [CLM-0018]
+  basis: record_reading
+  supersedes: [PRF-0088]
+  date: "2026-10-21"
+  scope:
+    padrao: "leitura dos limites do perfil cuja `base` cita a Tabela I da LC 99/2021, confrontando valor por valor com o que a prova anterior havia registrado"
+    universo: "backend/juridicotech/dados/vgp_lc030_2007_zm.json depois do conserto da aplicabilidade, nos oito limites que citam a Tabela I"
+    excluidos:
+      - "o limite novo do art. 119, que NAO vem da Tabela I e por isso nao entra nesta conferencia"
+      - "se a LC 99/2021 segue vigente: isso e a PRF-0088 original e nao se remede aqui"
+    instrumento: "leitura do JSON do perfil pelo carregador do motor, limite por limite"
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/dados/vgp_lc030_2007_zm.json]
+    content_hash: 9a63bc85280d746a638a67ce643efe80e85e55eefd783c7588ee65e9f3ec0a89
+    commit: 1a07716
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-21-a-aplicabilidade-corrigida.json
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/dados/vgp_lc030_2007_zm.json
+    note: "RODADA DE NOVO PORQUE O CONSERTO TOCOU O PERFIL, e o risco era real: eu acrescentei um limite, mudei `aplica_se_a` de outro e inclui duas chaves novas em dois. Nada disso devia mexer nos VALORES da Tabela I, e a conferencia mostra que nao mexeu: oito limites citam a Tabela I da LC 99/2021, e os dois que o art. 13 nomeia seguem nos numeros de antes -- area minima de lote 360,00 e frente minima 5,00. O que mudou neles foi a APLICABILIDADE e a procedencia declarada, nao a cifra. E O LIMITE NOVO NAO SE DISFARCA DE TABELA I: a `base` do art. 119 cita o artigo e a LC 30/2007, nao a Tabela, e por isso ele fica FORA desta conferencia -- se citasse a Tabela, estaria mentindo sobre de onde veio."
+
+- id: PRF-0285
+  kind: proof
+  title: "A leitura pendente sobrevive ao conserto da aplicabilidade: os dois recuos seguem com duas candidatas e `valor` segue devolvendo None"
+  refutes: [CLM-0207]
+  basis: test
+  supersedes: [PRF-0240]
+  date: "2026-10-21"
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_conformidade_urbanistica.py
+    name: test_valor_devolve_None_para_campo_com_leitura_pendente
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/dados/projeto_p001.json, backend/juridicotech/dados/vgp_lc030_2007_zm.json, backend/juridicotech/modules/conformidade_urbanistica.py, backend/tests/test_conformidade_urbanistica.py]
+    content_hash: 978ce78a8cb212962709ae9d5f9d3150894a2ddd160818897329a80ea01485c6
+    commit: 1a07716
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-21-a-aplicabilidade-corrigida.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    note: "RODADA DE NOVO, E O MOTIVO NAO E CERIMONIA: o conserto trocou a chamada `projeto.leituras(lim.campo)` por `projeto.leituras(lim.indice)`, e `indice` e um atributo NOVO. Trocar a chave de leitura e exatamente o tipo de mudanca que faz um mecanismo parar de ser exercitado sem ninguem notar -- o campo passaria a ser lido por outro nome e as candidatas sumiriam em silencio. Medido: os dois recuos seguem como leitura pendente com DUAS candidatas cada, e `valor` segue devolvendo None para campo pendente, o que impede a escolha silenciosa de uma das leituras. O terceiro estado continua existindo."
+
+- id: PRF-0286
+  kind: proof
+  title: "A imaterialidade da pendencia sobrevive: candidatas que concordam seguem produzindo veredito, com a frase que diz que a pendencia nao o altera"
+  refutes: [CLM-0208]
+  basis: test
+  supersedes: [PRF-0241]
+  date: "2026-10-21"
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_conformidade_urbanistica.py
+    name: test_quando_as_leituras_CONCORDAM_em_atender_a_pendencia_nao_importa
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/dados/projeto_p001.json, backend/juridicotech/dados/vgp_lc030_2007_zm.json, backend/juridicotech/modules/conformidade_urbanistica.py, backend/tests/test_conformidade_urbanistica.py]
+    content_hash: 978ce78a8cb212962709ae9d5f9d3150894a2ddd160818897329a80ea01485c6
+    commit: 1a07716
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-21-a-aplicabilidade-corrigida.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    note: "RODADA DE NOVO porque o conserto inseriu um ramo ANTES deste no mesmo `_avaliar_limite`: a inaplicabilidade declarada passou a devolver NAO_SE_APLICA, e ramo novo acima de ramo existente e a forma mais comum de deixar o de baixo inalcancavel. Medido com candidatas 3,00 e 2,00 contra minimo 1,50: sai ATENDE, com a frase de que a pendencia NAO altera o veredito. O ramo segue alcancavel. E O CASO DA P-001 SEGUE DISCORDANDO, que e o outro lado da mesma prova: 1,50 ate a parede atende o minimo de 1,50 e 0,35 ate o beiral nao, entao os dois recuos seguem INDETERMINADO e a decisao do titular sobre o beiral segue necessaria."
+
+- id: PRF-0287
+  kind: proof
+  title: "Nada e aplicado calado depois do conserto, e agora com um veredito melhor: o limite de LOTE sai NAO_SE_APLICA citando a lei"
+  proves: [CLM-0071, CLM-0020]
+  basis: test
+  supersedes: [PRF-0242]
+  date: "2026-10-21"
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_conformidade_urbanistica.py
+    name: test_conformidade_urbanistica
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/dados/projeto_p001.json, backend/juridicotech/dados/vgp_lc030_2007_zm.json, backend/juridicotech/modules/conformidade_urbanistica.py, backend/tests/test_conformidade_urbanistica.py]
+    content_hash: 978ce78a8cb212962709ae9d5f9d3150894a2ddd160818897329a80ea01485c6
+    commit: 1a07716
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-21-a-aplicabilidade-corrigida.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    note: "A CLM-0020 ERA A QUE CORRIA RISCO NESTE PR, e por isso foi medida item por item e nao por hash. Ela afirma que a base regulatoria nunca devolve veredito de conformidade sem a falta nomeada, que indice ausente vira INDETERMINADO e nunca zero, e que limite de LOTE nao e aplicado CALADO a projeto em CONDOMINIO. O conserto mudou justamente o comportamento da ultima parte: o limite da Tabela I deixou de sair INDETERMINADO e passou a sair NAO_SE_APLICA. ISSO SATISFAZ A CLAIM COM MAIS FORCA E NAO COM MENOS: calado seria aplicar os 360 ao projeto em condominio, ou omitir o item da lista. Ele nao e aplicado e nao e omitido -- aparece na conferencia com veredito proprio e com a LINHA DA LEI que o exclui. Medido: dos limites do perfil que nao alcancam CONDOMINIO, ZERO sairam ATENDE ou NAO_ATENDE; e todo item INDETERMINADO nomeia a falta. A CLM-0071 tambem segue provada: ha 1 limite de direcao desconhecida no perfil e 1 item correspondente na conferencia, INDETERMINADO e com a falta nomeada -- ficar FORA da lista seria o furo, e ele esta na lista. E UMA DISTINCAO QUE O CONSERTO OBRIGA A ESCREVER: NAO_SE_APLICA nao entra em `lacunas`, e isso e deliberado. Lacuna inventada custa como lacuna escondida, e pedir decisao da Prefeitura para algo que a lei resolveu seria inventar uma."

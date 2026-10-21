@@ -1,0 +1,148 @@
+{
+  "o_que_e": "o conserto da regra de aplicabilidade do motor -- o atraso que as PRF-0236 e PRF-0243 registraram em dois ciclos",
+  "data": "2026-10-21",
+  "a_regra_que_a_UNK_0009_estabeleceu": {
+    "art_13_da_LC_097_2020_redacao_LC_99_2021": "manda observar a Tabela 1 da Zona Mista para a unidade autonoma do Condominio de Lotes, EXCLUINDO POR NOME apenas a area minima de lote",
+    "o_substituto": "art. 119 da LC 30/2007: quota de 160,00 m2 para unidade autonoma horizontal de casas geminadas",
+    "a_frente_minima": "ALCANCA, porque a exclusao nomeia so a area"
+  },
+  "as_seis_partes_do_conserto": {
+    "1_frente_minima": "passa a alcancar CONDOMINIO; 7,00 contra 5,00 ATENDE",
+    "2_art_119": "limite novo, 160,00; a P-001 atende com 175, folga 15",
+    "3_campo_projeto": "`campo` servia para identidade do item E nome do indice; o limite da area apontava para `area_minima_lote` e o projeto informa `area_terreno` -- indice que NAO EXISTE",
+    "4_NAO_SE_APLICA": "limite que a lei excluiu por nome deixa de sair INDETERMINADO pedindo decisao da Prefeitura; e o motor NAO adivinha: o perfil declara, com a base legal",
+    "5_o_carregador": "enumerava as chaves conhecidas e DESCARTAVA O RESTO EM SILENCIO -- custou uma rodada; agora RECUSA chave desconhecida",
+    "6_falta_fantasma": "o limite do art. 119 nao declarava exclusao para LOTE e gerava falta fantasma em lote comum"
+  },
+  "o_veredito_da_P001": [
+    {
+      "campo": "coeficiente_aproveitamento",
+      "resultado": "ATENDE",
+      "valor": 0.56,
+      "limite": 2.0,
+      "justificativa": "Coeficiente de Aproveitamento (C.A) = 0.56 razao, dentro do maximo de 2.0 razao"
+    },
+    {
+      "campo": "taxa_ocupacao",
+      "resultado": "ATENDE",
+      "valor": 55.54,
+      "limite": 60.0,
+      "justificativa": "Taxa de Ocupacao (T.O) = 55.54 %, dentro do maximo de 60.0 %"
+    },
+    {
+      "campo": "taxa_permeavel",
+      "resultado": "ATENDE",
+      "valor": 10.9,
+      "limite": 10.0,
+      "justificativa": "Taxa Permeavel (T.P) = 10.9 %, acima do minimo de 10.0 %"
+    },
+    {
+      "campo": "area_minima_lote",
+      "resultado": "NAO_SE_APLICA",
+      "valor": null,
+      "limite": 360.0,
+      "justificativa": "Area minima do lote NAO alcanca projeto em regime CONDOMINIO, e quem resolve isso e a lei e nao a tabela: art. 13 da LC 097/2020, na redacao da LC 99/2021: manda observar os indices urbanisticos e restricoes de ocupacao da Tabela 1 da Zona Mista para a unidade autonoma do Condominio de Lotes, EXCLUINDO POR NOME apenas a area minima de lote (UNK-0009, PRF-0230 a PRF-0232)"
+    },
+    {
+      "campo": "area_minima_unidade_autonoma",
+      "resultado": "ATENDE",
+      "valor": 175.0,
+      "limite": 160.0,
+      "justificativa": "Area minima da unidade autonoma = 175.0 m2, acima do minimo de 160.0 m2"
+    },
+    {
+      "campo": "frente_minima",
+      "resultado": "ATENDE",
+      "valor": 7.0,
+      "limite": 5.0,
+      "justificativa": "Frente minima = 7.0 m, acima do minimo de 5.0 m"
+    },
+    {
+      "campo": "recuo_lateral",
+      "resultado": "INDETERMINADO",
+      "valor": null,
+      "limite": 1.5,
+      "justificativa": "Recuo lateral tem leitura pendente E depende de pavimentos, que o projeto nao informou: sem pavimentos o proprio limite nao se fixa, e comparar as leituras contra um limite nao fixado daria veredito com cara de medido. falta: projeto (pavimentos); e leitura juridica"
+    },
+    {
+      "campo": "recuo_fundos",
+      "resultado": "INDETERMINADO",
+      "valor": null,
+      "limite": 3.0,
+      "justificativa": "Recuo de fundos tem leitura pendente E depende de pavimentos, que o projeto nao informou: sem pavimentos o proprio limite nao se fixa, e comparar as leituras contra um limite nao fixado daria veredito com cara de medido. falta: projeto (pavimentos); e leitura juridica"
+    },
+    {
+      "campo": "indice_elevacao",
+      "resultado": "INDETERMINADO",
+      "valor": 1.0,
+      "limite": 4.0,
+      "justificativa": "Indice de Elevacao (I.E) = 1.0 razao e a norma traz 4.0 razao, mas nao diz se e maximo, minimo ou exigencia \u2014 comparar sem a direcao seria inventar a regra. falta: texto consolidado da lei"
+    }
+  ],
+  "o_agregado": "INDETERMINADO",
+  "faltas": {
+    "antes": 5,
+    "depois": 3,
+    "as_que_ficaram": [
+      "recuo_lateral",
+      "recuo_fundos",
+      "indice_elevacao"
+    ],
+    "por_que_nenhuma_se_resolve_lendo_melhor_a_lei": "dois esperam decisao do titular sobre o beiral mais `pavimentos` nao declarado; um espera texto consolidado que nao existe"
+  },
+  "a_CLM_0203_vira_de_veredito": {
+    "frente": "ATENDE",
+    "unidade": "ATENDE",
+    "tabela_I": "NAO_SE_APLICA",
+    "ainda_pede_decisao": false,
+    "sem_a_testada": "INDETERMINADO",
+    "muda_o_item": true,
+    "agregado_sem": "INDETERMINADO",
+    "agregado_com": "INDETERMINADO",
+    "agregado_muda": false,
+    "passa_a_valer": true
+  },
+  "as_cinco_provas_repostas": {
+    "PRF-0088 -> PRF-0284": {
+      "mantida": true,
+      "valores_da_tabela": {
+        "coeficiente_aproveitamento": 2.0,
+        "taxa_ocupacao": 60.0,
+        "taxa_permeavel": 10.0,
+        "area_minima_lote": 360.0,
+        "frente_minima": 5.0,
+        "recuo_lateral": 1.5,
+        "recuo_fundos": 3.0,
+        "indice_elevacao": 4.0
+      }
+    },
+    "PRF-0240 -> PRF-0285": {
+      "mantida": true
+    },
+    "PRF-0241 -> PRF-0286": {
+      "mantida": true
+    },
+    "PRF-0242 -> PRF-0287": {
+      "CLM-0071": true,
+      "CLM-0020": true,
+      "limites_fora_do_condominio": [
+        "area_minima_lote"
+      ]
+    },
+    "PRF-0243 -> PRF-0283": "a CLM-0203 passa de REFUTED a provada"
+  },
+  "a_mutacao": {
+    "testes": 44,
+    "partes_mutadas": 6,
+    "todas_acusam": true,
+    "duas_nao_acusavam_na_primeira_rodada": [
+      "a guarda de chave desconhecida do carregador: eu a escrevi e NAO a testei",
+      "a quota do art. 119 so do condominio: nada o afirmava -- e ao escrever o teste apareceu a falta fantasma"
+    ]
+  },
+  "o_que_NAO_mudou": {
+    "a_CLM_0019": "segue UNPROVEN",
+    "o_agregado_da_P001": "segue INDETERMINADO",
+    "os_valores_da_Tabela_I": "360,00 e 5,00, intactos"
+  }
+}
