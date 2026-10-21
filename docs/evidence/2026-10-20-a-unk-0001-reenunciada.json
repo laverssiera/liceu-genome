@@ -1,0 +1,68 @@
+{
+  "passo": "PASSO G, Parte 1 -- a UNK-0001 reenunciada",
+  "data": "2026-10-20",
+  "a_ordem": "roteiro REGIONAL v2 do titular: de 'como replicar' para 'qual topologia garante ESCRITOR UNICO', com o motivo medido e sem substituir em silencio",
+  "o_enunciado_antigo_preservado": "Como replicar o estado de autoridade para que a Testemunha observe a Ativa por um caminho independente?",
+  "o_enunciado_novo": "Qual topologia garante ESCRITOR UNICO para o estado de autoridade?",
+  "o_motivo_medido": {
+    "o_que_a_replicacao_basta_para": "o ESTADO sobreviver: o segundo caminho precisa ser DURAVEL e nao precisa ser linearizavel (PRF-0268)",
+    "o_que_ela_NAO_da": "o escritor unico",
+    "porque": "o I1 -- nunca duas instancias servindo a mesma epoca -- depende do P5, lider unico por epoca, que e propriedade do LOG",
+    "medido_no_modelo": {
+      "as cinco propriedades": {
+        "estados": 387,
+        "viola": []
+      },
+      "sem P5 (lider unico por epoca)": {
+        "estados": 915,
+        "viola": [
+          "I1"
+        ]
+      },
+      "sem P4 (durabilidade)": {
+        "estados": 180375,
+        "viola": [
+          "I1",
+          "I4"
+        ]
+      },
+      "sem P3 (leitura linearizavel)": {
+        "estados": 1307,
+        "viola": []
+      }
+    },
+    "conclusao": "replicar entrega P4; P5 e outra coisa e nao se obtem replicando"
+  },
+  "o_que_a_reenunciacao_NAO_faz": {
+    "a_contagem_de_bloqueadores": "seguiu TRES, medido antes e depois",
+    "o_estado_da_incognita": "segue UNKNOWN",
+    "a_escala": "segue bloqueada",
+    "a_regra": "enunciado melhor nao e resposta"
+  },
+  "as_duas_arestas_que_sairam_do_blocks": {
+    "CLM-0007": {
+      "forca": "MEDIDA",
+      "por_que": "a PRF-0268 mostra que fecha com replicacao duravel, sem esperar topologia"
+    },
+    "CLM-0006": {
+      "forca": "CONSEQUENCIA DO REENUNCIADO, nao medicao",
+      "por_que": "a aresta existia porque a pergunta antiga era sobre o caminho de OBSERVACAO da Testemunha, e a nova e sobre ESCRITA",
+      "reversivel": "se o titular entender que a topologia ainda condiciona a observacao, a aresta volta pela palavra dele"
+    },
+    "nao_inflou_nem_deflacionou": "a contagem seguiu tres porque as duas sao bloqueadoras por direito proprio, cada uma com o seu `blocks`"
+  },
+  "o_C27_02_nao_existe_no_grafo": {
+    "o_roteiro_diz": "a pergunta nova 'e literalmente o C27-02 -- celula e raio de dano'",
+    "medido": "C27-02 tem ZERO ocorrencias no genoma; os achados de 'raio de dano' sao do inventario de segredos, outro assunto",
+    "como_fica_registrado": "identificacao do titular, nao aresta do grafo, porque o no nao existe"
+  },
+  "o_que_responde_a_pergunta_nova_e_o_que_bloqueia": {
+    "o_experimento": "o split-brain de ESCRITA do PASSO F: forcar duas replicas gravaveis e tentar dois promote() concorrentes",
+    "o_que_ele_exige": [
+      "os tres conteineres do PASSO D",
+      "o runtime",
+      "a elevacao que o titular ainda nao deu"
+    ],
+    "o_limite_do_modelo": "ele diz o que PRECISA ser garantido; nao diz qual arranjo garante"
+  }
+}
