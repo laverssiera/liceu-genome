@@ -5782,3 +5782,238 @@
     repo: liceu-genome
     path: tools/modelo/autoridade.py
     note: "ESTE E O MOTIVO MEDIDO DA REENUNCIACAO, e sem ele a troca de pergunta seria preferencia. A pergunta antiga -- 'como replicar' -- pedia escolha de mecanismo para um requisito que a medicao mudou: a PRF-0268 mostra que o segundo caminho de leitura precisa ser DURAVEL e nao precisa ser linearizavel, entao replicacao sincrona de UMA LINHA basta para o ESTADO sobreviver. DAI NAO SEGUE QUE BASTE PARA O ESCRITOR UNICO, e e esse passo que a claim tenta dar. O I1 -- nunca duas instancias servindo a MESMA epoca -- depende do P5, lider unico por epoca, que e propriedade do LOG. Rodado com o espaco inteiro explorado: com as cinco propriedades nada viola, em 387 estados; SEM P5 o I1 viola, em 915 estados; sem P4 violam I1 e I4, em 180375; sem P3 nada viola, em 1307. REPLICACAO ENTREGA DURABILIDADE, QUE E P4; LIDER UNICO POR EPOCA E OUTRA PROPRIEDADE, E NAO SE OBTEM REPLICANDO. Logo a lacuna que resta nao e de biblioteca e sim de TOPOLOGIA: o que, no arranjo, pode produzir duas replicas gravaveis. O LIMITE DESTA PROVA, declarado: ela mede o MODELO do protocolo, nao uma topologia real. Dizer qual arranjo produz duas replicas gravaveis exige o laboratorio -- o split-brain de ESCRITA do PASSO F -- e ele exige os tres conteineres, o runtime e a elevacao que o titular ainda nao deu. O modelo diz o que PRECISA ser garantido; nao diz qual arranjo garante."
+
+- id: PRF-0282
+  kind: proof
+  title: "Duas faltas sairam e TRES ficaram: a P-001 segue INDETERMINADA, e a CLM-0019 nao se prova por subtracao de lacuna"
+  refutes: [CLM-0242]
+  basis: test
+  date: "2026-10-21"
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_conformidade_urbanistica.py
+    name: test_p001_hoje_e_indeterminado_com_as_faltas_nomeadas
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/dados/projeto_p001.json, backend/juridicotech/dados/vgp_lc030_2007_zm.json, backend/juridicotech/modules/conformidade_urbanistica.py, backend/tests/test_conformidade_urbanistica.py]
+    content_hash: 978ce78a8cb212962709ae9d5f9d3150894a2ddd160818897329a80ea01485c6
+    commit: 1a07716
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-21-a-aplicabilidade-corrigida.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    note: "O CONSERTO REMOVE FALTA E NAO PRODUZ CONFORMIDADE, e a diferenca e o que esta prova guarda. A conferencia da P-001 passou de CINCO itens INDETERMINADOS para TRES: a area minima da Tabela I saiu porque o art. 13 da LC 097/2020 a EXCLUI POR NOME para a unidade autonoma -- veredito NAO_SE_APLICA, nao ATENDE -- e a frente minima saiu porque ALCANCA e passou a ser COMPARADA, 7,00 contra 5,00, ATENDE com folga de 2,00. Entrou no lugar a quota do art. 119 da LC 30/2007, 160,00 m2, e a P-001 atende com 175, folga de 15. O AGREGADO SEGUE INDETERMINADO, medido: ficaram os dois recuos, por leitura juridica do beiral somada a `pavimentos` nao declarado, e o I.E., por direcao de limite desconhecida. Nenhum dos tres se resolve conhecendo melhor a lei de uso e ocupacao -- dois esperam decisao do titular e um espera texto consolidado que nao existe. E A CLM-0019 NAO ANDOU: ela afirma que os indices da P-001 atendem a LC 030/2007 na ZM, e segue UNPROVEN. Tirar faltas aproxima do veredito e nao o entrega; se entregasse, bastaria apagar lacunas para provar conformidade."
+
+- id: PRF-0283
+  kind: proof
+  title: "O motor DEIXOU de estar atras da lei: a frente minima e comparada pela regra da UNK-0009, e a testada muda o veredito DO ITEM"
+  proves: [CLM-0203]
+  basis: test
+  supersedes: [PRF-0243]
+  date: "2026-10-21"
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_conformidade_urbanistica.py
+    name: test_p001_hoje_e_indeterminado_com_as_faltas_nomeadas
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/dados/projeto_p001.json, backend/juridicotech/dados/vgp_lc030_2007_zm.json, backend/juridicotech/modules/conformidade_urbanistica.py, backend/tests/test_conformidade_urbanistica.py]
+    content_hash: 978ce78a8cb212962709ae9d5f9d3150894a2ddd160818897329a80ea01485c6
+    commit: 1a07716
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-21-a-aplicabilidade-corrigida.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/dados/vgp_lc030_2007_zm.json
+    note: "ESTA PROVA VIRA O VEREDITO DA CLM-0203, e vira porque o mundo mudou e nao porque a leitura mudou. A PRF-0243 a REFUTAVA em 2026-10-20 com razao: o motor pedia 'decisao da Prefeitura sobre o regime' para a frente minima, quando o art. 13 da LC 097/2020 ja havia resolvido a aplicabilidade. Era atraso de dois ciclos, registrado antes nas PRF-0236. O CONSERTO DE 2026-10-21 TIROU O ATRASO: a frente minima passou a declarar que ALCANCA o regime CONDOMINIO, com a base legal no proprio limite, e o motor a COMPARA -- 7,00 contra 5,00, ATENDE. Medido: a justificativa nao contem mais 'decisao da Prefeitura'. E A SEGUNDA METADE DA CLAIM FOI MEDIDA SEPARADAMENTE, porque ela diz mais do que a primeira: 'por isso registrar a testada muda o veredito dele'. Rodei a conferencia COM e SEM a testada no arquivo de parametros. Sem ela, a frente da INDETERMINADO; com ela, ATENDE. ENTAO O VEREDITO DO ITEM MUDA, E ESTA PROVADO. O AGREGADO NAO MUDA, E ISSO TAMBEM ESTA MEDIDO: INDETERMINADO nos dois casos, porque os recuos e o I.E. ficam de pe. Declaro a distincao porque a claim nao diz qual dos dois vereditos, e provar o agregado seria afirmar mais do que se mediu. O QUE AINDA SE DEVE A ESTA CLAIM: ela e de classe NORMA, e o que esta provado e que o MOTOR aplica a regra que a UNK-0009 estabeleceu. Que a Prefeitura aplique a mesma regra e outra afirmacao, de classe VERIFICACAO, e nao esta medida."
+
+- id: PRF-0284
+  kind: proof
+  title: "A Tabela I da LC 99/2021 segue intacta no perfil depois do conserto: os oito limites e os dois valores do art. 13"
+  refutes: [CLM-0018]
+  basis: record_reading
+  supersedes: [PRF-0088]
+  date: "2026-10-21"
+  scope:
+    padrao: "leitura dos limites do perfil cuja `base` cita a Tabela I da LC 99/2021, confrontando valor por valor com o que a prova anterior havia registrado"
+    universo: "backend/juridicotech/dados/vgp_lc030_2007_zm.json depois do conserto da aplicabilidade, nos oito limites que citam a Tabela I"
+    excluidos:
+      - "o limite novo do art. 119, que NAO vem da Tabela I e por isso nao entra nesta conferencia"
+      - "se a LC 99/2021 segue vigente: isso e a PRF-0088 original e nao se remede aqui"
+    instrumento: "leitura do JSON do perfil pelo carregador do motor, limite por limite"
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/dados/vgp_lc030_2007_zm.json]
+    content_hash: 9a63bc85280d746a638a67ce643efe80e85e55eefd783c7588ee65e9f3ec0a89
+    commit: 1a07716
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-21-a-aplicabilidade-corrigida.json
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/dados/vgp_lc030_2007_zm.json
+    note: "RODADA DE NOVO PORQUE O CONSERTO TOCOU O PERFIL, e o risco era real: eu acrescentei um limite, mudei `aplica_se_a` de outro e inclui duas chaves novas em dois. Nada disso devia mexer nos VALORES da Tabela I, e a conferencia mostra que nao mexeu: oito limites citam a Tabela I da LC 99/2021, e os dois que o art. 13 nomeia seguem nos numeros de antes -- area minima de lote 360,00 e frente minima 5,00. O que mudou neles foi a APLICABILIDADE e a procedencia declarada, nao a cifra. E O LIMITE NOVO NAO SE DISFARCA DE TABELA I: a `base` do art. 119 cita o artigo e a LC 30/2007, nao a Tabela, e por isso ele fica FORA desta conferencia -- se citasse a Tabela, estaria mentindo sobre de onde veio."
+
+- id: PRF-0285
+  kind: proof
+  title: "A leitura pendente sobrevive ao conserto da aplicabilidade: os dois recuos seguem com duas candidatas e `valor` segue devolvendo None"
+  refutes: [CLM-0207]
+  basis: test
+  supersedes: [PRF-0240]
+  date: "2026-10-21"
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_conformidade_urbanistica.py
+    name: test_valor_devolve_None_para_campo_com_leitura_pendente
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/dados/projeto_p001.json, backend/juridicotech/dados/vgp_lc030_2007_zm.json, backend/juridicotech/modules/conformidade_urbanistica.py, backend/tests/test_conformidade_urbanistica.py]
+    content_hash: 978ce78a8cb212962709ae9d5f9d3150894a2ddd160818897329a80ea01485c6
+    commit: 1a07716
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-21-a-aplicabilidade-corrigida.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    note: "RODADA DE NOVO, E O MOTIVO NAO E CERIMONIA: o conserto trocou a chamada `projeto.leituras(lim.campo)` por `projeto.leituras(lim.indice)`, e `indice` e um atributo NOVO. Trocar a chave de leitura e exatamente o tipo de mudanca que faz um mecanismo parar de ser exercitado sem ninguem notar -- o campo passaria a ser lido por outro nome e as candidatas sumiriam em silencio. Medido: os dois recuos seguem como leitura pendente com DUAS candidatas cada, e `valor` segue devolvendo None para campo pendente, o que impede a escolha silenciosa de uma das leituras. O terceiro estado continua existindo."
+
+- id: PRF-0286
+  kind: proof
+  title: "A imaterialidade da pendencia sobrevive: candidatas que concordam seguem produzindo veredito, com a frase que diz que a pendencia nao o altera"
+  refutes: [CLM-0208]
+  basis: test
+  supersedes: [PRF-0241]
+  date: "2026-10-21"
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_conformidade_urbanistica.py
+    name: test_quando_as_leituras_CONCORDAM_em_atender_a_pendencia_nao_importa
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/dados/projeto_p001.json, backend/juridicotech/dados/vgp_lc030_2007_zm.json, backend/juridicotech/modules/conformidade_urbanistica.py, backend/tests/test_conformidade_urbanistica.py]
+    content_hash: 978ce78a8cb212962709ae9d5f9d3150894a2ddd160818897329a80ea01485c6
+    commit: 1a07716
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-21-a-aplicabilidade-corrigida.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    note: "RODADA DE NOVO porque o conserto inseriu um ramo ANTES deste no mesmo `_avaliar_limite`: a inaplicabilidade declarada passou a devolver NAO_SE_APLICA, e ramo novo acima de ramo existente e a forma mais comum de deixar o de baixo inalcancavel. Medido com candidatas 3,00 e 2,00 contra minimo 1,50: sai ATENDE, com a frase de que a pendencia NAO altera o veredito. O ramo segue alcancavel. E O CASO DA P-001 SEGUE DISCORDANDO, que e o outro lado da mesma prova: 1,50 ate a parede atende o minimo de 1,50 e 0,35 ate o beiral nao, entao os dois recuos seguem INDETERMINADO e a decisao do titular sobre o beiral segue necessaria."
+
+- id: PRF-0287
+  kind: proof
+  title: "Nada e aplicado calado depois do conserto, e agora com um veredito melhor: o limite de LOTE sai NAO_SE_APLICA citando a lei"
+  proves: [CLM-0071, CLM-0020]
+  basis: test
+  supersedes: [PRF-0242]
+  date: "2026-10-21"
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_conformidade_urbanistica.py
+    name: test_conformidade_urbanistica
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/dados/projeto_p001.json, backend/juridicotech/dados/vgp_lc030_2007_zm.json, backend/juridicotech/modules/conformidade_urbanistica.py, backend/tests/test_conformidade_urbanistica.py]
+    content_hash: 978ce78a8cb212962709ae9d5f9d3150894a2ddd160818897329a80ea01485c6
+    commit: 1a07716
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-21-a-aplicabilidade-corrigida.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/conformidade_urbanistica.py
+    note: "A CLM-0020 ERA A QUE CORRIA RISCO NESTE PR, e por isso foi medida item por item e nao por hash. Ela afirma que a base regulatoria nunca devolve veredito de conformidade sem a falta nomeada, que indice ausente vira INDETERMINADO e nunca zero, e que limite de LOTE nao e aplicado CALADO a projeto em CONDOMINIO. O conserto mudou justamente o comportamento da ultima parte: o limite da Tabela I deixou de sair INDETERMINADO e passou a sair NAO_SE_APLICA. ISSO SATISFAZ A CLAIM COM MAIS FORCA E NAO COM MENOS: calado seria aplicar os 360 ao projeto em condominio, ou omitir o item da lista. Ele nao e aplicado e nao e omitido -- aparece na conferencia com veredito proprio e com a LINHA DA LEI que o exclui. Medido: dos limites do perfil que nao alcancam CONDOMINIO, ZERO sairam ATENDE ou NAO_ATENDE; e todo item INDETERMINADO nomeia a falta. A CLM-0071 tambem segue provada: ha 1 limite de direcao desconhecida no perfil e 1 item correspondente na conferencia, INDETERMINADO e com a falta nomeada -- ficar FORA da lista seria o furo, e ele esta na lista. E UMA DISTINCAO QUE O CONSERTO OBRIGA A ESCREVER: NAO_SE_APLICA nao entra em `lacunas`, e isso e deliberado. Lacuna inventada custa como lacuna escondida, e pedir decisao da Prefeitura para algo que a lei resolveu seria inventar uma."
+- id: PRF-0288
+  kind: proof
+  title: "O pre-registro se DERIVAVA do motor de hoje: melhorar o motor cunhava previsao pre-registrada, com data posterior a um ato ja lido"
+  refutes: [CLM-0243]
+  basis: code_reading
+  date: "2026-10-21"
+  scope:
+    padrao: "ler a definicao de `previsoes_p001()` e perguntar DE ONDE a lista sai -- de registro guardado ou de calculo sobre a conferencia de hoje -- e medir a resposta pela CONSEQUENCIA: quantas previsoes a funcao devolve depois de o motor concluir dois indices novos"
+    universo: "backend/juridicotech/modules/previsoes_processo.py e backend/tests/test_previsoes_processo.py no commit 885e42c; os quatro nos com bloco `prediction` em genome/06-claims.yaml, CLM-0023 a CLM-0026; e o ato de terceiro da PRF-0192"
+    excluidos:
+      - "se as duas previsoes novas sao VERDADEIRAS: isso so o ato da Prefeitura resolve, e esta prova nao o antecipa"
+      - "se elas PODEM ser pre-registradas contra ato futuro ainda nao praticado: decide a FIT-016, e e decisao do titular"
+      - "rodar o motor ANTERIOR ao conserto: nao refiz. O `antes` desta prova sao os quatro blocos `prediction` do grafo, datados de 2026-09-22, e a saida da CI do JURIDICO-TECH #24; nao uma execucao do codigo antigo"
+      - "os outros modulos que derivam previsao: so `previsoes_p001()` e `prever_conformidade` foram lidos"
+      - "se o selo FUNCIONA: isso e a CLM-0244, e quem a prova e a PRF-0289 por teste"
+    instrumento: "leitura do modulo, execucao de `previsoes_p001()` sobre a conferencia corrigida da P-001, confronto id a id com os quatro blocos `prediction` do grafo, e a saida da CI do JURIDICO-TECH #24, que acusou `assert 6 == 4`"
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/modules/previsoes_processo.py, backend/tests/test_previsoes_processo.py]
+    content_hash: e39d919bd0d4541461d7cf5a3f418b2a48480c057b7f824375ec268749f27a2c
+    commit: 885e42c
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-21-o-selo-do-pre-registro.json
+  scale: LOCAL
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/previsoes_processo.py
+    note: "O NOME DIZIA PRE-REGISTRO E O CODIGO FAZIA DERIVACAO, e a diferenca e a FIT-016 inteira. `previsoes_p001()` chamava `prever_conformidade` sobre a conferencia DE HOJE e somava `prever_proximo_ato`: a lista nao era lida de lugar nenhum, era recalculada a cada chamada. Entao a lista pre-registrada era uma funcao do motor, e nao um registro -- e nenhuma data aparecia nela, porque data de registro nao sai de calculo. MEDIDO PELA CONSEQUENCIA, e nao pela leitura: o conserto da aplicabilidade da PRF-0282 fez dois indices ATENDEREM, e as pre-registradas saltaram de QUATRO para SEIS sem ato de registro nenhum. As duas novas sao `PRV-area_minima_unidade_autonoma` e `PRV-frente_minima`. AS DUAS NASCERIAM DATADAS DE HOJE, 2026-10-21, SOBRE ATO QUE JA FOI LIDO: a PRF-0192 registra o comunique-se do DHAP de 2026-10-15, e o observado dela diz que ele nao mencionou nenhum dos dois. A FIT-016 e explicita -- 'so conta se a prova for POSTERIOR ao registro' e 'previsao registrada depois do fato e explicacao do ocorrido, e explicacao do ocorrido nao mede base nenhuma'. O MECANISMO ERA UMA FABRICA DE VIOLACAO DA FIT-016: nao por erro de uma previsao, mas porque toda melhoria do motor cunhava pre-registro novo com data de hoje, em silencio e sem ninguem decidir nada. O que o grafo registrou de verdade foram QUATRO, as CLM-0023 a CLM-0026, todas com `registered_at: 2026-09-22` -- e o selo que esta prova motiva e exatamente essa lista, escrita a mao porque e a unica coisa deste modulo que nao se deriva. O LIMITE DESTA PROVA: basis `code_reading`, e por isso ela REFUTA e nao prova. Que o selo funcione e afirmacao da CLM-0244, e quem a prova e a PRF-0289."
+
+- id: PRF-0289
+  kind: proof
+  title: "O selo separa derivar de registrar, e as duas previsoes novas ficam FORA do pre-registro, declaradas no relatorio"
+  proves: [CLM-0244]
+  basis: test
+  date: "2026-10-21"
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_previsoes_processo.py
+    name: test_previsao_que_o_motor_passou_a_derivar_NAO_entra_como_pre_registrada
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/modules/previsoes_processo.py, backend/tests/test_previsoes_processo.py]
+    content_hash: e39d919bd0d4541461d7cf5a3f418b2a48480c057b7f824375ec268749f27a2c
+    commit: 885e42c
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-21-o-selo-do-pre-registro.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/previsoes_processo.py
+    note: "O MOTOR DERIVA O ENUNCIADO; O SELO DIZ QUAIS ENUNCIADOS O GENOMA REGISTROU, E QUANDO. `PRE_REGISTRADAS` e um mapa id -> data com as quatro de 2026-09-22 e o CLM de cada uma ao lado, e e a unica coisa escrita a mao no modulo: data de registro nao e derivavel, e derivar o pre-registro era o defeito que a PRF-0288 refutou. `previsoes_p001()` passou a devolver a INTERSECCAO entre o que o motor deriva e o que o selo guarda, e `derivadas_p001()` devolve tudo. MEDIDO: 4 seladas, 2 novas, 0 quebradas; `previsoes_p001()` devolve 4; as duas novas sao `PRV-area_minima_unidade_autonoma` e `PRV-frente_minima`, e estao disjuntas do selo. O RELATORIO AS MOSTRA, e isso e metade da prova: elas saem sob o titulo DERIVADAS HOJE, E NAO PRE-REGISTRADAS, dizendo que valem como previsao e nao valem como pre-registro, e que registrar cada uma e ato do titular, com data. Declaracao que nao aparece onde o veredito aparece nao e declaracao, e foi assim que eu ja errei nesta mesma maquina. O SELO E FACA DE DOIS FIOS, e esse fio tambem esta medido: selada que o motor deixe de derivar sai como PRE-REGISTRO QUEBRADO e o `main()` devolve 1 -- selo quebrado nao e relatorio bem-sucedido. SETE MUTACOES, SETE ACUSADAS, uma por vez, restaurando entre elas: devolver tudo em vez do selo (3 testes), nunca acusar quebrada (1), nunca mostrar nova (2), o relatorio calar a nova (1), o selo engolir a frente minima (3), o selo datar de hoje (1) e o `main()` devolver 0 com selo quebrado (1). A SETIMA ERA DECORACAO NA PRIMEIRA RODADA -- nada conferia o codigo de saida -- e a mutacao a transformou em teste. Suite: 272 passam, e o arquivo das previsoes tem 16. O QUE ESTA PROVA NAO PROVA, declarado: que as duas previsoes novas POSSAM ser pre-registradas. A FIT-016 decide isso, e o ato que as resolveria em parte -- o comunique-se de 2026-10-15, PRF-0192 -- ja foi lido; pre-registro contra ato posterior ainda nao praticado, como o despacho ou o alvara, exigiria `settled_by` que nomeie esse ato futuro, e e decisao do titular. E O SEGUNDO ACHADO E DO INSTRUMENTO, nao do codigo: a CI roda `pytest -q`, o suite inteiro, e eu rodei um arquivo so. Nesta maquina `pytest -q` nao roda teste NENHUM -- o LegalCoreStore tem `/tmp/juridico_legal_core.db` como padrao, caminho POSIX que o Windows nao abre, e a coleta INTERROMPE com 11 erros. Com `LEGAL_CORE_DB_PATH` gravavel sobram dois arquivos que penduram, o `test_nats_e2e.py`, que tem esteira propria e espera o broker, e o `test_juridicotech_core.py`, depois do `test_core_health`. SUITE VERDE NUM ARQUIVO NAO E SUITE VERDE, do mesmo jeito que codigo 4 com leitura incompleta nao e resultado baixo."
+- id: PRF-0290
+  kind: proof
+  title: "A CLM-0027 segue provada, e por asserçao mais forte: uma previsao por ATENDE e NENHUMA por qualquer outro resultado"
+  proves: [CLM-0027]
+  basis: test
+  supersedes: [PRF-0020]
+  date: "2026-10-21"
+  test:
+    repo: JURIDICO-TECH
+    path: backend/tests/test_previsoes_processo.py
+    name: test_so_o_que_a_base_concluiu_vira_previsao
+  mechanism:
+    repo: JURIDICO-TECH
+    paths: [backend/juridicotech/modules/previsoes_processo.py, backend/tests/test_previsoes_processo.py]
+    content_hash: e39d919bd0d4541461d7cf5a3f418b2a48480c057b7f824375ec268749f27a2c
+    commit: 885e42c
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-21-o-selo-do-pre-registro.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: JURIDICO-TECH
+    path: backend/juridicotech/modules/previsoes_processo.py
+    note: "EU REESCREVI O TESTE QUE SUSTENTAVA A PRF-0020, e por isso a prova se remede em vez de se manter. A PRF-0020 e de 2026-09-22 e cobria a superficie dos mesmos dois arquivos, com o hash 4d246a22; o conserto do selo mudou os dois, e prova cujo hash nao casa mais nao se defende dizendo que o comportamento e o mesmo -- mede-se de novo. O QUE MUDOU NA ASSERCAO, e e o ponto: o teste congelava o conjunto dos TRES indices de setembro, `coeficiente_aproveitamento`, `taxa_ocupacao` e `taxa_permeavel`. Ali o literal apodreceu -- esta funcao DERIVA, e quando o conserto da aplicabilidade fez dois indices novos atenderem o teste caiu por o motor ter MELHORADO. O teste passou a afirmar a RELACAO: o conjunto das previsoes e exatamente `PRV-{campo}` para cada item ATENDE, e nenhum campo de resultado diferente de ATENDE aparece entre elas. A ASSERCAO FICOU MAIS FORTE, e nao mais fraca, e isso esta medido: a varredura antiga percorria os INDETERMINADOS; a nova percorre TODO item cujo resultado nao e ATENDE, o que inclui NAO_ATENDE e o NAO_SE_APLICA que o conserto da aplicabilidade introduziu. Hoje, na P-001, isso e 5 ATENDE contra 4 de outro resultado, e as duas guardas de vacuidade -- `assert atende` e `assert outros` -- impedem que o teste passe por lista vazia. O QUE A PRF-0020 TAMBEM COBRIA SEGUE COBERTO, item por item: indice que NAO atende nao vira previsao de aprovacao; processo concluido nao gera previsao de proximo ato; toda previsao declara metodo, versao, base e o ato real que a resolve -- e esta ultima passou a ser conferida em `derivadas_p001()`, isto e, TAMBEM nas duas que ninguem selou, com assercao que falha se o arquivo parar de ter nao-seladas; e o texto das quatro previsoes da P-001 segue congelado nos mesmos quatro enunciados, agora ao lado do selo que guarda as datas. Suite: 272 passam, e o arquivo das previsoes tem 16 testes. O LIMITE DESTA PROVA, declarado: ela roda em `local`, e a PRF-0020 rodava em `ci`. A esteira do JURIDICO-TECH confirmou o Backend CI verde no commit 885e42c, mas o que esta prova registra e a execucao desta maquina; e nesta maquina `pytest -q` sem argumento nao roda teste NENHUM, porque o padrao do LegalCoreStore e um caminho POSIX, e por isso os dois arquivos que penduram ficaram de fora da contagem por `--ignore`."

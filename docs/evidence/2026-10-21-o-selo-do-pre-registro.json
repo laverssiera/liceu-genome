@@ -1,0 +1,107 @@
+{
+  "data": "2026-10-21",
+  "o_que_se_mediu": "se a lista pre-registrada da P-001 e um selo escrito com data ou uma derivacao do motor de hoje, e o que acontece com previsao que o motor passa a derivar depois do selo",
+  "selo": {
+    "PRV-coeficiente_aproveitamento": "2026-09-22",
+    "PRV-taxa_ocupacao": "2026-09-22",
+    "PRV-taxa_permeavel": "2026-09-22",
+    "PRV-proximo-ato": "2026-09-22"
+  },
+  "derivadas_hoje": [
+    {
+      "id": "PRV-coeficiente_aproveitamento",
+      "enunciado": "A Prefeitura nao fara exigencia sobre Coeficiente de Aproveitamento (C.A) no projeto P-001."
+    },
+    {
+      "id": "PRV-taxa_ocupacao",
+      "enunciado": "A Prefeitura nao fara exigencia sobre Taxa de Ocupacao (T.O) no projeto P-001."
+    },
+    {
+      "id": "PRV-taxa_permeavel",
+      "enunciado": "A Prefeitura nao fara exigencia sobre Taxa Permeavel (T.P) no projeto P-001."
+    },
+    {
+      "id": "PRV-area_minima_unidade_autonoma",
+      "enunciado": "A Prefeitura nao fara exigencia sobre Area minima da unidade autonoma no projeto P-001."
+    },
+    {
+      "id": "PRV-frente_minima",
+      "enunciado": "A Prefeitura nao fara exigencia sobre Frente minima no projeto P-001."
+    },
+    {
+      "id": "PRV-proximo-ato",
+      "enunciado": "O proximo ato do processo sera assinatura_4_vias, praticado pelo CONDOMINIO; nenhuma etapa posterior ocorrera antes dela."
+    }
+  ],
+  "confronto": {
+    "pre_registradas": [
+      "PRV-coeficiente_aproveitamento",
+      "PRV-taxa_ocupacao",
+      "PRV-taxa_permeavel",
+      "PRV-proximo-ato"
+    ],
+    "quebradas": [],
+    "novas": [
+      {
+        "id": "PRV-area_minima_unidade_autonoma",
+        "enunciado": "A Prefeitura nao fara exigencia sobre Area minima da unidade autonoma no projeto P-001.",
+        "derivada_de": "Area minima da unidade autonoma = 175.0 m2, acima do minimo de 160.0 m2"
+      },
+      {
+        "id": "PRV-frente_minima",
+        "enunciado": "A Prefeitura nao fara exigencia sobre Frente minima no projeto P-001.",
+        "derivada_de": "Frente minima = 7.0 m, acima do minimo de 5.0 m"
+      }
+    ],
+    "selo_intacto": true
+  },
+  "contagens": {
+    "derivadas_pelo_motor": 6,
+    "pre_registradas_no_selo": 4,
+    "que_previsoes_p001_devolve": 4,
+    "novas_nao_seladas": 2
+  },
+  "o_que_a_CI_pegou": {
+    "antes": "previsoes_p001() re-derivava a lista do motor: 4 -> 6 em silencio",
+    "testes_que_cairam": [
+      "test_so_o_que_a_base_concluiu_vira_previsao (set de 3 congelado)",
+      "test_sao_exatamente_quatro_previsoes_pre_registradas (6 == 4)"
+    ],
+    "erro_de_metodo_meu": "rodei so tests/test_conformidade_urbanistica.py; a CI roda `pytest -q`, o suite inteiro. Localmente `pytest -q` nao coleta nada nesta maquina porque o LegalCoreStore tem /tmp/juridico_legal_core.db como padrao, caminho POSIX que nao existe no Windows: 11 erros de coleta, e a coleta INTERROMPIDA nao roda teste nenhum. Com LEGAL_CORE_DB_PATH apontado para caminho gravavel, sobra 1 -- o test_nats_e2e.py, que tem esteira propria e pendura esperando o broker; e o test_juridicotech_core.py pendura depois do test_core_health."
+  },
+  "ato_real_ja_lido": {
+    "prova": "PRF-0192",
+    "data": "2026-10-15",
+    "observado": "comunique-se do DHAP: ART assinada e matricula atualizada; nenhuma mencao a coeficiente de aproveitamento nem a taxa de ocupacao -- e nenhuma aos dois indices novos",
+    "consequencia": "previsao sobre exigencia da Prefeitura cunhada em 2026-10-21 teria data POSTERIOR ao ato que a resolveria em parte; a FIT-016 chama isso de explicacao do ocorrido"
+  },
+  "suite": {
+    "comando": "pytest -q --ignore=tests/test_nats_e2e.py --ignore=tests/test_juridicotech_core.py",
+    "resultado": "272 passed, 2 warnings in 8.23s",
+    "codigo": 0,
+    "arquivo_das_previsoes": "16 passed in 0.25s"
+  },
+  "mutacoes": {
+    "instrumento": "scratchpad/mut_selo.py, sete mutacoes, uma por vez, restaurando entre elas",
+    "acusadas": "7/7",
+    "casos": {
+      "A previsoes_p001 volta a devolver tudo o que o motor deriva": "SIM (3 testes)",
+      "B quebradas nunca acusa selo que o motor deixou de derivar": "SIM (1 teste)",
+      "C novas nunca aparece (derivada nao selada fica invisivel)": "SIM (2 testes)",
+      "D o relatorio para de dizer que a nova NAO e pre-registrada": "SIM (1 teste)",
+      "E o selo engole a frente minima": "SIM (3 testes)",
+      "F o selo passa a datar de hoje em vez da data do genoma": "SIM (1 teste)",
+      "G main() devolve 0 mesmo com o pre-registro quebrado": "SIM (1 teste) -- era DECORACAO na primeira rodada, e virou teste"
+    }
+  },
+  "mecanismo": {
+    "repo": "JURIDICO-TECH",
+    "paths": [
+      "backend/juridicotech/modules/previsoes_processo.py",
+      "backend/tests/test_previsoes_processo.py"
+    ],
+    "content_hash": "e39d919bd0d4541461d7cf5a3f418b2a48480c057b7f824375ec268749f27a2c",
+    "commit": "885e42c",
+    "faltando_na_superficie": []
+  }
+}
