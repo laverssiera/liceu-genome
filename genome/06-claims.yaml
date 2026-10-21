@@ -1370,3 +1370,12 @@
   kind: claim
   statement: "A defasagem da associacao commit -> PR tem um limiar medido, e por isso o orcamento de releitura da guarda de main pode ser derivado dele."
   asserted_by: "eu, ao relatar ao titular que 'dois segundos separaram acusar o titular falsamente de passar limpo' -- uma frase que implica limiar e que a propria medicao que a produziu nao sustenta"
+- id: CLM-0250
+  kind: claim
+  statement: "A acusacao falsa de push direto foi evento isolado: a issue #160 do liceu-genome e a unica que a guarda de main emitiu sem haver push direto."
+  asserted_by: "eu, ao relatar ao titular uma unica acusacao falsa durante o conserto do terceiro estado -- sem ter varrido as issues do ecossistema para saber quantas havia"
+
+- id: CLM-0251
+  kind: claim
+  statement: "A guarda de main ja recusou push direto REAL: ha acusacao emitida por ela cujo commit nao e o merge de nenhum pull request."
+  asserted_by: "eu, em 2026-10-21, ao conferir as seis acusacoes do ecossistema uma a uma -- enunciada porque ate aqui o grafo so registrava os erros da guarda, e nunca o que ela acertou"

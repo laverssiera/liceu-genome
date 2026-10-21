@@ -6097,3 +6097,40 @@
     repo: liceu-genome
     path: genome/09-unknowns.yaml
     note: "ESTA PROVA REFUTA UMA FRASE MINHA, DITA AO TITULAR NESTE MESMO CICLO, e e por isso que ela existe. Eu relatei que `dois segundos separaram acusar o titular falsamente de passar limpo` e apresentei QUATRO pontos de defasagem. As duas coisas estavam erradas, e erradas por metodo. PRIMEIRO, INSTRUMENTOS MISTURADOS: os 8 s vinham do carimbo do log e os outros do `started_at` do passo, que sao coisas diferentes; e um deles era a TENTATIVA 2 da corrida 39598125055, reexecutada 273 s depois do merge, e nao a tentativa 1, que foi a que falhou -- `actions/runs/<id>/jobs` devolve a ultima tentativa, e so `attempts/<n>/jobs` devolve a que interessa. SEGUNDO, UM DOS PONTOS NAO ERA DEFASAGEM: em 2026-10-15 a chamada FALHOU com `unexpected end of JSON input`, que e outro modo de falha e nao diz nada sobre quanto tempo a associacao leva. O QUE A MEDICAO REFEITA MOSTRA e menos do que eu havia dito, e nao mais: uma unica ausencia nao estabelece limiar. Para estabelecer um faltaria ao menos uma AUSENCIA acima de 10,3 s ou uma PRESENCA abaixo de 8,1 s, e nenhuma das duas existe; a faixa entre as duas nunca foi observada. E as quatro observacoes sao do MESMO DIA e de condicao parecida, entao nada se afirma sobre a cauda nem sobre o comportamento sob carga. O QUE SE DERIVA, E E O UNICO NUMERO UTIL AQUI: o padrao `5 15 30` faz a PRIMEIRA releitura 5 s depois da primeira leitura, isto e, MAIS CEDO que o unico instante em que ja vimos a associacao faltar. Logo a primeira releitura tende a voltar vazia tambem, e quem salvaria seria a segunda, aos 20 s, ou a terceira, aos 50 s. Na defasagem observada isso basta -- e por isso o orcamento nao foi mexido. O LIMITE DESTA PROVA: ela mede o atraso por LIMITE SUPERIOR, porque o carimbo da linha de decisao e o primeiro instante em que se sabe que a resposta ja chegou, e nao o instante em que ela chegou. Isso nao afeta a conclusao, porque a conclusao e sobre a AUSENCIA de limiar e nao sobre o valor dele. A UNK-0020 segue ABERTA e a CLM-0248 segue UNPROVEN."
+- id: PRF-0295
+  kind: proof
+  title: "Nao e uma: sao TRES acusacoes falsas, todas ABERTAS num repositorio publico, e a taxa e 3 em 160"
+  refutes: [CLM-0250]
+  basis: external_observation
+  date: "2026-10-21"
+  environment: ci
+  scale: LOCAL
+  external_observation:
+    instrument: "varredura de `gh issue list --state all --search 'in:title \"Push direto em main\"'` nos 19 repositorios com remoto; e, para cada sha acusado, `commits/<sha>` -- numero de pais e assunto -- mais `commits/<sha>/pulls` filtrado pelo criterio exato das linhas 21-22 do `main_guard.sh`, relido HOJE, depois de qualquer defasagem ter passado. A taxa vem de `actions/workflows/363851368/runs?branch=main`, paginado"
+    observed: "SEIS acusacoes no ecossistema, em quatro repositorios. TRES SAO FALSAS, e as tres estao ABERTAS, no liceu-genome, que e PUBLICO: a #160 em a76d91d, que e o merge do PR #159; a #119 em e748923, que e o merge do PR #118; e a #71 em 4e85d7f, que e o merge do PR #70. As tres tem DOIS pais e assunto `Merge pull request #N`, e o criterio da propria guarda devolve o numero do PR para cada uma hoje. As outras tres -- liceu-design-tokens#1, liceu-protocol#2 e liceu-shell#1 -- sao VERDADEIRAS e estao fechadas. A TAXA, no liceu-genome: 160 execucoes do Main Guard em main entre 2026-09-22 e 2026-10-21, 3 acusacoes falsas, 1,9%."
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-21-as-seis-acusacoes-da-guarda.json
+  location:
+    repo: liceu-genome
+    path: genome/09-unknowns.yaml
+    note: "EU RELATEI UMA E SAO TRES, e o erro foi de escopo: eu encontrei a #160 porque ela nasceu na minha frente, durante o merge do #159, e nao varri as issues do ecossistema para saber quantas outras existiam. Uma acusacao que nasce na frente de quem olha e um achado; tres acusacoes abertas num repositorio publico sao um passivo, e a diferenca entre as duas leituras e so a varredura que eu nao fiz. DUAS DAS TRES SAO ANTERIORES AO CONSERTO E NENHUMA FOI RESPONDIDA: a #71 esta aberta desde 2026-10-03 e a #119 desde 2026-10-15 -- a mesma data em que o furo foi ENUNCIADO no commit f3e4397, que cita a corrida 38747461285 e diz que nenhuma issue foi aberta para 7771f2c. O enunciado do furo olhou para a corrida e nao para as issues, e por isso a #119, aberta no mesmo dia, nao entrou nele. A TAXA MUDA A PERGUNTA, e essa e a parte que importa para a UNK-0020: 3 em 160 execucoes, 1,9%, numa janela de trinta dias e num repositorio. Isso e um DENOMINADOR, que e exatamente o que a UNK-0020 nao tinha; e e mais respondivel do que o limiar que a PRF-0294 mostrou nao existir. REENUNCIAR A UNK-0020 DE `quanto tempo a associacao leva` PARA `com que frequencia a leitura falha` E DECISAO DO TITULAR, e nao esta tomada aqui: esta prova registra o denominador e deixa a pergunta como esta. CONTAR `failure` SUBESTIMA, e isto esta medido: das tres falsas, duas ainda aparecem como `failure` na API e a terceira aparece como `success`, porque eu a reexecutei -- reexecucao apaga o vermelho da contagem sem apagar a issue. Quem medir a taxa pelas conclusoes das corridas achara 2, nao 3. O LIMITE DESTA PROVA: a janela e de um repositorio e de trinta dias, e os outros tres repositorios que ja acusaram tiveram apenas a acusacao de nascimento. Nada aqui diz qual a taxa sob carga, nem nos 18 repositorios onde a guarda de dois estados continua rodando -- e e justamente nela que as tres falsas aconteceram, porque o terceiro estado existe hoje em UM repositorio, o CONSTRUTORA, e nao no liceu-genome."
+
+- id: PRF-0296
+  kind: proof
+  title: "A guarda acertou tres vezes: as tres acusacoes fechadas sao o commit inicial de cada repositorio, sem pai e sem PR"
+  proves: [CLM-0251]
+  basis: external_observation
+  date: "2026-10-21"
+  environment: ci
+  scale: LOCAL
+  external_observation:
+    instrument: "para cada sha acusado, `commits/<sha>` -- numero de pais e assunto -- e `commits/<sha>/pulls` filtrado por `merged_at != null and base.ref == \"main\"`, relido hoje"
+    observed: "As tres acusacoes FECHADAS do ecossistema sao verdadeiras, e as tres pelo mesmo motivo: liceu-design-tokens#1 em 53660b9, liceu-protocol#2 em e01b9b4 e liceu-shell#1 em e69d4d8 tem ZERO pais e nenhum PR mergeado em main associado. Zero pais e o commit INICIAL do repositorio -- o primeiro push, que criou o main. Push direto real, e a guarda o recusou. As tres foram fechadas pelo titular entre 2026-09-18 e 2026-09-19."
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-21-as-seis-acusacoes-da-guarda.json
+  location:
+    repo: liceu-genome
+    path: genome/09-unknowns.yaml
+    note: "ESTA PROVA EXISTE PORQUE O GRAFO SO REGISTRAVA OS ERROS DA GUARDA. Entre as PRF-0291, PRF-0292, PRF-0294 e PRF-0295 ha quatro provas sobre o que ela erra, e nenhuma sobre o que ela acerta -- e decidir se vale rolar o remedio para os outros 18 repositorios depende das duas metades. As tres acusacoes verdadeiras separam-se das tres falsas por uma propriedade unica e dura: ZERO pais contra DOIS pais. Nenhuma das seis fica na fronteira. E e a mesma propriedade que o terceiro estado usa como segunda leitura, o que da a ela uma confirmacao fora do laboratorio: em seis casos reais, a forma do commit concordou com o veredito correto nas seis. O LIMITE, declarado: seis casos, e todos de um tipo so de violacao verdadeira -- o commit de nascimento. Nenhuma das seis e um push direto de alguem que empurrou por cima de um main que ja existia, e e esse o caso que a guarda existe para pegar. Que ela o pegaria segue NAO OBSERVADO, e o teste com o `gh` dublado nao substitui observacao: ele prova o comportamento diante da resposta, nao que a resposta venha."

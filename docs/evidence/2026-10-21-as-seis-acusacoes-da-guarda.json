@@ -1,0 +1,105 @@
+{
+  "data": "2026-10-21",
+  "o_que_se_mediu": "se cada acusacao de push direto emitida pela guarda de main no ecossistema era verdadeira, pelo criterio da propria guarda; e com que frequencia ela erra",
+  "instrumento": "para cada sha acusado: `commits/<sha>` -- numero de pais e assunto -- e `commits/<sha>/pulls` filtrado pelo criterio exato das linhas 21-22 do main_guard.sh, `merged_at != null and base.ref == \"main\"`. Tudo relido HOJE, depois de qualquer defasagem ter passado",
+  "acusacoes": [
+    {
+      "repo": "liceu-genome",
+      "issue": 160,
+      "estado": "OPEN",
+      "fechada_em": "",
+      "sha": "a76d91d",
+      "pais": 2,
+      "assunto": "Merge pull request #159 from laverssiera/p001/a-aplicabilidade-no-genoma",
+      "prs_mergeados_em_main": "[159]",
+      "veredito": "FALSA",
+      "porque": "o commit E o merge do PR [159] em main, e o criterio da propria guarda o devolve hoje"
+    },
+    {
+      "repo": "liceu-genome",
+      "issue": 119,
+      "estado": "OPEN",
+      "fechada_em": "",
+      "sha": "e748923",
+      "pais": 2,
+      "assunto": "Merge pull request #118 from laverssiera/contrato/pino-0.30.0",
+      "prs_mergeados_em_main": "[118]",
+      "veredito": "FALSA",
+      "porque": "o commit E o merge do PR [118] em main, e o criterio da propria guarda o devolve hoje"
+    },
+    {
+      "repo": "liceu-genome",
+      "issue": 71,
+      "estado": "OPEN",
+      "fechada_em": "",
+      "sha": "4e85d7f",
+      "pais": 2,
+      "assunto": "Merge pull request #70 from laverssiera/rotacao/o-reinicio-e-condicional",
+      "prs_mergeados_em_main": "[70]",
+      "veredito": "FALSA",
+      "porque": "o commit E o merge do PR [70] em main, e o criterio da propria guarda o devolve hoje"
+    },
+    {
+      "repo": "liceu-design-tokens",
+      "issue": 1,
+      "estado": "CLOSED",
+      "fechada_em": "2026-09-19",
+      "sha": "53660b9",
+      "pais": 0,
+      "assunto": "@liceu/design-tokens 0.1.0: fonte unica dos tokens do L6-FE-001, CSS gerado, regras R01-R07",
+      "prs_mergeados_em_main": "[]",
+      "veredito": "VERDADEIRA",
+      "porque": "nenhum PR mergeado em main corresponde a este commit"
+    },
+    {
+      "repo": "liceu-protocol",
+      "issue": 2,
+      "estado": "CLOSED",
+      "fechada_em": "2026-09-18",
+      "sha": "e01b9b4",
+      "pais": 0,
+      "assunto": "liceu-protocol 0.9.0: fonte unica do kit (ADR-001)",
+      "prs_mergeados_em_main": "[]",
+      "veredito": "VERDADEIRA",
+      "porque": "nenhum PR mergeado em main corresponde a este commit"
+    },
+    {
+      "repo": "liceu-shell",
+      "issue": 1,
+      "estado": "CLOSED",
+      "fechada_em": "2026-09-19",
+      "sha": "e69d4d8",
+      "pais": 0,
+      "assunto": "Universal Shell + Drawers + JOHN Context Panel (L6-FE-001 \u00c2\u00a78) \u00e2\u20ac\u201d consome @liceu/design-tokens por tag",
+      "prs_mergeados_em_main": "[]",
+      "veredito": "VERDADEIRA",
+      "porque": "nenhum PR mergeado em main corresponde a este commit"
+    }
+  ],
+  "resumo": {
+    "acusacoes_emitidas": 6,
+    "falsas": 3,
+    "verdadeiras": 3,
+    "falsas_abertas": 3,
+    "verdadeiras_fechadas": 3,
+    "as_falsas": [
+      "liceu-genome#160 (a76d91d)",
+      "liceu-genome#119 (e748923)",
+      "liceu-genome#71 (4e85d7f)"
+    ],
+    "as_verdadeiras": [
+      "liceu-design-tokens#1 (53660b9)",
+      "liceu-protocol#2 (e01b9b4)",
+      "liceu-shell#1 (e69d4d8)"
+    ],
+    "o_que_as_verdadeiras_tem_em_comum": "todas tem ZERO pais -- sao o commit inicial do repositorio, o primeiro push que criou o main. Push direto real"
+  },
+  "taxa": {
+    "repo": "liceu-genome",
+    "janela": "2026-09-22 a 2026-10-21",
+    "execucoes_do_main_guard_em_main": 160,
+    "acusacoes_falsas_na_janela": 3,
+    "taxa": "3/160 = 1.9%",
+    "nota": "as tres falsas sao deste repositorio e desta janela. Duas ainda aparecem como `failure`; a terceira aparece como `success` porque eu a reexecutei, e reexecucao APAGA o vermelho da contagem sem apagar a issue -- entao contar `failure` subestima"
+  }
+}
