@@ -1324,3 +1324,13 @@
   kind: claim
   statement: "O `powercfg /h off` nao toca dado de ninguem, e por isso e a opcao quase gratis para liberar os 4,76 GB do hiberfil."
   asserted_by: "claude (2026-10-20), ao por as tres opcoes da Parte 2 em ordem: 'e a UNICA que nao toca dado de ninguem'"
+
+- id: CLM-0240
+  kind: claim
+  statement: "A UNK-0001 reenunciada deixa de bloquear a escala REGIONAL, porque o enunciado novo e mais preciso e vem de medicao."
+  asserted_by: "a leitura natural de uma reenunciacao, e e minha: trocar pergunta mal posta por pergunta medida parece avanco, e e nessa leitura que uma incognita sai da lista sem ter sido respondida"
+
+- id: CLM-0241
+  kind: claim
+  statement: "Replicacao sincrona de uma linha, que basta para o estado de autoridade sobreviver, tambem impede DOIS ESCRITORES."
+  asserted_by: "ninguem ainda - enunciada por mim em 2026-10-20 porque e o passo de raciocinio que a reenunciacao da UNK-0001 pode induzir: se replicar basta para o estado, parece bastar para tudo o que o estado sustenta"

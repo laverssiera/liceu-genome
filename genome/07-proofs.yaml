@@ -5735,3 +5735,50 @@
     repo: liceu-genome
     path: docs/evidence/2026-10-20-a-conta-e-a-bateria.json
     note: "A MINHA FORMULACAO ERA VERDADEIRA SOBRE ARQUIVOS E FALSA SOBRE COMPORTAMENTO, e o titular apontou isso antes de eu medir. Eu pus o `powercfg /h off` como primeira opcao da Parte 2 com o argumento de que e 'a UNICA que nao toca dado de ninguem'. Nao toca ARQUIVO de ninguem -- e dado nao salvo tambem e dado. MEDIDO: ChassisType 9 = Laptop, Latitude E5450, com bateria presente. Entao nao e desktop, e a troca e real: removida a hibernacao, a acao de bateria critica deixa de hibernar e passa a desligar, e trabalho nao salvo se perde em vez de ser preservado. Em desktop seria quase gratis; aqui nao e. E A REVERSIBILIDADE MUDA O PERFIL DE RISCO E VALE REGISTRADA JUNTO COM O NUMERO: `powercfg /h on` recria o hiberfil e devolve a hibernacao e a Inicializacao Rapida. Entao a troca e temporaria por escolha, e nao permanente -- o que a distingue do `/ResetBase`, que libera mais e nao se desfaz. O QUE ISSO FAZ COM A ORDEM DAS OPCOES: o `powercfg /h off` deixa de ser a primeira por ser inofensiva e passa a ser uma troca declarada de 4,76 GB contra a preservacao de trabalho em bateria critica. A analise do DISM sobe de posicao, porque e a unica candidata que poderia fechar os 3,79 GB sem troca e sem tocar dado de ninguem -- e ela exige a janela elevada do titular, com erro 740 medido sem ela."
+
+- id: PRF-0280
+  kind: proof
+  title: "Enunciado melhor nao e resposta: a UNK-0001 segue UNKNOWN, segue bloqueando o REGIONAL, e a contagem de bloqueadores segue TRES"
+  refutes: [CLM-0240]
+  basis: record_reading
+  date: "2026-10-20"
+  scope:
+    padrao: "aplicar a reenunciacao que o roteiro v2 ordena e rodar o juiz antes e depois, para medir o que ela move na contagem de bloqueadores e no estado da incognita"
+    universo: "o no UNK-0001 em genome/09-unknowns.yaml; e a secao de cadeia por escala do relatorio do juiz, rodado na arvore antes e depois da edicao"
+    excluidos:
+      - "se a pergunta nova e RESPONDIVEL hoje: ela exige o split-brain de escrita do PASSO F, que exige os tres conteineres, que exigem o runtime, que exige elevacao"
+      - "a identificacao que o roteiro faz da pergunta nova com o C27-02: esse no NAO existe no grafo, e a identificacao fica registrada como do titular, nao como aresta"
+    instrumento: "edicao do no com ancora conferida, e `python tools/genome_check.py` antes e depois"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-a-unk-0001-reenunciada.json
+  location:
+    repo: liceu-genome
+    path: genome/09-unknowns.yaml
+    note: "A REENUNCIACAO NAO MOVE A CONTAGEM, E ERA ISSO QUE PRECISAVA SER MEDIDO. O roteiro v2 mandou trocar 'como replicar' por 'qual topologia garante escritor unico', com o motivo medido e sem substituir em silencio -- e a troca esta feita, com o enunciado antigo preservado por escrito no required_evidence, junto com a decisao parcial de 2026-09-22, que nao se apaga. DEPOIS DELA, O JUIZ DIZ O MESMO: REGIONAL bloqueada por 3 item(ns), CLM-0006 STALE, CLM-0007 REFUTED, UNK-0001 UNKNOWN. A incognita nao saiu da lista, porque pergunta melhor nao e pergunta respondida. E DUAS ARESTAS SAIRAM DO `blocks`, com forcas DIFERENTES, e separo as duas porque misturar seria o truque: a CLM-0007 sai MEDIDA -- a PRF-0268 mostra que ela fecha com replicacao duravel e nao linearizavel, sem esperar topologia alguma; a CLM-0006 sai por CONSEQUENCIA DO REENUNCIADO e nao por medicao -- a aresta existia porque a pergunta antiga era sobre o caminho de observacao da Testemunha, e a pergunta nova e sobre escrita, nao sobre leitura. Se o titular entender que a topologia de escritor unico ainda condiciona a observacao independente, a aresta volta pela palavra dele, e eu a reponho. E A REMOCAO DAS DUAS NAO INFLOU NEM DEFLACIONOU NADA, medido: a contagem seguiu TRES porque a CLM-0006 e a CLM-0007 sao bloqueadoras por direito proprio, cada uma com o seu `blocks`. Era o risco deste PR e nao se materializou."
+
+- id: PRF-0281
+  kind: proof
+  title: "Replicar da P4 e nao da P5: sem lider unico por epoca o I1 viola em 915 estados, e replicacao nao impede dois escritores"
+  refutes: [CLM-0241]
+  basis: test
+  date: "2026-10-20"
+  test:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    name: roda
+  mechanism:
+    repo: liceu-genome
+    paths:
+      - tools/modelo/autoridade.py
+    content_hash: 1212d2f584a2ae20f84d467429c520ccac942d8b083e8561cd57030e5e1a5ff8
+    commit: d26f50a
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-20-a-unk-0001-reenunciada.json
+  environment: local
+  scale: LOCAL
+  location:
+    repo: liceu-genome
+    path: tools/modelo/autoridade.py
+    note: "ESTE E O MOTIVO MEDIDO DA REENUNCIACAO, e sem ele a troca de pergunta seria preferencia. A pergunta antiga -- 'como replicar' -- pedia escolha de mecanismo para um requisito que a medicao mudou: a PRF-0268 mostra que o segundo caminho de leitura precisa ser DURAVEL e nao precisa ser linearizavel, entao replicacao sincrona de UMA LINHA basta para o ESTADO sobreviver. DAI NAO SEGUE QUE BASTE PARA O ESCRITOR UNICO, e e esse passo que a claim tenta dar. O I1 -- nunca duas instancias servindo a MESMA epoca -- depende do P5, lider unico por epoca, que e propriedade do LOG. Rodado com o espaco inteiro explorado: com as cinco propriedades nada viola, em 387 estados; SEM P5 o I1 viola, em 915 estados; sem P4 violam I1 e I4, em 180375; sem P3 nada viola, em 1307. REPLICACAO ENTREGA DURABILIDADE, QUE E P4; LIDER UNICO POR EPOCA E OUTRA PROPRIEDADE, E NAO SE OBTEM REPLICANDO. Logo a lacuna que resta nao e de biblioteca e sim de TOPOLOGIA: o que, no arranjo, pode produzir duas replicas gravaveis. O LIMITE DESTA PROVA, declarado: ela mede o MODELO do protocolo, nao uma topologia real. Dizer qual arranjo produz duas replicas gravaveis exige o laboratorio -- o split-brain de ESCRITA do PASSO F -- e ele exige os tres conteineres, o runtime e a elevacao que o titular ainda nao deu. O modelo diz o que PRECISA ser garantido; nao diz qual arranjo garante."
