@@ -1383,3 +1383,17 @@
   kind: claim
   statement: "O passivo das tres acusacoes falsas esta respondido: as tres estao fechadas com o motivo registrado, cada uma com a razao escrita, e nenhuma acusacao de push direto segue aberta no ecossistema."
   asserted_by: "eu, em 2026-10-22, por decisao do titular -- que mandou fechar as tres e depois registrar que foram respondidas"
+- id: CLM-0253
+  kind: claim
+  statement: "Os seis workflows ativos que nunca rodaram no branch padrao sao lacuna de cobertura de CI: guarda que deveria rodar em main e nao roda."
+  asserted_by: "eu, no relatorio de estado de 2026-10-22, ao escrever que `seis workflows ativos nunca rodaram no branch padrao, e isso nao e verde -- e nao-medido`"
+
+- id: CLM-0254
+  kind: claim
+  statement: "A condicao de existencia da evidencia, que o ÍNTEGRO passou a exigir em 2026-10-20, cobre as provas do grafo."
+  asserted_by: "a leitura natural de uma condicao do ÍNTEGRO, e e minha: condicao que o veredito exige parece valer para tudo o que o veredito julga"
+
+- id: CLM-0255
+  kind: claim
+  statement: "Contar por um caminho basta: os numeros que o relatorio publica nao mudam quando conferidos por caminho independente."
+  asserted_by: "a pratica de todos os relatorios de estado que eu produzi ate 2026-10-22, nenhum deles com segunda contagem -- afirmacao por omissao, e minha"

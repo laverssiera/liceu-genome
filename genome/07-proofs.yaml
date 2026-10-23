@@ -6152,3 +6152,65 @@
     repo: liceu-genome
     path: docs/evidence/2026-10-22-o-passivo-respondido.json
     note: "O FECHAMENTO E ATO MEU, por decisao do titular, E NAO ATO DE TERCEIRO -- e por isso o campo `ato_de_terceiro` esta AUSENTE desta prova. Preenche-lo inflaria a contagem de atos do mundo que o modo sombra usa, e o mundo nao agiu aqui: quem agiu fui eu, com a palavra do titular. O MOTIVO DE FECHAMENTO E O QUE FAZ ESTA PROVA VALER A PENA, e nao a contagem de issues fechadas: NOT_PLANNED para as falsas e COMPLETED para as verdadeiras deixa no registro publico, de forma durave, a diferenca entre `a guarda errou` e `houve push direto e foi respondido`. Issue fechada em silencio num repositorio publico parece acusacao aceita, e por isso cada uma das tres levou escrita a razao medida: que o sha E o merge commit do PR, com dois pais e assunto `Merge pull request #N`; que o criterio das linhas 21-22 devolve o numero do PR hoje sobre o mesmo sha; a causa, defasagem de consistencia com leitura unica; a serie 8,1 s ausente contra 10,3 e 13,3 presente, sem limiar; a taxa de 3 em 160; e os nos deste grafo que registram tudo isso. CORRIJO UMA FRASE MINHA, dita ao titular no relatorio do fechamento: eu disse que o registro `agora distingue as duas coisas pelo proprio motivo de fechamento, o que antes nao existia`. A segunda metade esta errada -- o COMPLETED ja estava nas tres verdadeiras desde setembro, posto pelo titular. O que faltava era o outro lado, e a distincao foi COMPLETADA, nao inventada. E DECLARO UMA DIVERGENCIA DE DATA NO REGISTRO PUBLICO: os comentarios que eu escrevi dizem `Fechada em 2026-10-22` e o `closedAt` do GitHub diz 2026-10-23T00:45Z. E fuso -- eu escrevi a data local e o registro guarda UTC, e o fechamento caiu 45 minutos depois da meia-noite UTC. Quarenta e cinco minutos nao mudam nada do que foi medido, e fica dito porque divergencia em registro publico se declara, nao se arredonda. O QUE ESTA PROVA NAO MUDA, nos quatro pontos que importam: a PRF-0295 diz no `observed` que as tres estao ABERTAS, e isso continua CORRETO, porque prova e observacao datada de 2026-10-21 e nao descricao do presente -- ela NAO foi emendada; a CLM-0250 segue REFUTED, porque a acusacao falsa nao ter sido evento isolado e fato sobre o que aconteceu, e fechar issue nao o desfaz; a UNK-0020 segue ABERTA, com o orcamento de releitura ainda palpite; e a CLM-0248 segue UNPROVEN, porque NESTE repositorio a guarda continua com DOIS estados e pode acusar de novo -- o terceiro estado existe em UM repositorio de dezenove."
+- id: PRF-0299
+  kind: proof
+  title: "Cinco dos seis nao sao lacuna de cobertura: sao ENTRADA FANTASMA, workflow cujo arquivo nao existe em ramo nem tag"
+  refutes: [CLM-0253]
+  basis: external_observation
+  date: "2026-10-23"
+  environment: ci
+  scale: LOCAL
+  external_observation:
+    instrument: "`actions/workflows?per_page=100` filtrado por `state == active` em cada repositorio; a ULTIMA execucao concluida de cada workflow no branch padrao, por `workflows/<id>/runs?branch=<padrao>`; e `git ls-tree -r --name-only` do caminho do arquivo em `origin/<padrao>`, em TODO ramo remoto e em TODA tag, CONFERINDO O CODIGO DE SAIDA"
+    observed: "Dos seis workflows ativos sem execucao no branch padrao, CINCO tem o arquivo AUSENTE de origin/main, de todo ramo remoto e de toda tag: `diag-known-failures` em ECONO.TECH, FORNECEDORES, John-Brasileiro- e LICEU_6.0_CONSTRUTORA_VIRTUAL, e `gerar-lock` em GAME-MKT. O GitHub os mantem listados como `active` porque cada um tem historico de execucao -- as ultimas em 2026-09-15 e 2026-10-02, em ramos que nao contem mais o arquivo. O SEXTO, `monorepo-scaffold-ci` do JURIDICO-TECH, esta em origin/main e tem gatilho `pull_request` apenas: nunca disparar em main e o comportamento correto."
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-23-os-instrumentos-da-camada-2.json
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-23-os-instrumentos-da-camada-2.json
+    note: "A CAUSA NAO ESTAVA ENTRE AS QUATRO PREVISTAS, e e isso que esta prova acrescenta. A lista previa gatilho quebrado, filtro de branch, desabilitado e so-de-evento; cinco dos seis tem uma QUINTA causa -- entrada fantasma no registro de workflows do GitHub, mantida viva pelo historico e sem arquivo em lugar nenhum. ISSO CORRIGE O QUE EU RELATEI: eu disse que os seis eram `nao-medido`, e nao-medido supoe que ha algo a medir. Em cinco casos nao ha workflow. A consequencia pratica e na direcao oposta da que eu sugeri: eles nao sao lacuna a fechar, sao RESIDUO a nao contar, e contar os cinco como `ativos` infla o denominador do relatorio de frota. A TERCEIRA PERNA DA TRIADE SEGUE EXISTINDO, com UM caso e nao seis: o `monorepo-scaffold-ci` precisa ficar DECLARADO como so-de-evento, senao o proximo relatorio conserta o que nao esta quebrado. DUAS VEZES ERREI ANTES DE CHEGAR AQUI, e as duas por instrumento: primeiro afirmei `GATILHO AUSENTE` para workflows que demonstravelmente rodaram -- a propria saida refutava o rotulo; depois afirmei que o arquivo existia em main e em dez ramos, porque `gh api --jq` em 404 escreve o corpo do erro no STDOUT e eu lia saida-nao-vazia como existencia. O `git`, que confere codigo de saida, estava certo nas duas vezes. ISSO ESTA NA PRF-0301."
+
+- id: PRF-0300
+  kind: proof
+  title: "A existencia da evidencia cobre 160 de 295 provas, e as outras 135 estao ancoradas por campos que o juiz nao confere"
+  refutes: [CLM-0254]
+  basis: record_reading
+  date: "2026-10-23"
+  scope:
+    padrao: "percorrer TODAS as provas do grafo, separar as que declaram `evidence_artifact.path` das que nao declaram, e para as que nao declaram enumerar quais OUTRAS ancoras elas tem -- `test.path`, `mechanism.paths`, `location.path`, `external_observation` -- contando quantas ficam sem ancora nenhuma"
+    universo: "as 295 provas de genome/07-proofs.yaml no commit 7258d93 de liceu-genome, nenhuma excluida"
+    excluidos:
+      - "se os caminhos citados nas outras ancoras EXISTEM no disco: isso e exatamente o que o juiz nao confere, e conferir aqui produziria o numero que a prova diz faltar"
+      - "se a ausencia de `evidence_artifact` e defeito em cada caso: ha prova cuja evidencia E o teste nomeado, e exigir artefato dela seria duplicar"
+      - "as provas de outros grafos ou de outros repositorios: so o liceu-genome foi lido"
+    instrumento: "travessia propria do YAML por `yaml.safe_load`, com contagem por `basis` e por mes de `date`, e lista explicita das sem ancora"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-23-os-instrumentos-da-camada-2.json
+  location:
+    repo: liceu-genome
+    path: tools/genome_check.py
+    note: "SEM BLOCO `mechanism`, E DE PROPOSITO: a superficie desta prova seria o proprio `genome/07-proofs.yaml`, o arquivo em que ela vive -- o hash mudaria no commit seguinte e a prova ficaria STALE por motivo nenhum, que e exatamente o que o `genome_scope_check` adverte sobre prova cuja superficie e o instrumento inteiro. O universo e o commit ficam declarados no `scope`. A PERGUNTA ERA `o que sao as outras 135`, e a resposta e: ancoradas, mas por campo que o juiz nao le. Das 135 sem `evidence_artifact`, 65 sao `basis: test` com `test.path`, 74 declaram `mechanism.paths` e 127 declaram `location.path`; NENHUMA fica sem ancora, e ZERO observacoes externas dispensam artefato -- toda `external_observation` do grafo cita um. Entao a condicao que o ÍNTEGRO passou a exigir em 2026-10-20 cobre 160 de 295, 54,2%, e o que ela garante e que o artefato citado existe -- nao que a prova tenha onde se apoiar. A DIFERENCA ENTRE `A REGRA EXISTE` E `A REGRA COBRE METADE` E O PONTO, e vale para as outras duas coberturas que o relatorio publica: evidencia conferida 146 de 295 provas, 49,5%; escopo declarado 72 de 111 leituras, 65%; classe declarada 22 de 255 afirmacoes, 8,6%. Enquanto a primeira forma aparecer sozinha, `existe` vai sendo lido como `protege`. E NAO E PASSIVO ANTIGO: 81 das 135 sao de outubro e 54 de setembro, logo nao declarar artefato e PRATICA CORRENTE e nao divida historica. O QUE ESTA PROVA NAO DIZ: que as outras ancoras estejam erradas, nem que o juiz deva conferir as tres. Conferir `test.path` e `location.path` e trabalho com consequencia -- cada caminho inexistente viraria recusa do ÍNTEGRO -- e a decisao e do titular. O que esta medido e o tamanho do que a condicao NAO alcanca."
+
+- id: PRF-0301
+  kind: proof
+  title: "Os tres numeros fecharam pelos dois caminhos, e a regra ainda pegou DOIS defeitos de instrumento -- os dois meus"
+  refutes: [CLM-0255]
+  basis: record_reading
+  date: "2026-10-23"
+  scope:
+    padrao: "obter cada um dos tres numeros por dois caminhos INDEPENDENTES -- caminhos diferentes, nao a mesma conta de duas formas -- e tratar divergencia como defeito do instrumento ate prova em contrario"
+    universo: "tres numeros do relatorio de estado: as 39 provas de leitura INDETERMINADAS, as 146 evidencias conferidas neste checkout, e os 18 de 19 repositorios sem workflow vermelho"
+    excluidos:
+      - "os outros numeros do relatorio: cadeia, denominador, incognitas, previsoes pre-registradas e atos de terceiro seguem com UM caminho so"
+      - "a serie historica: nada aqui reconfere os numeros publicados nos relatorios anteriores, e por isso a regra foi instituida para a frente e nao aplicada ao passado"
+      - "se os dois caminhos de cada numero sao de fato independentes: a independencia e argumentada pelo desenho -- travessia propria contra subtracao, disco contra contagem, check-run contra workflow -- e nao medida"
+    instrumento: "scratchpad/diferencial.py, que roda o juiz e extrai o caminho A do relatorio, e calcula o caminho B por travessia propria do YAML e por endpoint diferente da API"
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-23-os-instrumentos-da-camada-2.json
+  location:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-23-os-instrumentos-da-camada-2.json
+    note: "SEM BLOCO `mechanism`, E DE PROPOSITO: a superficie desta prova seria o proprio `genome/07-proofs.yaml`, o arquivo em que ela vive -- o hash mudaria no commit seguinte e a prova ficaria STALE por motivo nenhum, que e exatamente o que o `genome_scope_check` adverte sobre prova cuja superficie e o instrumento inteiro. O universo e o commit ficam declarados no `scope`. OS TRES NUMEROS FECHARAM, e e justamente por isso que esta prova refuta a claim. 111 provas de leitura vigentes pelos dois caminhos; 72 com escopo -- o juiz por SUBTRACAO, `alvo menos indeterminadas`, e o caminho B conferindo os quatro campos de cada prova e contando as duas somas, que fecham em 111; 39 indeterminadas pelos dois; 160 citam artefato, 146 conferidas e 14 declaradas pelos dois, com o caminho B RESOLVENDO CADA CAMINHO no disco um por um; e 18 repositorios sem vermelho pelos dois, o primeiro pela ultima execucao de cada workflow ativo e o segundo pelas CHECK-RUNS do commit de cabeca, que e endpoint diferente e visao centrada no commit. O CONJUNTO dos 18, e nao so a contagem, coincide. E A REGRA AINDA PEGOU DOIS DEFEITOS, nos dois casos no INSTRUMENTO e nunca no numero, e nos dois casos meus. PRIMEIRO: `subprocess.run(text=True)` sem `encoding` decodifica com a pagina de codigo do Windows, e a linha `NÃO conferidas aqui` deixou de casar com o regex -- o script acusou `A=None contra B=14` como divergencia, e a divergencia era do extrator. SEGUNDO, e mais grave porque produziu afirmacao publicada: `gh api --jq` em 404 escreve o CORPO DO ERRO no stdout, de modo que `saida nao vazia` nao significa `existe`; eu afirmei que o arquivo de um workflow existia em main e em dez ramos, e o `git ls-tree`, que confere codigo de saida, dizia que nao existia em nenhum. O `git` estava certo. ENTAO O QUE A REGRA MOSTROU SOBRE SI MESMA: instrumento que nunca discorda de si mesmo nunca e pego, e um unico caminho nao distingue numero certo de coincidencia com aparencia de prova. O defeito do `group_by(.name)` que motivou a regra foi pego por ACIDENTE, porque duas janelas calharam de discordar; estes dois foram pegos por DESENHO. A PARADA NAO DISPAROU: nenhum dos tres numeros divergiu, e por isso os numeros dos relatorios anteriores nao ficaram suspeitos -- o que ficou suspeito, e com razao, foi a pratica de publicar numero sem segunda contagem."
