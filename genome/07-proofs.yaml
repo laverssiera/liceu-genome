@@ -6134,7 +6134,7 @@
     repo: liceu-genome
     path: genome/09-unknowns.yaml
     note: "ESTA PROVA EXISTE PORQUE O GRAFO SO REGISTRAVA OS ERROS DA GUARDA. Entre as PRF-0291, PRF-0292, PRF-0294 e PRF-0295 ha quatro provas sobre o que ela erra, e nenhuma sobre o que ela acerta -- e decidir se vale rolar o remedio para os outros 18 repositorios depende das duas metades. As tres acusacoes verdadeiras separam-se das tres falsas por uma propriedade unica e dura: ZERO pais contra DOIS pais. Nenhuma das seis fica na fronteira. E e a mesma propriedade que o terceiro estado usa como segunda leitura, o que da a ela uma confirmacao fora do laboratorio: em seis casos reais, a forma do commit concordou com o veredito correto nas seis. O LIMITE, declarado: seis casos, e todos de um tipo so de violacao verdadeira -- o commit de nascimento. Nenhuma das seis e um push direto de alguem que empurrou por cima de um main que ja existia, e e esse o caso que a guarda existe para pegar. Que ela o pegaria segue NAO OBSERVADO, e o teste com o `gh` dublado nao substitui observacao: ele prova o comportamento diante da resposta, nao que a resposta venha."
-- id: PRF-0297
+- id: PRF-0298
   kind: proof
   title: "As tres fechadas como NOT_PLANNED e as tres verdadeiras como COMPLETED: zero acusacoes abertas no ecossistema"
   proves: [CLM-0252]
