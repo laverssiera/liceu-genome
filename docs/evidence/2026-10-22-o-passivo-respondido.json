@@ -1,0 +1,80 @@
+{
+  "data": "2026-10-22",
+  "o_que_se_mediu": "o estado das seis acusacoes de push direto do ecossistema depois de as tres falsas serem fechadas, e se sobrou alguma aberta",
+  "instrumento": "`gh issue view <n> --json state,stateReason,closedAt,comments` em cada uma das seis; e `gh issue list --state open --search 'in:title \"Push direto em main\"'` nos 19 repositorios com remoto, para o resto",
+  "acusacoes": [
+    {
+      "repo": "liceu-genome",
+      "issue": 160,
+      "estado": "CLOSED",
+      "motivo": "NOT_PLANNED",
+      "fechada_em_utc": "2026-10-23T00:45:28Z",
+      "comentarios": 1,
+      "veredito": "FALSA"
+    },
+    {
+      "repo": "liceu-genome",
+      "issue": 119,
+      "estado": "CLOSED",
+      "motivo": "NOT_PLANNED",
+      "fechada_em_utc": "2026-10-23T00:45:31Z",
+      "comentarios": 1,
+      "veredito": "FALSA"
+    },
+    {
+      "repo": "liceu-genome",
+      "issue": 71,
+      "estado": "CLOSED",
+      "motivo": "NOT_PLANNED",
+      "fechada_em_utc": "2026-10-23T00:45:34Z",
+      "comentarios": 1,
+      "veredito": "FALSA"
+    },
+    {
+      "repo": "liceu-design-tokens",
+      "issue": 1,
+      "estado": "CLOSED",
+      "motivo": "COMPLETED",
+      "fechada_em_utc": "2026-09-19T21:57:42Z",
+      "comentarios": 1,
+      "veredito": "VERDADEIRA"
+    },
+    {
+      "repo": "liceu-protocol",
+      "issue": 2,
+      "estado": "CLOSED",
+      "motivo": "COMPLETED",
+      "fechada_em_utc": "2026-09-18T16:14:13Z",
+      "comentarios": 1,
+      "veredito": "VERDADEIRA"
+    },
+    {
+      "repo": "liceu-shell",
+      "issue": 1,
+      "estado": "CLOSED",
+      "motivo": "COMPLETED",
+      "fechada_em_utc": "2026-09-19T22:05:20Z",
+      "comentarios": 1,
+      "veredito": "VERDADEIRA"
+    }
+  ],
+  "resumo": {
+    "acusacoes_no_ecossistema": 6,
+    "abertas_agora": 0,
+    "falsas_fechadas_como": [
+      "NOT_PLANNED"
+    ],
+    "verdadeiras_fechadas_como": [
+      "COMPLETED"
+    ],
+    "todas_com_comentario": true
+  },
+  "o_que_isto_NAO_muda": {
+    "PRF-0295": "o `observed` dela diz que as tres estao ABERTAS, e isso continua CORRETO: prova e observacao datada, de 2026-10-21, e nao descricao do presente. Nao foi emendada",
+    "CLM-0248": "segue UNPROVEN. Fechar a issue nao conserta a guarda deste repositorio, que continua com DOIS estados",
+    "UNK-0020": "segue ABERTA; o orcamento de releitura segue palpite",
+    "CLM-0250": "segue REFUTED. Que a acusacao falsa nao foi evento isolado e um fato sobre o que aconteceu, e fechar as issues nao o desfaz"
+  },
+  "correcao_de_uma_frase_minha": "eu disse ao titular que o registro 'agora distingue as duas coisas pelo proprio motivo de fechamento, o que antes nao existia'. A segunda metade esta errada: o COMPLETED ja estava nas tres verdadeiras desde setembro, posto pelo titular. O que faltava era o outro lado -- NOT_PLANNED para as falsas -- e portanto a distincao foi COMPLETADA, nao inventada",
+  "discrepancia_de_data_no_registro_publico": "os comentarios que eu escrevi dizem `Fechada em 2026-10-22`, e o `closedAt` do GitHub e 2026-10-23T00:45:28Z a 00:45:34Z. A diferenca e fuso: eu escrevi a data local e o registro guarda UTC, e o fechamento caiu 45 minutos depois da meia-noite UTC. Fica declarado porque e uma divergencia em registro publico, ainda que de 45 minutos"
+}

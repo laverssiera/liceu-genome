@@ -1379,3 +1379,7 @@
   kind: claim
   statement: "A guarda de main ja recusou push direto REAL: ha acusacao emitida por ela cujo commit nao e o merge de nenhum pull request."
   asserted_by: "eu, em 2026-10-21, ao conferir as seis acusacoes do ecossistema uma a uma -- enunciada porque ate aqui o grafo so registrava os erros da guarda, e nunca o que ela acertou"
+- id: CLM-0252
+  kind: claim
+  statement: "O passivo das tres acusacoes falsas esta respondido: as tres estao fechadas com o motivo registrado, cada uma com a razao escrita, e nenhuma acusacao de push direto segue aberta no ecossistema."
+  asserted_by: "eu, em 2026-10-22, por decisao do titular -- que mandou fechar as tres e depois registrar que foram respondidas"
