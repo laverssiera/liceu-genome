@@ -1,0 +1,193 @@
+{
+  "data": "2026-10-23",
+  "o_que_se_mediu": "os tres itens da camada 2 da lista unica: a causa de cada workflow que nunca rodou no branch padrao; os tres numeros do relatorio por dois caminhos independentes; e o que sao as provas que nao citam artefato",
+  "L2_01_os_seis_workflows": {
+    "instrumento": "`actions/workflows` para os ativos; a ULTIMA execucao de cada um no branch padrao; e `git ls-tree -r --name-only` em origin/<padrao>, em TODO ramo remoto e em TODA tag, conferindo o CODIGO DE SAIDA",
+    "achados": [
+      {
+        "repo": "ECONO.TECH-LICEU-6.0",
+        "workflow": "diag-known-failures",
+        "arquivo": ".github/workflows/diag-known-failures.yml",
+        "gatilhos": [],
+        "filtros_de_branch": {},
+        "branch_padrao": "main",
+        "execucoes_em_qualquer_branch": "diag/known-failures:success, diag/known-failures:failure",
+        "causa": "FORA DO BRANCH PADRAO \u2014 o arquivo NAO esta em `main`; vive em 0 ramo(s) nao mergeado(s), e o GitHub o lista como `active` porque ele tem execucoes",
+        "existe_no_branch_padrao": false,
+        "ramos_onde_existe": []
+      },
+      {
+        "repo": "FORNECEDORES-LICEU-6.0",
+        "workflow": "diag-known-failures",
+        "arquivo": ".github/workflows/diag-known-failures.yml",
+        "gatilhos": [],
+        "filtros_de_branch": {},
+        "branch_padrao": "main",
+        "execucoes_em_qualquer_branch": "diag/known-failures:success, diag/known-failures:failure",
+        "causa": "FORA DO BRANCH PADRAO \u2014 o arquivo NAO esta em `main`; vive em 0 ramo(s) nao mergeado(s), e o GitHub o lista como `active` porque ele tem execucoes",
+        "existe_no_branch_padrao": false,
+        "ramos_onde_existe": []
+      },
+      {
+        "repo": "GAME-MKT",
+        "workflow": "Gerar lock com o ferramental de teste",
+        "arquivo": ".github/workflows/gerar-lock.yml",
+        "gatilhos": [],
+        "filtros_de_branch": {},
+        "branch_padrao": "main",
+        "execucoes_em_qualquer_branch": "lock/o-ferramental-entra-no-lock:success, lock/o-ferramental-entra-no-lock:success",
+        "causa": "FORA DO BRANCH PADRAO \u2014 o arquivo NAO esta em `main`; vive em 0 ramo(s) nao mergeado(s), e o GitHub o lista como `active` porque ele tem execucoes",
+        "existe_no_branch_padrao": false,
+        "ramos_onde_existe": []
+      },
+      {
+        "repo": "JURIDICO-TECH",
+        "workflow": "monorepo-scaffold-ci",
+        "arquivo": ".github/workflows/monorepo-scaffold-ci.yml",
+        "gatilhos": [
+          "pull_request"
+        ],
+        "filtros_de_branch": {},
+        "branch_padrao": "main",
+        "execucoes_em_qualquer_branch": "b1/borda-no-loopback:success, fix/bump-python-jose-3.4.0:success, chore/untrack-node-modules-and-db:success",
+        "causa": "SO DE EVENTO \u2014 gatilhos ['pull_request'], e nunca disparar em `main` e LEGITIMO",
+        "existe_no_branch_padrao": true,
+        "ramos_onde_existe": [
+          "origin",
+          "a1/certidao-de-diretrizes",
+          "a1/navigator-do-protocolo",
+          "a1/urbanistico-aprovado",
+          "b1/borda-no-loopback",
+          "b3/genoma-por-sha-sem-cdn",
+          "chore/pin-container-images",
+          "ci/main-guard",
+          "config/o-modelo-de-ambiente-que-faltava",
+          "e4/event-bus-fail-closed",
+          "e6/core-dna-to-local-contracts",
+          "main",
+          "p001/a-aplicabilidade-do-motor",
+          "p001/a-testada",
+          "p001/leitura-pendente",
+          "protocolo/o-acervo-de-02-10",
+          "u2/base-regulatoria-p001",
+          "u3/contradicao-entre-declaracoes",
+          "u4/previsoes-pre-registradas",
+          "u5/prontidao-para-o-protocolo",
+          "urbanistica/o-ie-entra-como-lacuna-nomeada"
+        ]
+      },
+      {
+        "repo": "John-Brasileiro-",
+        "workflow": "diag-known-failures",
+        "arquivo": ".github/workflows/diag-known-failures.yml",
+        "gatilhos": [],
+        "filtros_de_branch": {},
+        "branch_padrao": "main",
+        "execucoes_em_qualquer_branch": "diag/known-failures:success, diag/known-failures:success",
+        "causa": "FORA DO BRANCH PADRAO \u2014 o arquivo NAO esta em `main`; vive em 0 ramo(s) nao mergeado(s), e o GitHub o lista como `active` porque ele tem execucoes",
+        "existe_no_branch_padrao": false,
+        "ramos_onde_existe": []
+      },
+      {
+        "repo": "LICEU_6.0_CONSTRUTORA_VIRTUAL",
+        "workflow": "diag-known-failures",
+        "arquivo": ".github/workflows/diag-known-failures.yml",
+        "gatilhos": [],
+        "filtros_de_branch": {},
+        "branch_padrao": "main",
+        "execucoes_em_qualquer_branch": "diag/known-failures:success, diag/known-failures:success, diag/known-failures:failure",
+        "causa": "FORA DO BRANCH PADRAO \u2014 o arquivo NAO esta em `main`; vive em 0 ramo(s) nao mergeado(s), e o GitHub o lista como `active` porque ele tem execucoes",
+        "existe_no_branch_padrao": false,
+        "ramos_onde_existe": []
+      }
+    ],
+    "por_causa": {
+      "FORA DO BRANCH PADRAO": 5,
+      "SO DE EVENTO": 1
+    },
+    "a_causa_nao_estava_nas_quatro_previstas": "a lista previa quatro causas -- gatilho quebrado, filtro de branch, desabilitado, so de evento. CINCO dos seis tem uma quinta: o arquivo do workflow NAO EXISTE em ramo nem em tag, e o GitHub o mantem listado como `active` porque ele tem historico de execucao. Nao e guarda ausente disfarcada de guarda: e ENTRADA FANTASMA no registro de workflows. Ultimas execucoes em 2026-09-15 e 2026-10-02",
+    "o_que_isto_corrige_no_que_eu_relatei": "eu disse ao titular que `seis workflows ativos nunca rodaram no branch padrao, e isso nao e verde -- e nao-medido`. Errado em cinco dos seis: nao-medido supoe que ha algo a medir, e nao ha workflow nenhum. O unico caso legitimo da terceira perna e o `monorepo-scaffold-ci` do JURIDICO-TECH, que e `pull_request` e NUNCA deve rodar em main"
+  },
+  "L2_02_a_checagem_diferencial": {
+    "regra_instituida": "todo instrumento de CONTAGEM entrega o numero por DOIS caminhos INDEPENDENTES, e divergencia e defeito DO INSTRUMENTO ate prova em contrario. Numero certo saido de instrumento invalido nao e medicao: e coincidencia com aparencia de prova",
+    "A": {
+      "leitura_vigentes": 111,
+      "com_scope": 72,
+      "indeterminadas": 39,
+      "citam_artefato": 160,
+      "conferidas": 146,
+      "nao_conferidas": 14
+    },
+    "B": {
+      "leitura_vigentes": 111,
+      "com_scope": 72,
+      "indeterminadas": 39,
+      "citam_artefato": 160,
+      "conferidas": 146,
+      "nao_conferidas": 14,
+      "repos_sem_vermelho": [
+        "3C273-Analytics-Data-Science",
+        "ANCHOR.OS-LICEU6.0",
+        "Archimedes-ImobTech-LICEU-6.0-",
+        "BIM.ARQ.ENG-LICEU-6.0-",
+        "CEA-INVESTIMENTOS--LICEU-6.0-",
+        "ECONO.TECH-LICEU-6.0",
+        "FORNECEDORES-LICEU-6.0",
+        "GAME-MKT",
+        "HUB-BACKOFICE-LICEU-6.0",
+        "JURIDICO-TECH",
+        "LICEU-ACADEMIA-DO-SABER-",
+        "LICEU_6.0_CONSTRUTORA_VIRTUAL",
+        "OPERA-ES-LICEU-6.0",
+        "P-D-LICEU-6.0",
+        "liceu-design-tokens",
+        "liceu-genome",
+        "liceu-protocol",
+        "liceu-shell"
+      ]
+    },
+    "divergencias_de_numero": [],
+    "defeitos_de_instrumento_que_ela_pegou": [
+      {
+        "onde": "o extrator do relatorio do juiz, meu",
+        "qual": "`subprocess.run(text=True)` sem `encoding` decodifica com a pagina de codigo do Windows, e `N\u00c3O conferidas aqui` nao casa com o regex",
+        "como_apareceu": "A=None contra B=14, lido como DIVERGENCIA",
+        "conserto": "`encoding='utf-8'` mais guarda que aborta se a linha falta"
+      },
+      {
+        "onde": "a conferencia de existencia de arquivo por API, minha",
+        "qual": "`gh api --jq` em 404 escreve o CORPO DO ERRO no stdout, entao `saida nao vazia` nao e `existe` -- o codigo de saida e",
+        "como_apareceu": "afirmei que o arquivo do workflow existia em `main` e em dez ramos; o `git` dizia que nao existia em nenhum, e o `git` estava certo",
+        "conserto": "conferir `returncode`, e preferir `git ls-tree` a API"
+      }
+    ],
+    "o_que_a_regra_provou_sobre_si_mesma": "os TRES numeros fecharam pelos dois caminhos, e ainda assim a regra pegou DOIS defeitos -- os dois meus, e os dois no instrumento, nao no numero. Instrumento que nunca discorda de si mesmo nunca e pego"
+  },
+  "L2_03_cobertura_e_as_135": {
+    "cobertura_declarada": {
+      "evidencia_conferida": "146 de 295 provas = 49.5%",
+      "escopo_declarado": "72 de 111 leituras = 65%"
+    },
+    "as_provas_sem_artefato": {
+      "quantas": 135,
+      "de": 295,
+      "por_basis": {
+        "record_reading": 35,
+        "test": 65,
+        "code_reading": 35
+      },
+      "ancoras_que_elas_tem": {
+        "test.path": 65,
+        "mechanism.paths": 74,
+        "location.path": 127,
+        "external_observation": 0
+      },
+      "sem_ancora_nenhuma": [],
+      "por_mes": {
+        "2026-09": 54,
+        "2026-10": 81
+      },
+      "a_resposta": "prova PODE existir sem `evidence_artifact`, e nenhuma das 135 esta sem ancora: 65 tem `test.path`, 74 tem `mechanism.paths`, 127 tem `location.path`, e ZERO observacao externa dispensa artefato. Entao a condicao de existencia que o \u00cdNTEGRO passou a exigir cobre 160 de 295 -- 54% -- e as outras 135 estao ancoradas por campos que o juiz NAO confere. E nao e passivo antigo: 81 das 135 sao de outubro"
+    }
+  }
+}
