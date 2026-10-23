@@ -1,0 +1,42 @@
+{
+  "id": "PRF-0297",
+  "generated_on": "2026-10-22",
+  "status": "PROPOSED_DRAFT_NOT_HOMOLOGATED",
+  "proposition": "The witness without confirmed observation still does not authorize promotion in CORE PR #111.",
+  "source_repo": "laverssiera/LICEU_6.0_CONSTRUTORA_VIRTUAL",
+  "source_pr": 111,
+  "source_commit": "e0371722fe9841b49c799b8d082f4f46dbaced0e",
+  "triggered_by": "Change to cv-backend-core/app/main.py idempotency fallback removing trace_id; authority attest/promote logic not changed in PR diff.",
+  "mechanism_paths": [
+    "cv-backend-core/app/main.py",
+    "cv-backend-core/app/services/authority_control_plane.py",
+    "cv-backend-core/tests/test_testemunha_nao_declara_o_que_viu.py"
+  ],
+  "measured_surface_hash": "835a49c42f5eec299b6a66290e6b45b869f9a1910ba9640e3a353a31efdd7d69",
+  "prior_PRF_0138_hash": "12014a1104a604410854c680b658da9a77d9754d1f503cea0aa17fb5abc01181",
+  "workflow_run_id": 39629033966,
+  "backend_test_job_id": 119321862672,
+  "backend_test_job": "Tests (cv-backend-core)",
+  "backend_summary": "398 passed, 27 deselected, 1 warning",
+  "witness_test_file": "cv-backend-core/tests/test_testemunha_nao_declara_o_que_viu.py",
+  "witness_test_cases": [
+    "test_o_corpo_nao_carrega_mais_veredito",
+    "test_sonda_que_nao_alcancou_da_UNOBSERVABLE_e_nao_DOWN",
+    "test_quem_nao_viu_a_ativa_nao_concorda_com_promocao",
+    "test_UNOBSERVABLE_gravada_nao_autoriza_promocao",
+    "test_dizer_que_a_ativa_esta_sa_exige_dizer_quem_foi_visto",
+    "test_ver_uma_ativa_diferente_da_registrada_nao_autoriza_promocao"
+  ],
+  "test_inference": "Witness test module is in pytest's cv-backend-core/tests tree, six tests inspected, and none are listed in ci-known-failures.txt. CI backend suite passed, but per-test verbose logs were not captured.",
+  "failing_gate": "Genoma surface PRF-0138 detected main.py hash change; gate intentionally failed. Do not merge CORE PR until proof governance is reconciled.",
+  "limits": [
+    "Only a draft proof of unaffected witness safety behavior. No evidence of actual cross-instance failover/replication.",
+    "Hash belongs to CORE pull request head, not yet to default branch; this draft must not be merged into Genome main before coordinated governance.",
+    "No CI bypass, hash override, or automatic green-status claim.",
+    "Legacy idempotency key migration and race conditions remain unresolved separate QA findings."
+  ],
+  "links": {
+    "pr": "https://github.com/laverssiera/LICEU_6.0_CONSTRUTORA_VIRTUAL/pull/111",
+    "ci": "https://github.com/laverssiera/LICEU_6.0_CONSTRUTORA_VIRTUAL/actions/runs/39629033966"
+  }
+}
