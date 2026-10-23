@@ -6134,3 +6134,38 @@
     repo: liceu-genome
     path: genome/09-unknowns.yaml
     note: "ESTA PROVA EXISTE PORQUE O GRAFO SO REGISTRAVA OS ERROS DA GUARDA. Entre as PRF-0291, PRF-0292, PRF-0294 e PRF-0295 ha quatro provas sobre o que ela erra, e nenhuma sobre o que ela acerta -- e decidir se vale rolar o remedio para os outros 18 repositorios depende das duas metades. As tres acusacoes verdadeiras separam-se das tres falsas por uma propriedade unica e dura: ZERO pais contra DOIS pais. Nenhuma das seis fica na fronteira. E e a mesma propriedade que o terceiro estado usa como segunda leitura, o que da a ela uma confirmacao fora do laboratorio: em seis casos reais, a forma do commit concordou com o veredito correto nas seis. O LIMITE, declarado: seis casos, e todos de um tipo so de violacao verdadeira -- o commit de nascimento. Nenhuma das seis e um push direto de alguem que empurrou por cima de um main que ja existia, e e esse o caso que a guarda existe para pegar. Que ela o pegaria segue NAO OBSERVADO, e o teste com o `gh` dublado nao substitui observacao: ele prova o comportamento diante da resposta, nao que a resposta venha."
+
+
+# Ciclo 26 — PR #111 do CORE mudou a superficie de main.py. Prova proposta,
+# baseada nos seis testes da Testemunha dentro da suite do backend.
+# NAO MERGEAR ESTA PROVA ANTES DA COORDENACAO COM O PR DO CORE:
+# o hash refere-se ao HEAD NAO MERGEADO do CORE.
+- id: PRF-0297
+  kind: proof
+  title: "Testemunha sem observacao nao promove: re-medicao em branch apos QA-005"
+  proves: [CLM-0057]
+  supersedes: [PRF-0138]
+  basis: test
+  date: "2026-10-22"
+  scale: LOCAL
+  test:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/tests/test_testemunha_nao_declara_o_que_viu.py
+    name: "os seis casos do arquivo, contidos no pytest do backend no PR #111"
+    pr: 111
+  mechanism:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    paths:
+      - cv-backend-core/app/main.py
+      - cv-backend-core/app/services/authority_control_plane.py
+      - cv-backend-core/tests/test_testemunha_nao_declara_o_que_viu.py
+    content_hash: 835a49c42f5eec299b6a66290e6b45b869f9a1910ba9640e3a353a31efdd7d69
+    commit: e0371722fe9841b49c799b8d082f4f46dbaced0e
+  evidence_artifact:
+    repo: liceu-genome
+    path: docs/evidence/2026-10-22-prf-0297-core-witness-pr111.json
+  location:
+    repo: LICEU_6.0_CONSTRUTORA_VIRTUAL
+    path: cv-backend-core/app/main.py
+    pr: 111
+    note: "PROPOSTA DE SUPERSESSAO — NAO HOMOLOGADA. O PR #111 remove trace_id da chave de idempotencia de eventos sem event_id e adiciona testes de retry, mas nao altera attest(), promote() nem authority_control_plane.py; o arquivo dos seis testes da Testemunha tambem nao mudou. A CI do PR #111 (run 39629033966; commit e0371722) executou pytest -q cv-backend-core/tests com 398 aprovados e 27 desmarcados; nenhum dos seis testes desta prova aparece no manifesto de deselecao. O job do Genoma falhou corretamente pois main.py pertence a superficie PRF-0138 e seu hash mudou de 12014a11 para 835a49c4. A re-medicao e documentada, nao deve mascarar nem ignorar a guarda. Limites: CI sem listagem verbosa individual; nenhuma validacao de failover regional; QA-005 ainda depende de plano de compatibilidade com chaves antigas e protecao de concorrencia. O hash e do HEAD de PR NAO MERGEADO. Esta prova permanece em PR rascunho e NAO pode entrar em main do Genoma antes de coordenar o estado do CORE, pois tornaria o hash da main atual incompatível."
